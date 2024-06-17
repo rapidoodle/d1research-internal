@@ -16,3 +16,10 @@
   .sidenav .nav-link:hover {
     background-color: #e9ecef;
   }
+
+  /* styles/custom.css */
+@media (min-width: 767.98px) {
+    .vh-100-mobile {
+      height: 100vh !important;
+    }
+  }

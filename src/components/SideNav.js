@@ -8,7 +8,7 @@ const SideNav = () => {
   const pathname = usePathname();
 
   return (
-    <div className="d-flex flex-column vh-100 p-3 bg-light border-right">
+    <div className="d-flex flex-column vh-100-mobile p-3 bg-light border-right">
       {/* <Link href="/">MyApp</Link> */}
       <h6 className="py-3 sidebar-heading d-flex justify-content-between align-items-center mb-1 text-muted">
         <span>D1RESEARCH</span>

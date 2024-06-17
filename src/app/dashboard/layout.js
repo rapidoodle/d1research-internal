@@ -8,8 +8,8 @@ export default function Layout({ children }) {
           <nav className="col-md-3 col-lg-2 d-md-block bg-light sidebar">
             <SideNav />
           </nav>
-          <main className="col-md-9 ms-sm-auto col-lg-10 p-md-4">
-            {children}
+          <main className="col-md-9 ms-sm-auto col-lg-10 p-md-4 col-12">
+            {children}v
           </main>
         </div>
       </div>
