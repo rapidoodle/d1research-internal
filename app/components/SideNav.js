@@ -21,7 +21,7 @@ const SideNav = () => {
                 'active': pathname === '/dashboard',
                 },
             )}>
-            Masters
+            Master
             </Link>
         </li>
         <li className="nav-item">

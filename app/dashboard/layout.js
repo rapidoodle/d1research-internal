@@ -1,5 +1,5 @@
 import Link from "next/link";
-import SideNav from "../../components/SideNav";
+import SideNav from "../components/SideNav";
 
 export default function Layout({ children }) {
     return (
@@ -9,7 +9,7 @@ export default function Layout({ children }) {
             <SideNav />
           </nav>
           <main className="col-md-9 ms-sm-auto col-lg-10 p-md-4 col-12">
-            {children}v
+            {children}
           </main>
         </div>
       </div>
