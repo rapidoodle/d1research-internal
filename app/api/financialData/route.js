@@ -2,11 +2,12 @@ import { NextResponse } from 'next/server';
 import { uploadFinancialData, getFinancialData, updateFinancialData, deleteFinancialData } from '@/app/lib/financialData';
 
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
+export const routeSegmentConfig = {
+    api: {
+        bodyParser: false,
+    },
 };
+
 
 export async function POST(req) {
   const { searchParams } = new URL(req.url);
