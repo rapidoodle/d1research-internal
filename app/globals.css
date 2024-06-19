@@ -43,6 +43,10 @@
   animation: shimmer 1.5s infinite;
 }
 
+.mw-250 {
+  max-width: 250px;
+}
+
 @keyframes shimmer {
   0% {
     transform: translateX(-100%);

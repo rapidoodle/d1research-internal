@@ -1,8 +1,11 @@
 import { sql } from "@vercel/postgres";
 
 const createCompany = async (req, res) => {
-  const { name, sector_id } = req.body;
+  if (req.method !== 'POST') {
+    return res.status(405).json({ message: 'Method not allowed' });
+  }
 
+  const { name, sector_id } = req.body;
   try {
     await sql`
       INSERT INTO companies (name, sector_id)

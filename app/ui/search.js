@@ -2,6 +2,8 @@
 
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 
 export default function Search({ placeholder }) {
@@ -24,13 +26,18 @@ export default function Search({ placeholder }) {
   }, 300);
 
   return (
-    <div className="container mt-3">
-      <input type='text' className='form-control mb-3'
+    <div className="container d-flex align-items-center justify-content-end mb-3">
+    <span className='me-2'>Search:</span> 
+      <div className="input-group mw-250">
+        <span className="input-group-text" id="basic-addon1">
+          <FontAwesomeIcon icon={faSearch} />
+        </span>
+        <input type='text' className='form-control'
         placeholder={placeholder}
         onChange={(e) => handleSearch(e.target.value)}
         defaultValue={searchParams.get('query')?.toString()}
       />
-
+      </div>
     </div>
   );
 }

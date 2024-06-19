@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { FinancialDataTableSkeleton } from '../skeletons';
 
 const FinancialDataTable = ({query, currentPage}) => {
   const [financialData, setFinancialData] = useState([]);
@@ -6,20 +7,23 @@ const FinancialDataTable = ({query, currentPage}) => {
   const [page, setPage] = useState(currentPage);
   const [pageSize] = useState(10); // You can make this adjustable if needed
   const [totalRecords, setTotalRecords] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchFinancialData = async () => {
+      setLoading(true);
       try {
         const response = await fetch(`/api/financialData?type=financial_data&search=${query}&currentPage=${page}&pageSize=${pageSize}`);
         const data = await response.json();
         setFinancialData(data.data);
         setTotalRecords(data.totalRecords);
-
+        setLoading(false);
         console.log(data);
         
       } catch (error) {
         console.error('Error fetching financial data:', error);
         setError('Error fetching financial data');
+        setLoading(false);
       } finally {
       }
     };
@@ -33,12 +37,13 @@ const FinancialDataTable = ({query, currentPage}) => {
     return <p>{error}</p>;
   }
 
+  if(!loading){
   return (
     <div className="container">
       <div className='table-responsive'>
         <table className="table table-bordered table-striped">
             <thead>
-            <tr>
+            <tr className='bg-primary'>
                 <th>Year</th>
                 <th>Company</th>
                 <th>Sector</th>
@@ -134,10 +139,15 @@ const FinancialDataTable = ({query, currentPage}) => {
                 <td>{row.ex_date_q4}</td>
                 </tr>
             ))}
+            {financialData.length === 0 && (
+              <><tr>
+                <td colSpan={44} align='center'>No available data</td>
+                </tr></>
+            )}
             </tbody>
         </table>
       </div>
-      <div className="pagination">
+      <div className="pagination d-flex align-items-center justify-content-end">
         <button
           onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
           disabled={page === 1}
@@ -156,6 +166,9 @@ const FinancialDataTable = ({query, currentPage}) => {
       </div>
     </div>
   );
+}else{
+  return <FinancialDataTableSkeleton />
+}
 };
 
 export default FinancialDataTable;

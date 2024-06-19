@@ -12,12 +12,14 @@ export default function Page(searchParams) {
   return (
     <div className="container mt-5">
       <CsvUploader />
-      <Search placeholder="Search financial data by company" />
-      <Suspense key={query + currentPage} fallback={FinancialDataTableSkeleton}>
-        <FinancialDataTable 
-          query={query} 
-          currentPage={currentPage} />
-      </Suspense>
+      <div className='bg-light p-3'>
+        <Search placeholder="Company name" />
+        <Suspense key={query + currentPage} fallback={FinancialDataTableSkeleton}>
+          <FinancialDataTable 
+            query={query} 
+            currentPage={currentPage} />
+        </Suspense>
+      </div>
     </div>
   );
 }

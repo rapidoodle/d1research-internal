@@ -32,7 +32,7 @@ const CsvUploader = () => {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container mb-3 bg-light p-3">
       <PageTitle title="Upload Financial Data CSV" />
       <input type="file" onChange={handleFileChange} className="form-control mb-3" />
       <button onClick={handleUpload} className="btn btn-primary">Upload</button>

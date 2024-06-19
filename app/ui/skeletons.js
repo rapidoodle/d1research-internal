@@ -9,11 +9,11 @@ export function FinancialDataTableSkeleton() {
 
     return (
         <div className="table-responsive">
-          <table className="table table-striped table-sm table-condensed">
+          <table className="table table-bordered table-striped">
             <thead>
               <tr>
                 {columns.map((column, index) => (
-                  <th key={index}><div className="shimmer"></div></th>
+                  <th key={index}>{column}</th>
                 ))}
               </tr>
             </thead>

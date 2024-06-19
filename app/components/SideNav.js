@@ -3,9 +3,14 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
+import { useState } from 'react';
 
 const SideNav = () => {
   const pathname = usePathname();
+  const [settingsCollapsed, setSettingsCollapsed] = useState(true);
+  const toggleSettings = () => {
+    setSettingsCollapsed(!settingsCollapsed);
+  };
 
   return (
     <div className="d-flex flex-column vh-100-mobile p-3 bg-light border-right">
@@ -35,14 +40,32 @@ const SideNav = () => {
             </Link>
         </li>
         <li className="nav-item">
-            <Link href="/dashboard/settings" className={clsx(
-                'nav-link',
-                {
-                'active': pathname === '/dashboard/settings',
-                },
-            )}>
+          <button 
+            className="nav-link btn btn-link text-start"
+            onClick={toggleSettings}
+            aria-expanded={!settingsCollapsed}
+          >
             Settings
-            </Link>
+          </button>
+          <div className={clsx('collapse', { 'show': !settingsCollapsed })}>
+            <ul className="nav flex-column ms-3">
+              <li className="nav-item">
+                <Link href="/dashboard/settings/companies" className={clsx('nav-link', { 'active': pathname === '/dashboard/settings/companies' })}>
+                  Company
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link href="/dashboard/settings/sectors" className={clsx('nav-link', { 'active': pathname === '/dashboard/settings/sectors' })}>
+                  Sectors
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link href="/dashboard/settings/tags" className={clsx('nav-link', { 'active': pathname === '/dashboard/settings/tags' })}>
+                  Tags
+                </Link>
+              </li>
+            </ul>
+          </div>
         </li>
         </ul>
     </div>
