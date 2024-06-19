@@ -57,3 +57,10 @@ export const generatePagination = (currentPage, totalPages) => {
     totalPages,
   ];
 };
+
+export const cleanCurrency = (value) => {
+  if (typeof value === 'string') {
+    return parseFloat(value.replace(/,/g, ''));
+  }
+  return value;
+}

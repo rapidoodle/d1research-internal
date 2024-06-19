@@ -36,6 +36,17 @@ export async function GET(req) {
 
   switch (type) {
     case 'financial_data':
+        const data = await getFinancialData(req);
+        if (data.error) {
+            return NextResponse.json({ message: data.error }, { status: 500 });
+        }
+        return NextResponse.json(data);
+    default:
+      return NextResponse.json({ message: 'Invalid type query parameter' }, { status: 400 });
+  }
+
+  switch (type) {
+    case 'financial_data':
       const data = await getFinancialData(req);
       return NextResponse.json(data);
     default:

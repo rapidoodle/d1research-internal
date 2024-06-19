@@ -1,37 +1,23 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense } from 'react';
 import CsvUploader from '../ui/dashboard/csvUploadForm';
-export default function Page() {
+import FinancialDataTable from '../ui/dashboard/financialDataTable';
+import { FinancialDataTableSkeleton } from '../ui/skeletons';
+import Search from '../ui/search';
+export default function Page(searchParams) {
+  const query = searchParams.searchParams?.query || '';
+  const currentPage = Number(searchParams.searchParams?.page) || 1;
 
-  const [file, setFile] = useState(null);
-  const [message, setMessage] = useState('');
-
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
-  };
-
-  const handleUpload = async () => {
-    if (!file) {
-      setMessage('Please select a file first.');
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('file', file);
-
-    const res = await fetch('/api/upload', {
-      method: 'POST',
-      body: formData,
-    });
-
-    const data = await res.json();
-    setMessage(data.message);
-  };
-
-    return (
-      <div className="container mt-5">
-        <CsvUploader />
-      </div>
-    );
-  }
+  return (
+    <div className="container mt-5">
+      <CsvUploader />
+      <Search placeholder="Search financial data by company" />
+      <Suspense key={query + currentPage} fallback={FinancialDataTableSkeleton}>
+        <FinancialDataTable 
+          query={query} 
+          currentPage={currentPage} />
+      </Suspense>
+    </div>
+  );
+}

@@ -1,12 +1,11 @@
 import { sql } from '@vercel/postgres';
 import { parse } from 'csv-parse';
-import { formidable } from 'formidable';
-import fs from 'fs';
 import { readFile, writeFile } from 'fs/promises';
 import { NextRequest, NextResponse } from 'next/server';
 import { join } from 'path';
+import { cleanCurrency } from './utils';
 
-const uploadFinancialData = async (req, res) => {
+export async function uploadFinancialData (req, res) {
     const data = await req.formData();
     const file = data.get('file');
 
@@ -39,8 +38,11 @@ const uploadFinancialData = async (req, res) => {
     });
 
     parser.on('end', async function() {
-      // Insert parsed data into the financial_data table
+      //Remove all from financial_data table to avoid duplicates
+      await sql `DELETE FROM financial_data;`;
+
       for (const row of records) {
+
         try {
           await sql`
           INSERT INTO financial_data (
@@ -51,52 +53,53 @@ const uploadFinancialData = async (req, res) => {
             dividend, share_buyback, total_capital_return, net_debt, share_in_issue, treasury_shares,
             shares_outstanding, capital_payout_percent, dps_q1, dps_q2, dps_q3, dps_q4, ex_date_q1,
             ex_date_q2, ex_date_q3, ex_date_q4
-            ) VALUES (
-              ${parseInt(row['Year']) || null}, 
-              ${row['Company']}, 
-              ${row['Sector']}, 
-              ${row['Equity Ticker']}, 
-              ${parseFloat(row['Share price']) || null}, 
-              ${row['Div Ticker']}, 
-              ${row['P&L FX']}, 
-              ${row['Div Future FX']},
-              ${row['Index1']}, 
-              ${row['Index2']}, 
-              ${row['Index3']}, 
-              ${parseFloat(row['DPS z']) || null}, 
-              ${parseFloat(row['Current Price z']) || null}, 
-              ${parseFloat(row['Discount/ Premium (%)']) || null},
-              ${parseFloat(row['Annual return (%)']) || null}, 
-              ${parseFloat(row['z Very Bear']) || null}, 
-              ${parseFloat(row['z Bear']) || null}, 
-              ${parseFloat(row['z Bull']) || null}, 
-              ${parseFloat(row['z Very Bull']) || null}, 
-              ${parseFloat(row['Risk adj. DPS (z)']) || null}, 
-              ${parseFloat(row['Net Income']) || null},
-              ${parseFloat(row['Av. Weighted Share Cap']) || null}, 
-              ${parseFloat(row['EPS']) || null}, 
-              ${parseFloat(row['DPS (FY)']) || null}, 
-              ${parseFloat(row['DPS payout ratio']) || null}, 
-              ${parseFloat(row['Op Cash Flow']) || null}, 
-              ${parseFloat(row['Capex']) || null}, 
-              ${parseFloat(row['Free Cash Flow']) || null},
-              ${parseFloat(row['Dividend']) || null}, 
-              ${parseFloat(row['Share Buyback']) || null}, 
-              ${parseFloat(row['Total Capital Return']) || null}, 
-              ${parseFloat(row['Net Debt']) || null}, 
-              ${parseFloat(row['Share in issue']) || null}, 
-              ${parseFloat(row['Treasury shares']) || null},
-              ${parseFloat(row['Shares outstanding']) || null}, 
-              ${parseFloat(row['Capital Payout (%)']) || null}, 
-              ${parseFloat(row['DPSQ1']) || null}, 
-              ${parseFloat(row['DPSQ2']) || null}, 
-              ${parseFloat(row['DPSQ3']) || null}, 
-              ${parseFloat(row['DPSQ4']) || null}, 
-              ${row['Ex Date Q1'] ? `'${row['Ex Date Q1']}'` : null}, 
-              ${row['Ex Date Q2'] ? `'${row['Ex Date Q2']}'` : null}, 
-              ${row['Ex Date Q3'] ? `'${row['Ex Date Q3']}'` : null}, 
-              ${row['Ex Date Q4'] ? `'${row['Ex Date Q4']}'` : null}
+          ) VALUES (
+            ${row['Year']}, 
+            ${row['Company']}, 
+            ${row['Sector']}, 
+            ${row['Equity Ticker']}, 
+            ${cleanCurrency(row['Share price'])}, 
+            ${row['Div Ticker']}, 
+            ${row['P&L FX']}, 
+            ${row['Div Future FX']},
+            ${row['Index1']}, 
+            ${row['Index2']}, 
+            ${row['Index3']}, 
+            ${cleanCurrency(row['DPS z'])}, 
+            ${cleanCurrency(row['Current Price z'])}, 
+            ${cleanCurrency(row['Discount/ Premium (%)'])},
+            ${cleanCurrency(row['Annual return (%)'])}, 
+            ${cleanCurrency(row['z Very Bear'])}, 
+            ${cleanCurrency(row['z Bear'])}, 
+            ${cleanCurrency(row['z Bull'])}, 
+            ${cleanCurrency(row['z Very Bull'])}, 
+            ${cleanCurrency(row['Risk adj. DPS (z)'])}, 
+            ${cleanCurrency(row['Net Income'])},
+            ${cleanCurrency(row['Av. Weighted Share Cap'])}, 
+            ${cleanCurrency(row['EPS'])}, 
+            ${cleanCurrency(row['DPS (FY)'])}, 
+            ${cleanCurrency(row['DPS payout ratio'])}, 
+            ${cleanCurrency(row['Op Cash Flow'])}, 
+            ${cleanCurrency(row['Capex'])}, 
+            ${cleanCurrency(row['Free Cash Flow'])},
+            ${cleanCurrency(row['Dividend'])}, 
+            ${cleanCurrency(row['Share Buyback'])}, 
+            ${cleanCurrency(row['Total Capital Return'])}, 
+            ${cleanCurrency(row['Net Debt'])}, 
+            ${cleanCurrency(row['Share in issue'])}, 
+            ${cleanCurrency(row['Treasury shares'])},
+            ${cleanCurrency(row['Shares outstanding'])}, 
+            ${cleanCurrency(row['Capital Payout (%)'])}, 
+            ${cleanCurrency(row['DPSQ1'])}, 
+            ${cleanCurrency(row['DPSQ2'])}, 
+            ${cleanCurrency(row['DPSQ3'])}, 
+            ${cleanCurrency(row['DPSQ4'])}, 
+            ${row['Ex Date Q1'] ? `'${row['Ex Date Q1']}'` : null}, 
+            ${row['Ex Date Q2'] ? `'${row['Ex Date Q2']}'` : null}, 
+            ${row['Ex Date Q3'] ? `'${row['Ex Date Q3']}'` : null}, 
+            ${row['Ex Date Q4'] ? `'${row['Ex Date Q4']}'` : null}
           );
+
         `;
         } catch (dbError) {
           console.error('Error inserting data', dbError);
@@ -110,24 +113,47 @@ const uploadFinancialData = async (req, res) => {
     return NextResponse.json({ message: 'File processed and data inserted successfully' });
 };
 
-const getFinancialData = async (req, res) => {
-  try {
-    const result = await sql`SELECT * FROM financial_data`;
-    res.status(200).json(result);
-  } catch (error) {
-    console.error('Error fetching data', error);
-    res.status(500).json({ message: 'Error fetching data' });
-  }
-};
+export async function getFinancialData(req) {
+  const { searchParams } = new URL(req.url);
+  const search = searchParams.get('search') || '';
+  const currentPage = parseInt(searchParams.get('currentPage') || '1', 10);
+  const pageSize = parseInt(searchParams.get('pageSize') || '10', 10);
 
-const updateFinancialData = async (req, res) => {
+  try {
+    const offset = (currentPage - 1) * pageSize;
+    const query = `
+      SELECT * FROM financial_data
+      WHERE company ILIKE $1
+      LIMIT $2 OFFSET $3
+    `;
+    const values = [`%${search}%`, pageSize, offset];
+    const result = await sql.query(query, values);
+
+    const totalQuery = `
+      SELECT COUNT(*) FROM financial_data
+      WHERE company ILIKE $1
+    `;
+    const totalResult = await sql.query(totalQuery, [`%${search}%`]);
+    const totalRecords = parseInt(totalResult.rows[0].count, 10);
+
+    return {
+      data: result.rows,
+      totalRecords,
+      currentPage,
+      pageSize,
+    };
+  } catch (error) {
+    console.error('Error fetching financial data:', error);
+    return { error: 'Error fetching financial data' };
+  }
+}
+
+export async function updateFinancialData(req, res){
   // Implement your update logic here
   res.status(200).json({ message: 'Update endpoint not implemented yet' });
 };
 
-const deleteFinancialData = async (req, res) => {
+export async function deleteFinancialData(req, res){
   // Implement your delete logic here
   res.status(200).json({ message: 'Delete endpoint not implemented yet' });
 };
-
-export { uploadFinancialData, getFinancialData, updateFinancialData, deleteFinancialData };

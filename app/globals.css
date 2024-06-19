@@ -19,7 +19,35 @@
 
   /* styles/custom.css */
 @media (min-width: 767.98px) {
-    .vh-100-mobile {
-      height: 100vh !important;
-    }
+  .vh-100-mobile {
+    height: 100vh !important;
   }
+}
+
+.shimmer-wrapper {
+  width: 100%;
+  height: 20px;
+  background: #f6f7f8;
+  background-image: linear-gradient(to right, #f6f7f8 0%, #edeef1 20%, #f6f7f8 40%, #f6f7f8 100%);
+  background-repeat: no-repeat;
+  background-size: 200% 100%;
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0) 100%);
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
