@@ -8,48 +8,33 @@ export const routeSegmentConfig = {
     },
 };
 
-
 export async function POST(req) {
-  const { searchParams } = new URL(req.url);
-  const type = searchParams.get('type');
-
-  if (!type) {
-    return NextResponse.json({ message: 'Missing type query parameter' }, { status: 400 });
+  if (req.method !== 'POST') {
+    return NextResponse.json({ message: 'Method not allowed' }, { status: 405 });
   }
 
-  switch (type) {
-    case 'financial_data':
-      await uploadFinancialData(req);
-      return NextResponse.json({ message: 'File processed successfully' });
-    default:
-      return NextResponse.json({ message: 'Invalid type query parameter' }, { status: 400 });
+  try {
+    await uploadFinancialData(req);
+    return NextResponse.json({ message: 'File processed successfully' }, { status: 201 });
+  } catch (error) {
+    console.error('Error processing file:', error);
+    return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
   }
 }
 
 export async function GET(req) {
-  const { searchParams } = new URL(req.url);
-  const type = searchParams.get('type');
-
-  if (!type) {
-    return NextResponse.json({ message: 'Missing type query parameter' }, { status: 400 });
+  if (req.method !== 'GET') {
+    return NextResponse.json({ message: 'Method not allowed' }, { status: 405 });
   }
 
-  switch (type) {
-    case 'financial_data':
-        const data = await getFinancialData(req);
-        if (data.error) {
-            return NextResponse.json({ message: data.error }, { status: 500 });
-        }
-        return NextResponse.json(data);
-    default:
-      return NextResponse.json({ message: 'Invalid type query parameter' }, { status: 400 });
-  }
-
-  switch (type) {
-    case 'financial_data':
-      const data = await getFinancialData(req);
-      return NextResponse.json(data);
-    default:
-      return NextResponse.json({ message: 'Invalid type query parameter' }, { status: 400 });
+  try {
+    const data = await getFinancialData(req);
+    if (data.error) {
+      return NextResponse.json({ message: data.error }, { status: 500 });
+    }
+    return NextResponse.json(data);
+  } catch (error) {
+    console.error('Error fetching financial data:', error);
+    return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
   }
 }

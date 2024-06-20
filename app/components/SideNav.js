@@ -55,13 +55,8 @@ const SideNav = () => {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link href="/dashboard/settings/sectors" className={clsx('nav-link', { 'active': pathname === '/dashboard/settings/sectors' })}>
-                  Sectors
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link href="/dashboard/settings/tags" className={clsx('nav-link', { 'active': pathname === '/dashboard/settings/tags' })}>
-                  Tags
+                <Link href="/dashboard/settings/users" className={clsx('nav-link', { 'active': pathname === '/dashboard/settings/users' })}>
+                  Users
                 </Link>
               </li>
             </ul>

@@ -13,7 +13,7 @@ const FinancialDataTable = ({query, currentPage}) => {
     const fetchFinancialData = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`/api/financialData?type=financial_data&search=${query}&currentPage=${page}&pageSize=${pageSize}`);
+        const response = await fetch(`/api/financialData?&search=${query}&currentPage=${page}&pageSize=${pageSize}`);
         const data = await response.json();
         setFinancialData(data.data);
         setTotalRecords(data.totalRecords);
@@ -147,7 +147,22 @@ const FinancialDataTable = ({query, currentPage}) => {
             </tbody>
         </table>
       </div>
-      <div className="pagination d-flex align-items-center justify-content-end">
+      <nav aria-label="Page navigation example" className='d-flex justify-content-end'>
+        <ul class="pagination d-flex align-items-center">
+          <li class="page-item" >
+            <button class="page-link btn-disabled" href="#"
+            disabled={page === 1}
+            onClick={() => setPage((prev) => Math.max(prev - 1, 1))}>Previous</button>
+          </li>
+          <li class="page-item"><span className="page-link">Page {page} of {totalPages}</span></li>
+          <li class="page-item">
+            <button class="page-link"
+            onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+            disabled={page === totalPages} href="#">Next</button>
+            </li>
+        </ul>
+      </nav>
+      {/* <div className="pagination d-flex align-items-center justify-content-end pagination-sm">
         <button
           onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
           disabled={page === 1}
@@ -163,7 +178,7 @@ const FinancialDataTable = ({query, currentPage}) => {
         >
           Next
         </button>
-      </div>
+      </div> */}
     </div>
   );
 }else{

@@ -1,30 +1,38 @@
 import { sql } from "@vercel/postgres";
 
-const createCompany = async (req, res) => {
+const createCompany = async (req) => {
   if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method not allowed' });
+    return { error: 'Method not allowed' };
   }
-
-  const { name, sector_id } = req.body;
+  
   try {
+    const { name, sector_id } = await req.json();
+
+    if (!name || !sector_id) {
+      return { error: 'Name and sector_id are required' };
+    }
+
     await sql`
       INSERT INTO companies (name, sector_id)
       VALUES (${name}, ${sector_id});
     `;
-    res.status(201).json({ message: 'Company created successfully' });
+
+    return { message: 'Company created successfully' };
   } catch (error) {
-    console.error('Error creating company', error);
-    res.status(500).json({ message: 'Error creating company' });
+    console.error('Error creating company:', error);
+    return { error: 'Error creating company' };
   }
 };
 
 const getCompanies = async (req, res) => {
   try {
-    const result = await sql`SELECT * FROM companies`;
-    res.status(200).json(result);
+    const result = await sql`SELECT c.name as company, s.name as sector FROM companies c LEFT JOIN sectors s ON c.sector_id = s.id`;
+
+    return { data: result.rows };
+
   } catch (error) {
-    console.error('Error fetching companies', error);
-    res.status(500).json({ message: 'Error fetching companies' });
+    console.error('Error fetching sectors:', error);
+    return { error: 'Error fetching sectors' };
   }
 };
 

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { uploadFinancialData, getFinancialData, updateFinancialData, deleteFinancialData } from '@/app/lib/financialData';
-import { createCompany } from '@/app/lib/companies';
+import { createCompany, getCompanies } from '@/app/lib/companies';
 
 
 export const routeSegmentConfig = {
@@ -11,34 +11,26 @@ export const routeSegmentConfig = {
 
 
 export async function POST(req) {
-    await createCompany(req);
-    return NextResponse.json({ message: 'Company created' });
+    const data = await createCompany(req);
+    if (data.error) {
+        return NextResponse.json({ message: data.error }, { status: 500 });
+    }
+    return NextResponse.json(data);
 }
 
 export async function GET(req) {
-  const { searchParams } = new URL(req.url);
-  const type = searchParams.get('type');
-
-  if (!type) {
-    return NextResponse.json({ message: 'Missing type query parameter' }, { status: 400 });
-  }
-
-  switch (type) {
-    case 'financial_data':
-        const data = await getFinancialData(req);
+    if (req.method !== 'GET') {
+        return NextResponse.json({ message: 'Method not allowed' }, { status: 405 });
+      }
+    
+      try {
+        const data = await getCompanies(req);
         if (data.error) {
-            return NextResponse.json({ message: data.error }, { status: 500 });
+          return NextResponse.json({ message: data.error }, { status: 500 });
         }
         return NextResponse.json(data);
-    default:
-      return NextResponse.json({ message: 'Invalid type query parameter' }, { status: 400 });
-  }
-
-  switch (type) {
-    case 'financial_data':
-      const data = await getFinancialData(req);
-      return NextResponse.json(data);
-    default:
-      return NextResponse.json({ message: 'Invalid type query parameter' }, { status: 400 });
-  }
+      } catch (error) {
+        console.error('Error fetching companies:', error);
+        return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
+      }
 }
