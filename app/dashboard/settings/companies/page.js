@@ -20,7 +20,7 @@ export default function Page(searchParams) {
           <NewCompanyForm onCompanyAdded={handleCompanyAdded} />
         </div>
 
-        <div className="mt-3 bg-light">
+        <div className="mt-3 bg-light p-3">
           <CompaniesTable 
             query={ query }
             currentPage={ currentPage }

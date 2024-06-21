@@ -2,32 +2,17 @@
 
 import React, { useState } from 'react';
 import { authenticate } from '../lib/login';
+import { useFormState, useFormStatus } from 'react-dom';
 
+const initialState = {
+    message: '',
+  }
 export default function LoginForm() {
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [isPending, setIsPending] = useState(false);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsPending(true);
-    setErrorMessage(null);
-
-    const email = e.target.email.value;
-    const password = e.target.password.value;
-
-    try {
-      const result = await authenticate({ email, password });
-      // Handle successful authentication, e.g., redirect to another page
-      console.log('Authentication successful', result);
-    } catch (error) {
-      setErrorMessage(error.message || 'An error occurred');
-    } finally {
-      setIsPending(false);
-    }
-  };
+    const [errorMessage, setErrorMessage] = useState(null);
+    const [state, formAction, isPending] = useFormState(authenticate, initialState);
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3">
+    <form action={formAction} className="space-y-3">
       <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
         <div className="w-full">
           <div>

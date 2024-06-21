@@ -65,7 +65,7 @@ const CompaniesTable = ({query, currentPage, companyAdded}) => {
             </tbody>
         </table>
       </div>
-      <nav aria-label="Page navigation example" className='d-flex justify-content-end'>
+      {/* <nav aria-label="Page navigation example" className='d-flex justify-content-end'>
         <ul class="pagination d-flex align-items-center">
           <li class="page-item" >
             <button class="page-link btn-disabled" href="#"
@@ -79,7 +79,7 @@ const CompaniesTable = ({query, currentPage, companyAdded}) => {
             disabled={page === totalPages} href="#">Next</button>
             </li>
         </ul>
-      </nav>
+      </nav> */}
     </div>
   );
 }else{
