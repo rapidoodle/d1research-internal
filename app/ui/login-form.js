@@ -3,16 +3,18 @@
 import React, { useState } from 'react';
 import { authenticate } from '../lib/login';
 import { useFormState, useFormStatus } from 'react-dom';
+import  {getCsrfToken} from 'next-auth/react';
 
 const initialState = {
     message: '',
   }
-export default function LoginForm() {
+export default function LoginForm( { csrfToken} ) {
     const [errorMessage, setErrorMessage] = useState(null);
     const [state, formAction, isPending] = useFormState(authenticate, initialState);
 
   return (
     <form action={formAction} className="space-y-3">
+      <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
       <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
         <div className="w-full">
           <div>
@@ -53,10 +55,10 @@ export default function LoginForm() {
         <button type="submit" className="mt-4 w-full btn btn-primary" disabled={isPending}>
           {isPending ? 'Logging in...' : 'Log in'}
         </button>
-        {errorMessage && (
+        {state && (
           <div className="mt-3 alert alert-danger" role="alert">
             <i className="bi bi-exclamation-circle me-2"></i>
-            {errorMessage}
+            {state.message}
           </div>
         )}
       </div>
