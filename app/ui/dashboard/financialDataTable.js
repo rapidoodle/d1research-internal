@@ -148,15 +148,15 @@ const FinancialDataTable = ({query, currentPage}) => {
         </table>
       </div>
       <nav aria-label="Page navigation example" className='d-flex justify-content-end'>
-        <ul class="pagination d-flex align-items-center">
-          <li class="page-item" >
-            <button class="page-link btn-disabled" href="#"
+        <ul className="pagination d-flex align-items-center">
+          <li className="page-item" >
+            <button className="page-link btn-disabled" href="#"
             disabled={page === 1}
             onClick={() => setPage((prev) => Math.max(prev - 1, 1))}>Previous</button>
           </li>
-          <li class="page-item"><span className="page-link">Page {page} of {totalPages}</span></li>
-          <li class="page-item">
-            <button class="page-link"
+          <li className="page-item"><span className="page-link">Page {page} of {totalPages}</span></li>
+          <li className="page-item">
+            <button className="page-link"
             onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
             disabled={page === totalPages} href="#">Next</button>
             </li>

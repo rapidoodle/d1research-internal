@@ -4,12 +4,22 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
 import { useState } from 'react';
+import { signOutAttempt } from '../lib/login';
 
 const SideNav = () => {
   const pathname = usePathname();
   const [settingsCollapsed, setSettingsCollapsed] = useState(true);
   const toggleSettings = () => {
     setSettingsCollapsed(!settingsCollapsed);
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await signOutAttempt();
+      console.log('Sign out: ');
+    } catch (error) {
+      console.log( error );
+    }
   };
 
   return (
@@ -61,6 +71,9 @@ const SideNav = () => {
               </li>
             </ul>
           </div>
+        </li>
+        <li className="nav-item mt-0 mt-sm-5">        
+          <p className='nav-link' onClick={handleSignOut}> Sign out</p>
         </li>
         </ul>
     </div>
