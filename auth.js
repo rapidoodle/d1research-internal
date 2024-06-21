@@ -16,6 +16,7 @@ async function getUser(email) {
 }
 
 export const authOptions = {
+  ...authConfig,
   providers: [
     CredentialsProvider({
       name: 'Credentials',
