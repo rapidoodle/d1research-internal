@@ -26,7 +26,6 @@ export const authOptions = {
       },
       async authorize(credentials) {
         const { email, password } = credentials;
-        console.log('credentials: ', credentials)
         if (!email || !password) {
           console.log('Invalid credentials. No password or email provided.');
           return null;
