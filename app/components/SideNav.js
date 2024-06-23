@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
 import { useState } from 'react';
 import { signOutAttempt } from '../lib/login';
+import { signOut } from 'next-auth/react';
 
 const SideNav = () => {
   const pathname = usePathname();
@@ -30,20 +31,20 @@ const SideNav = () => {
       </h6>
       <ul className="nav nav-pills flex-column mb-auto">
         <li className="nav-item">
-            <Link href="/dashboard" className={clsx(
+            <Link href="/" className={clsx(
                 'nav-link',
                 {
-                'active': pathname === '/dashboard',
+                'active': pathname === '/',
                 },
             )}>
             Master
             </Link>
         </li>
         <li className="nav-item">
-            <Link href="/dashboard/events" className={clsx(
+            <Link href="/events" className={clsx(
                 'nav-link',
                 {
-                'active': pathname === '/dashboard/events',
+                'active': pathname === '/events',
                 },
             )}>
             Events
@@ -60,12 +61,12 @@ const SideNav = () => {
           <div className={clsx('collapse', { 'show': !settingsCollapsed })}>
             <ul className="nav flex-column ms-3">
               <li className="nav-item">
-                <Link href="/dashboard/settings/companies" className={clsx('nav-link', { 'active': pathname === '/dashboard/settings/companies' })}>
+                <Link href="/settings/companies" className={clsx('nav-link', { 'active': pathname === '/settings/companies' })}>
                   Company
                 </Link>
               </li>
               <li className="nav-item">
-                <Link href="/dashboard/settings/users" className={clsx('nav-link', { 'active': pathname === '/dashboard/settings/users' })}>
+                <Link href="/settings/users" className={clsx('nav-link', { 'active': pathname === '/settings/users' })}>
                   Users
                 </Link>
               </li>
@@ -73,7 +74,7 @@ const SideNav = () => {
           </div>
         </li>
         <li className="nav-item mt-0 mt-sm-5">        
-          <p className='nav-link' onClick={handleSignOut}> Sign out</p>
+          <p className='nav-link cursor-pointer' onClick={signOut}> Sign out</p>
         </li>
         </ul>
     </div>

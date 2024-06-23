@@ -1,6 +1,14 @@
 import LoginForm from '@/app/ui/login-form';
+import { getServerSession } from 'next-auth';
+import { redirect } from 'next/navigation';
 
-export default function Page() {
+export default async function Page() {
+  const session = await getServerSession();
+  
+  if(session) {
+    redirect('/');
+  }
+  
   return (
     <main className="d-flex align-items-center justify-content-center vh-100">
       <div className="mx-auto w-100" style={{ maxWidth: '400px' }}>

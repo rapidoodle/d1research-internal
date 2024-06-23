@@ -3,17 +3,37 @@
 import React, { useState } from 'react';
 import { authenticate } from '../lib/login';
 import { useFormState, useFormStatus } from 'react-dom';
-import  {getCsrfToken} from 'next-auth/react';
+import { csrfToken, signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 const initialState = {
     message: '',
   }
-export default function LoginForm( { csrfToken} ) {
+
+export default function LoginForm( { csrfToken } ) {
     const [errorMessage, setErrorMessage] = useState(null);
-    const [state, formAction, isPending] = useFormState(authenticate, initialState);
+    const [isPending, setPending] = useState(null);
+    const [state, setState] = useState(null);
+
+    const router = useRouter();
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.currentTarget);
+      const response = await signIn('credentials', {
+        email: formData.get('email'),
+        password: formData.get('password'),
+        redirect: false,
+      });
+  
+      console.log({ response });
+      if (!response?.error) {
+        router.push('/');
+        router.refresh();
+      }
+    };
 
   return (
-    <form action={formAction} className="space-y-3">
+    <form onSubmit={handleSubmit} className="space-y-3">
       <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
       <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
         <div className="w-full">
