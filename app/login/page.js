@@ -15,7 +15,7 @@ export default async function Page() {
         <div className="d-flex flex-column gap-3 p-4">
           <div className="d-flex align-items-end bg-primary text-white p-3 rounded">
             <div className="mx-auto" style={{ maxWidth: '150px' }}>
-                D1RESAERCH
+                D1 RESEARCH
             </div>
           </div>
           <LoginForm />
