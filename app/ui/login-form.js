@@ -12,23 +12,30 @@ const initialState = {
 
 export default function LoginForm( { csrfToken } ) {
     const [errorMessage, setErrorMessage] = useState(null);
-    const [isPending, setPending] = useState(null);
+    const [loading, setLoading] = useState(false);
     const [state, setState] = useState(null);
+    const [error, setError] = useState(null);
 
     const router = useRouter();
     const handleSubmit = async (e) => {
       e.preventDefault();
+      setLoading(true);  // Set loading to true when form submission starts
+      setError(null);    // Clear previous errors if any
+
       const formData = new FormData(e.currentTarget);
       const response = await signIn('credentials', {
         email: formData.get('email'),
         password: formData.get('password'),
         redirect: false,
       });
+
   
-      console.log({ response });
       if (!response?.error) {
         router.push('/');
         router.refresh();
+      }else{
+        setError({ message: 'Invalid email or password' });
+        setLoading(false); // Set loading to false when form submission completes
       }
     };
 
@@ -72,13 +79,15 @@ export default function LoginForm( { csrfToken } ) {
             </div>
           </div>
         </div>
-        <button type="submit" className="mt-4 w-full btn btn-primary" disabled={isPending}>
-          {isPending ? 'Logging in...' : 'Log in'}
-        </button>
-        {state && (
+        <div className='d-flex align-items-end justify-content-end'>
+          <button type="submit" className="mt-4 w-full btn btn-success" disabled={loading}>
+            {loading ? 'Logging in...' : 'Log in'}
+          </button>
+        </div>
+        {error && (
           <div className="mt-3 alert alert-danger" role="alert">
             <i className="bi bi-exclamation-circle me-2"></i>
-            {state.message}
+            {error.message}
           </div>
         )}
       </div>

@@ -81,6 +81,12 @@ async function seedCompanies(client) {
       CREATE TABLE companies (
         id SERIAL PRIMARY KEY,
         name VARCHAR(255),
+        sharing VARCHAR(255),
+        tags VARCHAR(255),
+        iframe_url VARCHAR(255),
+        template boolean,
+        attachments VARCHAR(255),
+        member_permission INT,
         sector_id INT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -158,6 +164,30 @@ async function seedSectors(client) {
     }
 }
 
+async function seedTags(client) {
+    try {
+      await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+      // Drop the table if it exists
+      await client.sql`DROP TABLE IF EXISTS tags`;
+      // Create the "users" table if it doesn't exist
+      const createTable = await client.sql`
+      CREATE TABLE tags (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(255) UNIQUE NOT NULL
+      );
+      `;
+  
+      console.log(`Created "tags" table`);
+  
+      return {
+        createTable
+      };
+    } catch (error) {
+      console.error('Error seeding tags:', error);
+      throw error;
+    }
+}
+
 async function seedUsers(client) {
   try {
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
@@ -200,9 +230,10 @@ async function main() {
   const client = await db.connect();
 
   // await seedFinancialData(client);
-  // await seedCompanies(client);
+  await seedCompanies(client);
+  await seedTags(client);
   // await seedEvents(client);
-  await seedUsers(client);
+  // await seedUsers(client);
   // await seedSectors(client);
 
   await client.end();

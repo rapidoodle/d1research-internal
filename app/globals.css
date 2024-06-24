@@ -59,3 +59,11 @@
     transform: translateX(100%);
   }
 }
+
+table > thead > th {
+  font-weight: bold;
+}
+.badge-tag{
+  background-color: #28a745;
+  color: #f8f9fa;
+}

@@ -1,20 +1,23 @@
 'use client';
 
 import CreatableSelectElement from "@/app/components/CreatableSelectElement";
-
 import Spinner from "@/app/components/Spinner";
+import TagsSelectElement from "@/app/components/TagsSelectElement";
 import React, { useState, useEffect, useRef } from "react";
 
-export default function NewCompanyForm( { onCompanyAdded }) {
+export default function NewCompanyForm({ onCompanyAdded }) {
 
-    const [options, setOptions] = useState([]);
+    const [sectorOptions, setSectorOptions] = useState([]);
+    const [tagsOptions, setTagsOptions] = useState([]);
     const [selectedSector, setSelectedSector] = useState(null);
+    const [selectedTags, setSelectedTags] = useState([]);
     const [loading, setLoading] = useState(false);
-    const creatableSelectRef = useRef(null);
+    const sectorCreatableSelectRef = useRef(null);
+    const tagsCreatableSelectRef = useRef(null);
 
     useEffect(() => {
         const fetchSectors = async () => {
-        setLoading(true);
+            setLoading(true);
 
             try {
                 const response = await fetch('/api/sectors');
@@ -24,11 +27,25 @@ export default function NewCompanyForm( { onCompanyAdded }) {
                     label: sector.name
                 }));
 
-                console.log(data);
-                setOptions(formattedOptions);
+                setSectorOptions(formattedOptions);
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching sectors:', error);
+                setLoading(false);
+            }
+
+            try {
+                const response = await fetch('/api/tags');
+                const data = await response.json();
+                const formattedOptions = data.data.map(tag => ({
+                    value: tag.id,
+                    label: tag.name
+                }));
+
+                setTagsOptions(formattedOptions);
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching tags:', error);
                 setLoading(false);
             }
         };
@@ -43,13 +60,15 @@ export default function NewCompanyForm( { onCompanyAdded }) {
             alert('Please select a sector.');
             setLoading(false);
             return;
-          }
+        }
 
-          
         setLoading(true);
 
-        const companyName = e.target.companyName.value;
-        console.log(selectedSector);
+        const companyName    = e.target.companyName.value;
+        const tagsString     = selectedTags.map(tag => tag.label).join(', ');
+        const companyNameUrl = companyName.toLowerCase().replace(/\s+/g, '_');
+
+
         // Create a new company
         fetch('/api/companies', {
             method: 'POST',
@@ -58,24 +77,31 @@ export default function NewCompanyForm( { onCompanyAdded }) {
             },
             body: JSON.stringify({
                 name: companyName,
-                sector_id: selectedSector
+                sector_id: selectedSector,
+                template: false,
+                sharing: "MEMBERS",
+                tags: tagsString,
+                member_permission: 8,
+                iframe_url: `https://internal.d1research.com/${companyNameUrl}/view`,
             })
         })
         .then(res => res.json())
         .then(data => {
-            if(data.error){
+            if (data.error) {
                 alert(data.error);
-            }else{
+            } else {
                 e.target.companyName.value = '';
                 setSelectedSector(null);
-                creatableSelectRef.current.clearSelection();
+                setSelectedTags(null);
+                sectorCreatableSelectRef.current.clearSelection();
+                tagsCreatableSelectRef.current.clearSelection();
                 onCompanyAdded();
             }
             setLoading(false);
         })
         .catch(err => {
             console.error(err);
-            alert('An error occurred. Please try again later');
+            alert('An error occurred. Please try again later', err);
             setLoading(false);
         });
     }
@@ -83,54 +109,87 @@ export default function NewCompanyForm( { onCompanyAdded }) {
     const handleCreateSector = async (inputValue, setSelectedOption) => {
         setLoading(true);
         try {
+            const existingOption = sectorOptions.find(option => option.label === inputValue);
+            if (existingOption) {
+                alert('Sector already exists');
+                setSelectedOption(existingOption);
+                setLoading(false);
+                return;
+            }
 
-        // Check for duplicate sector on the client side
-        const existingOption = options.find(option => option.label === inputValue);
-        if (existingOption) {
-            alert('Sector already exists');
-            setSelectedOption(existingOption);
+            const response = await fetch('/api/sectors', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name: inputValue }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to create new sector');
+            }
+
+            const newSector = await response.json();
+            const newOption = { value: newSector.data.id, label: newSector.data.name };
+            setSelectedOption(newOption);
+            setSelectedSector(newOption.value);
+            setSectorOptions((prevOptions) => [...prevOptions, newOption]);
             setLoading(false);
-            return;
-        }
-
-          const response = await fetch('/api/sectors', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ name: inputValue }),
-          });
-    
-          if (!response.ok) {
-            throw new Error('Failed to create new sector');
-          }
-    
-          const newSector = await response.json();
-          const newOption = { value: newSector.data.id, label: newSector.data.name };
-          setSelectedOption(newOption);
-          setSelectedSector(newOption.value);
-          setOptions((prevOptions) => [...prevOptions, newOption]);
-          setLoading(false);
         } catch (error) {
-          console.error('Error creating sector:', error);
-          setLoading(false);
+            console.error('Error creating sector:', error);
+            setLoading(false);
         }
-      };
-      
+    };
+
     const handleSelectSector = (selectedOption, setSelectedOption) => {
-        console.log(selectedOption.value)
         setSelectedOption(selectedOption);
         setSelectedSector(selectedOption.value);
     }
 
+    const handleCreateTag = async (inputValue, setSelectedOption) => {
+        setLoading(true);
+        try {
+            const existingOption = tagsOptions.find(option => option.label === inputValue);
+            if (existingOption) {
+                alert('Tag already exists');
+                setSelectedOption(existingOption);
+                setLoading(false);
+                return;
+            }
+
+            const response = await fetch('/api/tags', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name: inputValue }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to create new tag');
+            }
+
+            const newTag = await response.json();
+            const newOption = { value: newTag.data.id, label: newTag.data.name };
+            setSelectedOption(prev => Array.isArray(prev) ? [...prev, newOption] : [newOption]);
+            setSelectedTags(prev => Array.isArray(prev) ? [...prev, newOption] : [newOption]);
+            setTagsOptions(prevOptions => [...prevOptions, newOption]);
+            setLoading(false);
+        } catch (error) {
+            console.error('Error creating tag:', error);
+            setLoading(false);
+        }
+    };
+
+    const handleSelectTag = (selectedOptions, setSelectedOption) => {
+        setSelectedOption(selectedOptions);
+        setSelectedTags(selectedOptions);
+    };
 
     return (
         <div className="container-fluid">
-            <div className="row">
-                <div className="col">
-                    <h1 className="text-center">Create a new company</h1>
-                </div>
-            </div>
+            <h4>Create a new company</h4>
+            <hr />
             <div className="row">
                 <div className="col">
                     <form onSubmit={onSubmit}>
@@ -138,22 +197,31 @@ export default function NewCompanyForm( { onCompanyAdded }) {
                             <label htmlFor="companyName" className="form-label">Company Name</label>
                             <input type="text" className="form-control" id="companyName" name="companyName" required />
                         </div>
-                        <div className="mb-3">
-                            <label htmlFor="companySector" className="form-label">Sector</label>                
-                            <CreatableSelectElement 
-                                options={options} 
-                                onCreate={ handleCreateSector } 
-                                ref={creatableSelectRef}
-                                onSelect={ handleSelectSector } 
-                            />
-                        </div>            
-                        <button type="submit" className="btn btn-primary" disabled={loading}>
+                        <div className="row mb-3">
+                            <div className="col-6">
+                                <label htmlFor="companySector" className="form-label">Sector</label>
+                                <CreatableSelectElement 
+                                    options={sectorOptions} 
+                                    onCreate={handleCreateSector} 
+                                    ref={sectorCreatableSelectRef}
+                                    onSelect={handleSelectSector} 
+                                />
+                            </div>
+                            <div className="col-6">
+                                <label htmlFor="companyTags" className="form-label">Tags</label>
+                                <TagsSelectElement 
+                                    options={tagsOptions} 
+                                    onCreate={handleCreateTag} 
+                                    ref={tagsCreatableSelectRef}
+                                    onSelect={handleSelectTag} 
+                                />
+                            </div>
+                        </div>
+                        <button type="submit" className="btn btn-primary float-end" disabled={loading}>
                             {loading ? <Spinner /> : 'Create'}
                         </button>
                     </form>
                 </div>
-
-
             </div>
         </div>
     )

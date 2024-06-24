@@ -42,12 +42,16 @@ const CompaniesTable = ({query, currentPage, companyAdded}) => {
   if(!loading){
   return (
     <div className="container">
+      <h4 className='mb-3'>Companies</h4>
+      <hr></hr>
       <div className='table-responsive'>
-        <table className="table table-bordered table-striped">
+        <table className="table table-hovered table-condensed table-striped">
             <thead>
               <tr>
                   <th>Company</th>
                   <th>Sector</th>
+                  <th>Tags</th>
+                  <th>Page</th>
               </tr>
             </thead>
             <tbody>
@@ -55,6 +59,12 @@ const CompaniesTable = ({query, currentPage, companyAdded}) => {
                 <tr key={row.id}>
                   <td>{row.company}</td>
                   <td>{row.sector}</td>
+                  <td>{row.tags.split(',').map((tag, index) => 
+                      <span className='badge me-1 badge-tag' key={index}>
+                        { tag }
+                      </span>)}
+                      </td>
+                      <td><a href={`${row.iframe}`} target='_blank'>{row.iframe}</a></td>
                 </tr>
             ))}
             {companies.length === 0 && (

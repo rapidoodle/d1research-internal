@@ -6,15 +6,15 @@ const createCompany = async (req) => {
   }
   
   try {
-    const { name, sector_id } = await req.json();
+    const { name, sector_id, tags, iframe_url, template, member_permission } = await req.json();
 
     if (!name || !sector_id) {
-      return { error: 'Name and sector_id are required' };
+      return { error: 'Name, sector_id and tags are required' };
     }
 
     await sql`
-      INSERT INTO companies (name, sector_id)
-      VALUES (${name}, ${sector_id});
+      INSERT INTO companies (name, sector_id, tags, iframe_url, template, member_permission, sharing)
+      VALUES (${name}, ${sector_id}, ${tags}, ${iframe_url}, ${template}, ${member_permission}, 'MEMBERS');
     `;
 
     return { message: 'Company created successfully' };
@@ -26,13 +26,13 @@ const createCompany = async (req) => {
 
 const getCompanies = async (req, res) => {
   try {
-    const result = await sql`SELECT c.name as company, s.name as sector FROM companies c LEFT JOIN sectors s ON c.sector_id = s.id`;
+    const result = await sql`SELECT c.name as company, s.name as sector, c.tags, c.iframe_url as iframe FROM companies c LEFT JOIN sectors s ON c.sector_id = s.id`;
 
     return { data: result.rows };
 
   } catch (error) {
-    console.error('Error fetching sectors:', error);
-    return { error: 'Error fetching sectors' };
+    console.error('Error fetching companies:', error);
+    return { error: 'Error fetching companies' };
   }
 };
 

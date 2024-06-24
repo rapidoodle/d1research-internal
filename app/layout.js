@@ -1,4 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.css';
+import './styles/custom-bootstrap.css';
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { Roboto } from 'next/font/google';
