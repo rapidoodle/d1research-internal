@@ -1,5 +1,5 @@
 import { sql } from "@vercel/postgres";
-import { createCompanyAsNote } from "./clinked";
+import { createCompanyAsNote } from "./clinked/auth";
 
 const createCompany = async (req) => {
   if (req.method !== 'POST') {

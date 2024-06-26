@@ -2,7 +2,7 @@ import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { compare } from 'bcryptjs';
 import { sql } from '@vercel/postgres';
-import { authenticate } from '@/app/lib/clinked';
+import { authenticate } from '@/app/lib/clinked/auth';
 import Cookies from 'js-cookie';
 import { NextResponse } from 'next/server';
 
