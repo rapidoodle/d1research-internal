@@ -1,9 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { authenticate } from '../lib/login';
-import { useFormState, useFormStatus } from 'react-dom';
-import { csrfToken, signIn } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
 const initialState = {

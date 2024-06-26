@@ -1,4 +1,5 @@
 import { sql } from "@vercel/postgres";
+import { createCompanyAsNote } from "./clinked";
 
 const createCompany = async (req) => {
   if (req.method !== 'POST') {
@@ -16,6 +17,12 @@ const createCompany = async (req) => {
       INSERT INTO companies (name, sector_id, tags, iframe_url, template, member_permission, sharing)
       VALUES (${name}, ${sector_id}, ${tags}, ${iframe_url}, ${template}, ${member_permission}, 'MEMBERS');
     `;
+
+    // if success, send company to clinked
+
+      const clinkedResponse = await createCompanyAsNote({ name, sector_id, tags, iframe_url, template, member_permission });
+      console.log(clinkedResponse);
+
 
     return { message: 'Company created successfully' };
   } catch (error) {

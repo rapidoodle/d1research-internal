@@ -62,6 +62,12 @@ export default function NewCompanyForm({ onCompanyAdded }) {
             return;
         }
 
+        if (!selectedTags) {
+            alert('Please add a tag.');
+            setLoading(false);
+            return;
+        }
+
         setLoading(true);
 
         const companyName    = e.target.companyName.value;

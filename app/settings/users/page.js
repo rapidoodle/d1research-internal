@@ -1,32 +1,32 @@
 'use client';
+import { useEffect, useState } from 'react';
 
-import CompaniesTable from "@/app/ui/settings/companies/companiesTable";
-import NewCompanyForm from "@/app/ui/settings/companies/newCompanyForm";
-import { useState } from "react";
-
-export default function Page(searchParams) {
-  const query = searchParams.searchParams?.query || '';
-  const currentPage = Number(searchParams.searchParams?.page) || 1;
-  const [companyAdded, setCompanyAdded] = useState(false);
-
-  // Callback to update the state
-  const handleCompanyAdded = () => {
-    setCompanyAdded(!companyAdded);
-  };
-
-    return (
-      <main>
-        <div className="bg-light p-3">
-          <NewCompanyForm onCompanyAdded={handleCompanyAdded} />
-        </div>
-
-        <div className="mt-3 bg-light">
-          <CompaniesTable 
-            query={ query }
-            currentPage={ currentPage }
-            companyAdded={ companyAdded } />
-        </div>
-      </main>
-    )
-  }
+export default function Home() {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
   
+//get groups from clinked
+  useEffect(() => {
+    const fetchGroups = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(`/api/clinked/groups`);
+        const data = await response.json();
+
+        console.log(data);
+        
+      } catch (error) {
+        console.error('Error fetching groups:', error);
+      } finally {
+      }
+    };
+
+    fetchGroups();
+  }, []);
+
+  return (
+    <div>
+      <h1>User List</h1>
+    </div>
+  );
+}

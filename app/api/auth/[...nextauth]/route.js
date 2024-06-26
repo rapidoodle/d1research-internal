@@ -2,8 +2,9 @@ import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { compare } from 'bcryptjs';
 import { sql } from '@vercel/postgres';
-
-console.log('NEXTAUTH_SECRET:', process.env.NEXTAUTH_SECRET);
+import { authenticate } from '@/app/lib/clinked';
+import Cookies from 'js-cookie';
+import { NextResponse } from 'next/server';
 
 const handler = NextAuth({
   session: {
@@ -33,7 +34,6 @@ const handler = NextAuth({
 
           // Check if the user exists
           if (!user) {
-            console.error('User not found');
             throw new Error('User not found');
           }
 
@@ -44,16 +44,24 @@ const handler = NextAuth({
           );
 
           if (passwordCorrect) {
+
+            //if the password is correct, call the clinked api authentication
+            const clinkAuthResponse = await authenticate();
+
+            if (!clinkAuthResponse.access_token || !clinkAuthResponse.refresh_token) {
+              throw new Error('Failed to retrieve tokens from Clinked');
+            }
+
             return {
               id: user.id,
               email: user.email,
+              access_token: user.access_token,
+              refresh_token: user.refresh_token,
             };
           } else {
-            console.error('Invalid password');
             throw new Error('Invalid password');
           }
         } catch (error) {
-          console.error('Authorization error:', error);
           throw new Error('Authorization error');
         }
       },
@@ -63,11 +71,16 @@ const handler = NextAuth({
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        token.access_token = user.access_token;
+        token.refresh_token = user.refresh_token;
       }
       return token;
     },
     async session({ session, token }) {
       session.user.id = token.id;
+      session.access_token = token.access_token;
+      session.refresh_token = token.refresh_token;
+      
       return session;
     },
   },
