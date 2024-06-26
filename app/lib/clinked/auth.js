@@ -1,6 +1,5 @@
 import config from "@/app/config/clinked";
 import { getSession } from "next-auth/react";
-import { NextResponse } from "next/server";
 
 export async function authenticate() {
     const url = `${config.baseURL}/oauth/token?client_id=clinked-mobile&grant_type=password&password=${process.env.CLINKED_PASSWORD}&username=${process.env.CLINKED_USERNAME}`;
