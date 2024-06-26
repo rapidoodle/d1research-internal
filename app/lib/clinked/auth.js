@@ -13,6 +13,8 @@ export async function authenticate() {
             },
         });
 
+        console.log(process.env.CLINKED_USERNAME, process.env.CLINKED_PASSWORD, url, response);
+
         if (!response.ok) {
             throw new Error(`Failed to authenticate with Clinked: ${response.statusText}`);
         }
