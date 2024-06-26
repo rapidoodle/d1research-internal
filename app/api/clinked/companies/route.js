@@ -1,4 +1,5 @@
 //CLINKED ENDPOINTS TO ADD/EDIT/DELETE COMPANIES AS A *NOTE*
+import config from "@/app/config/clinked";
 import { getAccessToken } from "@/app/lib/clinked";
 
 export async function GET(){
