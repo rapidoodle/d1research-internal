@@ -1,5 +1,5 @@
 import { sql } from "@vercel/postgres";
-import { createCompanyAsNote } from "./clinked/auth";
+import { createCompanyAsNote } from "./clinked/notes";
 
 const createCompany = async (req) => {
   if (req.method !== 'POST') {
@@ -7,22 +7,20 @@ const createCompany = async (req) => {
   }
   
   try {
-    const { name, sector_id, tags, iframe_url, template, member_permission } = await req.json();
+    const { name, sector_id, tags, template, member_permission } = await req.json();
 
     if (!name || !sector_id) {
       return { error: 'Name, sector_id and tags are required' };
     }
 
     await sql`
-      INSERT INTO companies (name, sector_id, tags, iframe_url, template, member_permission, sharing)
-      VALUES (${name}, ${sector_id}, ${tags}, ${iframe_url}, ${template}, ${member_permission}, 'MEMBERS');
+      INSERT INTO companies (name, sector_id, tags, template, member_permission, sharing)
+      VALUES (${name}, ${sector_id}, ${tags}, ${template}, ${member_permission}, 'MEMBERS');
     `;
 
     // if success, send company to clinked
 
-      const clinkedResponse = await createCompanyAsNote({ name, sector_id, tags, iframe_url, template, member_permission });
-      console.log(clinkedResponse);
-
+    const clinkedResponse = await createCompanyAsNote({ name, sector_id, tags, template, member_permission });
 
     return { message: 'Company created successfully' };
   } catch (error) {
@@ -31,11 +29,35 @@ const createCompany = async (req) => {
   }
 };
 
-const getCompanies = async (req, res) => {
-  try {
-    const result = await sql`SELECT c.name as company, s.name as sector, c.tags, c.iframe_url as iframe FROM companies c LEFT JOIN sectors s ON c.sector_id = s.id`;
+export async function getCompanies(req) {
+  const { searchParams } = new URL(req.url);
+  const search = searchParams.get('search') || '';
+  const currentPage = parseInt(searchParams.get('currentPage') || '1', 10);
+  const pageSize = parseInt(searchParams.get('pageSize') || '10', 10);
 
-    return { data: result.rows };
+  try {
+    const offset = (currentPage - 1) * pageSize;
+    const query = `SELECT c.id as company_id, c.name as company, s.name as sector, c.tags
+    FROM companies c LEFT JOIN sectors s ON c.sector_id = s.id
+     WHERE c.name ILIKE $1 LIMIT $2 OFFSET $3`;
+     
+    const values = [`%${search}%`, pageSize, offset];
+    const result = await sql.query(query, values);
+    
+    const totalQuery = `
+      SELECT COUNT(*) FROM companies
+      WHERE name ILIKE $1
+    `;
+
+    const totalResult = await sql.query(totalQuery, [`%${search}%`]);
+    const totalRecords = parseInt(totalResult.rows[0].count, 10);
+
+    return {
+      data: result.rows,
+      totalRecords,
+      currentPage,
+      pageSize,
+    };
 
   } catch (error) {
     console.error('Error fetching companies:', error);
@@ -43,32 +65,32 @@ const getCompanies = async (req, res) => {
   }
 };
 
-const updateCompany = async (req, res) => {
-  const { id, name, sector_id } = req.body;
-
+export async function updateCompany(companyData) {
   try {
-    await sql`
-      UPDATE companies
-      SET name = ${name}, sector_id = ${sector_id}
-      WHERE id = ${id};
-    `;
-    res.status(200).json({ message: 'Company updated successfully' });
+    const { id, name, sector_id, tags, template, member_permission } = companyData;
+    const { rows } = await sql`
+      UPDATE financial_table
+      SET name=${name}, sector_id=${sector_id}, tags=${tags}, template=${template}, member_permission=${member_permission}
+      WHERE id=${id}
+      RETURNING *`;
+    return rows[0];
   } catch (error) {
-    console.error('Error updating company', error);
-    res.status(500).json({ message: 'Error updating company' });
+    console.error('Error updating company:', error);
+    return { error: 'Error updating company' };
   }
-};
+}
 
-const deleteCompany = async (req, res) => {
-  const { id } = req.body;
-
+export async function deleteCompany(id) {
   try {
-    await sql`DELETE FROM companies WHERE id = ${id}`;
-    res.status(200).json({ message: 'Company deleted successfully' });
+    const { rows } = await sql`
+      DELETE FROM financial_table
+      WHERE id=${id}
+      RETURNING *`;
+    return rows[0];
   } catch (error) {
-    console.error('Error deleting company', error);
-    res.status(500).json({ message: 'Error deleting company' });
+    console.error('Error deleting company:', error);
+    return { error: 'Error deleting company' };
   }
-};
+}
 
-export { createCompany, getCompanies, updateCompany, deleteCompany };
+export { createCompany };

@@ -1,18 +1,23 @@
+
 import 'bootstrap/dist/css/bootstrap.css';
 import './styles/custom-bootstrap.css';
 import "./globals.css";
 import { Inter } from "next/font/google";
+import { Montserrat } from 'next/font/google';
 import { Roboto } from 'next/font/google';
 import BootstrapClient from './components/BootstrapClient.js';
 import SideNav from './components/SideNav';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/auth';
+import { signOut } from 'next-auth/react';
+import Signout from './components/Signout';
 
 const inter = Inter({ subsets: ["latin"] });
 const roboto = Roboto({
-  weight: '400', // Specify the weight you need
-  subsets: ['latin'], // Specify the subsets you need
+  subsets: ['latin'],
+  weight: ['100', '300', '400', '500', '700', '900'], // Use strings instead of numbers for weights
 });
+const montserrat = Montserrat({ subsets: ["latin"] });
 
 export const metadata = {
   title: "D1RESEARCH INTERNAL SYSTEM",
@@ -32,9 +37,26 @@ export default async function RootLayout({ children }) {
                 <SideNav />
               </nav>
             )}
-            <main className={`p-md-4 col-12 ${session ? 'col-md-9 ms-sm-auto col-lg-10' : ''}`}>
-              {children}
-            </main>
+            <div className={`col-12 ${session ? 'col-md-9 ms-sm-auto col-lg-10' : ''}`}>
+            {session && (
+              <nav className="navbar navbar-expand-lg navbar-light bg-success text-white mb-3 d-none d-md-block">
+                <div className="container-fluid">
+                  <div className="w-100 d-flex justify-content-between align-items-center p-3">
+                    <div></div>
+                    <div className='d-flex'>
+                      <a className="nav-link text-white me-3" href="#">
+                      {session?.user.name}
+                      </a> 
+                      <Signout />
+                    </div>
+                  </div>
+                </div>
+              </nav>
+              )}
+              <main>
+                {children}
+              </main>
+            </div>
           </div>
         </div>
         <BootstrapClient />

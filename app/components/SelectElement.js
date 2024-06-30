@@ -1,13 +1,14 @@
 'use client';
-import React, { useState, forwardRef, useImperativeHandle } from "react";
-import CreatableSelect from 'react-select/creatable';
 
-const TagsSelectElement = forwardRef(({ options, onCreate, onSelect }, ref) => {
-  const [selectedOptions, setSelectedOptions] = useState([]);
+import React, { useState, forwardRef, useImperativeHandle } from "react";
+import {Select} from 'react-select'
+
+const CreatableSelectElement = forwardRef(({ options, onCreate, onSelect }, ref) => {
+  const [selectedOption, setSelectedOption] = useState(null);
 
   useImperativeHandle(ref, () => ({
     clearSelection() {
-      setSelectedOptions(null);
+      setSelectedOption(null);
     }
   }));
 
@@ -20,6 +21,7 @@ const TagsSelectElement = forwardRef(({ options, onCreate, onSelect }, ref) => {
         borderColor: state.isFocused ? '#80bdff' : '#ced4da',
       },
       paddingLeft: '0.75rem',
+      height: 'calc(1.5em + 0.75rem + 2px)',
       minHeight: '38px',
       borderRadius: '0.25rem',
     }),
@@ -40,23 +42,22 @@ const TagsSelectElement = forwardRef(({ options, onCreate, onSelect }, ref) => {
   };
 
   const handleChange = (newValue) => {
-    setSelectedOptions(newValue);
-    onSelect(newValue, setSelectedOptions);
+    setSelectedOption(newValue);
+    onSelect(newValue, setSelectedOption);
   };
 
   const handleCreate = (inputValue) => {
-    onCreate(inputValue, setSelectedOptions);
+    onCreate(inputValue, setSelectedOption);
   };
 
   return (
     <>
-      <CreatableSelect
+      <Select
         isClearable
         onChange={handleChange}
         onCreateOption={handleCreate}
         options={options}
-        value={selectedOptions}
-        isMulti
+        value={selectedOption}
         styles={customStyles}
         classNamePrefix="react-select"
       />
@@ -64,6 +65,6 @@ const TagsSelectElement = forwardRef(({ options, onCreate, onSelect }, ref) => {
   );
 });
 
-TagsSelectElement.displayName = 'TagsSelectElement';
+CreatableSelectElement.displayName = 'CreatableSelectElement';
 
-export default TagsSelectElement;
+export default CreatableSelectElement;

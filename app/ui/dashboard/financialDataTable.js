@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FinancialDataTableSkeleton } from '../skeletons';
+import Pagination from '@/app/components/Pagination';
 
 const FinancialDataTable = ({query, currentPage}) => {
   const [financialData, setFinancialData] = useState([]);
@@ -39,7 +40,7 @@ const FinancialDataTable = ({query, currentPage}) => {
 
   if(!loading){
   return (
-    <div className="container">
+    <div className="container-fluid">
       <div className='table-responsive'>
         <table className="table table-bordered table-striped">
             <thead>
@@ -147,38 +148,7 @@ const FinancialDataTable = ({query, currentPage}) => {
             </tbody>
         </table>
       </div>
-      <nav aria-label="Page navigation example" className='d-flex justify-content-end'>
-        <ul className="pagination d-flex align-items-center">
-          <li className="page-item" >
-            <button className="page-link btn-disabled" href="#"
-            disabled={page === 1}
-            onClick={() => setPage((prev) => Math.max(prev - 1, 1))}>Previous</button>
-          </li>
-          <li className="page-item"><span className="page-link">Page {page} of {totalPages}</span></li>
-          <li className="page-item">
-            <button className="page-link"
-            onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
-            disabled={page === totalPages} href="#">Next</button>
-            </li>
-        </ul>
-      </nav>
-      {/* <div className="pagination d-flex align-items-center justify-content-end pagination-sm">
-        <button
-          onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-          disabled={page === 1}
-          className="btn btn-primary"
-        >
-          Previous
-        </button>
-        <span className="mx-2">Page {page} of {totalPages}</span>
-        <button
-          onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
-          disabled={page === totalPages}
-          className="btn btn-primary"
-        >
-          Next
-        </button>
-      </div> */}
+      <Pagination page={page} totalPages={totalPages} setPage={setPage} />
     </div>
   );
 }else{

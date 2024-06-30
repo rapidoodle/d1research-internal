@@ -14,7 +14,9 @@ export default function Page(searchParams) {
     <div className="container mt-5">
       <CsvUploader />
       <div className='bg-light p-3'>
-        <Search placeholder="Company" />
+        <div className='mb-3'>
+          <Search placeholder="Company" />
+        </div>
         <Suspense key={query + currentPage} fallback={FinancialDataTableSkeleton}>
           <FinancialDataTable 
             query={query} 

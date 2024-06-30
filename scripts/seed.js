@@ -113,17 +113,18 @@ async function seedEvents(client) {
       const createTable = await client.sql`
       CREATE TABLE events (
         id SERIAL PRIMARY KEY,
-        description TEXT,
-        start_date DATE,
-        end_date DATE,
-        location VARCHAR(255),
-        tags VARCHAR(255),
-        sharing VARCHAR(255),
-        color VARCHAR(255),
-        allDay BOOLEAN,
         recurrence VARCHAR(255),
-        friendlyName VARCHAR(255),
-        assignees VARCHAR(255),
+        company_id INT,
+        all_day BOOLEAN,
+        color VARCHAR(7),
+        end_date TIMESTAMP WITH TIME ZONE,
+        description TEXT,
+        assignees TEXT[],
+        location VARCHAR(255),
+        sharing VARCHAR(50),
+        start_date TIMESTAMP WITH TIME ZONE,
+        friendly_name VARCHAR(255),
+        tags TEXT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
@@ -230,9 +231,9 @@ async function main() {
   const client = await db.connect();
 
   // await seedFinancialData(client);
-  await seedCompanies(client);
-  await seedTags(client);
-  // await seedEvents(client);
+  // await seedCompanies(client);
+  // await seedTags(client);
+  await seedEvents(client);
   // await seedUsers(client);
   // await seedSectors(client);
 

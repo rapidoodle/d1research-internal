@@ -87,8 +87,7 @@ export default function NewCompanyForm({ onCompanyAdded }) {
                 template: false,
                 sharing: "MEMBERS",
                 tags: tagsString,
-                member_permission: 8,
-                iframe_url: `https://internal.d1research.com/${companyNameUrl}/view`,
+                member_permission: 8
             })
         })
         .then(res => res.json())
@@ -194,8 +193,6 @@ export default function NewCompanyForm({ onCompanyAdded }) {
 
     return (
         <div className="container-fluid">
-            <h4>Create a new company</h4>
-            <hr />
             <div className="row">
                 <div className="col">
                     <form onSubmit={onSubmit}>

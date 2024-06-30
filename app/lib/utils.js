@@ -58,6 +58,28 @@ export const generatePagination = (currentPage, totalPages) => {
   ];
 };
 
+export const formatClinkedDate = (isoDateString) => {
+  const date = new Date(isoDateString);
+
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+
+  const offset = -date.getTimezoneOffset();
+  const offsetHours = String(Math.floor(Math.abs(offset) / 60)).padStart(2, '0');
+  const offsetMinutes = String(Math.abs(offset) % 60).padStart(2, '0');
+  const offsetSign = offset >= 0 ? '+' : '-';
+  const timeZoneOffset = `${offsetSign}${offsetHours}:${offsetMinutes}`;
+
+  const timeZoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+  return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}${timeZoneOffset}[${timeZoneName}]`;
+}
+
+
 export const cleanCurrency = (value) => {
   if (typeof value === 'string') {
     return parseFloat(value.replace(/,/g, ''));

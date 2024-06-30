@@ -4,6 +4,14 @@ import { NextResponse } from 'next/server';
 export async function middleware(req) {
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
+  // Define a regular expression pattern for dynamic public routes
+  const publicRoutePattern = /^\/companies\/[^/]+$/;
+
+  // Check if the request URL matches the dynamic public route pattern
+  if (publicRoutePattern.test(req.nextUrl.pathname)) {
+    return NextResponse.next();
+  }
+
   // If there is no token and the path is not /login, redirect to /login
   if (!token && req.nextUrl.pathname !== '/login') {
     return NextResponse.redirect(new URL('/login', req.url));

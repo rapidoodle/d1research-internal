@@ -55,6 +55,7 @@ const handler = NextAuth({
             return {
               id: user.id,
               email: user.email,
+              name: user.name,
               access_token: user.access_token,
               refresh_token: user.refresh_token,
             };

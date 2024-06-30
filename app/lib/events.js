@@ -1,56 +1,123 @@
 import { sql } from "@vercel/postgres";
+import { createClinkedEvent } from "./clinked/events";
 
-const createEvent = async (req, res) => {
-  const { name, description, date, location } = req.body;
+  export async function createEvent(req) {
+    if (req.method !== 'POST') {
+      return { error: 'Method not allowed' };
+    }
+    
+    try {
+      const { 
+        recurrence, 
+        company, 
+        allDay, 
+        color, 
+        endDate, 
+        description, 
+        assignees, 
+        location, 
+        sharing = 'MEMBERS', // default value
+        startDate, 
+        friendlyName, 
+        tags 
+      } = await req.json();
+
+      if (!startDate || !endDate || !friendlyName) {
+        return { error: 'recurrence, startDate, endDate, and friendlyName are required' };
+      }
+
+      // Insert data into the events table
+      await sql`
+        INSERT INTO events (
+          recurrence, 
+          company_id, 
+          all_day, 
+          color, 
+          end_date, 
+          description, 
+          assignees, 
+          location, 
+          sharing, 
+          start_date, 
+          friendly_name, 
+          tags
+        ) VALUES (
+          ${recurrence}, 
+          ${company}, 
+          ${allDay}, 
+          ${color}, 
+          ${endDate}, 
+          ${description}, 
+          ${assignees}, 
+          ${location}, 
+          ${sharing}, 
+          ${startDate}, 
+          ${friendlyName}, 
+          ${tags}
+        );
+      `;
+
+      // Assuming createCompanyAsNote is a function that interacts with another service
+      const clinkedResponse = await createClinkedEvent({
+        recurrence, 
+        allDay, 
+        color, 
+        endDate, 
+        description, 
+        assignees, 
+        location, 
+        sharing, 
+        startDate, 
+        friendlyName, 
+        tags
+      });
+
+      if(!clinkedResponse){
+        throw new Error('Failed to create event in Clinked');
+      }
+
+      return { message: 'Event created successfully' };
+    } catch (error) {
+      
+      console.log(error);
+
+      return { error: 'Error creating event' };
+    }
+  }
+
+export async function getEvents(req) {
+  const { searchParams } = new URL(req.url);
+  const search = searchParams.get('search') || '';
+  const currentPage = parseInt(searchParams.get('currentPage') || '1', 10);
+  const pageSize = parseInt(searchParams.get('pageSize') || '10', 10);
 
   try {
-    await sql`
-      INSERT INTO events (name, description, date, location)
-      VALUES (${name}, ${description}, ${date}, ${location});
+    const offset = (currentPage - 1) * pageSize;
+    const query = `SELECT e.*, c.name as company
+    FROM events e LEFT JOIN companies c ON c.id = e.company_id
+     WHERE e.friendly_name ILIKE $1 OR c.name ILIKE $1 LIMIT $2 OFFSET $3`;
+     
+    console.log(query);
+    const values = [`%${search}%`, pageSize, offset];
+    const result = await sql.query(query, values);
+    
+    const totalQuery = `
+      SELECT COUNT(*) FROM events
+      WHERE friendly_name ILIKE $1
     `;
-    res.status(201).json({ message: 'Event created successfully' });
+
+    const totalResult = await sql.query(totalQuery, [`%${search}%`]);
+    const totalRecords = parseInt(totalResult.rows[0].count, 10);
+
+    return {
+      data: result.rows,
+      totalRecords,
+      currentPage,
+      pageSize,
+    };
+
   } catch (error) {
-    console.error('Error creating event', error);
-    res.status(500).json({ message: 'Error creating event' });
+    console.error('Error fetching companies:', error);
+    return { error: 'Error fetching companies' };
   }
 };
-
-const getEvents = async (req, res) => {
-  try {
-    const result = await sql`SELECT * FROM events`;
-    res.status(200).json(result);
-  } catch (error) {
-    console.error('Error fetching events', error);
-    res.status(500).json({ message: 'Error fetching events' });
-  }
-};
-
-const updateEvent = async (req, res) => {
-  const { id, name, description, date, location } = req.body;
-
-  try {
-    await sql`
-      UPDATE events
-      SET name = ${name}, description = ${description}, date = ${date}, location = ${location}
-      WHERE id = ${id};
-    `;
-    res.status(200).json({ message: 'Event updated successfully' });
-  } catch (error) {
-    console.error('Error updating event', error);
-    res.status(500).json({ message: 'Error updating event' });
-  }
-};
-
-const deleteEvent = async (req, res) => {
-  const { id } = req.body;
-
-  try {
-    await sql`DELETE FROM events WHERE id = ${id}`;
-    res.status(200).json({ message: 'Event deleted successfully' });
-  } catch (error) {
-    console.error('Error deleting event', error);
-    res.status(500).json({ message: 'Error deleting event' });
-  }
-};
-
-export { createEvent, getEvents, updateEvent, deleteEvent };
