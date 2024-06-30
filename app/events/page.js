@@ -6,6 +6,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Search from "@/app/ui/search";
 import NewEventForm from "../ui/events/NewEventForm";
 import EventsTable from "../ui/events/eventsTable";
+import { Scheduler } from "@aldabil/react-scheduler";
 
 export default function Page(searchParams) {
   const query = searchParams.searchParams?.query || '';

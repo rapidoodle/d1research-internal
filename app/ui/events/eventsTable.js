@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from 'react';
 import { EventsTableSkeleton } from '../skeletons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faEye } from '@fortawesome/free-solid-svg-icons';
+import { faCalendar, faEdit, faEye, faList } from '@fortawesome/free-solid-svg-icons';
 import Pagination from '@/app/components/Pagination';
 import formatDate from '@/app/utils';
+import { Scheduler } from '@aldabil/react-scheduler';
 
 const EventsTable = ({query, currentPage, eventAdded}) => {
   const [companies, setCompanies] = useState([]);
@@ -14,6 +15,8 @@ const EventsTable = ({query, currentPage, eventAdded}) => {
   const [pageSize] = useState(20); // You can make this adjustable if needed
   const [totalRecords, setTotalRecords] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [calendarEvents, setCalendarEvents] = useState([]);
+  const [isCalendarView, setIsCalendarView] = useState(false);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -23,6 +26,20 @@ const EventsTable = ({query, currentPage, eventAdded}) => {
           const data = await response.json();
           setCompanies(data.data);
           setLoading(false);
+
+          //add events to calendar
+            const events = data.data.map((event) => {
+                return {
+                event_id: event.id,
+                title: event.friendly_name,
+                start: new Date(event.start_date),
+                end: new Date(event.end_date),
+                };
+            });
+
+            //push events to calendar
+
+            setCalendarEvents(events);
           
         } catch (error) {
           setError('Error fetching companies');
@@ -43,6 +60,17 @@ const EventsTable = ({query, currentPage, eventAdded}) => {
   if(!loading){
   return (
     <div>
+        <div className='bg-light p-3 d-flex align-items-center justify-content-end'>
+            <div>
+                <button className={`btn ${isCalendarView ? 'btn-primary' : 'btn-light'}`} onClick={() => setIsCalendarView(!isCalendarView)}>
+                    <FontAwesomeIcon icon={faCalendar} /> 
+                </button>
+                <button className={`btn ms-2 ${!isCalendarView ? 'btn-primary' : 'btn-light'}`} onClick={() => setIsCalendarView(!isCalendarView)}>
+                    <FontAwesomeIcon icon={faList} /> 
+                </button>
+            </div>
+        </div>
+        {!isCalendarView && ( <>
       <div className='table-responsive'>
         <table className="table table-hovered table-condensed table-striped">
             <thead>
@@ -83,8 +111,17 @@ const EventsTable = ({query, currentPage, eventAdded}) => {
             )}
             </tbody>
         </table>
-      </div>
+      </div> 
       <Pagination page={page} totalPages={totalPages} setPage={setPage} />
+      </>)}
+
+      {isCalendarView && ( <>
+      <Scheduler
+            view="month"
+            editable={false}
+            events={calendarEvents}
+          />
+        </>)}
     </div>
   );
 }else{
