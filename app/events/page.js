@@ -16,15 +16,13 @@ export default function Page(searchParams) {
   // Callback to update the state
   const handleEventAdded = () => {
     setEventAdded(!eventAdded);
-    document.addEventListener('DOMContentLoaded', function () {
+    if (typeof document !== 'undefined') {
       var closeButton = document.querySelector('.btn-close');
       if (closeButton) {
         closeButton.click();
       }
-    });
-
+    }
   };
- 
     return (
       <main>
         <div className="bg-light p-3 row">

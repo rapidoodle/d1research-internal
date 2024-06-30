@@ -7,6 +7,6 @@ import { signOut } from "next-auth/react";
 //export a signout component
 export default function Signout() {
     return (
-<a className="nav-link text-white" href="#" onClick={signOut}> <FontAwesomeIcon icon={faPowerOff} /> Sign out </a>
+<a className="nav-link" href="#" onClick={signOut}> <FontAwesomeIcon icon={faPowerOff} /> Sign out </a>
     )
 }
