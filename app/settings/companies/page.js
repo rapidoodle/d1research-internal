@@ -18,13 +18,12 @@ export default function Page(searchParams) {
     setCompanyAdded(!companyAdded);
 
     //check if document is ready
-    document.addEventListener('DOMContentLoaded', function () {
+    if (typeof document !== 'undefined') {
       var closeButton = document.querySelector('.btn-close');
       if (closeButton) {
         closeButton.click();
       }
-    });
-
+    }
   };
  
     return (
