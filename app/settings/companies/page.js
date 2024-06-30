@@ -16,51 +16,53 @@ export default function Page(searchParams) {
   // Callback to update the state
   const handleCompanyAdded = () => {
     setCompanyAdded(!companyAdded);
-    //check if document is ready
-    if (typeof window !== "undefined") {
-      var closeButton = document.querySelector('.btn-close');
+  };
+
+  useEffect(() => {
+    if (companyAdded && typeof window !== 'undefined') {
+      const closeButton = document.querySelector('.btn-close');
       if (closeButton) {
         closeButton.click();
       }
     }
-  };
+  }, [companyAdded]);
  
-    return (
-      <main>
-        <div className="bg-light p-3 row">
-          <h5 className="mb-0 col">Companies</h5>
+  return (
+    <main>
+      <div className="bg-light p-3 row">
+        <h5 className="mb-0 col">Companies</h5>
 
-          <div className="ms-auto col d-flex justify-content-end">
-            <div>
-              <Search placeholder="Company" />
+        <div className="ms-auto col d-flex justify-content-end">
+          <div>
+            <Search placeholder="Company" />
+          </div>
+          <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addCompanyModal">
+          <FontAwesomeIcon icon={faPlus} className="me-1" /> Add new company
+          </button>
+        </div>
+      </div>
+
+      <div className="mt-3">
+        <CompaniesTable 
+          query={ query }
+          currentPage={ currentPage }
+          companyAdded={ companyAdded } />
+      </div>
+
+      <div class="modal fade"  id="addCompanyModal" tabindex="-1" aria-labelledby="addCompanyModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="addCompanyModalLabel">Add new company</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addCompanyModal">
-            <FontAwesomeIcon icon={faPlus} className="me-1" /> Add new company
-            </button>
+            <div class="modal-body">
+              <NewCompanyForm onCompanyAdded={handleCompanyAdded} />
+            </div>
           </div>
         </div>
-
-        <div className="mt-3">
-          <CompaniesTable 
-            query={ query }
-            currentPage={ currentPage }
-            companyAdded={ companyAdded } />
-        </div>
-
-        <div class="modal fade"  id="addCompanyModal" tabindex="-1" aria-labelledby="addCompanyModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="addCompanyModalLabel">Add new company</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                <NewCompanyForm onCompanyAdded={handleCompanyAdded} />
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
-    )
-  }
+      </div>
+    </main>
+  )
+}
   

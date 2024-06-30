@@ -16,49 +16,53 @@ export default function Page(searchParams) {
   // Callback to update the state
   const handleEventAdded = () => {
     setEventAdded(!eventAdded);
-    if (typeof window !== "undefined") {
-      var closeButton = document.querySelector('.btn-close');
+  };
+
+  useEffect(() => {
+    if (eventAdded && typeof window !== 'undefined') {
+      const closeButton = document.querySelector('.btn-close');
       if (closeButton) {
         closeButton.click();
       }
     }
-  };
-    return (
-      <main>
-        <div className="bg-light p-3 row">
-          <h5 className="mb-0 col">Events</h5>
+  }, [eventAdded]);
 
-          <div className="ms-auto col d-flex justify-content-end">
-            <div>
-              <Search placeholder="Event name" />
+  return (
+    <main>
+      <div className="bg-light p-3 row">
+        <h5 className="mb-0 col">Events</h5>
+
+        <div className="ms-auto col d-flex justify-content-end">
+          <div>
+            <Search placeholder="Event name" />
+          </div>
+          <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addEventModal">
+          <FontAwesomeIcon icon={faPlus} className="me-1" /> Add new event
+          </button>
+        </div>
+      </div>
+
+      <div className="mt-3">
+        <EventsTable 
+          query={ query }
+          currentPage={ currentPage }
+          eventAdded={ eventAdded } />
+      </div>
+
+      <div class="modal fade modal-lg"  id="addEventModal" tabindex="-1" aria-labelledby="addEventModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="addEventModalLabel">Add new event</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addEventModal">
-            <FontAwesomeIcon icon={faPlus} className="me-1" /> Add new event
-            </button>
+            <div class="modal-body">
+              <NewEventForm onEventAdded={handleEventAdded} />
+            </div>
           </div>
         </div>
-
-        <div className="mt-3">
-          <EventsTable 
-            query={ query }
-            currentPage={ currentPage }
-            eventAdded={ eventAdded } />
-        </div>
-
-        <div class="modal fade modal-lg"  id="addEventModal" tabindex="-1" aria-labelledby="addEventModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="addEventModalLabel">Add new event</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                <NewEventForm onEventAdded={handleEventAdded} />
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
-    )
-  }
+      </div>
+    </main>
+  )
+}
   
