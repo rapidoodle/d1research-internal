@@ -16,9 +16,8 @@ export default function Page(searchParams) {
   // Callback to update the state
   const handleCompanyAdded = () => {
     setCompanyAdded(!companyAdded);
-
     //check if document is ready
-    if (typeof document !== 'undefined') {
+    if (typeof window !== "undefined") {
       var closeButton = document.querySelector('.btn-close');
       if (closeButton) {
         closeButton.click();
