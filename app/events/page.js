@@ -16,11 +16,12 @@ export default function Page(searchParams) {
   // Callback to update the state
   const handleEventAdded = () => {
     setEventAdded(!eventAdded);
-    console.log('MUST CLOSE THE MODAL');
-    var closeButton = document.querySelector('.btn-close');
-    if (closeButton) {
-      closeButton.click();
-    }
+    document.addEventListener('DOMContentLoaded', function () {
+      var closeButton = document.querySelector('.btn-close');
+      if (closeButton) {
+        closeButton.click();
+      }
+    });
 
   };
  

@@ -17,10 +17,13 @@ export default function Page(searchParams) {
   const handleCompanyAdded = () => {
     setCompanyAdded(!companyAdded);
 
-    var closeButton = document.querySelector('.btn-close');
-    if (closeButton) {
-      closeButton.click();
-    }
+    //check if document is ready
+    document.addEventListener('DOMContentLoaded', function () {
+      var closeButton = document.querySelector('.btn-close');
+      if (closeButton) {
+        closeButton.click();
+      }
+    });
 
   };
  
