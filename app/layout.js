@@ -10,6 +10,7 @@ import SideNav from './components/SideNav';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/auth';
 import Signout from './components/Signout';
+import Script from 'next/script';
 
 const roboto = Roboto({ subsets: ["latin"], weight: ['100', '300', '400', '500', '700', '900']});
 
@@ -23,7 +24,7 @@ export default async function RootLayout({ children }) {
 
   return (
     <html lang="en">
-      <script src="https://cdn.tiny.cloud/1/91bcdbfny5tnu8bq25au5l90anmsln11hures27u8oek7aid/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+      <Script src="https://cdn.tiny.cloud/1/91bcdbfny5tnu8bq25au5l90anmsln11hures27u8oek7aid/tinymce/7/tinymce.min.js" referrerpolicy="origin"></Script>
       <body className={roboto.className}>
         <div className="container-fluid">
           <div className="row">
