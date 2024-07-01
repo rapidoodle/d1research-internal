@@ -9,15 +9,9 @@ import BootstrapClient from './components/BootstrapClient.js';
 import SideNav from './components/SideNav';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/auth';
-import { signOut } from 'next-auth/react';
 import Signout from './components/Signout';
 
-const inter = Inter({ subsets: ["latin"] });
-const roboto = Roboto({
-  subsets: ['latin'],
-  weight: ['100', '300', '400', '500', '700', '900'], // Use strings instead of numbers for weights
-});
-const montserrat = Montserrat({ subsets: ["latin"] });
+const roboto = Roboto({ subsets: ["latin"], weight: ['100', '300', '400', '500', '700', '900']});
 
 export const metadata = {
   title: "D1RESEARCH INTERNAL SYSTEM",
@@ -29,6 +23,7 @@ export default async function RootLayout({ children }) {
 
   return (
     <html lang="en">
+      <script src="https://cdn.tiny.cloud/1/91bcdbfny5tnu8bq25au5l90anmsln11hures27u8oek7aid/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
       <body className={roboto.className}>
         <div className="container-fluid">
           <div className="row">
@@ -39,12 +34,12 @@ export default async function RootLayout({ children }) {
             )}
             <div className={`col-12 ${session ? 'col-md-9 ms-sm-auto col-lg-10' : ''}`}>
             {session && (
-              <nav className="navbar navbar-expand-lg navbar-light bg-light mb-3 d-none d-md-block">
+              <nav className="navbar navbar-expand-lg navbar-light bg-success text-white mb-3 d-none d-md-block">
                 <div className="container-fluid">
                   <div className="w-100 d-flex justify-content-between align-items-center p-3">
                     <div></div>
                     <div className='d-flex'>
-                      <a className="nav-link me-3" href="#">
+                      <a className="nav-link text-white me-3" href="#">
                       {session?.user.name}
                       </a> 
                       <Signout />

@@ -5,6 +5,10 @@ import TagsSelectElement from "@/app/components/TagsSelectElement";
 import React, { useState, useEffect, useRef } from "react";
 import { Bounce, toast } from "react-toastify";
 import Select from 'react-select'
+import { Button } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSave } from "@fortawesome/free-solid-svg-icons";
+import { Editor } from "@tinymce/tinymce-react";
 
 export default function NewEventForm({ onEventAdded }) {
 
@@ -14,6 +18,7 @@ export default function NewEventForm({ onEventAdded }) {
     const [selectedTags, setSelectedTags] = useState([]);
     const [loading, setLoading] = useState(false);
     const tagsCreatableSelectRef = useRef(null);
+    const [description, setDescription] = useState("");
 
     useEffect(() => {
         const fetchCompanies = async () => {
@@ -21,8 +26,6 @@ export default function NewEventForm({ onEventAdded }) {
             try {
                 const response = await fetch('/api/companies');
                 const data = await response.json();
-                
-                console.log(data);
 
                 const formattedOptions = data.data.map(tag => ({
                     value: tag.company_id,
@@ -114,15 +117,13 @@ export default function NewEventForm({ onEventAdded }) {
         .then(res => res.json())
         .then(data => {
             
-            console.log('MALALA', data);
-
             e.target.friendlyName.value = '';
-            e.target.description.value = '';
             e.target.location.value = '';
             e.target.startDate.value = '';
             e.target.endDate.value = '';
             e.target.color.value = '';
             setSelectedTags(null);
+            setDescription('');
             tagsCreatableSelectRef.current.clearSelection();
             onEventAdded();
             setLoading(false);
@@ -211,17 +212,23 @@ export default function NewEventForm({ onEventAdded }) {
                             </div>
                             <div className="col-6"></div>
                         </div>
-                        <div className="mb-3">
-                            <label htmlFor="friendlyName" className="form-label">Title</label>
-                            <input type="text" className="form-control" id="friendlyName" name="friendlyName" required />
+                        <div className="row mb-3">
+                            <div className="col-6">
+                                <label htmlFor="friendlyName" className="form-label">Title</label>
+                                <input type="text" className="form-control" id="friendlyName" name="friendlyName" required />
+                            </div>
+                        <div className="col-6">
+                            <label htmlFor="location" className="form-label">Location</label>
+                            <input type="text" className="form-control" id="location" name="location" required />
+                        </div>
                         </div>
                         <div className="mb-3">
                             <label htmlFor="description" className="form-label">Description</label>
-                            <textarea className="form-control" id="description" name="description" required />
-                        </div>
-                        <div className="mb-3">
-                            <label htmlFor="location" className="form-label">Location</label>
-                            <input type="text" className="form-control" id="location" name="location" required />
+                            <Editor 
+                                name="description"
+                                id="description"
+                                value={description}
+                                onEditorChange={(content) => setDescription(content)}/>
                         </div>
                         <div className="row mb-3">
                             <div className="col-6">
@@ -249,9 +256,9 @@ export default function NewEventForm({ onEventAdded }) {
                                 />
                             </div>
                         </div>
-                        <button type="submit" className="btn btn-primary float-end" disabled={loading}>
-                            {loading ? <Spinner /> : 'Create'}
-                        </button>
+                        <Button type="submit" className="mt-4 float-end" disabled={loading}>
+                            <FontAwesomeIcon icon={faSave} className="me-1" /> {loading ? <Spinner /> : 'Create'}
+                        </Button>
                     </form>
                 </div>
             </div>

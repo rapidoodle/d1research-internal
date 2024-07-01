@@ -12,7 +12,7 @@ const EventsTable = ({query, currentPage, eventAdded}) => {
   const [companies, setCompanies] = useState([]);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(currentPage);
-  const [pageSize] = useState(20); // You can make this adjustable if needed
+  const [pageSize] = useState(10); 
   const [totalRecords, setTotalRecords] = useState(0);
   const [loading, setLoading] = useState(true);
   const [calendarEvents, setCalendarEvents] = useState([]);
@@ -25,6 +25,7 @@ const EventsTable = ({query, currentPage, eventAdded}) => {
           const response = await fetch(`/api/events?&search=${query}&currentPage=${page}&pageSize=${pageSize}`);
           const data = await response.json();
           setCompanies(data.data);
+          setTotalRecords(data.totalRecords);
           setLoading(false);
 
           //add events to calendar
@@ -42,7 +43,7 @@ const EventsTable = ({query, currentPage, eventAdded}) => {
             setCalendarEvents(events);
           
         } catch (error) {
-          setError('Error fetching companies');
+          setError('Error fetching events');
           setLoading(false);
         }
       };

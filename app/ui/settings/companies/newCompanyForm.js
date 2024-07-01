@@ -3,7 +3,10 @@
 import CreatableSelectElement from "@/app/components/CreatableSelectElement";
 import Spinner from "@/app/components/Spinner";
 import TagsSelectElement from "@/app/components/TagsSelectElement";
+import { faSave } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState, useEffect, useRef } from "react";
+import { Button } from "react-bootstrap";
 
 export default function NewCompanyForm({ onCompanyAdded }) {
 
@@ -220,9 +223,9 @@ export default function NewCompanyForm({ onCompanyAdded }) {
                                 />
                             </div>
                         </div>
-                        <button type="submit" className="btn btn-primary float-end" disabled={loading}>
-                            {loading ? <Spinner /> : 'Create'}
-                        </button>
+                        <Button type="submit" className="mt-4 float-end" disabled={loading}>
+                            <FontAwesomeIcon icon={faSave} className="me-1" /> {loading ? <Spinner /> : 'Create'}
+                        </Button>
                     </form>
                 </div>
             </div>
