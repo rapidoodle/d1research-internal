@@ -86,3 +86,8 @@ export const cleanCurrency = (value) => {
   }
   return value;
 }
+
+//function to make the word small letter and replace space with underscore
+export const cleanCompanyName = (word) => {
+  return word.toLowerCase().replace(/\s/g, '_');
+}

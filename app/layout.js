@@ -35,7 +35,7 @@ export default async function RootLayout({ children }) {
             )}
             <div className={`col-12 ${session ? 'col-md-9 ms-sm-auto col-lg-10' : ''}`}>
             {session && (
-              <nav className="navbar navbar-expand-lg navbar-light bg-success text-white mb-3 d-none d-md-block">
+              <nav className="navbar navbar-expand-lg navbar-light bg-light text-white mb-3 d-none d-md-block">
                 <div className="container-fluid">
                   <div className="w-100 d-flex justify-content-between align-items-center p-3">
                     <div></div>

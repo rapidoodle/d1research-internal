@@ -1,0 +1,115 @@
+.financial-overview {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+ .company-details {
+    margin-right: 20px;
+  }
+  
+  .header-title {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .content {
+    display: flex;
+    margin-top: 20px;
+  }
+  
+  .left-panel, .right-panel {
+    flex: 1;
+    margin-right: 20px;
+  }
+  
+  .right-panel {
+    flex: 0.4;
+  }
+  
+  .dps-forecast, .risk-scenarios, .overview-financials, .share-capital, .total-cap-return, .analyst-comments, .management-statement, .capital-return-policy, .upcoming-events, .dps-calendar, .ex-div-calendar, .peer-comparison {
+    margin-bottom: 20px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+
+  .financial-overview th, td, p, .analyst-comments ul > li, h4 {
+    padding: 8px;
+    color: #2F5651;
+    margin-bottom: 0;
+  }
+  
+  th {
+    background-color: #F7F1E3;
+  }
+  tr.highlight > td{
+    color: #EA2F2F;
+  }
+  table thead th:first-child {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+  }
+  table thead th:last-child {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+  /*add padding left to all the td in left side of the table
+    and padding right to all the td in right side of the table*/
+    table tbody tr td:first-child {
+        padding-left: 2rem;
+    }
+
+  /*add drop shadow to the table*/
+    div.card {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 1.5rem;
+    }
+    h2{
+        margin-bottom: 0;
+    }
+    hr{
+        margin-top: 1.5rem;
+        margin-bottom: 1.5rem;
+        border-color: #2F5651;
+    }
+    .bg-cream{
+        background-color: #F7F1E3;
+    }
+    table tr td.second-title{
+        padding-left: 0;
+        padding-right: 0;
+        border-radius: 5px!important;
+    }
+
+    table tr td.second-title div{
+        border-radius: 5px!important;
+        padding-top:.5rem;
+        padding-bottom:.5rem;
+        padding-left: 2rem;
+        font-size: 20px;
+        color: #2F5651;
+    }
+
+    .semi-card{
+        background-color: #F7F1E3;
+        border: 1px solid #2F5651;
+        border-radius: 8px;
+        width: 250px;
+    }
+    .header-container{
+        background-color: #fff!important;
+        border-bottom: 1px solid #dee2e6;
+        margin: -36px;
+        padding: 36px;
+        margin-bottom: 1rem;
+    }

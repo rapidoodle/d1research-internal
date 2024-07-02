@@ -68,6 +68,8 @@ table > thead > th {
   color: #f8f9fa;
 }
 .company-page{
-  min-width: 1200px;
+  width: 2000px;
   border:1px solid #dee2e6;
+  background-color: #FEFCF8;
+  color: #2F5651;
 }

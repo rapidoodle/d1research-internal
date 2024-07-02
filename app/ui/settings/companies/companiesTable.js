@@ -5,6 +5,7 @@ import { CompaniesTableSkeleton, FinancialDataTableSkeleton } from '../../skelet
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faEye } from '@fortawesome/free-solid-svg-icons';
 import Pagination from '@/app/components/Pagination';
+import { cleanCompanyName } from '@/app/lib/utils';
 
 const CompaniesTable = ({query, currentPage, companyAdded}) => {
   const [companies, setCompanies] = useState([]);
@@ -69,9 +70,9 @@ const CompaniesTable = ({query, currentPage, companyAdded}) => {
                     <button className='btn btn-success btn-sm'>
                       <span><FontAwesomeIcon icon={faEdit} /> Edit</span>
                     </button>
-                    <button className='btn ms-2 btn-success btn-sm'>
+                    <a target='_blank' className='btn ms-2 btn-success btn-sm' href={`/companies/${cleanCompanyName(row.company)}`}>
                       <span><FontAwesomeIcon icon={faEye}/> View page</span>
-                    </button>
+                    </a>
                   </td>
                 </tr>
             ))}
