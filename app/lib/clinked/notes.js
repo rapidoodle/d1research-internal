@@ -13,7 +13,7 @@ export async function createCompanyAsNote(reqData) {
     //   Define the request body for the API call
       const body = {
         friendlyName: reqData.name,
-        content: `<iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 1200px; border: 0;" src="${iframe_url}" title="Company page of ${reqData.name}" frameborder="0" allowfullscreen></iframe>`,
+        content: `<iframe sandbox style="position: absolute; top: 0; left: 0; width: 100%; height: 1200px; border: 0;" src="${iframe_url}" title="Company page of ${reqData.name}" frameborder="0" allowfullscreen></iframe>`,
         template: reqData.template || false,
         sharing: "MEMBERS",
         memberPermission: reqData.member_permission || 1,
