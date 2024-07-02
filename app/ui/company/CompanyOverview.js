@@ -16,17 +16,17 @@ export default function CompanyOverview() {
           </div>
           <div className="company-details">
             <div className='d-flex'>
-              <div className='semi-card'><b>Company Name:</b> Mercedes</div>
-              <div className='semi-card ms-4'><b>DIV Ticker:</b> D3AI</div>
+              <div className='semi-card mb-3'><b>Company Name:</b> Mercedes</div>
+              <div className='semi-card mb-3 ms-3'><b>DIV Ticker:</b> D3AI</div>
             </div>
             <div className='d-flex'>
               <div className='semi-card'><b>Ticker:</b> MBG GY EQUITY</div>
-              <div className='semi-card ms-4'><b>Dividend Index:</b> -</div>
+              <div className='semi-card ms-3'><b>Dividend Index:</b> -</div>
             </div>
           </div>
         </div>
-      <div className="content">
-        <div className="left-panel">
+      <div className="row mt-2">
+        <div className="col-8">
           <div className="card dps-forecast">
             <div>
             <h4>D1 DPS forecast</h4>
@@ -345,7 +345,7 @@ export default function CompanyOverview() {
           </div>
         </div>
 
-        <div className="right-panel">
+        <div className="col-4">
           <div className="card analyst-comments">
             <div className='d-flex justify-content-between align-items-center'>
               <h4>D1 Analyst comments </h4>
@@ -517,7 +517,7 @@ export default function CompanyOverview() {
             </table>
           </div>
 
-          <div className="card peer-comparison">
+          <div className="card peer-comparison mb-0">
             <h4>Peer comparison DPS payout ratio (%)</h4>
             <hr />
             <table>

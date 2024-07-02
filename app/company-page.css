@@ -1,7 +1,6 @@
 .financial-overview {
     display: flex;
     flex-direction: column;
-    padding: 20px;
   }
   
   .header {
@@ -13,7 +12,7 @@
  .company-details {
     margin-right: 20px;
   }
-  
+
   .header-title {
     font-size: 24px;
     font-weight: bold;
@@ -22,15 +21,6 @@
   .content {
     display: flex;
     margin-top: 20px;
-  }
-  
-  .left-panel, .right-panel {
-    flex: 1;
-    margin-right: 20px;
-  }
-  
-  .right-panel {
-    flex: 0.4;
   }
   
   .dps-forecast, .risk-scenarios, .overview-financials, .share-capital, .total-cap-return, .analyst-comments, .management-statement, .capital-return-policy, .upcoming-events, .dps-calendar, .ex-div-calendar, .peer-comparison {
@@ -105,11 +95,12 @@
         border: 1px solid #2F5651;
         border-radius: 8px;
         width: 250px;
+        padding: 0.5rem
     }
     .header-container{
         background-color: #fff!important;
         border-bottom: 1px solid #dee2e6;
-        margin: -36px;
+        margin: -16px;
         padding: 36px;
         margin-bottom: 1rem;
     }

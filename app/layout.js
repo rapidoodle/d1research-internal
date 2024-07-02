@@ -11,6 +11,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/auth';
 import Signout from './components/Signout';
 import Script from 'next/script';
+import ToastComponent from './components/Toast';
 
 const roboto = Roboto({ subsets: ["latin"], weight: ['100', '300', '400', '500', '700', '900']});
 
@@ -56,6 +57,7 @@ export default async function RootLayout({ children }) {
           </div>
         </div>
         <BootstrapClient />
+        <ToastComponent />
       </body>
     </html>
   );
