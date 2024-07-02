@@ -5,14 +5,15 @@ import Image from 'next/image';
 export default function CompanyOverview() {
 
   return (
-    <div className="financial-overview">
+    <div className="container-fluid financial-overview">
       <div className="d-flex justify-content-between header-container">
           <div className="header-title">
-            <Image 
-              src='/images/company-logo-rectangle.png' 
-              width={200}
-              height={100}
-              alt='company logo' />
+          <Image
+            src="https://d1researchstorage.s3.amazonaws.com/company-logo-rectangle.png"
+            alt="Company Logo"
+            width={185}
+            height={100}
+          />
           </div>
           <div className="company-details">
             <div className='d-flex'>
@@ -26,12 +27,12 @@ export default function CompanyOverview() {
           </div>
         </div>
       <div className="row mt-2">
-        <div className="col-8">
+        <div className="col-sm-8">
           <div className="card dps-forecast">
             <div>
             <h4>D1 DPS forecast</h4>
             <hr />
-            <table>
+            <table className='table-responsive'>
               <thead>
                 <tr>
                   <th></th>
@@ -345,7 +346,7 @@ export default function CompanyOverview() {
           </div>
         </div>
 
-        <div className="col-4">
+        <div className="col-sm-4">
           <div className="card analyst-comments">
             <div className='d-flex justify-content-between align-items-center'>
               <h4>D1 Analyst comments </h4>
@@ -405,7 +406,7 @@ export default function CompanyOverview() {
           <div className="card dps-calendar">
             <h4>DPS calendar</h4>
             <hr />
-            <table>
+            <table cla>
               <thead>
                 <tr>
                   <th>Year</th>
