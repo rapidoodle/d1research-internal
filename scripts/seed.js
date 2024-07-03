@@ -230,12 +230,12 @@ async function seedUsers(client) {
 async function main() {
   const client = await db.connect();
 
-  // await seedFinancialData(client);
-  // await seedCompanies(client);
-  // await seedTags(client);
+  await seedFinancialData(client);
+  await seedCompanies(client);
+  await seedTags(client);
   await seedEvents(client);
   // await seedUsers(client);
-  // await seedSectors(client);
+  await seedSectors(client);
 
   await client.end();
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { CompaniesTableSkeleton, FinancialDataTableSkeleton } from '../../skeletons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faEye } from '@fortawesome/free-solid-svg-icons';
@@ -14,6 +14,8 @@ const CompaniesTable = ({query, currentPage, companyAdded}) => {
   const [pageSize] = useState(20); // You can make this adjustable if needed
   const [totalRecords, setTotalRecords] = useState(0);
   const [loading, setLoading] = useState(true);
+
+  const initialRender = useRef(true);
 
   useEffect(() => {
     const fetchCompanies = async () => {
@@ -31,7 +33,13 @@ const CompaniesTable = ({query, currentPage, companyAdded}) => {
       }
     };
 
-    fetchCompanies();
+
+    if (initialRender.current) {
+      initialRender.current = false;
+    } else {
+      fetchCompanies();
+    }
+    
   }, [query, page, pageSize, companyAdded]);
 
   const totalPages = Math.ceil(totalRecords / pageSize);

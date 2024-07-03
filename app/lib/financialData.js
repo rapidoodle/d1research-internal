@@ -4,6 +4,13 @@ import { readFile, writeFile } from 'fs/promises';
 import { NextRequest, NextResponse } from 'next/server';
 import { join } from 'path';
 import { cleanCurrency } from './utils';
+import aws from 'aws-sdk';
+import { uploadFile } from './aws/upload';
+import { randomUUID } from 'crypto';
+import { createCompanyAsNote } from './clinked/notes';
+import { createTag, getTagByName } from './tags';
+import { createSectors, getSectorByName } from './sectors';
+import { createCompany, getCompanyByName } from './companies';
 
 export async function uploadFinancialData (req, res) {
     const data = await req.formData();
@@ -16,13 +23,16 @@ export async function uploadFinancialData (req, res) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // Save the file to the public/uploads directory
-    const publicPath = join(process.cwd(), 'public', 'files', file.name);
-    await writeFile(publicPath, buffer);
-    console.log(`Uploaded file to ${publicPath}`);
+    // Generate a new filename
+    const originalName = file.name;
+    const newFileName = `${randomUUID()}-${originalName}`;
+
+    //file upload to s3 bucket
+    const uploadResponse = await uploadFile({ buffer, name: newFileName });
+    console.log(`Uploaded file to S3 with response: ${JSON.stringify(uploadResponse)}`);
 
     // Read and parse the CSV file
-    const fileContent = await readFile(publicPath, 'utf-8');
+    const fileContent = buffer.toString('utf-8');
     const records = [];
     const parser = parse({ delimiter: ',', columns: true });
 
@@ -36,81 +46,196 @@ export async function uploadFinancialData (req, res) {
     parser.on('error', function(err) {
       console.error(err.message);
     });
-
-    parser.on('end', async function() {
-      //Remove all from financial_data table to avoid duplicates
-      await sql `DELETE FROM financial_data;`;
-
-      for (const row of records) {
-
+    // Use a Promise to handle asynchronous operations in 'end' event
+    await new Promise((resolve, reject) => {
+      parser.on('end', async function() {
         try {
-          await sql`
-          INSERT INTO financial_data (
-            year, company, sector, equity_ticker, share_price, div_ticker, p_and_l_fx,
-            div_future_fx, index1, index2, index3, dps_z, current_price_z, discount_premium_percent,
-            annual_return_percent, very_bear_z, bear_z, bull_z, very_bull_z, risk_adj_dps_z, net_income,
-            av_weighted_share_cap, eps, dps_fy, dps_payout_ratio, op_cash_flow, capex, free_cash_flow,
-            dividend, share_buyback, total_capital_return, net_debt, share_in_issue, treasury_shares,
-            shares_outstanding, capital_payout_percent, dps_q1, dps_q2, dps_q3, dps_q4, ex_date_q1,
-            ex_date_q2, ex_date_q3, ex_date_q4
-          ) VALUES (
-            ${row['Year']}, 
-            ${row['Company']}, 
-            ${row['Sector']}, 
-            ${row['Equity Ticker']}, 
-            ${cleanCurrency(row['Share price'])}, 
-            ${row['Div Ticker']}, 
-            ${row['P&L FX']}, 
-            ${row['Div Future FX']},
-            ${row['Index1']}, 
-            ${row['Index2']}, 
-            ${row['Index3']}, 
-            ${cleanCurrency(row['DPS z'])}, 
-            ${cleanCurrency(row['Current Price z'])}, 
-            ${cleanCurrency(row['Discount/ Premium (%)'])},
-            ${cleanCurrency(row['Annual return (%)'])}, 
-            ${cleanCurrency(row['z Very Bear'])}, 
-            ${cleanCurrency(row['z Bear'])}, 
-            ${cleanCurrency(row['z Bull'])}, 
-            ${cleanCurrency(row['z Very Bull'])}, 
-            ${cleanCurrency(row['Risk adj. DPS (z)'])}, 
-            ${cleanCurrency(row['Net Income'])},
-            ${cleanCurrency(row['Av. Weighted Share Cap'])}, 
-            ${cleanCurrency(row['EPS'])}, 
-            ${cleanCurrency(row['DPS (FY)'])}, 
-            ${cleanCurrency(row['DPS payout ratio'])}, 
-            ${cleanCurrency(row['Op Cash Flow'])}, 
-            ${cleanCurrency(row['Capex'])}, 
-            ${cleanCurrency(row['Free Cash Flow'])},
-            ${cleanCurrency(row['Dividend'])}, 
-            ${cleanCurrency(row['Share Buyback'])}, 
-            ${cleanCurrency(row['Total Capital Return'])}, 
-            ${cleanCurrency(row['Net Debt'])}, 
-            ${cleanCurrency(row['Share in issue'])}, 
-            ${cleanCurrency(row['Treasury shares'])},
-            ${cleanCurrency(row['Shares outstanding'])}, 
-            ${cleanCurrency(row['Capital Payout (%)'])}, 
-            ${cleanCurrency(row['DPSQ1'])}, 
-            ${cleanCurrency(row['DPSQ2'])}, 
-            ${cleanCurrency(row['DPSQ3'])}, 
-            ${cleanCurrency(row['DPSQ4'])}, 
-            ${row['Ex Date Q1'] ? `'${row['Ex Date Q1']}'` : null}, 
-            ${row['Ex Date Q2'] ? `'${row['Ex Date Q2']}'` : null}, 
-            ${row['Ex Date Q3'] ? `'${row['Ex Date Q3']}'` : null}, 
-            ${row['Ex Date Q4'] ? `'${row['Ex Date Q4']}'` : null}
-          );
+          // Remove all from financial_data table to avoid duplicates
+          await sql`DELETE FROM financial_data;`;
 
-        `;
-        } catch (dbError) {
-          console.error('Error inserting data', dbError);
+          for (const row of records) {
+            try {
+              const company = row['Company'];
+              const year = row['Year'];
+              //check financial_data table for company name and year and insert if not present
+              const financialDataQuery = `
+                SELECT * FROM financial_data
+                WHERE company = $1 AND year = $2
+              `;
+              const financialDataResult = await sql.query(financialDataQuery, [company, year]);
+
+              if (financialDataResult.rows.length > 0) {
+                console.log(`Data for ${company} in ${year} already exists`);
+              }else{
+                await sql`
+                INSERT INTO financial_data (
+                  year, company, sector, equity_ticker, share_price, div_ticker, p_and_l_fx,
+                  div_future_fx, index1, index2, index3, dps_z, current_price_z, discount_premium_percent,
+                  annual_return_percent, very_bear_z, bear_z, bull_z, very_bull_z, risk_adj_dps_z, net_income,
+                  av_weighted_share_cap, eps, dps_fy, dps_payout_ratio, op_cash_flow, capex, free_cash_flow,
+                  dividend, share_buyback, total_capital_return, net_debt, share_in_issue, treasury_shares,
+                  shares_outstanding, capital_payout_percent, dps_q1, dps_q2, dps_q3, dps_q4, ex_date_q1,
+                  ex_date_q2, ex_date_q3, ex_date_q4
+                ) VALUES (
+                  ${row['Year']}, 
+                  ${row['Company']}, 
+                  ${row['Sector']}, 
+                  ${row['Equity Ticker']}, 
+                  ${cleanCurrency(row['Share price'])}, 
+                  ${row['Div Ticker']}, 
+                  ${row['P&L FX']}, 
+                  ${row['Div Future FX']},
+                  ${row['Index1']}, 
+                  ${row['Index2']}, 
+                  ${row['Index3']}, 
+                  ${cleanCurrency(row['DPS z'])}, 
+                  ${cleanCurrency(row['Current Price z'])}, 
+                  ${cleanCurrency(row['Discount/ Premium (%)'])},
+                  ${cleanCurrency(row['Annual return (%)'])}, 
+                  ${cleanCurrency(row['z Very Bear'])}, 
+                  ${cleanCurrency(row['z Bear'])}, 
+                  ${cleanCurrency(row['z Bull'])}, 
+                  ${cleanCurrency(row['z Very Bull'])}, 
+                  ${cleanCurrency(row['Risk adj. DPS (z)'])}, 
+                  ${cleanCurrency(row['Net Income'])},
+                  ${cleanCurrency(row['Av. Weighted Share Cap'])}, 
+                  ${cleanCurrency(row['EPS'])}, 
+                  ${cleanCurrency(row['DPS (FY)'])}, 
+                  ${cleanCurrency(row['DPS payout ratio'])}, 
+                  ${cleanCurrency(row['Op Cash Flow'])}, 
+                  ${cleanCurrency(row['Capex'])}, 
+                  ${cleanCurrency(row['Free Cash Flow'])},
+                  ${cleanCurrency(row['Dividend'])}, 
+                  ${cleanCurrency(row['Share Buyback'])}, 
+                  ${cleanCurrency(row['Total Capital Return'])}, 
+                  ${cleanCurrency(row['Net Debt'])}, 
+                  ${cleanCurrency(row['Share in issue'])}, 
+                  ${cleanCurrency(row['Treasury shares'])},
+                  ${cleanCurrency(row['Shares outstanding'])}, 
+                  ${cleanCurrency(row['Capital Payout (%)'])}, 
+                  ${cleanCurrency(row['DPSQ1'])}, 
+                  ${cleanCurrency(row['DPSQ2'])}, 
+                  ${cleanCurrency(row['DPSQ3'])}, 
+                  ${cleanCurrency(row['DPSQ4'])}, 
+                  ${row['Ex Date Q1'] ? `'${row['Ex Date Q1']}'` : null}, 
+                  ${row['Ex Date Q2'] ? `'${row['Ex Date Q2']}'` : null}, 
+                  ${row['Ex Date Q3'] ? `'${row['Ex Date Q3']}'` : null}, 
+                  ${row['Ex Date Q4'] ? `'${row['Ex Date Q4']}'` : null}
+                );`;
+
+                //check sectors table for sector name and insert if not present
+              const sector = row['Sector'];
+              const sectorResult = await getSectorByName({ name: sector });
+              var sectorId = null;
+              if (sectorResult.data.length === 0) {
+                const  sectorInsertResponse = await createSectors({ name: sector }, false);
+                sectorId = sectorInsertResponse.data.id;
+                console.log('New sector inserted', sectorInsertResponse.data, sectorId);
+              }else{
+                sectorId = sectorResult.data[0].id
+                console.log('Sector already exists', sectorResult.data, sectorId);
+              }
+
+              //check companies table for compny name and year and insert if not present, use sector id from sectors table or newly inserted sector
+              var tags = `${row['Equity Ticker']}, ${row['Div Ticker']}`;
+
+              //add index1, index2, index3 to tags if not null
+              if (row['Index1']) {
+                tags += `, ${row['Index1']}`;
+              }
+              if (row['Index2']) {
+                tags += `, ${row['Index2']}`;
+              }
+              if (row['Index3']) {
+                tags += `, ${row['Index3']}`;
+              }
+              
+              const companyResult = await getCompanyByName({ name: company });
+              
+              console.log(companyResult.data.length, companyResult.data);
+
+              if (companyResult.data.length === 0) {
+                const createCompanyResponse = await createCompany({ name: company, sector_id: sectorId, tags: tags, template: false, member_permission: 1 }, false); 
+                console.log('New company inserted', createCompanyResponse);
+              }else{
+                console.log('Company already exists', companyResult.data);
+              }
+
+              //check if Equity Ticker is present in tags table and insert if not present
+            const equityTicker = row['Equity Ticker'];
+            if(equityTicker){
+              const equityTickerRes = await getTagByName({ name: equityTicker });
+              if(equityTickerRes.data.length === 0){
+                let equityTickerTagResponse = await createTag({ name: equityTicker }, false);
+                console.log(equityTickerTagResponse);
+              }else{
+                console.log(`${equityTicker} already exists`);
+              }
+            }
+
+            // check if Div Ticker is present in tags table and insert if not present
+            const divTicker = row['Div Ticker'];
+            if(divTicker){
+              const divTickerRes = await getTagByName({ name: divTicker });
+              if(divTickerRes.data.length === 0){
+                let divTagResponse = await createTag({ name: divTicker }, false);
+                console.log(divTagResponse);
+              }else{
+                console.log(`${divTicker} already exists`);
+              }
+            }
+
+            //check if Index1 is present in tags table and insert if not present
+            const index1 = row['Index1'];
+            if(index1){
+              const index1TickerRes = await getTagByName({ name: index1 });
+              if(index1TickerRes.data.length === 0){
+                let index1TagResponse = await createTag({ name: index1 }, false);
+                console.log(index1TagResponse);
+              }else{
+                console.log(`${index1} already exists`);
+              }
+            }
+
+            //check if Index2 is present in tags table and insert if not present
+            const index2 = row['Index2'];
+            if(index2){
+              const index2TickerRes = await getTagByName({ name: index2 });
+              if(index2TickerRes.data.length === 0){
+                let index2TagResponse = await createTag({ name: index2 }, false);
+                console.log(index2TagResponse);
+              }else{
+                console.log(`${index2} already exists`);
+              }
+            }
+
+            //check if Index3 is present in tags table and insert if not present
+            const index3 = row['Index3'];
+            if(index3){
+              const index3TickerRes = await getTagByName({ name: index3 });
+              if(index3TickerRes.data.length === 0){
+                let index3TagResponse = await createTag({ name: index3 }, false);
+                console.log(index3TagResponse);
+              }else{
+                console.log(`${index3} already exists`);
+              }
+            }
+            }
+            } catch (dbError) {
+              console.error('Error inserting data', dbError);
+            }
+          }
+          resolve();
+        } catch (error) {
+          reject(error);
         }
-      }
+      });
+
+      parser.write(fileContent);
+      parser.end();
     });
 
-    parser.write(fileContent);
-    parser.end();
-
-    return NextResponse.json({ message: 'File processed and data inserted successfully' });
+    return NextResponse.json({ message: 'File processed and data inserted successfully'});
 };
 
 export async function getFinancialData(req) {

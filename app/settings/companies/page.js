@@ -33,9 +33,9 @@ export default function Page(searchParams) {
             <Search placeholder="Company" />
           </div>
 
-          <Button size="sm" variant="primary" onClick={handleShow}>
+          {/* <Button size="sm" variant="primary" onClick={handleShow}>
             <FontAwesomeIcon icon={faPlus} className="me-1" /> Add new company
-          </Button>
+          </Button> */}
         </div>
       </div>
 

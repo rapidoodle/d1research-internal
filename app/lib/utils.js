@@ -87,7 +87,28 @@ export const cleanCurrency = (value) => {
   return value;
 }
 
-//function to make the word small letter and replace space with underscore
 export const cleanCompanyName = (word) => {
   return word.toLowerCase().replace(/\s/g, '_');
+}
+
+//function to make number to 2 decimal places
+export const formatNumber = (number, isPercent) => {
+  //check if number or string is passed
+  if(!number){
+    return ;
+  }else{
+
+    if(number === 'NaN'){
+      return;
+    }
+
+    const num = Number(number);
+    const finalNumber = Number.isInteger(num) ? num : num.toFixed(2);
+    
+    if(isPercent){
+      return finalNumber+ '%';
+    }
+  
+    return finalNumber;
+  }
 }

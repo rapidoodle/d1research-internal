@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { FinancialDataTableSkeleton } from '../skeletons';
 import Pagination from '@/app/components/Pagination';
+import { formatNumber } from '@/app/lib/utils';
 
-const FinancialDataTable = ({query, currentPage}) => {
+const FinancialDataTable = ({ query, currentPage, fileUploaded }) => {
   const [financialData, setFinancialData] = useState([]);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(currentPage);
   const [pageSize] = useState(10); // You can make this adjustable if needed
   const [totalRecords, setTotalRecords] = useState(0);
   const [loading, setLoading] = useState(true);
+
+  const initialRender = useRef(true);
 
   useEffect(() => {
     const fetchFinancialData = async () => {
@@ -20,17 +23,20 @@ const FinancialDataTable = ({query, currentPage}) => {
         setTotalRecords(data.totalRecords);
         setLoading(false);
         console.log(data);
-        
       } catch (error) {
         console.error('Error fetching financial data:', error);
         setError('Error fetching financial data');
         setLoading(false);
-      } finally {
       }
     };
 
-    fetchFinancialData();
-  }, [query, page, pageSize]);
+    if (initialRender.current) {
+      initialRender.current = false;
+    } else {
+      fetchFinancialData();
+    }
+    
+  }, [query, page, pageSize, fileUploaded]);
 
   const totalPages = Math.ceil(totalRecords / pageSize);
 
@@ -38,13 +44,13 @@ const FinancialDataTable = ({query, currentPage}) => {
     return <p>{error}</p>;
   }
 
-  if(!loading){
-  return (
-    <div className="container-fluid">
-      <div className='table-responsive'>
-        <table className="table table-bordered table-striped">
+  if (!loading) {
+    return (
+      <div className="container-fluid">
+        <div className='table-responsive'>
+          <table className="table table-bordered table-striped">
             <thead>
-            <tr className='bg-primary'>
+              <tr className='bg-primary'>
                 <th>Year</th>
                 <th>Company</th>
                 <th>Sector</th>
@@ -89,71 +95,71 @@ const FinancialDataTable = ({query, currentPage}) => {
                 <th>Ex Date Q2</th>
                 <th>Ex Date Q3</th>
                 <th>Ex Date Q4</th>
-            </tr>
+              </tr>
             </thead>
             <tbody>
-            {financialData.map((row) => (
+              {financialData.map((row) => (
                 <tr key={row.id}>
-                <td>{row.year}</td>
-                <td>{row.company}</td>
-                <td>{row.sector}</td>
-                <td>{row.equity_ticker}</td>
-                <td>{row.share_price}</td>
-                <td>{row.div_ticker}</td>
-                <td>{row.p_and_l_fx}</td>
-                <td>{row.div_future_fx}</td>
-                <td>{row.index1}</td>
-                <td>{row.index2}</td>
-                <td>{row.index3}</td>
-                <td>{row.dps_z}</td>
-                <td>{row.current_price_z}</td>
-                <td>{row.discount_premium_percent}</td>
-                <td>{row.annual_return_percent}</td>
-                <td>{row.very_bear_z}</td>
-                <td>{row.bear_z}</td>
-                <td>{row.bull_z}</td>
-                <td>{row.very_bull_z}</td>
-                <td>{row.risk_adj_dps_z}</td>
-                <td>{row.net_income}</td>
-                <td>{row.av_weighted_share_cap}</td>
-                <td>{row.eps}</td>
-                <td>{row.dps_fy}</td>
-                <td>{row.dps_payout_ratio}</td>
-                <td>{row.op_cash_flow}</td>
-                <td>{row.capex}</td>
-                <td>{row.free_cash_flow}</td>
-                <td>{row.dividend}</td>
-                <td>{row.share_buyback}</td>
-                <td>{row.total_capital_return}</td>
-                <td>{row.net_debt}</td>
-                <td>{row.share_in_issue}</td>
-                <td>{row.treasury_shares}</td>
-                <td>{row.shares_outstanding}</td>
-                <td>{row.capital_payout_percent}</td>
-                <td>{row.dps_q1}</td>
-                <td>{row.dps_q2}</td>
-                <td>{row.dps_q3}</td>
-                <td>{row.dps_q4}</td>
-                <td>{row.ex_date_q1}</td>
-                <td>{row.ex_date_q2}</td>
-                <td>{row.ex_date_q3}</td>
-                <td>{row.ex_date_q4}</td>
+                  <td>{row.year}</td>
+                  <td>{row.company}</td>
+                  <td>{row.sector}</td>
+                  <td>{row.equity_ticker}</td>
+                  <td>{formatNumber(row.share_price, false)}</td>
+                  <td>{row.div_ticker}</td>
+                  <td>{row.p_and_l_fx}</td>
+                  <td>{row.div_future_fx}</td>
+                  <td>{row.index1}</td>
+                  <td>{row.index2}</td>
+                  <td>{row.index3}</td>
+                  <td>{formatNumber(row.dps_z, false)}</td>
+                  <td>{formatNumber(row.current_price_z, false)}</td>
+                  <td>{formatNumber(row.discount_premium_percent, true)}</td>
+                  <td>{formatNumber(row.annual_return_percent, true)}</td>
+                  <td>{formatNumber(row.very_bear_z, false)}</td>
+                  <td>{formatNumber(row.bear_z, false)}</td>
+                  <td>{formatNumber(row.bull_z, false)}</td>
+                  <td>{formatNumber(row.very_bull_z, false)}</td>
+                  <td>{formatNumber(row.risk_adj_dps_z, false)}</td>
+                  <td>{formatNumber(row.net_income, false)}</td>
+                  <td>{formatNumber(row.av_weighted_share_cap, false)}</td>
+                  <td>{formatNumber(row.eps, false)}</td>
+                  <td>{formatNumber(row.dps_fy, false)}</td>
+                  <td>{formatNumber(row.dps_payout_ratio, false)}</td>
+                  <td>{formatNumber(row.op_cash_flow, false)}</td>
+                  <td>{formatNumber(row.capex, false)}</td>
+                  <td>{formatNumber(row.free_cash_flow, false)}</td>
+                  <td>{formatNumber(row.dividend, false)}</td>
+                  <td>{formatNumber(row.share_buyback, false)}</td>
+                  <td>{formatNumber(row.total_capital_return, false)}</td>
+                  <td>{formatNumber(row.net_debt, false)}</td>
+                  <td>{formatNumber(row.share_in_issue, false)}</td>
+                  <td>{formatNumber(row.treasury_shares, false)}</td>
+                  <td>{formatNumber(row.shares_outstanding, false)}</td>
+                  <td>{formatNumber(row.capital_payout_percent, true)}</td>
+                  <td>{formatNumber(row.dps_q1, false)}</td>
+                  <td>{formatNumber(row.dps_q2, false)}</td>
+                  <td>{formatNumber(row.dps_q3, false)}</td>
+                  <td>{formatNumber(row.dps_q4, false)}</td>
+                  <td>{row.ex_date_q1}</td>
+                  <td>{row.ex_date_q2}</td>
+                  <td>{row.ex_date_q3}</td>
+                  <td>{row.ex_date_q4}</td>
                 </tr>
-            ))}
-            {financialData.length === 0 && (
-              <><tr>
-                <td colSpan={44} align='center'>No available data</td>
-                </tr></>
-            )}
+              ))}
+              {financialData.length === 0 && (
+                <tr>
+                  <td colSpan={44} align='center'>No available data</td>
+                </tr>
+              )}
             </tbody>
-        </table>
+          </table>
+        </div>
+        <Pagination page={page} totalPages={totalPages} setPage={setPage} />
       </div>
-      <Pagination page={page} totalPages={totalPages} setPage={setPage} />
-    </div>
-  );
-}else{
-  return <FinancialDataTableSkeleton />
-}
+    );
+  } else {
+    return <FinancialDataTableSkeleton />
+  }
 };
 
 export default FinancialDataTable;

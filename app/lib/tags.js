@@ -1,14 +1,16 @@
 import { sql } from "@vercel/postgres";
 import { NextResponse } from "next/server";
 
-const createTag = async (req, res) => {
+const createTag = async (req, isFormData = true) => {
     try {
-        const { name } = await req.json();
+      var name;
+      if(!isFormData){
+        name = req.name;
+      }else{
+       name = await req.json();
+      }
         const result = await sql`
-          INSERT INTO tags (name)
-          VALUES (${name})
-          RETURNING id, name;
-        `;
+          INSERT INTO tags (name) VALUES (${name}) RETURNING id, name;`;
         return { data: result.rows[0]};
       } catch (error) {
         console.error('Error adding tag:', error);
@@ -29,4 +31,17 @@ const getTags = async (req, res) => {
 };
 
 
-export { createTag, getTags };
+const getTagByName = async (req) => {
+  try {
+    const result = await sql`SELECT * FROM tags WHERE name = ${req.name}`;
+
+    return { data: result.rows };
+
+  } catch (error) {
+    console.error('Error fetching tags:', error);
+    return { error: 'Error fetching tags' };
+  }
+};
+
+
+export { createTag, getTags, getTagByName };

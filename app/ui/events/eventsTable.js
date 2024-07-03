@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { EventsTableSkeleton } from '../skeletons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendar, faEdit, faEye, faList } from '@fortawesome/free-solid-svg-icons';
@@ -17,39 +17,38 @@ const EventsTable = ({query, currentPage, eventAdded}) => {
   const [loading, setLoading] = useState(true);
   const [calendarEvents, setCalendarEvents] = useState([]);
   const [isCalendarView, setIsCalendarView] = useState(false);
+  const initialRender = useRef(true);
 
   useEffect(() => {
     const fetchEvents = async () => {
-        setLoading(true);
-        try {
-          const response = await fetch(`/api/events?&search=${query}&currentPage=${page}&pageSize=${pageSize}`);
-          const data = await response.json();
-          setCompanies(data.data);
-          setTotalRecords(data.totalRecords);
-          setLoading(false);
+      setLoading(true);
+      try {
+        const response = await fetch(`/api/events?&search=${query}&currentPage=${page}&pageSize=${pageSize}`);
+        const data = await response.json();
+        setCompanies(data.data);
+        setTotalRecords(data.totalRecords);
+        setLoading(false);
 
-          //add events to calendar
-            const events = data.data.map((event) => {
-                return {
-                event_id: event.id,
-                title: event.friendly_name,
-                start: new Date(event.start_date),
-                end: new Date(event.end_date),
-                };
-            });
+        // Add events to calendar
+        const events = data.data.map((event) => ({
+          event_id: event.id,
+          title: event.friendly_name,
+          start: new Date(event.start_date),
+          end: new Date(event.end_date),
+        }));
 
-            //push events to calendar
+        setCalendarEvents(events);
+      } catch (error) {
+        setError('Error fetching events');
+        setLoading(false);
+      }
+    };
 
-            setCalendarEvents(events);
-          
-        } catch (error) {
-          setError('Error fetching events');
-          setLoading(false);
-        }
-      };
-  
+    if (initialRender.current) {
+      initialRender.current = false;
+    } else {
       fetchEvents();
-
+    }
   }, [query, page, pageSize, eventAdded]);
 
   const totalPages = Math.ceil(totalRecords / pageSize);
@@ -113,7 +112,9 @@ const EventsTable = ({query, currentPage, eventAdded}) => {
             </tbody>
         </table>
       </div> 
+      {totalRecords > 0 && ( 
       <Pagination page={page} totalPages={totalPages} setPage={setPage} />
+      )}
       </>)}
 
       {isCalendarView && ( <>

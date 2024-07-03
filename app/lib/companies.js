@@ -1,19 +1,30 @@
 import { sql } from "@vercel/postgres";
 import { createCompanyAsNote } from "./clinked/notes";
 
-const createCompany = async (req) => {
-  if (req.method !== 'POST') {
-    return { error: 'Method not allowed' };
-  }
-  
+const createCompany = async (req, isFormData = true) => {
+
   try {
-    const { name, sector_id, tags, template, member_permission } = await req.json();
+    var name, sector_id, tags, template, member_permission;
+    if (!isFormData) {
+      name = req.name;
+      sector_id = req.sector_id;
+      tags = req.tags;
+      template = req.template;
+      member_permission = req.member_permission;
+    }else{
+      const body = await req.json();
+      name = body.name;
+      sector_id = body.sector_id;
+      tags = body.tags;
+      template = body.template;
+      member_permission = body.member_permission;
+    }
 
     if (!name || !sector_id) {
       return { error: 'Name, sector_id and tags are required' };
     }
 
-    await sql`
+    const result = await sql`
       INSERT INTO companies (name, sector_id, tags, template, member_permission, sharing)
       VALUES (${name}, ${sector_id}, ${tags}, ${template}, ${member_permission}, 'MEMBERS');
     `;
@@ -22,12 +33,13 @@ const createCompany = async (req) => {
 
     const clinkedResponse = await createCompanyAsNote({ name, sector_id, tags, template, member_permission });
 
-    return { message: 'Company created successfully' };
+    return { data: result.rows[0]};
   } catch (error) {
     console.error('Error creating company:', error);
     return { error: 'Error creating company' };
   }
 };
+
 
 export async function getCompanies(req) {
   const { searchParams } = new URL(req.url);
@@ -58,6 +70,18 @@ export async function getCompanies(req) {
       currentPage,
       pageSize,
     };
+
+  } catch (error) {
+    console.error('Error fetching companies:', error);
+    return { error: 'Error fetching companies' };
+  }
+};
+
+export async function getCompanyByName(req){
+  try {
+    const result = await sql`SELECT * FROM companies WHERE name = ${req.name}`;
+
+    return { data: result.rows };
 
   } catch (error) {
     console.error('Error fetching companies:', error);

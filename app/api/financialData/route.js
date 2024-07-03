@@ -14,7 +14,8 @@ export async function POST(req) {
   }
 
   try {
-    await uploadFinancialData(req);
+    const fileUploadResponse = await uploadFinancialData(req);
+    console.log('fileUploadResponse', fileUploadResponse);
     return NextResponse.json({ message: 'File processed successfully' }, { status: 201 });
   } catch (error) {
     console.error('Error processing file:', error);
