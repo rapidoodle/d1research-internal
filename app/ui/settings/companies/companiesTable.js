@@ -33,12 +33,7 @@ const CompaniesTable = ({query, currentPage, companyAdded}) => {
       }
     };
 
-
-    if (initialRender.current) {
-      initialRender.current = false;
-    } else {
       fetchCompanies();
-    }
     
   }, [query, page, pageSize, companyAdded]);
 

@@ -43,12 +43,9 @@ const EventsTable = ({query, currentPage, eventAdded}) => {
         setLoading(false);
       }
     };
-
-    if (initialRender.current) {
-      initialRender.current = false;
-    } else {
+    
       fetchEvents();
-    }
+
   }, [query, page, pageSize, eventAdded]);
 
   const totalPages = Math.ceil(totalRecords / pageSize);
