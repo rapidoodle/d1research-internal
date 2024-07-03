@@ -4,9 +4,9 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Search from "@/app/ui/search";
-import NewEventForm from "../ui/events/newEventForm";
 import EventsTable from "../ui/events/eventsTable";
 import { Button, Modal } from "react-bootstrap";
+import NewEventForm from "../ui/events/newEventForm";
 
 export default function Page(searchParams) {
   const query = searchParams.searchParams?.query || '';
