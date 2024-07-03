@@ -6,7 +6,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Search from "@/app/ui/search";
 import EventsTable from "../ui/events/eventsTable";
 import { Button, Modal } from "react-bootstrap";
-import NewEventForm from "../ui/events/newEventForm";
+import NewEventForm from "../ui/events/NewEventForm";
 
 export default function Page(searchParams) {
   const query = searchParams.searchParams?.query || '';
