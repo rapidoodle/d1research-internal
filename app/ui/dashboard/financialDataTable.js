@@ -30,11 +30,7 @@ const FinancialDataTable = ({ query, currentPage, fileUploaded }) => {
       }
     };
 
-    if (initialRender.current) {
-      initialRender.current = false;
-    } else {
       fetchFinancialData();
-    }
     
   }, [query, page, pageSize, fileUploaded]);
 
