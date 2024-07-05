@@ -10,11 +10,13 @@ import { randomUUID } from 'crypto';
 import { createCompanyAsNote } from './clinked/notes';
 import { createTag, getTagByName } from './tags';
 import { createSectors, getSectorByName } from './sectors';
-import { createCompany, getCompanyByName } from './companies';
+import { createCompany, getCompanyByKey, getCompanyByName } from './companies';
+import { getLoggedUser } from './users';
 
 export async function uploadFinancialData (req, res) {
-    const data = await req.formData();
-    const file = data.get('file');
+    const data       = await req.formData();
+    const file       = data.get('file');
+    const loggedUser = await getLoggedUser();
 
     if (!file) {
       return NextResponse.json({ message: 'Please select a file first' }, { status: 400 });
@@ -63,7 +65,7 @@ export async function uploadFinancialData (req, res) {
                 WHERE company = $1 AND year = $2
               `;
               const financialDataResult = await sql.query(financialDataQuery, [company, year]);
-
+              //get logged in user id
               if (financialDataResult.rows.length > 0) {
                 console.log(`Data for ${company} in ${year} already exists`);
               }else{
@@ -75,7 +77,7 @@ export async function uploadFinancialData (req, res) {
                   av_weighted_share_cap, eps, dps_fy, dps_payout_ratio, op_cash_flow, capex, free_cash_flow,
                   dividend, share_buyback, total_capital_return, net_debt, share_in_issue, treasury_shares,
                   shares_outstanding, capital_payout_percent, dps_q1, dps_q2, dps_q3, dps_q4, ex_date_q1,
-                  ex_date_q2, ex_date_q3, ex_date_q4
+                  ex_date_q2, ex_date_q3, ex_date_q4, updated_by
                 ) VALUES (
                   ${row['Year']}, 
                   ${row['Company']}, 
@@ -120,7 +122,8 @@ export async function uploadFinancialData (req, res) {
                   ${row['Ex Date Q1'] ? `'${row['Ex Date Q1']}'` : null}, 
                   ${row['Ex Date Q2'] ? `'${row['Ex Date Q2']}'` : null}, 
                   ${row['Ex Date Q3'] ? `'${row['Ex Date Q3']}'` : null}, 
-                  ${row['Ex Date Q4'] ? `'${row['Ex Date Q4']}'` : null}
+                  ${row['Ex Date Q4'] ? `'${row['Ex Date Q4']}'` : null},
+                  ${loggedUser.id}
                 );`;
 
                 //check sectors table for sector name and insert if not present
@@ -128,7 +131,7 @@ export async function uploadFinancialData (req, res) {
               const sectorResult = await getSectorByName({ name: sector });
               var sectorId = null;
               if (sectorResult.data.length === 0) {
-                const  sectorInsertResponse = await createSectors({ name: sector }, false);
+                const  sectorInsertResponse = await createSectors({ name: sector, updated_by: loggedUser.id  }, false);
                 sectorId = sectorInsertResponse.data.id;
                 console.log('New sector inserted', sectorInsertResponse.data, sectorId);
               }else{
@@ -152,10 +155,8 @@ export async function uploadFinancialData (req, res) {
               
               const companyResult = await getCompanyByName({ name: company });
               
-              console.log(companyResult.data.length, companyResult.data);
-
               if (companyResult.data.length === 0) {
-                const createCompanyResponse = await createCompany({ name: company, sector_id: sectorId, tags: tags, template: false, member_permission: 1 }, false); 
+                const createCompanyResponse = await createCompany({ name: company, sector_id: sectorId, tags: tags, template: false, member_permission: 1, updated_by: loggedUser.id }, false); 
                 console.log('New company inserted', createCompanyResponse);
               }else{
                 console.log('Company already exists', companyResult.data);
@@ -163,10 +164,11 @@ export async function uploadFinancialData (req, res) {
 
               //check if Equity Ticker is present in tags table and insert if not present
             const equityTicker = row['Equity Ticker'];
+            
             if(equityTicker){
               const equityTickerRes = await getTagByName({ name: equityTicker });
               if(equityTickerRes.data.length === 0){
-                let equityTickerTagResponse = await createTag({ name: equityTicker }, false);
+                let equityTickerTagResponse = await createTag({ name: equityTicker, updated_by: loggedUser.id }, false);
                 console.log(equityTickerTagResponse);
               }else{
                 console.log(`${equityTicker} already exists`);
@@ -178,7 +180,7 @@ export async function uploadFinancialData (req, res) {
             if(divTicker){
               const divTickerRes = await getTagByName({ name: divTicker });
               if(divTickerRes.data.length === 0){
-                let divTagResponse = await createTag({ name: divTicker }, false);
+                let divTagResponse = await createTag({ name: divTicker, updated_by: loggedUser.id }, false);
                 console.log(divTagResponse);
               }else{
                 console.log(`${divTicker} already exists`);
@@ -190,7 +192,7 @@ export async function uploadFinancialData (req, res) {
             if(index1){
               const index1TickerRes = await getTagByName({ name: index1 });
               if(index1TickerRes.data.length === 0){
-                let index1TagResponse = await createTag({ name: index1 }, false);
+                let index1TagResponse = await createTag({ name: index1, updated_by: loggedUser.id }, false);
                 console.log(index1TagResponse);
               }else{
                 console.log(`${index1} already exists`);
@@ -202,7 +204,7 @@ export async function uploadFinancialData (req, res) {
             if(index2){
               const index2TickerRes = await getTagByName({ name: index2 });
               if(index2TickerRes.data.length === 0){
-                let index2TagResponse = await createTag({ name: index2 }, false);
+                let index2TagResponse = await createTag({ name: index2, updated_by: loggedUser.id }, false);
                 console.log(index2TagResponse);
               }else{
                 console.log(`${index2} already exists`);
@@ -214,7 +216,7 @@ export async function uploadFinancialData (req, res) {
             if(index3){
               const index3TickerRes = await getTagByName({ name: index3 });
               if(index3TickerRes.data.length === 0){
-                let index3TagResponse = await createTag({ name: index3 }, false);
+                let index3TagResponse = await createTag({ name: index3, updated_by: loggedUser.id }, false);
                 console.log(index3TagResponse);
               }else{
                 console.log(`${index3} already exists`);
@@ -237,6 +239,22 @@ export async function uploadFinancialData (req, res) {
 
     return NextResponse.json({ message: 'File processed and data inserted successfully'});
 };
+
+export async function getFinancialDataByCompanyKey(unique_url_key){
+  //get company data from companies table using unique_url_key
+  const companyResult = await getCompanyByKey(unique_url_key);
+
+  //fetch financial data for the company, fetch latest 4 only
+  const financialDataQuery = `
+    SELECT * FROM financial_data
+    WHERE company = $1
+    ORDER BY year DESC
+  `;
+
+  const financialDataResult = await sql.query(financialDataQuery, [companyResult.data.name]);
+
+  return financialDataResult.rows;
+}
 
 export async function getFinancialData(req) {
   const { searchParams } = new URL(req.url);

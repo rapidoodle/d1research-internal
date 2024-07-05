@@ -23,7 +23,7 @@
     margin-top: 20px;
   }
   
-  .dps-forecast, .risk-scenarios, .overview-financials, .share-capital, .total-cap-return, .analyst-comments, .management-statement, .capital-return-policy, .upcoming-events, .dps-calendar, .ex-div-calendar, .peer-comparison {
+  .risk-scenarios, .overview-financials, .share-capital, .total-cap-return, .analyst-comments, .management-statement, .capital-return-policy, .upcoming-events, .dps-calendar, .ex-div-calendar, .peer-comparison {
     margin-bottom: 20px;
   }
   
@@ -31,11 +31,25 @@
     width: 100%;
     border-collapse: collapse;
   }
+  .card{
+    padding:1.2rem!important
+  }
 
+  .bg-gray{
+    background-color: #CBD5D3;
+    color: #1D322B;
+  }
 
-  .financial-overview th, td, p, .analyst-comments ul > li, h4 {
+  .financial-overview th, td, p, .analyst-comments ul > li {
     padding: 8px;
     color: #2F5651;
+    margin-bottom: 0;
+  }
+  hr{
+    margin-top:1rem!important;
+    margin-bottom:1rem!important;
+  }
+  h4{
     margin-bottom: 0;
   }
   
@@ -55,7 +69,7 @@
   }
   /*add padding left to all the td in left side of the table
     and padding right to all the td in right side of the table*/
-    table tbody tr td:first-child {
+    table tbody tr td:first-child,  table thead tr th:first-child {
         padding-left: 2rem;
     }
 

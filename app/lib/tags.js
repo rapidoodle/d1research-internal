@@ -1,16 +1,20 @@
 import { sql } from "@vercel/postgres";
 import { NextResponse } from "next/server";
+import { getLoggedUser } from "./users";
 
+var userId = await getLoggedUser().id;
 const createTag = async (req, isFormData = true) => {
+  
     try {
       var name;
       if(!isFormData){
         name = req.name;
+        userId = req.updated_by;
       }else{
        name = await req.json();
       }
         const result = await sql`
-          INSERT INTO tags (name) VALUES (${name}) RETURNING id, name;`;
+          INSERT INTO tags (name, updated_by) VALUES (${name}, ${userId}) RETURNING id, name;`;
         return { data: result.rows[0]};
       } catch (error) {
         console.error('Error adding tag:', error);

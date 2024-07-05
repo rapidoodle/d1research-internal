@@ -54,7 +54,10 @@ async function seedFinancialData(client) {
         ex_date_q1 DATE,
         ex_date_q2 DATE,
         ex_date_q3 DATE,
-        ex_date_q4 DATE
+        ex_date_q4 DATE,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_by UUID NOT NULL
       );
     `;
 
@@ -89,7 +92,9 @@ async function seedCompanies(client) {
         member_permission INT,
         sector_id INT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_by UUID NOT NULL,
+        unique_url_key UUID DEFAULT uuid_generate_v4() UNIQUE
       );
       `;
   
@@ -126,7 +131,8 @@ async function seedEvents(client) {
         friendly_name VARCHAR(255),
         tags TEXT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_by UUID NOT NULL
       );
       `;
   
@@ -150,7 +156,10 @@ async function seedSectors(client) {
       const createTable = await client.sql`
       CREATE TABLE sectors (
         id SERIAL PRIMARY KEY,
-        name VARCHAR(255) UNIQUE NOT NULL
+        name VARCHAR(255) UNIQUE NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_by UUID NOT NULL
       );
       `;
   
@@ -174,7 +183,10 @@ async function seedTags(client) {
       const createTable = await client.sql`
       CREATE TABLE tags (
         id SERIAL PRIMARY KEY,
-        name VARCHAR(255) UNIQUE NOT NULL
+        name VARCHAR(255) UNIQUE NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_by UUID NOT NULL
       );
       `;
   
@@ -196,12 +208,13 @@ async function seedUsers(client) {
     await client.sql`DROP TABLE IF EXISTS users`;
     // Create the "users" table if it doesn't exist
     const createTable = await client.sql`
-      CREATE TABLE IF NOT EXISTS users (
+      CREATE TABLE users (
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
         email TEXT NOT NULL UNIQUE,
         access_level INT NOT NULL DEFAULT 1,
-        password TEXT NOT NULL
+        password TEXT NOT NULL,
+        updated_by UUID NOT NULL
       );
     `;
 
@@ -210,12 +223,14 @@ async function seedUsers(client) {
     // Insert data into the "users" table
     const hashedPassword = await bcrypt.hash('123456', 10);
     const insertedUsers =  await client.sql`
-        INSERT INTO users (name, email, password, access_level)
-        VALUES ('Ralfh Bryan Perez', 'rperez@d1research.com', ${hashedPassword}, 1), ('Thomas Aaby', 'taaby@d1research.com', ${hashedPassword}, 1)
-        ON CONFLICT (id) DO NOTHING;
+        INSERT INTO users (name, email, password, access_level, updated_by)
+        VALUES 
+          ('Ralfh Bryan Perez', 'rperez@d1research.com', ${hashedPassword}, 1, uuid_generate_v4()), 
+          ('Thomas Aaby', 'taaby@d1research.com', ${hashedPassword}, 1, uuid_generate_v4())
+        ON CONFLICT (email) DO NOTHING;
       `;
 
-    console.log(`Seeded ${insertedUsers.length} users`);
+    console.log(`Seeded users`);
 
     return {
       createTable,
@@ -227,6 +242,105 @@ async function seedUsers(client) {
   }
 }
 
+async function seedUserAccess(client) {
+  try {
+    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+    await client.sql`DROP TABLE IF EXISTS user_access`;
+    const createTable = await client.sql`
+      CREATE TABLE user_access (
+        id SERIAL PRIMARY KEY,
+        access_level VARCHAR(255) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `;
+
+    console.log(`Created "user_access" table`);
+
+    // Insert default values
+    const insertDefaults = await client.sql`
+      INSERT INTO user_access (access_level)
+      VALUES
+        ('Admin'),
+        ('Analyst'),
+        ('Researcher');
+    `;
+
+    console.log(`Inserted default values into "user_access" table`);
+
+    return {
+      createTable,
+      insertDefaults
+    };
+  } catch (error) {
+    console.error('Error seeding user_access:', error);
+    throw error;
+  }
+}
+
+async function seedAnalystsComments(client) {
+  try {
+    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+    await client.sql`DROP TABLE IF EXISTS analysts_comments`;
+    const createTable = await client.sql`
+      CREATE TABLE analysts_comments (
+        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+        company_id UUID NOT NULL,
+        comment TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_by UUID NOT NULL
+      );
+    `;
+
+    console.log(`Created "analysts_comments" table`);
+
+    return {
+      createTable
+    };
+  } catch (error) {
+    console.error('Error seeding analysts_comments:', error);
+    throw error;
+  }
+}
+
+async function seedLatestManagementStatement(client) {
+  try {
+    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+    await client.sql`DROP TABLE IF EXISTS latest_management_statement`;
+  } catch (error) {
+    console.error('Error seeding latest_management_statement:', error);
+    throw error;
+  }
+}
+
+async function seedCapitalReturnPolicy(client) {
+  try {
+    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+    await client.sql`DROP TABLE IF EXISTS capital_return_policy`;
+    const createTable = await client.sql`
+      CREATE TABLE capital_return_policy (
+        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+        company_id UUID NOT NULL,
+        policy TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_by UUID NOT NULL
+      );
+    `;
+
+    console.log(`Created "capital_return_policy" table`);
+
+    return {
+      createTable
+    };
+  } catch (error) {
+    console.error('Error seeding capital_return_policy:', error);
+    throw error;
+  }
+}
+
+
 async function main() {
   const client = await db.connect();
 
@@ -234,8 +348,13 @@ async function main() {
   await seedCompanies(client);
   await seedTags(client);
   await seedEvents(client);
-  // await seedUsers(client);
+  await seedUsers(client);
   await seedSectors(client);
+  await seedUserAccess(client);
+  await seedAnalystsComments(client);
+  // await seedLatestManagementStatement(client);
+  await seedCapitalReturnPolicy(client);
+
 
   await client.end();
 }

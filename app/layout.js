@@ -1,19 +1,20 @@
 
 import 'bootstrap/dist/css/bootstrap.css';
 import './styles/custom-bootstrap.css';
-import "./globals.css";
+import "./styles/globals.css";
 import { Inter } from "next/font/google";
 import { Montserrat } from 'next/font/google';
 import { Roboto } from 'next/font/google';
 import BootstrapClient from './components/BootstrapClient.js';
 import SideNav from './components/SideNav';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/auth';
 import Signout from './components/Signout';
 import Script from 'next/script';
 import ToastComponent from './components/Toast';
+import { authOptions } from './api/auth/[...nextauth]/route';
 
 const roboto = Roboto({ subsets: ["latin"], weight: ['100', '300', '400', '500', '700', '900']});
+const montserrat = Montserrat({ subsets: ["latin"], weight: ['100', '300', '400', '500', '700', '900']});
 
 export const metadata = {
   title: "D1RESEARCH INTERNAL SYSTEM",
@@ -22,11 +23,11 @@ export const metadata = {
 
 export default async function RootLayout({ children }) {
   const session = await getServerSession(authOptions);
-
+  
   return (
     <html lang="en">
       <Script src="https://cdn.tiny.cloud/1/91bcdbfny5tnu8bq25au5l90anmsln11hures27u8oek7aid/tinymce/7/tinymce.min.js" referrerpolicy="origin"></Script>
-      <body className={roboto.className}>
+      <body className={montserrat.className}>
         <div className="container-fluid">
           <div className="row">
             {session && (
@@ -41,8 +42,8 @@ export default async function RootLayout({ children }) {
                   <div className="w-100 d-flex justify-content-between align-items-center p-3">
                     <div></div>
                     <div className='d-flex'>
-                      <a className="nav-link text-white me-3" href="#">
-                      {session?.user.name}
+                      <a className="nav-link me-3" href="#">
+                      {session.user.name}
                       </a> 
                       <Signout />
                     </div>

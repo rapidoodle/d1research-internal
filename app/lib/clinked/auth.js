@@ -29,7 +29,6 @@ export async function authenticate() {
 
 export async function getAccessToken(){
     const session = await getSession();
-
     if(session && session.access_token){
         return session.access_token;
     }else{

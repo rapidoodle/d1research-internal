@@ -27,9 +27,10 @@ export default function NewEventForm({ onEventAdded }) {
                 const response = await fetch('/api/companies');
                 const data = await response.json();
 
-                const formattedOptions = data.data.map(tag => ({
-                    value: tag.company_id,
-                    label: tag.company
+                const formattedOptions = data.data.map(company => ({
+                    value: company.company_id,
+                    tags: company.tags,
+                    label: company.company
                 }));
 
                 setCompaniesOptions(formattedOptions);
@@ -48,12 +49,13 @@ export default function NewEventForm({ onEventAdded }) {
                 const response = await fetch('/api/tags');
                 const data = await response.json();
                 const formattedOptions = data.data.map(tag => ({
-                    value: tag.company_id,
+                    value: tag.id,
                     label: tag.name
                 }));
 
                 setTagsOptions(formattedOptions);
                 setLoading(false);
+
             } catch (error) {
                 console.error('Error fetching tags:', error);
                 setLoading(false);
@@ -122,7 +124,7 @@ export default function NewEventForm({ onEventAdded }) {
             e.target.startDate.value = '';
             e.target.endDate.value = '';
             e.target.color.value = '';
-            setSelectedTags(null);
+            setSelectedTags([]);
             setDescription('');
             tagsCreatableSelectRef.current.clearSelection();
             onEventAdded();
@@ -147,8 +149,17 @@ export default function NewEventForm({ onEventAdded }) {
     }
 
     const handleSelectCompany = (selectedOption) => {
-        console.log(selectedOption)
         setSelectedCompany(selectedOption.value);
+        
+        // parse selectedOption.tags from comma separated string to array of objects and remove white spaces
+        const tags = selectedOption.tags.split(',').map(tag => tag.trim());
+        
+        //find each tag in tagsOptions and add all tags to selectedTags
+        const newTags = tags.map(tag => tagsOptions.find(option => option.label === tag));
+
+        // add new tags to selectedTags
+        setSelectedTags(newTags);
+
     }
 
     const handleCreateTag = async (inputValue, setSelectedOption) => {
@@ -186,7 +197,7 @@ export default function NewEventForm({ onEventAdded }) {
         }
     };
 
-    const handleSelectTag = (selectedOptions, setSelectedOption) => {
+    const handleSelectTag = (selectedOptions, setSelectedOption) => { 
         setSelectedOption(selectedOptions);
         setSelectedTags(selectedOptions);
     };
@@ -253,6 +264,7 @@ export default function NewEventForm({ onEventAdded }) {
                                     onCreate={handleCreateTag} 
                                     ref={tagsCreatableSelectRef}
                                     onSelect={handleSelectTag} 
+                                    selectedTags={selectedTags}
                                 />
                             </div>
                         </div>

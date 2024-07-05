@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { uploadFinancialData, getFinancialData, updateFinancialData, deleteFinancialData } from '@/app/lib/financialData';
+import { uploadFinancialData, getFinancialData, updateFinancialData, deleteFinancialData, getFinancialDataByCompanyKey } from '@/app/lib/financialData';
 
 
 export const routeSegmentConfig = {
@@ -28,14 +28,32 @@ export async function GET(req) {
     return NextResponse.json({ message: 'Method not allowed' }, { status: 405 });
   }
 
-  try {
-    const data = await getFinancialData(req);
-    if (data.error) {
-      return NextResponse.json({ message: data.error }, { status: 500 });
+  const { searchParams } = new URL(req.url);
+  const uniqueUrlKey = searchParams.get('unique_url_key');
+
+  if(!uniqueUrlKey) {
+    try {
+      const data = await getFinancialData(req);
+      
+      if (data.error) {
+        return NextResponse.json({ message: data.error }, { status: 500 });
+      }
+      return NextResponse.json(data);
+    } catch (error) {
+      console.error('Error fetching financial data:', error);
+      return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
     }
-    return NextResponse.json(data);
-  } catch (error) {
-    console.error('Error fetching financial data:', error);
-    return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
+  }else{
+    try {
+      const data = await getFinancialDataByCompanyKey(uniqueUrlKey);
+
+      if (data.error) {
+        return NextResponse.json({ message: data.error }, { status: 500 });
+      }
+      return NextResponse.json(data);
+    } catch (error) {
+      console.error(`Error fetching financial data for : ${uniqueUrlKey}`, error);
+      return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
+    }
   }
 }

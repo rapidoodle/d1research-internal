@@ -1,9 +1,15 @@
 'use client';
-import React, { useState, forwardRef, useImperativeHandle } from "react";
+import React, { useState, forwardRef, useImperativeHandle, useEffect } from "react";
 import CreatableSelect from 'react-select/creatable';
 
-const TagsSelectElement = forwardRef(({ options, onCreate, onSelect }, ref) => {
-  const [selectedOptions, setSelectedOptions] = useState([]);
+const TagsSelectElement = forwardRef(({ options, onCreate, onSelect, selectedTags }, ref) => {
+  
+  const [selectedOptions, setSelectedOptions] = useState(selectedTags);
+
+  useEffect(() => {
+    setSelectedOptions(selectedTags);
+    console.log(selectedTags);
+  }, [selectedTags]);
 
   useImperativeHandle(ref, () => ({
     clearSelection() {
@@ -55,7 +61,7 @@ const TagsSelectElement = forwardRef(({ options, onCreate, onSelect }, ref) => {
         onChange={handleChange}
         onCreateOption={handleCreate}
         options={options}
-        value={selectedOptions}
+        value={selectedTags}
         isMulti
         styles={customStyles}
         classNamePrefix="react-select"

@@ -95,7 +95,7 @@ export const cleanCompanyName = (word) => {
 export const formatNumber = (number, isPercent) => {
   //check if number or string is passed
   if(!number){
-    return ;
+    return "-" ;
   }else{
 
     if(number === 'NaN'){
@@ -110,5 +110,37 @@ export const formatNumber = (number, isPercent) => {
     }
   
     return finalNumber;
+  }
+}
+
+export const formatCompanyData = ( data, isPercent = false, isComma = true ) => {
+  if(!data){
+    return "-"
+  }
+
+  if(isPercent){
+    return data + '%';
+  }
+
+  //add comma and space
+  if(isComma){
+    return data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  return data;
+}
+
+//function to format current with comma, dollar sign and 2 decimal places
+export const formatCurrencyWithDollar = (amount) => {
+
+  if(!amount){
+    return "-";
+  }else{
+    //convert amount to number
+    const num = Number(amount);
+    return num.toLocaleString('en-US', {
+      style: 'currency',
+      currency: 'USD',
+    });
   }
 }

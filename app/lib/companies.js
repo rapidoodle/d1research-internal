@@ -1,6 +1,8 @@
 import { sql } from "@vercel/postgres";
 import { createCompanyAsNote } from "./clinked/notes";
+import { getLoggedUser } from "./users";
 
+var userId = await getLoggedUser().id;
 const createCompany = async (req, isFormData = true) => {
 
   try {
@@ -11,6 +13,7 @@ const createCompany = async (req, isFormData = true) => {
       tags = req.tags;
       template = req.template;
       member_permission = req.member_permission;
+      userId = req.updated_by;
     }else{
       const body = await req.json();
       name = body.name;
@@ -25,13 +28,15 @@ const createCompany = async (req, isFormData = true) => {
     }
 
     const result = await sql`
-      INSERT INTO companies (name, sector_id, tags, template, member_permission, sharing)
-      VALUES (${name}, ${sector_id}, ${tags}, ${template}, ${member_permission}, 'MEMBERS');
+      INSERT INTO companies (name, sector_id, tags, template, member_permission, sharing, updated_by)
+      VALUES (${name}, ${sector_id}, ${tags}, ${template}, ${member_permission}, 'MEMBERS', ${userId})
+      RETURNING unique_url_key;
     `;
+    const uniquerURLKey = result.rows[0].unique_url_key
 
+    console.log('uniquerURLKey', uniquerURLKey);
     // if success, send company to clinked
-
-    const clinkedResponse = await createCompanyAsNote({ name, sector_id, tags, template, member_permission });
+     await createCompanyAsNote({ name, sector_id, tags, template, member_permission, uniquerURLKey });
 
     return { data: result.rows[0]};
   } catch (error) {
@@ -39,6 +44,19 @@ const createCompany = async (req, isFormData = true) => {
     return { error: 'Error creating company' };
   }
 };
+
+export async function getCompanyByKey(uniqueURLKey) {
+  try {
+    const query = `SELECT * FROM companies WHERE unique_url_key = $1`;
+    const result = await sql.query(query, [uniqueURLKey]);
+
+    return { data: result.rows[0] };
+  } catch (error) {
+    console.error('Error fetching company:', error);
+    return { error: 'Error fetching company' };
+  }
+}
+
 
 
 export async function getCompanies(req) {
@@ -49,17 +67,14 @@ export async function getCompanies(req) {
 
   try {
     const offset = (currentPage - 1) * pageSize;
-    const query = `SELECT c.id as company_id, c.name as company, s.name as sector, c.tags
+    const query = `SELECT c.id as company_id, c.unique_url_key as url_key, c.name as company, s.name as sector, c.tags
     FROM companies c LEFT JOIN sectors s ON c.sector_id = s.id
      WHERE c.name ILIKE $1 LIMIT $2 OFFSET $3`;
      
     const values = [`%${search}%`, pageSize, offset];
     const result = await sql.query(query, values);
     
-    const totalQuery = `
-      SELECT COUNT(*) FROM companies
-      WHERE name ILIKE $1
-    `;
+    const totalQuery = `SELECT COUNT(*) FROM companies WHERE name ILIKE $1`;
 
     const totalResult = await sql.query(totalQuery, [`%${search}%`]);
     const totalRecords = parseInt(totalResult.rows[0].count, 10);

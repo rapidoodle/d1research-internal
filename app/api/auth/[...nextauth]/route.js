@@ -3,10 +3,8 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { compare } from 'bcryptjs';
 import { sql } from '@vercel/postgres';
 import { authenticate } from '@/app/lib/clinked/auth';
-import Cookies from 'js-cookie';
-import { NextResponse } from 'next/server';
 
-const handler = NextAuth({
+const authOptions = {
   session: {
     strategy: 'jwt',
   },
@@ -51,14 +49,16 @@ const handler = NextAuth({
             if (!clinkAuthResponse.access_token || !clinkAuthResponse.refresh_token) {
               throw new Error('Failed to retrieve tokens from Clinked');
             }
-
-            return {
+            const response = {
               id: user.id,
               email: user.email,
               name: user.name,
-              access_token: user.access_token,
-              refresh_token: user.refresh_token,
-            };
+              access_token: clinkAuthResponse.access_token,
+              refresh_token: clinkAuthResponse.refresh_token,
+            }
+
+            console.log('LOGIN RESPONSE: ', response);
+            return response;
           } else {
             throw new Error('Invalid password');
           }
@@ -78,15 +78,21 @@ const handler = NextAuth({
       return token;
     },
     async session({ session, token }) {
-      session.user.id = token.id;
-      session.access_token = token.access_token;
-      session.refresh_token = token.refresh_token;
-      
+      if (token) {
+        session.user.id = token.id;
+        session.user.name = token.name;
+        session.user.email = token.email;
+        session.access_token = token.access_token;
+        session.refresh_token = token.refresh_token;
+      }
+
       return session;
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
   debug: process.env.NODE_ENV === 'development',
-});
+}; 
 
-export { handler as GET, handler as POST };
+const handler = NextAuth(authOptions);
+
+export { handler as GET, handler as POST, authOptions };

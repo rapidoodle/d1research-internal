@@ -9,7 +9,7 @@ export async function createCompanyAsNote(reqData) {
       const accessToken = await getAccessToken();
       
       // Define the iframe URL, name should replace space with underscore
-      const iframe_url = `https://internal.d1research.com/companies/${reqData.name.toLowerCase().replace(/\s+/g, '_')}`;
+      const iframe_url = `https://internal.d1research.com/companies/${reqData.uniquerURLKey}`;
     //   Define the request body for the API call
       const body = {
         friendlyName: reqData.name,
@@ -31,7 +31,7 @@ export async function createCompanyAsNote(reqData) {
         body: JSON.stringify(body)
       });
       
-      console.log('response create: ', response);
+      console.log('clinked response create: ', response);
 
       // Check if the response is not OK
       if (!response.ok) {

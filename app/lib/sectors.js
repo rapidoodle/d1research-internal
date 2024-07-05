@@ -1,6 +1,8 @@
 import { sql } from "@vercel/postgres";
 import { NextResponse } from "next/server";
+import { getLoggedUser } from "./users";
 
+var userId = await getLoggedUser().id;
 const createSectors = async (req, isFormData = true) => {
     try {
       var name;
@@ -8,12 +10,15 @@ const createSectors = async (req, isFormData = true) => {
         name = await req.json();
       }else{
         name = req.name;
+        userId = req.updated_by;
       }
+      
+      console.log('user id in sector: ', userId);
 
       const result = await sql`
-        INSERT INTO sectors (name)
-        VALUES (${name})
-        RETURNING id, name;
+        INSERT INTO sectors (name, updated_by)
+        VALUES (${name}, ${userId})
+        RETURNING id, name, updated_by;
       `;
       
       return { data: result.rows[0]};
