@@ -2,8 +2,8 @@ import { sql } from "@vercel/postgres";
 import { NextResponse } from "next/server";
 import { getLoggedUser } from "./users";
 
-var userId = await getLoggedUser().id;
 const createTag = async (req, isFormData = true) => {
+    var userId = await getLoggedUser().id;
   
     try {
       var name;

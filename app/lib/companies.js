@@ -2,9 +2,9 @@ import { sql } from "@vercel/postgres";
 import { createCompanyAsNote } from "./clinked/notes";
 import { getLoggedUser } from "./users";
 
-var userId = await getLoggedUser().id;
 const createCompany = async (req, isFormData = true) => {
-
+  var userId = await getLoggedUser().id;
+  
   try {
     var name, sector_id, tags, template, member_permission;
     if (!isFormData) {

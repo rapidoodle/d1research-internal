@@ -19,6 +19,8 @@ import ShareCapital from './ShareCapiltal';
 import ExDivCalendar from './ExDivCalendar';
 import TotalCapitalReturn from './TotalCapitalReturn';
 import PeerComparisonDPSPayoutRatio from './PeerComparisonDPSPayoutRatio';
+
+
 export default function CompanyOverview() {
   //fetch latest 4 company using the unique url key from the url
   const pathname = usePathname();

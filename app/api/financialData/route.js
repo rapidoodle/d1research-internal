@@ -1,12 +1,6 @@
 import { NextResponse } from 'next/server';
-import { uploadFinancialData, getFinancialData, updateFinancialData, deleteFinancialData, getFinancialDataByCompanyKey } from '@/app/lib/financialData';
+import { uploadFinancialData, getFinancialData, getFinancialDataByCompanyKey } from '@/app/lib/financialData';
 
-
-export const routeSegmentConfig = {
-    api: {
-        bodyParser: false,
-    },
-};
 
 export async function POST(req) {
   if (req.method !== 'POST') {
