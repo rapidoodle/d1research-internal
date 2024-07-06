@@ -1,8 +1,0 @@
-{
-    "functions": {
-      "api/financialData/route.js": {
-        "maxDuration": 300
-      }
-    }
-  }
-  
