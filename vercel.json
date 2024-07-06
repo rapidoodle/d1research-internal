@@ -1,6 +1,6 @@
 {
     "functions": {
-      "api/financialData/**/*.js": {
+      "api/financialData/route.js": {
         "maxDuration": 300
       }
     }
