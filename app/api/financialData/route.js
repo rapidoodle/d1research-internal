@@ -1,7 +1,11 @@
 import { NextResponse } from 'next/server';
 import { uploadFinancialData, getFinancialData, getFinancialDataByCompanyKey } from '@/app/lib/financialData';
 
-
+// This function can run for a maximum of 5 seconds
+export const config = {
+  maxDuration: 5000,
+};
+ 
 export async function POST(req) {
   if (req.method !== 'POST') {
     return NextResponse.json({ message: 'Method not allowed' }, { status: 405 });

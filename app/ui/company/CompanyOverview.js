@@ -107,7 +107,7 @@ export default function CompanyOverview() {
           </div>
         {/* ROW 1 */}
         <div className="row mb-4 mt-2 d-flex">
-          <div className='col-sm-6 d-flex'>
+          <div className='col-md-6 d-flex'>
             <D1DPSForecast 
               zFirst={zFirst}
               zSecond={zSecond}
@@ -115,7 +115,7 @@ export default function CompanyOverview() {
               zFourth={zFourth}
              />
           </div>
-          <div className='col-sm-6 d-flex'>
+          <div className='col-md-6 d-flex'>
             <CapitalReturnPolicy  
               zFirst={zFirst}
               zSecond={zSecond}
@@ -127,7 +127,7 @@ export default function CompanyOverview() {
 
         {/* ROW 2 */}
         <div className="row mb-4 d-flex">
-          <div className='col-sm-6 d-flex'>
+          <div className='col-md-6 d-flex'>
             <RiskScenarios
               zFirst={zFirst}
               zSecond={zSecond}
@@ -135,14 +135,14 @@ export default function CompanyOverview() {
               zFourth={zFourth} 
             />
           </div>
-          <div className='col-sm-6 d-flex'>
+          <div className='col-md-6 d-flex'>
             <AnalystComments />
           </div>
         </div>
         
         {/* ROW 3 */}
         <div className="row mb-4 d-flex">
-          <div className='col-sm-6 d-flex'>
+          <div className='col-md-6 d-flex'>
             <OverviewFinancials
               zFirst={zFirst}
               zSecond={zSecond}
@@ -150,7 +150,7 @@ export default function CompanyOverview() {
               zFourth={zFourth}
             />
           </div>
-          <div className='col-sm-6 d-flex flex-column'>
+          <div className='col-md-6 d-flex flex-column'>
             <UpcomingEvents />
 
             <DPSCalendar 
@@ -160,7 +160,7 @@ export default function CompanyOverview() {
         
         {/* ROW 4 */}
         <div className="row mb-4 d-flex">
-          <div className='col-sm-6 d-flex'>
+          <div className='col-md-6 d-flex'>
             <ShareCapital 
               zFirst={zFirst}
               zSecond={zSecond}
@@ -168,14 +168,14 @@ export default function CompanyOverview() {
               zFourth={zFourth}
             />
           </div>
-          <div className='col-sm-6 d-flex'>
+          <div className='col-md-6 d-flex'>
             <ExDivCalendar allData={allData} />
           </div>
         </div>
         
         {/* ROW 5 */}
         <div className="row mb-4 d-flex">
-          <div className='col-sm-6 d-flex'>
+          <div className='col-md-6 d-flex'>
             <TotalCapitalReturn 
               zFirst={zFirst}
               zSecond={zSecond}
@@ -183,7 +183,7 @@ export default function CompanyOverview() {
               zFourth={zFourth}
             />
           </div>
-          <div className='col-sm-6 d-flex'>
+          <div className='col-md-6 d-flex'>
             <PeerComparisonDPSPayoutRatio
               zFirst={zFirst}
               zSecond={zSecond}
@@ -191,6 +191,10 @@ export default function CompanyOverview() {
               zFourth={zFourth}
             />
           </div>
+        </div>
+        <div className='footer'>
+          <p className='text-bold'>Disclaimer</p>
+          <p>The information contained in this presentation is confidential. D1 Research GmbH shall not be liable to any recipient for any inaccuracies or omissions and have no liability in respect of any loss or damage suffered by any recipient in connection with any information provided.</p>
         </div>
       </div>
       </>

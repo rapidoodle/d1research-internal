@@ -68,7 +68,7 @@ table > thead > th {
   color: #f8f9fa;
 }
 .company-page{
-  width: 2000px;
+  max-width: 1800px;
   border:1px solid #dee2e6;
   background-color: #FEFCF8;
   color: #2F5651;

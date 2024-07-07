@@ -114,26 +114,28 @@ export const formatNumber = (number, isPercent) => {
 }
 
 export const formatCompanyData = ( data, isPercent = false, isComma = true ) => {
-  if(!data){
+  if(!data || data === 'NaN'){
     return "-"
   }
 
+
+  var num = Number(data);
   if(isPercent){
-    return data + '%';
+    return num.toFixed(2) + '%';
   }
 
   //add comma and space
   if(isComma){
-    return data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
-  return data;
+  return num.toFixed(2);
 }
 
 //function to format current with comma, dollar sign and 2 decimal places
 export const formatCurrencyWithDollar = (amount) => {
 
-  if(!amount){
+  if(!amount || amount === 'NaN'){
     return "-";
   }else{
     //convert amount to number
