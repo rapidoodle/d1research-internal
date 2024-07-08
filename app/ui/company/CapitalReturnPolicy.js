@@ -20,6 +20,8 @@ export default function CapitalReturnPolicy({uniqueURLKey, companyID, session}) 
     const userSession = JSON.parse(session.value);
     const commentLimit = 3;
 
+    console.log(session)
+
     const handleShow = () => setShowModal(true);
     const handleClose = () => setShowModal(false);
 
