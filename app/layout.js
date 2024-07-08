@@ -31,11 +31,11 @@ export default async function RootLayout({ children }) {
         <div className="container-fluid">
           <div className="row">
             {session && (
-              <nav className="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+              <nav className="col-md-3 col-lg-3 d-md-block bg-light sidebar">
                 <SideNav />
               </nav>
             )}
-            <div className={`col-12 ${session ? 'col-md-9 ms-sm-auto col-lg-10' : ''}`}>
+            <div className={`col-12 ${session ? 'col-md-9 ms-sm-auto col-lg-9' : ''}`}>
             {session && (
               <nav className="navbar navbar-expand-lg navbar-light bg-light text-white mb-3 d-none d-md-block">
                 <div className="container-fluid">

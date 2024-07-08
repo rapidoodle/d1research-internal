@@ -19,9 +19,8 @@ import TotalCapitalReturn from './TotalCapitalReturn';
 import PeerComparisonDPSPayoutRatio from './PeerComparisonDPSPayoutRatio';
 
 export default function CompanyOverview({session}) {
-  //fetch latest 4 company using the unique url key from the url
   const pathname = usePathname();
-  const router = useRouter()
+  const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [zFirst, setZFirst] = useState([]);
   const [zSecond, setZSecond] = useState([]);
@@ -30,60 +29,89 @@ export default function CompanyOverview({session}) {
   const [allData, setAllData] = useState([]);
   const [uniqueUrlKey, setUniqueUrlKey] = useState('');
   const [companyID, setCompanyID] = useState('');
+  const [companies, setCompanies] = useState([]);
+  const [selectedCompany, setSelectedCompany] = useState(null);
+  const [showCompanyList, setShowCompanyList] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
-    const fetchCompany = async () => {
+    const fetchCompanies = async () => {
       const url = pathname.split('/');
       const urlKey = url[url.length - 1];
       const cID = url[url.length - 2];
 
-      if(!validate(urlKey)){
-        //redirect to home page
+      if (!validate(urlKey)) {
+        // Redirect to home page
         router.push("/settings/companies");
+        return;
       }
 
+      // Fetch companies
       try {
-        const response = await fetch(`/api/financial-data/?company_id=${cID}&unique_url_key=${urlKey}`);
+        const response = await fetch(`/api/companies/`);
         if (!response.ok) {
           router.push("/settings/companies");
           throw new Error(`Error: ${response.statusText}`);
         }
-        const data = await response.json();
 
-        //set all data in reverse order
-        const reverseData = data.reverse();
-        setAllData(reverseData);
-        
-        if(data[0]){
-          setZFirst(data[0]);
-        }
-        if(data[1]){
-          setZSecond(data[1]);
-        }
-        if(data[2]){
-          setZThird(data[2]);
-        }
-        if(data[3]){
-          setZFourth(data[3]);
-        }
+        const data = await response.json();
+        setCompanies(data.data);
+        setSelectedCompany(data.data[0]);
+        setLoading(false);
 
         setUniqueUrlKey(urlKey);
         setCompanyID(cID);
-        setLoading(false);
-
-        return data;
-
+        
       } catch (error) {
-        console.error('Failed to fetch company data:', error);
-        return { error: error.message };
+        console.log('Failed to fetch companies:', error);
+        setLoading(false);
       }
     };
-    
-    fetchCompany();
-  }, []);
 
-  if(!loading && allData.length > 0 && uniqueUrlKey && companyID){
+    fetchCompanies();
+  }, [pathname, router]);
+
+  useEffect(() => {
+    if (selectedCompany) {
+      const fetchFinancialData = async () => {
+        try {
+          const response = await fetch(`/api/financial-data/?equity_ticker=${selectedCompany.equity_ticker}`);
+          if (!response.ok) {
+            router.push("/settings/companies");
+            throw new Error(`Error: ${response.statusText}`);
+          }
+          const data = await response.json();
+          console.log(data);
+
+          // Set all data in reverse order
+          const reverseData = data.reverse();
+          setAllData(reverseData);
+
+          if (data[0]) {
+            setZFirst(data[0]);
+          }
+          if (data[1]) {
+            setZSecond(data[1]);
+          }
+          if (data[2]) {
+            setZThird(data[2]);
+          }
+          if (data[3]) {
+            setZFourth(data[3]);
+          }
+
+          setLoading(false);
+
+        } catch (error) {
+          console.error('Failed to fetch company data:', error);
+          setLoading(false);
+        }
+      };
+
+      fetchFinancialData();
+    }
+  }, [selectedCompany, router]);
+
+  if(!loading || selectedCompany){
     return (<>
       <div className="container-fluid financial-overview p-4">
         <div className="d-flex justify-content-between header-container">
@@ -118,8 +146,7 @@ export default function CompanyOverview({session}) {
           </div>
           <div className='col-md-6 d-flex'>
             <CapitalReturnPolicy  
-              companyID={companyID}
-              uniqueURLKey={uniqueUrlKey}
+              companyID={selectedCompany?.company_id}
               session={session}
             />
           </div>

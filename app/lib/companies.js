@@ -6,13 +6,14 @@ const createCompany = async (req, isFormData = true) => {
   var userId = await getLoggedUser().id;
   
   try {
-    var name, sector_id, tags, template, member_permission;
+    var name, sector_id, tags, template, member_permission, equity_ticker;
     if (!isFormData) {
       name = req.name;
       sector_id = req.sector_id;
       tags = req.tags;
       template = req.template;
       member_permission = req.member_permission;
+      equity_ticker = req.equity_ticker;
       userId = req.updated_by;
     }else{
       const body = await req.json();
@@ -28,20 +29,17 @@ const createCompany = async (req, isFormData = true) => {
     }
 
     const query = `
-      INSERT INTO companies (name, sector_id, tags, template, member_permission, sharing, updated_by)
-      VALUES ('${name}', '${sector_id}', '${tags}', ${template}, ${member_permission}, 'MEMBERS', '${userId}')
+      INSERT INTO companies (name, equity_ticker, sector_id, tags, template, member_permission, sharing, updated_by)
+      VALUES ('${name}', '${equity_ticker}', '${sector_id}', '${tags}', ${template}, ${member_permission}, 'MEMBERS', '${userId}')
       RETURNING unique_url_key, id;
     `;
 
-    console.log(query);
-
     const result = await sql.query(query);
-    const uniquerURLKey = result.rows[0].unique_url_key
-    const companyID = result.rows[0].id
+    // const uniquerURLKey = result.rows[0].unique_url_key
+    // const companyID = result.rows[0].id
 
-    console.log('uniquerURLKey', uniquerURLKey);
     // if success, send company to clinked
-     await createCompanyAsNote({ name, sector_id, tags, template, member_permission, uniquerURLKey, companyID });
+    //  await createCompanyAsNote({ name, sector_id, tags, template, member_permission, uniquerURLKey, companyID });
 
     return { data: result.rows[0]};
   } catch (error) {
@@ -50,12 +48,11 @@ const createCompany = async (req, isFormData = true) => {
   }
 };
 
-export async function getCompanyByKey(uniqueURLKey) {
+export async function getCompanyByTicker(ticker) {
   try {
-    const query = `SELECT * FROM companies WHERE unique_url_key = $1`;
-    const result = await sql.query(query, [uniqueURLKey]);
-
-    return { data: result.rows[0] };
+    const query = `SELECT * FROM companies WHERE equity_ticker = '${ticker}'`;
+    const result = await sql.query(query);
+    return { data: result };
   } catch (error) {
     console.error('Error fetching company:', error);
     return { error: 'Error fetching company' };
@@ -72,7 +69,7 @@ export async function getCompanies(req) {
 
   try {
     const offset = (currentPage - 1) * pageSize;
-    const query = `SELECT c.id as company_id, c.unique_url_key as url_key, c.name as company, s.name as sector, c.tags
+    const query = `SELECT c.id as company_id, c.equity_ticker, c.unique_url_key as url_key, c.name as company, s.name as sector, c.tags
     FROM companies c LEFT JOIN sectors s ON c.sector_id = s.id
      WHERE c.name ILIKE $1 LIMIT $2 OFFSET $3`;
      

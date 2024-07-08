@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { uploadFinancialData, getFinancialData, getFinancialDataByCompanyKey } from '@/app/lib/financial-data';
+import { uploadFinancialData, getFinancialData, getFinancialDataByCompanyTicker } from '@/app/lib/financial-data';
 
 // This function can run for a maximum of 5 seconds
 export const maxDuration = 300;
@@ -11,7 +11,6 @@ export async function POST(req) {
 
   try {
     const fileUploadResponse = await uploadFinancialData(req);
-    console.log('fileUploadResponse', fileUploadResponse);
     return NextResponse.json({ message: 'File processed successfully' }, { status: 201 });
   } catch (error) {
     console.error('Error processing file:', error);
@@ -25,10 +24,9 @@ export async function GET(req) {
   }
 
   const { searchParams } = new URL(req.url);
-  const uniqueUrlKey = searchParams.get('unique_url_key');
-  const companyID = searchParams.get('company_id');
+  const equityTicker = searchParams.get('equity_ticker');
 
-  if(!uniqueUrlKey) {
+  if(!equityTicker) {
     try {
       const data = await getFinancialData(req);
       
@@ -42,14 +40,14 @@ export async function GET(req) {
     }
   }else{
     try {
-      const data = await getFinancialDataByCompanyKey(uniqueUrlKey, companyID);
+      const data = await getFinancialDataByCompanyTicker(equityTicker);
 
       if (data.error) {
         return NextResponse.json({ message: data.error }, { status: 500 });
       }
       return NextResponse.json(data);
     } catch (error) {
-      console.error(`Error fetching financial data for : ${uniqueUrlKey}`, error);
+      console.error(`Error fetching financial data for : ${companyID}`, error);
       return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
     }
   }

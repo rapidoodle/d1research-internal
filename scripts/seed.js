@@ -55,10 +55,10 @@ async function seedFinancialData(client) {
         ex_date_q2 DATE,
         ex_date_q3 DATE,
         ex_date_q4 DATE,
-        peer_group_company_1 VARCHAR(255),
-        peer_group_company_2 VARCHAR(255),
-        peer_group_company_3 VARCHAR(255),
-        peer_group_company_4 VARCHAR(255),
+        peer_1 VARCHAR(255),
+        peer_2 VARCHAR(255),
+        peer_3 VARCHAR(255),
+        peer_4 VARCHAR(255),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_by UUID NOT NULL
@@ -87,6 +87,7 @@ async function seedCompanies(client) {
       CREATE TABLE companies (
         id UUID PRIMARY KEY DEFAULT uuid_generate_v4() UNIQUE,
         name VARCHAR(255),
+        equity_ticker VARCHAR(255),
         sharing VARCHAR(255),
         tags VARCHAR(255),
         iframe_url VARCHAR(255),
@@ -200,6 +201,43 @@ async function seedTags(client) {
       };
     } catch (error) {
       console.error('Error seeding tags:', error);
+      throw error;
+    }
+}
+
+async function seedKeyTable(client) {
+    try {
+      await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+      // Drop the table if it exists
+      await client.sql`DROP TABLE IF EXISTS unique_keys`;
+      // Create the "users" table if it doesn't exist
+      const createTable = await client.sql`
+      CREATE TABLE unique_keys (
+        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+        company_overview_key UUID NOT NULL,
+        consolidated_estimates_key UUID NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+      `;
+  
+      console.log(`Created "unique_keys" table`);
+
+      await client.sql`INSERT INTO unique_keys (
+          company_overview_key,
+          consolidated_estimates_key
+      ) VALUES (
+          uuid_generate_v4(),
+          uuid_generate_v4()
+      );`;
+
+      console.log('Inserted default data into "unique_keys" table');
+  
+      return {
+        createTable
+      };
+    } catch (error) {
+      console.error('Error seeding unique_keys:', error);
       throw error;
     }
 }
@@ -348,15 +386,16 @@ async function main() {
   const client = await db.connect();
 
   await seedFinancialData(client);
-  // await seedCompanies(client);
-  // await seedTags(client);
-  // await seedEvents(client);
-  // await seedUsers(client);
-  // await seedSectors(client);
+  // await seedKeyTable(client);
+  await seedCompanies(client);
+  await seedTags(client);
+  await seedEvents(client);
+  await seedUsers(client);
+  await seedSectors(client);
   // await seedUserAccess(client);
-  // await seedAnalystsComments(client);
-  // await seedLatestManagementStatement(client);
-  // await seedCapitalReturnPolicy(client);
+  await seedAnalystsComments(client);
+  await seedLatestManagementStatement(client);
+  await seedCapitalReturnPolicy(client);
 
 
   await client.end();

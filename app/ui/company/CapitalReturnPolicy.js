@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 
-export default function CapitalReturnPolicy({uniqueURLKey, companyID, session}) {
+export default function CapitalReturnPolicy({companyID, session}) {
     const [showModal, setShowModal] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
     const [commentID, setCommentID] = useState(null);
@@ -17,10 +17,8 @@ export default function CapitalReturnPolicy({uniqueURLKey, companyID, session}) 
     const [loading, setLoading] = useState(false);
     const [someComments, setSomeComments] = useState([]);
     const [allComments, setAllComments] = useState([]);
-    const userSession = JSON.parse(session.value);
+    const userSession = session.user;
     const commentLimit = 3;
-
-    console.log(session)
 
     const handleShow = () => setShowModal(true);
     const handleClose = () => setShowModal(false);
@@ -39,7 +37,7 @@ export default function CapitalReturnPolicy({uniqueURLKey, companyID, session}) 
         const method = isEdit ? 'PATCH' : 'POST';
         const data = isEdit ? 
             { comment: comment, id: commentID} : 
-            { comment: comment, unique_url_key: uniqueURLKey, company_id: companyID };
+            { comment: comment, company_id: companyID };
       
         const fetchData = async () => {
           try {
@@ -134,7 +132,7 @@ export default function CapitalReturnPolicy({uniqueURLKey, companyID, session}) 
         <div className='card flex-fill'>
             <div className='d-flex align-items-center'>
                 <h4 className='flex-grow-1 mb-0'>Capital return policy</h4>
-                { userSession && (userSession.user.access_level === 'Admin' || userSession.user.access_level === 'Analyst') && 
+                { userSession && (userSession.access_level === 'Admin' || userSession.access_level === 'Analyst') && 
                     <a className='page-link me-2' onClick={handleShow}>New</a>
                 }
 
@@ -158,7 +156,7 @@ export default function CapitalReturnPolicy({uniqueURLKey, companyID, session}) 
                                     <div>
                                         <div dangerouslySetInnerHTML={{ __html: comment.comment }} />
                                     </div>
-                                    {userSession && (userSession.user.access_level === 'Admin' || userSession.user.access_level === 'Analyst') &&
+                                    {userSession && (userSession.access_level === 'Admin' || userSession.access_level === 'Analyst') &&
                                         <div className='d-flex align-items-center'>
                                             <a className='page-link' onClick={() => handleEdit(comment)}>Edit</a>
                                             <a className='page-link ms-2 text-danger' onClick={() => handleDelete(comment)}>Delete</a>

@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { signOut } from 'next-auth/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBuilding, faCalendarAlt, faCaretDown, faCaretRight, faChevronDown, faChevronRight, faCogs, faFileExcel, faUsers } from '@fortawesome/free-solid-svg-icons';
+import SideNavLink from './SideNavLink';
 
 const SideNav = () => {
   const pathname = usePathname();
@@ -42,6 +43,15 @@ const SideNav = () => {
             )}>
             <FontAwesomeIcon icon={faCalendarAlt} />  Events
             </Link>
+        </li>
+        <li className="nav-item">
+            <SideNavLink 
+              pathname={pathname} 
+              faIcon={faBuilding} 
+              label={'Company overview'} 
+              uniqueKeyType={'company-overview'}
+              path={'/company-overview'}
+            />
         </li>
         <li className="nav-item">
           <button 

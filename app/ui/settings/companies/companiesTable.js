@@ -46,7 +46,7 @@ const CompaniesTable = ({query, currentPage, companyAdded}) => {
   if(!loading){
   return (
     <div>
-      <div className='table-responsive'>
+      {/* <div className='table-responsive'>
         <table className="table table-hovered table-condensed table-striped">
             <thead>
               <tr>
@@ -87,7 +87,7 @@ const CompaniesTable = ({query, currentPage, companyAdded}) => {
             </tbody>
         </table>
       </div>
-      <Pagination page={page} totalPages={totalPages} setPage={setPage} />
+      <Pagination page={page} totalPages={totalPages} setPage={setPage} /> */}
     </div>
   );
 }else{

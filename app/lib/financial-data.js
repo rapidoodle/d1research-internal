@@ -10,7 +10,7 @@ import { randomUUID } from 'crypto';
 import { createCompanyAsNote } from './clinked/notes';
 import { createTag, getTagByName } from './tags';
 import { createSectors, getSectorByName } from './sectors';
-import { createCompany, getCompanyByKey, getCompanyByName } from './companies';
+import { createCompany, getCompanyByTicker } from './companies';
 import { getLoggedUser } from './users';
 
 export async function uploadFinancialData (req, res) {
@@ -31,7 +31,7 @@ export async function uploadFinancialData (req, res) {
 
     //file upload to s3 bucket
     const uploadResponse = await uploadFile({ buffer, name: newFileName });
-    console.log(`Uploaded file to S3 with response: ${JSON.stringify(uploadResponse)}`);
+    // console.log(`Uploaded file to S3 with response: ${JSON.stringify(uploadResponse)}`);
 
     // Read and parse the CSV file
     const fileContent = buffer.toString('utf-8');
@@ -77,7 +77,7 @@ export async function uploadFinancialData (req, res) {
                   av_weighted_share_cap, eps, dps_fy, dps_payout_ratio, op_cash_flow, capex, free_cash_flow,
                   dividend, share_buyback, total_capital_return, net_debt, share_in_issue, treasury_shares,
                   shares_outstanding, capital_payout_percent, dps_q1, dps_q2, dps_q3, dps_q4, ex_date_q1,
-                  ex_date_q2, ex_date_q3, ex_date_q4, updated_by
+                  ex_date_q2, ex_date_q3, ex_date_q4, peer_1, peer_2, peer_3, peer_4, updated_by
                 ) VALUES (
                   ${row['Year']}, 
                   ${row['Company']}, 
@@ -123,6 +123,10 @@ export async function uploadFinancialData (req, res) {
                   ${row['Ex Date Q2'] ? `'${row['Ex Date Q2']}'` : null}, 
                   ${row['Ex Date Q3'] ? `'${row['Ex Date Q3']}'` : null}, 
                   ${row['Ex Date Q4'] ? `'${row['Ex Date Q4']}'` : null},
+                  ${row['Peer1']}, 
+                  ${row['Peer2']}, 
+                  ${row['Peer3']}, 
+                  ${row['Peer4']}, 
                   ${loggedUser.id}
                 );`;
 
@@ -153,10 +157,10 @@ export async function uploadFinancialData (req, res) {
                 tags += `, ${row['Index3']}`;
               }
               
-              const companyResult = await getCompanyByName({ name: company });
-              
-              if (companyResult.data.length === 0) {
-                const createCompanyResponse = await createCompany({ name: company, sector_id: sectorId, tags: tags, template: false, member_permission: 1, updated_by: loggedUser.id }, false); 
+              const companyResult = await getCompanyByTicker(row['Equity Ticker']);
+                console.log('Company result', companyResult.data.rowCount);
+              if (companyResult.data.rowCount === 0) {
+                const createCompanyResponse = await createCompany({ name: company, equity_ticker: row['Equity Ticker'],  sector_id: sectorId, tags: tags, template: false, member_permission: 1, updated_by: loggedUser.id }, false); 
                 console.log('New company inserted', createCompanyResponse);
               }else{
                 console.log('Company already exists', companyResult.data);
@@ -240,18 +244,15 @@ export async function uploadFinancialData (req, res) {
     return NextResponse.json({ message: 'File processed and data inserted successfully'});
 };
 
-export async function getFinancialDataByCompanyKey(unique_url_key, company_id){
-  //get company data from companies table using unique_url_key
-  const companyResult = await getCompanyByKey(unique_url_key);
-
+export async function getFinancialDataByCompanyTicker(ticker){
   //fetch financial data for the company, fetch latest 4 only
   const financialDataQuery = `
     SELECT * FROM financial_data
-    WHERE company = $1
+    WHERE equity_ticker = $1
     ORDER BY year DESC
   `;
 
-  const financialDataResult = await sql.query(financialDataQuery, [companyResult.data.name]);
+  const financialDataResult = await sql.query(financialDataQuery, [ticker]);
 
   return financialDataResult.rows;
 }
