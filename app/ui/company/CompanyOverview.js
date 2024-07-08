@@ -3,11 +3,9 @@
 import React, { useEffect, useState } from 'react';
 import '@/app/styles/company-page.css';
 import Image from 'next/image';
-import { redirect, usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { validate } from 'uuid';
 import { useRouter } from 'next/navigation'
-import { formatCompanyData, formatCurrencyWithComma, formatCurrencyWithDollar, formatNumber } from '@/app/lib/utils';
-import { Montserrat } from 'next/font/google';
 import D1DPSForecast from './D1DPSForecast';
 import CapitalReturnPolicy from './CapitalReturnPolicy';
 import RiskScenarios from './RiskScenarios';
@@ -20,8 +18,7 @@ import ExDivCalendar from './ExDivCalendar';
 import TotalCapitalReturn from './TotalCapitalReturn';
 import PeerComparisonDPSPayoutRatio from './PeerComparisonDPSPayoutRatio';
 
-
-export default function CompanyOverview() {
+export default function CompanyOverview({session}) {
   //fetch latest 4 company using the unique url key from the url
   const pathname = usePathname();
   const router = useRouter()
@@ -123,6 +120,7 @@ export default function CompanyOverview() {
             <CapitalReturnPolicy  
               companyID={companyID}
               uniqueURLKey={uniqueUrlKey}
+              session={session}
             />
           </div>
         </div>

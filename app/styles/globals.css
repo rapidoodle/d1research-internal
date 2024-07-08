@@ -83,3 +83,7 @@ table > thead > th {
 .select__menu{
   z-index: 3!important;  
 }
+.page-spinner{
+  width: 100%;
+  height: 200px;
+}

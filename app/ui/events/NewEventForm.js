@@ -1,6 +1,5 @@
 'use client';
 
-import Spinner from "@/app/components/Spinner";
 import TagsSelectElement from "@/app/components/TagsSelectElement";
 import React, { useState, useEffect, useRef } from "react";
 import { Bounce, toast } from "react-toastify";
@@ -9,6 +8,7 @@ import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
 import { Editor } from "@tinymce/tinymce-react";
+import ButtonSpinner from "@/app/components/ButtonSpinner";
 
 export default function NewEventForm({ onEventAdded }) {
 
@@ -269,7 +269,7 @@ export default function NewEventForm({ onEventAdded }) {
                             </div>
                         </div>
                         <Button type="submit" className="mt-4 float-end" disabled={loading}>
-                            <FontAwesomeIcon icon={faSave} className="me-1" /> {loading ? <Spinner /> : 'Create'}
+                            <FontAwesomeIcon icon={faSave} className="me-1" /> {loading ? <ButtonSpinner /> : 'Create'}
                         </Button>
                     </form>
                 </div>

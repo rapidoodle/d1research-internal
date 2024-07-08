@@ -1,127 +1,137 @@
 .financial-overview {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
- .company-details {
-    margin-right: 20px;
-  }
+display: flex;
+flex-direction: column;
+}
 
-  .header-title {
-    font-size: 24px;
-    font-weight: bold;
-  }
-  
-  .content {
-    display: flex;
-    margin-top: 20px;
-  }
+.header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
 
-  /* make all table responsive */
-  .table-responsive {
-    overflow-x: auto!important;
-  }
+.company-details {
+margin-right: 20px;
+}
+
+.header-title {
+font-size: 24px;
+font-weight: bold;
+}
+
+.content {
+display: flex;
+margin-top: 20px;
+}
+
+/* make all table responsive */
+.table-responsive {
+overflow-x: auto!important;
+}
 
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  .card{
-    padding:1.2rem!important
-  }
+table {
+width: 100%;
+border-collapse: collapse;
+}
+.card{
+padding:1.2rem!important
+}
 
-  .bg-gray{
-    background-color: #CBD5D3;
-    color: #1D322B;
-  }
+.bg-gray{
+background-color: #CBD5D3;
+color: #1D322B;
+}
 
-  .financial-overview th, td, p, .analyst-comments ul > li {
-    padding: 8px;
-    color: #2F5651!important;
+.financial-overview th, td, p, .analyst-comments ul > li {
+padding: 8px;
+color: #2F5651!important;
+margin-bottom: 0;
+}
+hr{
+margin-top:1rem!important;
+margin-bottom:1rem!important;
+}
+h4{
+margin-bottom: 0;
+}
+
+th {
+background-color: #F7F1E3!important;
+border-bottom: none!important;
+}
+tr.highlight > td{
+color: #EA2F2F;
+}
+table thead th:first-child {
+border-top-left-radius: 5px;
+border-bottom-left-radius: 5px;
+}
+table thead th:last-child {
+border-top-right-radius: 5px;
+border-bottom-right-radius: 5px;
+}
+/*add padding left to all the td in left side of the table
+and padding right to all the td in right side of the table*/
+table tbody tr td:first-child,  table thead tr th:first-child {
+    padding-left: 2rem;
+}
+
+/*add drop shadow to the table*/
+div.card {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+}
+h2{
     margin-bottom: 0;
-  }
-  hr{
-    margin-top:1rem!important;
-    margin-bottom:1rem!important;
-  }
-  h4{
-    margin-bottom: 0;
-  }
-  
-  th {
-    background-color: #F7F1E3!important;
-    border-bottom: none!important;
-  }
-  tr.highlight > td{
-    color: #EA2F2F;
-  }
-  table thead th:first-child {
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-  }
-  table thead th:last-child {
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-  }
-  /*add padding left to all the td in left side of the table
-    and padding right to all the td in right side of the table*/
-    table tbody tr td:first-child,  table thead tr th:first-child {
-        padding-left: 2rem;
-    }
+}
+hr{
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-color: #2F5651;
+}
+.bg-cream{
+    background-color: #F7F1E3;
+}
+table tr td{
+  border: none!important;
+}
+table tr td.second-title{
+    padding-left: 0;
+    padding-right: 0;
+    border-radius: 5px!important;
+}
 
-  /*add drop shadow to the table*/
-    div.card {
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        padding: 1.5rem;
-    }
-    h2{
-        margin-bottom: 0;
-    }
-    hr{
-        margin-top: 1.5rem;
-        margin-bottom: 1.5rem;
-        border-color: #2F5651;
-    }
-    .bg-cream{
-        background-color: #F7F1E3;
-    }
-    table tr td{
-      border: none!important;
-    }
-    table tr td.second-title{
-        padding-left: 0;
-        padding-right: 0;
-        border-radius: 5px!important;
-    }
+table tr td.second-title div{
+    border-radius: 5px!important;
+    padding-top:.5rem;
+    padding-bottom:.5rem;
+    padding-left: 2rem;
+    font-size: 20px;
+    color: #2F5651;
+}
 
-    table tr td.second-title div{
-        border-radius: 5px!important;
-        padding-top:.5rem;
-        padding-bottom:.5rem;
-        padding-left: 2rem;
-        font-size: 20px;
-        color: #2F5651;
-    }
+.semi-card{
+    background-color: #F7F1E3;
+    border: 1px solid #2F5651;
+    border-radius: 8px;
+    padding: 0.5rem
+}
+.header-container{
+    background-color: #fff!important;
+    border-bottom: 1px solid #dee2e6;
+    margin-left:-23px;
+    margin-right:-23px;
+    margin-top:-23px;
+    padding: 36px;
+    margin-bottom: 1rem;
+}
 
-    .semi-card{
-        background-color: #F7F1E3;
-        border: 1px solid #2F5651;
-        border-radius: 8px;
-        padding: 0.5rem
-    }
-    .header-container{
-        background-color: #fff!important;
-        border-bottom: 1px solid #dee2e6;
-        margin-left:-23px;
-        margin-right:-23px;
-        margin-top:-23px;
-        padding: 36px;
-        margin-bottom: 1rem;
-    }
+.comment-container{
+  max-height: 300px;
+  min-height: 175px;
+  overflow-y: scroll;
+}
+
+.font-12{
+  font-size: 12px;
+}

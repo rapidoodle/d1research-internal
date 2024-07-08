@@ -27,9 +27,8 @@ const authOptions = {
         try {
           // Query the user from the database
           const response = await sql`
-            SELECT * FROM users WHERE email=${credentials.email}`;
+            SELECT u.*, a.access_level FROM users as u LEFT JOIN user_access as a ON u.access_level = a.id WHERE u.email='rperez@d1research.com'`;
           const user = response.rows[0];
-
           // Check if the user exists
           if (!user) {
             throw new Error('User not found');
@@ -53,6 +52,7 @@ const authOptions = {
               id: user.id,
               email: user.email,
               name: user.name,
+              access_level: user.access_level,
               access_token: clinkAuthResponse.access_token,
               refresh_token: clinkAuthResponse.refresh_token,
             }
@@ -71,7 +71,8 @@ const authOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id;
+        token.id = user.id,
+        token.access_level = user.access_level,
         token.access_token = user.access_token;
         token.refresh_token = user.refresh_token;
       }
@@ -82,6 +83,7 @@ const authOptions = {
         session.user.id = token.id;
         session.user.name = token.name;
         session.user.email = token.email;
+        session.user.access_level = token.access_level;
         session.access_token = token.access_token;
         session.refresh_token = token.refresh_token;
       }

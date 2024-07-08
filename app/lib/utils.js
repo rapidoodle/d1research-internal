@@ -146,3 +146,7 @@ export const formatCurrencyWithDollar = (amount) => {
     });
   }
 }
+
+export const cleanComment = (comment) => {
+  return comment.replace(/'/g, "''").replace(/"/g, '""');
+}

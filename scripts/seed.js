@@ -55,6 +55,10 @@ async function seedFinancialData(client) {
         ex_date_q2 DATE,
         ex_date_q3 DATE,
         ex_date_q4 DATE,
+        peer_group_company_1 VARCHAR(255),
+        peer_group_company_2 VARCHAR(255),
+        peer_group_company_3 VARCHAR(255),
+        peer_group_company_4 VARCHAR(255),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_by UUID NOT NULL
@@ -211,7 +215,7 @@ async function seedUsers(client) {
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
         email TEXT NOT NULL UNIQUE,
-        access_level INT NOT NULL DEFAULT 1,
+        access_level UUID NOT NULL,
         password TEXT NOT NULL,
         updated_by UUID NOT NULL
       );
@@ -224,8 +228,8 @@ async function seedUsers(client) {
     const insertedUsers =  await client.sql`
         INSERT INTO users (name, email, password, access_level, updated_by)
         VALUES 
-          ('Ralfh Bryan Perez', 'rperez@d1research.com', ${hashedPassword}, 1, uuid_generate_v4()), 
-          ('Thomas Aaby', 'taaby@d1research.com', ${hashedPassword}, 1, uuid_generate_v4())
+          ('Ralfh Bryan Perez', 'rperez@d1research.com', ${hashedPassword}, '8bc68f16-4f71-4e4c-b776-b7864149dbae', uuid_generate_v4()), 
+          ('Thomas Aaby', 'taaby@d1research.com', ${hashedPassword}, '8bc68f16-4f71-4e4c-b776-b7864149dbae', uuid_generate_v4())
         ON CONFLICT (email) DO NOTHING;
       `;
 
@@ -344,15 +348,15 @@ async function main() {
   const client = await db.connect();
 
   await seedFinancialData(client);
-  await seedCompanies(client);
-  await seedTags(client);
-  await seedEvents(client);
-  await seedUsers(client);
-  await seedSectors(client);
-  await seedUserAccess(client);
-  await seedAnalystsComments(client);
-  await seedLatestManagementStatement(client);
-  await seedCapitalReturnPolicy(client);
+  // await seedCompanies(client);
+  // await seedTags(client);
+  // await seedEvents(client);
+  // await seedUsers(client);
+  // await seedSectors(client);
+  // await seedUserAccess(client);
+  // await seedAnalystsComments(client);
+  // await seedLatestManagementStatement(client);
+  // await seedCapitalReturnPolicy(client);
 
 
   await client.end();

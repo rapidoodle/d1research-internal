@@ -11,9 +11,10 @@ body {
     border-color: #385551;
     color: #F6F1E5;
   }
-  .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
-    background-color: #22312B;
-    border-color: #22312B;
+
+  .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn:disabled, .btn.disabled, fieldset:disabled .btn {
+    background-color: #22312B!important;
+    border-color: #22312B!important;
   }
   
   /* Secondary button */
@@ -163,3 +164,6 @@ body {
     color: #385551;
   }
   
+  .w-200{
+    max-width: 200px!important;
+  }

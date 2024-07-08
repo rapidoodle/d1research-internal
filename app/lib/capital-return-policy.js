@@ -1,19 +1,22 @@
 import { sql } from "@vercel/postgres";
 import { NextResponse } from "next/server";
 import { getLoggedUser } from "./users";
+import { cleanComment } from "./utils";
 
 export async function createCRP (req) {
-  var userId = await getLoggedUser().id;
-    try {
+  var user = await getLoggedUser();
+    
+  try {
     const { comment, unique_url_key, company_id } = await req.json();
-
-    console.log(comment, unique_url_key, company_id, userId);
-
-      const result = await sql`
+    
+    const newComment = await cleanComment(comment);
+    const query =`
         INSERT INTO capital_return_policy (comment, company_id, updated_by)
-        VALUES (${comment}, ${Number(company_id)}, ${userId})
+        VALUES ('${newComment}', '${company_id}', '${user.id}')
         RETURNING id, comment, company_id, updated_by;
-      `;
+      `
+
+      const result = await sql.query(query);
       
       return { data: result.rows[0]};
       
@@ -24,30 +27,37 @@ export async function createCRP (req) {
 };
 
 export async function updateCRP (req) {
+    var user = await getLoggedUser();
     try {
-        const body = await req.json();
-        const result = await sql`
+        const newComment = await cleanComment(req.comment);
+        const query = `
           UPDATE capital_return_policy
-          SET comment = ${body.comment}
-          WHERE id = ${body.id}
+          SET comment = '${newComment}', updated_by = '${user.id}'
+          WHERE id = '${req.id}'
             RETURNING id, comment, updated_by;
         `;
+
+        const result = await sql.query(query);
+        return { data: result.rows[0] };
+
     } catch (error) {
         console.error('Error updating capital return policy:', error);
-        return { error: 'Error updating capital return policy' };
+        return NextResponse.json({ message: 'Error updating capital return policy' }, { status: 500 });
     }
 }
 
 
-export async function getCRPByCompanyID (req) {
+export async function getCRPByCompanyID (companyID, limit, showAll) {
+
     try {
-        const result = await sql`SELECT * FROM capital_return_policy WHERE company_id = ${req.company_id}`;
-    
+        const query = `SELECT * FROM capital_return_policy WHERE company_id = '${companyID}' ORDER BY created_at DESC ` + (showAll ? '' : `LIMIT ${limit}`);
+        
+        const result = await sql.query(query);
         return { data: result.rows };
-    
+
     } catch (error) {
         console.error('Error fetching capital return policy:', error);
-        return { error: 'Error fetching capital return policy' };
+        return NextResponse.json({ message: 'Error fetching capital return policy' }, { status: 500 });
     }
 }
 
@@ -60,18 +70,20 @@ export async function getCRPByID (req) {
 
   } catch (error) {
     console.error('Error fetching capital return policy:', error);
-    return { error: 'Error fetching capital return policy' };
+    return NextResponse.json({ message: 'Error fetching capital return policy' }, { status: 500 });
   }
 };
 
-export async function deleteCRP (req) {
+export async function deleteCRP (companyID) {
   try {
-    const result = await sql`DELETE FROM capital_return_policy WHERE id = ${req.id}`;
+    const query = `DELETE FROM capital_return_policy WHERE id = '${companyID}'`;
+    console.log(query);
+    const result = await sql.query(query);
 
     return { data: result.rows };
 
   } catch (error) {
     console.error('Error deleting capital return policy:', error);
-    return { error: 'Error deleting capital return policy' };
+    return NextResponse.json({ message: 'Error deleting capital return policy' }, { status: 500 });
   }
 };

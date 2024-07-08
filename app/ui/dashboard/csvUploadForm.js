@@ -1,6 +1,6 @@
 'use client';
 
-import Spinner from '@/app/components/Spinner';
+import ButtonSpinner from '@/app/components/ButtonSpinner';
 import { useState } from 'react';
 
 const CsvUploader = ({ onFileUploaded }) => {
@@ -56,7 +56,7 @@ const CsvUploader = ({ onFileUploaded }) => {
     <div className="container-fluid mb-3 bg-light p-3">
       <input type="file" onChange={handleFileChange} className="form-control mb-3" />
       <button disabled={loading || error} onClick={handleUpload} className="btn btn-primary float-end">
-        { loading ? <><Spinner></Spinner> Processing file. Please wait..</> :  'Upload' }</button>
+        { loading ? <><ButtonSpinner></ButtonSpinner> Processing file. Please wait..</> :  'Upload' }</button>
       {message && <p className="text-danger mt-3">{message}</p>}
     </div>
   );

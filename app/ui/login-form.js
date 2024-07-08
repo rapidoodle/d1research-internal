@@ -27,6 +27,7 @@ export default function LoginForm( { csrfToken } ) {
         redirect: false,
       });
 
+      console.log(response)
   
       if (!response?.error) {
         router.push('/');

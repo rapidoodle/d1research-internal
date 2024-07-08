@@ -1,7 +1,7 @@
 'use client';
 
+import ButtonSpinner from "@/app/components/ButtonSpinner";
 import CreatableSelectElement from "@/app/components/CreatableSelectElement";
-import Spinner from "@/app/components/Spinner";
 import TagsSelectElement from "@/app/components/TagsSelectElement";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -224,7 +224,7 @@ export default function NewUserForm({ onCompanyAdded }) {
                             </div>
                         </div>
                         <Button type="submit" className="mt-4 float-end" disabled={loading}>
-                            <FontAwesomeIcon icon={faSave} className="me-1" /> {loading ? <Spinner /> : 'Create'}
+                            <FontAwesomeIcon icon={faSave} className="me-1" /> {loading ? <ButtonSpinner /> : 'Create'}
                         </Button>
                     </form>
                 </div>
