@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Editor } from '@tinymce/tinymce-react';
 import { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 
 export default function CapitalReturnPolicy({uniqueURLKey, companyID, session}) {
     const [showModal, setShowModal] = useState(false);
@@ -54,6 +55,9 @@ export default function CapitalReturnPolicy({uniqueURLKey, companyID, session}) 
             setComment('');
             fetchCRPComments(companyID);
             setCommentID(null);
+            setLoading(false);
+
+
           } catch (error) {
             console.error(error);
           } finally {
@@ -61,7 +65,6 @@ export default function CapitalReturnPolicy({uniqueURLKey, companyID, session}) 
           }
         };
       
-        setLoading(true);
         fetchData();
     };
 
@@ -129,7 +132,11 @@ export default function CapitalReturnPolicy({uniqueURLKey, companyID, session}) 
         <div className='card flex-fill'>
             <div className='d-flex align-items-center'>
                 <h4 className='flex-grow-1 mb-0'>Capital return policy</h4>
-                <a className='mb-0 font-12 cursor-pointer' onClick={handleShowAll}>View all comments</a>
+                { userSession && (userSession.user.access_level === 'Admin' || userSession.user.access_level === 'Analyst') && 
+                    <a className='page-link me-2' onClick={handleShow}>New</a>
+                }
+
+                { someComments.length > 0 && <a className='page-link' onClick={handleShowAll}>View all</a> }
             </div>
             <hr />
             <div className='comment-container d-flex flex-column'>
@@ -138,18 +145,21 @@ export default function CapitalReturnPolicy({uniqueURLKey, companyID, session}) 
                     {loading ? (
                         <PageSpinner />
                     ) : (
-                        someComments.length === 0 ? (
+                        someComments.length === 0 && !loading ? (
                             <div className='text-center'>No available comments</div>
                         ) : (
                             someComments.map((comment, index) => (
-                                <div className='d-flex align-items-centers justify-content-between' key={index}>
+                                <div
+                                    className={`d-flex align-items-center justify-content-between ${index !== someComments.length - 1 ? 'border-bottom' : ''}`}
+                                    key={index}
+                                >
                                     <div>
                                         <div dangerouslySetInnerHTML={{ __html: comment.comment }} />
                                     </div>
                                     {userSession && (userSession.user.access_level === 'Admin' || userSession.user.access_level === 'Analyst') &&
                                         <div className='d-flex align-items-center'>
-                                            <FontAwesomeIcon icon={faEdit} className='me-1 cursor-pointer' onClick={() => handleEdit(comment)} />
-                                            <FontAwesomeIcon icon={faTrash} className='cursor-pointer' onClick={() => handleDelete(comment)} />
+                                            <a className='page-link' onClick={() => handleEdit(comment)}>Edit</a>
+                                            <a className='page-link ms-2 text-danger' onClick={() => handleDelete(comment)}>Delete</a>
                                         </div>
                                     }
                                 </div>
@@ -159,15 +169,6 @@ export default function CapitalReturnPolicy({uniqueURLKey, companyID, session}) 
                     </div>
                 </div>
             </div>
-
-
-            { userSession && (userSession.user.access_level === 'Admin' || userSession.user.access_level === 'Analyst') && 
-                <div className='d-flex justify-content-end'>
-                    <Button variant="success" onClick={handleShow} className='w-200'> 
-                        <FontAwesomeIcon icon={faPlus} /> Add comment 
-                    </Button>
-                </div> 
-                }
          </div>
 
          <ModalComponent

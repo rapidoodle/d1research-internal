@@ -87,3 +87,6 @@ table > thead > th {
   width: 100%;
   height: 200px;
 }
+.border-bottom {
+  border-bottom: 1px solid #ddd; /* or any other desired style */
+}

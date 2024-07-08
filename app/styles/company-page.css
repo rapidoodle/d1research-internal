@@ -135,3 +135,9 @@ table tr td.second-title div{
 .font-12{
   font-size: 12px;
 }
+.page-link{
+  font-size: 12px;
+  margin-bottom: 0;
+  cursor: pointer;
+  color: #2F5651;
+}
