@@ -240,7 +240,7 @@ export async function uploadFinancialData (req, res) {
     return NextResponse.json({ message: 'File processed and data inserted successfully'});
 };
 
-export async function getFinancialDataByCompanyKey(unique_url_key){
+export async function getFinancialDataByCompanyKey(unique_url_key, company_id){
   //get company data from companies table using unique_url_key
   const companyResult = await getCompanyByKey(unique_url_key);
 

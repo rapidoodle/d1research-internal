@@ -31,26 +31,28 @@ export default function CompanyOverview() {
   const [zThird, setZThird] = useState([]);
   const [zFourth, setZFourth] = useState([]);
   const [allData, setAllData] = useState([]);
+  const [uniqueUrlKey, setUniqueUrlKey] = useState('');
+  const [companyID, setCompanyID] = useState('');
 
   useEffect(() => {
     setLoading(true);
     const fetchCompany = async () => {
       const url = pathname.split('/');
-      const uniqueUrlKey = url[url.length - 1];
+      const urlKey = url[url.length - 1];
+      const cID = url[url.length - 2];
 
-      if(!validate(uniqueUrlKey)){
+      if(!validate(urlKey)){
         //redirect to home page
         router.push("/settings/companies");
       }
 
       try {
-        const response = await fetch(`/api/financialData/?unique_url_key=${uniqueUrlKey}`);
+        const response = await fetch(`/api/financial-data/?company_id=${cID}&unique_url_key=${urlKey}`);
         if (!response.ok) {
+          router.push("/settings/companies");
           throw new Error(`Error: ${response.statusText}`);
         }
         const data = await response.json();
-
-        console.log('Company data:', data);
 
         //set all data in reverse order
         const reverseData = data.reverse();
@@ -69,6 +71,8 @@ export default function CompanyOverview() {
           setZFourth(data[3]);
         }
 
+        setUniqueUrlKey(urlKey);
+        setCompanyID(cID);
         setLoading(false);
 
         return data;
@@ -82,9 +86,9 @@ export default function CompanyOverview() {
     fetchCompany();
   }, []);
 
-  if(!loading && allData.length > 0){
+  if(!loading && allData.length > 0 && uniqueUrlKey && companyID){
     return (<>
-      <div className="container-fluid financial-overview">
+      <div className="container-fluid financial-overview p-4">
         <div className="d-flex justify-content-between header-container">
             <div className="header-title">
             <Image
@@ -107,7 +111,7 @@ export default function CompanyOverview() {
           </div>
         {/* ROW 1 */}
         <div className="row mb-4 mt-2 d-flex">
-          <div className='col-md-6 d-flex'>
+          <div className='col-md-6 d-flex mb-4 mb-md-0'>
             <D1DPSForecast 
               zFirst={zFirst}
               zSecond={zSecond}
@@ -117,17 +121,15 @@ export default function CompanyOverview() {
           </div>
           <div className='col-md-6 d-flex'>
             <CapitalReturnPolicy  
-              zFirst={zFirst}
-              zSecond={zSecond}
-              zThird={zThird}
-              zFourth={zFourth}
+              companyID={companyID}
+              uniqueURLKey={uniqueUrlKey}
             />
           </div>
         </div>
 
         {/* ROW 2 */}
         <div className="row mb-4 d-flex">
-          <div className='col-md-6 d-flex'>
+          <div className='col-md-6 d-flex mb-4 mb-md-0'>
             <RiskScenarios
               zFirst={zFirst}
               zSecond={zSecond}
@@ -136,13 +138,14 @@ export default function CompanyOverview() {
             />
           </div>
           <div className='col-md-6 d-flex'>
-            <AnalystComments />
+            <AnalystComments 
+              uniqueUrlKey={uniqueUrlKey} />
           </div>
         </div>
         
         {/* ROW 3 */}
         <div className="row mb-4 d-flex">
-          <div className='col-md-6 d-flex'>
+          <div className='col-md-6 d-flex mb-4 mb-md-0'>
             <OverviewFinancials
               zFirst={zFirst}
               zSecond={zSecond}
@@ -160,7 +163,7 @@ export default function CompanyOverview() {
         
         {/* ROW 4 */}
         <div className="row mb-4 d-flex">
-          <div className='col-md-6 d-flex'>
+          <div className='col-md-6 d-flex mb-4 mb-md-0'>
             <ShareCapital 
               zFirst={zFirst}
               zSecond={zSecond}
@@ -175,7 +178,7 @@ export default function CompanyOverview() {
         
         {/* ROW 5 */}
         <div className="row mb-4 d-flex">
-          <div className='col-md-6 d-flex'>
+          <div className='col-md-6 d-flex mb-4 mb-md-0'>
             <TotalCapitalReturn 
               zFirst={zFirst}
               zSecond={zSecond}
@@ -194,12 +197,12 @@ export default function CompanyOverview() {
         </div>
         <div className='footer'>
           <p className='text-bold'>Disclaimer</p>
-          <p>The information contained in this presentation is confidential. D1 Research GmbH shall not be liable to any recipient for any inaccuracies or omissions and have no liability in respect of any loss or damage suffered by any recipient in connection with any information provided.</p>
+          <p className='mb-0'>The information contained in this presentation is confidential. D1 Research GmbH shall not be liable to any recipient for any inaccuracies or omissions and have no liability in respect of any loss or damage suffered by any recipient in connection with any information provided.</p>
         </div>
       </div>
       </>
     );
   }else{
-    return <>Loading...</>
+    return <div className='p-3'>Loading...</div>
   }
 };

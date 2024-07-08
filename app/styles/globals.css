@@ -73,6 +73,7 @@ table > thead > th {
   background-color: #FEFCF8;
   color: #2F5651;
 }
+
 .tox .tox-editor-header {
   display: grid;
   grid-template-columns: 1fr min-content;

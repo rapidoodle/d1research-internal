@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { uploadFinancialData, getFinancialData, getFinancialDataByCompanyKey } from '@/app/lib/financialData';
+import { uploadFinancialData, getFinancialData, getFinancialDataByCompanyKey } from '@/app/lib/financial-data';
 
 // This function can run for a maximum of 5 seconds
 export const maxDuration = 300;
@@ -26,6 +26,7 @@ export async function GET(req) {
 
   const { searchParams } = new URL(req.url);
   const uniqueUrlKey = searchParams.get('unique_url_key');
+  const companyID = searchParams.get('company_id');
 
   if(!uniqueUrlKey) {
     try {
@@ -41,7 +42,7 @@ export async function GET(req) {
     }
   }else{
     try {
-      const data = await getFinancialDataByCompanyKey(uniqueUrlKey);
+      const data = await getFinancialDataByCompanyKey(uniqueUrlKey, companyID);
 
       if (data.error) {
         return NextResponse.json({ message: data.error }, { status: 500 });

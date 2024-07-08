@@ -3,7 +3,7 @@ import { formatCompanyData, formatCurrencyWithDollar } from "@/app/lib/utils";
 export default function TotalCapitalReturn({zFirst, zSecond, zThird, zFourth}) {
     return (<>
         <div className="card total-cap-return flex-fill">
-            <h4>Total Capital Return</h4>
+            <h4>Total capital return</h4>
             <hr />
             <div className="table-responsive">
             <table className="table table-responsive">

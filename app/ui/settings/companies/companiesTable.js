@@ -73,7 +73,7 @@ const CompaniesTable = ({query, currentPage, companyAdded}) => {
                     <button className='btn btn-success btn-sm'>
                       <span><FontAwesomeIcon icon={faEdit} /> Edit</span>
                     </button>
-                    <a target='_blank' className='btn ms-2 btn-success btn-sm' href={`/companies/${row.url_key}`}>
+                    <a target='_blank' className='btn ms-2 btn-success btn-sm' href={`/companies/${row.company_id}/${row.url_key}`}>
                       <span><FontAwesomeIcon icon={faEye}/> View page</span>
                     </a>
                   </td>

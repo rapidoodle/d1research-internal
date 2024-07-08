@@ -27,11 +27,15 @@ const createCompany = async (req, isFormData = true) => {
       return { error: 'Name, sector_id and tags are required' };
     }
 
-    const result = await sql`
+    const query = `
       INSERT INTO companies (name, sector_id, tags, template, member_permission, sharing, updated_by)
       VALUES (${name}, ${sector_id}, ${tags}, ${template}, ${member_permission}, 'MEMBERS', ${userId})
       RETURNING unique_url_key;
     `;
+
+    console.log(query);
+    
+    const result = await sql.query(query);
     const uniquerURLKey = result.rows[0].unique_url_key
 
     console.log('uniquerURLKey', uniquerURLKey);

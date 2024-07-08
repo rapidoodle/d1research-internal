@@ -10,7 +10,7 @@ async function seedFinancialData(client) {
     // Create the "users" table if it doesn't exist
     const createTable = await client.sql`
       CREATE TABLE financial_data (
-        id SERIAL PRIMARY KEY,
+        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
         year INT,
         company VARCHAR(255),
         sector VARCHAR(255),
@@ -77,12 +77,11 @@ async function seedFinancialData(client) {
 async function seedCompanies(client) {
     try {
       await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
-      // Drop the table if it exists
       await client.sql`DROP TABLE IF EXISTS companies`;
       // Create the "users" table if it doesn't exist
       const createTable = await client.sql`
       CREATE TABLE companies (
-        id SERIAL PRIMARY KEY,
+        id UUID PRIMARY KEY DEFAULT uuid_generate_v4() UNIQUE,
         name VARCHAR(255),
         sharing VARCHAR(255),
         tags VARCHAR(255),
@@ -90,7 +89,7 @@ async function seedCompanies(client) {
         template boolean,
         attachments VARCHAR(255),
         member_permission INT,
-        sector_id INT,
+        sector_id  UUID DEFAULT uuid_generate_v4() UNIQUE,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_by UUID NOT NULL,
@@ -117,7 +116,7 @@ async function seedEvents(client) {
       // Create the "event" table if it doesn't exist
       const createTable = await client.sql`
       CREATE TABLE events (
-        id SERIAL PRIMARY KEY,
+        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
         recurrence VARCHAR(255),
         company_id INT,
         all_day BOOLEAN,
@@ -155,7 +154,7 @@ async function seedSectors(client) {
       // Create the "users" table if it doesn't exist
       const createTable = await client.sql`
       CREATE TABLE sectors (
-        id SERIAL PRIMARY KEY,
+        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
         name VARCHAR(255) UNIQUE NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -182,7 +181,7 @@ async function seedTags(client) {
       // Create the "users" table if it doesn't exist
       const createTable = await client.sql`
       CREATE TABLE tags (
-        id SERIAL PRIMARY KEY,
+        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
         name VARCHAR(255) UNIQUE NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -248,7 +247,7 @@ async function seedUserAccess(client) {
     await client.sql`DROP TABLE IF EXISTS user_access`;
     const createTable = await client.sql`
       CREATE TABLE user_access (
-        id SERIAL PRIMARY KEY,
+        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
         access_level VARCHAR(255) NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -322,7 +321,7 @@ async function seedCapitalReturnPolicy(client) {
       CREATE TABLE capital_return_policy (
         id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
         company_id UUID NOT NULL,
-        policy TEXT NOT NULL,
+        comment TEXT NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_by UUID NOT NULL
@@ -352,7 +351,7 @@ async function main() {
   await seedSectors(client);
   await seedUserAccess(client);
   await seedAnalystsComments(client);
-  // await seedLatestManagementStatement(client);
+  await seedLatestManagementStatement(client);
   await seedCapitalReturnPolicy(client);
 
 

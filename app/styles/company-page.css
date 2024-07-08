@@ -22,10 +22,7 @@
     display: flex;
     margin-top: 20px;
   }
-  
-  .risk-scenarios, .overview-financials, .share-capital, .total-cap-return, .analyst-comments, .management-statement, .capital-return-policy, .upcoming-events, .dps-calendar, .ex-div-calendar, .peer-comparison {
-    margin-bottom: 20px;
-  }
+
   /* make all table responsive */
   .table-responsive {
     overflow-x: auto!important;
@@ -122,9 +119,9 @@
     .header-container{
         background-color: #fff!important;
         border-bottom: 1px solid #dee2e6;
-        margin-top: -16px;
-        margin-left:-28px;
-        margin-right:-28px;
+        margin-left:-23px;
+        margin-right:-23px;
+        margin-top:-23px;
         padding: 36px;
         margin-bottom: 1rem;
     }

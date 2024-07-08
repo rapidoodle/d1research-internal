@@ -1,4 +1,4 @@
-export default function AnalystComments() {
+export default function AnalystComments({uniqueUrlKey}) {
     return (<>
         <div className="card flex-fill">
             <div className='d-flex justify-content-between align-items-center'>

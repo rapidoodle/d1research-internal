@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { uploadFinancialData, getFinancialData, updateFinancialData, deleteFinancialData } from '@/app/lib/financialData';
+import { uploadFinancialData, getFinancialData, updateFinancialData, deleteFinancialData } from '@/app/lib/financial-data';
 import { createCompany, getCompanies } from '@/app/lib/companies';
 
 

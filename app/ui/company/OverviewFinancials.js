@@ -3,7 +3,7 @@ import { formatCurrencyWithDollar } from "@/app/lib/utils";
 export default function OverviewFinancials({zFirst, zSecond, zThird, zFourth}) {
     return (<>
         < div className="card flex-fill">
-            <h4>Overview Financials</h4>
+            <h4>Overview financials</h4>
             <hr />
             <div className="table-responsive">
                 <table className="table table-responsive">

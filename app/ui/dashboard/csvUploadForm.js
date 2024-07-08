@@ -34,7 +34,7 @@ const CsvUploader = ({ onFileUploaded }) => {
       const formData = new FormData();
       formData.append('file', file);
 
-      const res = await fetch('/api/financialData', {
+      const res = await fetch('/api/financial-data', {
         method: 'POST',
         body: formData,
       });
