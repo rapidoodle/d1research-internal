@@ -29,18 +29,19 @@ const createCompany = async (req, isFormData = true) => {
 
     const query = `
       INSERT INTO companies (name, sector_id, tags, template, member_permission, sharing, updated_by)
-      VALUES (${name}, ${sector_id}, ${tags}, ${template}, ${member_permission}, 'MEMBERS', ${userId})
-      RETURNING unique_url_key;
+      VALUES ('${name}', '${sector_id}', '${tags}', ${template}, ${member_permission}, 'MEMBERS', '${userId}')
+      RETURNING unique_url_key, id;
     `;
 
     console.log(query);
-    
+
     const result = await sql.query(query);
     const uniquerURLKey = result.rows[0].unique_url_key
+    const companyID = result.rows[0].id
 
     console.log('uniquerURLKey', uniquerURLKey);
     // if success, send company to clinked
-     await createCompanyAsNote({ name, sector_id, tags, template, member_permission, uniquerURLKey });
+     await createCompanyAsNote({ name, sector_id, tags, template, member_permission, uniquerURLKey, companyID });
 
     return { data: result.rows[0]};
   } catch (error) {
