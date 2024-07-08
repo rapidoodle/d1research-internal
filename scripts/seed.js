@@ -89,7 +89,7 @@ async function seedCompanies(client) {
         template boolean,
         attachments VARCHAR(255),
         member_permission INT,
-        updated_by UUID NOT NULL,
+        sector_id UUID NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_by UUID NOT NULL,
