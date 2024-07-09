@@ -126,6 +126,7 @@ export default function CapitalReturnPolicy({companyID, session}) {
         <>
         <div className='card flex-fill'>
             <div className='d-flex align-items-center'>
+                {JSON.stringify(session)}
                 <h4 className='flex-grow-1 mb-0'>Capital return policy</h4>
                 { userSession && (userSession.access_level === 'Admin' || userSession.access_level === 'Analyst') && 
                     <a className='page-link me-2' onClick={handleShow}>New</a>

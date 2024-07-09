@@ -5,7 +5,7 @@ export async function middleware(req) {
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
   // Define a regular expression pattern for dynamic public routes
-  const publicRoutePattern = /^\/companies\/[^/]+(?:\/[^/]+)?$/;
+  const publicRoutePattern = /^\/company-overview\/[0-9a-fA-F-]{36}$/;
 
   // Check if the request URL matches the dynamic public route pattern
   if (publicRoutePattern.test(req.nextUrl.pathname)) {
