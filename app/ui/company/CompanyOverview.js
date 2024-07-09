@@ -17,6 +17,7 @@ import ShareCapital from './ShareCapiltal';
 import ExDivCalendar from './ExDivCalendar';
 import TotalCapitalReturn from './TotalCapitalReturn';
 import PeerComparisonDPSPayoutRatio from './PeerComparisonDPSPayoutRatio';
+import Select from 'react-select'
 
 export default function CompanyOverview({session}) {
   const pathname = usePathname();
@@ -29,9 +30,9 @@ export default function CompanyOverview({session}) {
   const [allData, setAllData] = useState([]);
   const [uniqueUrlKey, setUniqueUrlKey] = useState('');
   const [companyID, setCompanyID] = useState('');
-  const [companies, setCompanies] = useState([]);
   const [selectedCompany, setSelectedCompany] = useState(null);
-  const [showCompanyList, setShowCompanyList] = useState(false);
+  const [companiesOptions, setCompaniesOptions] = useState([]);
+  const [showCompanies, setShowCompanies] = useState(false);
 
   useEffect(() => {
     const fetchCompanies = async () => {
@@ -54,16 +55,21 @@ export default function CompanyOverview({session}) {
         }
 
         const data = await response.json();
-        setCompanies(data.data);
-        setSelectedCompany(data.data[0]);
-        setLoading(false);
 
         setUniqueUrlKey(urlKey);
         setCompanyID(cID);
-        
+
+        const formattedOptions = data.data.map(company => ({
+          value: company.company_id,
+          label: company.company,
+          equity_ticker: company.equity_ticker
+      }));
+
+      setCompaniesOptions(formattedOptions);
+      setSelectedCompany(formattedOptions[0]);
+
       } catch (error) {
         console.log('Failed to fetch companies:', error);
-        setLoading(false);
       }
     };
 
@@ -74,6 +80,7 @@ export default function CompanyOverview({session}) {
     if (selectedCompany) {
       const fetchFinancialData = async () => {
         try {
+          setLoading(true);
           const response = await fetch(`/api/financial-data/?equity_ticker=${selectedCompany.equity_ticker}`);
           if (!response.ok) {
             router.push("/settings/companies");
@@ -111,26 +118,50 @@ export default function CompanyOverview({session}) {
     }
   }, [selectedCompany, router]);
 
-  if(!loading || selectedCompany){
+  const handleSelectCompany = (selectedOption) => {
+    setSelectedCompany(selectedOption);
+    setShowCompanies(false);
+  }
+
+  if(!loading && selectedCompany){
     return (<>
-      <div className="container-fluid financial-overview p-4">
-        <div className="d-flex justify-content-between header-container">
-            <div className="header-title">
-            <Image
-              src="https://d1researchstorage.s3.amazonaws.com/company-logo-rectangle.png"
-              alt="Company Logo"
-              width={185}
-              height={100}
-            />
+      <div className="container-fluid financial-overview p-2 p-md-4">
+        <div className="row mb-md-3">
+            <div className="col-12 col-sm-6 d-flex align-items-center justify-content-md-start justify-content-center mt-4 mt-md-0">
+              <Image
+                src="https://d1researchstorage.s3.amazonaws.com/company-logo-rectangle.png"
+                alt="Company Logo"
+                width={185}
+                height={100}
+              />
             </div>
-            <div className="company-details">
-              <div className='d-flex'>
-                <div className='semi-card mb-3'><b>Company Name:</b> {zFirst?.company}</div>
-                <div className='semi-card mb-3 ms-3'><b>DIV Ticker:</b> {zFirst?.div_ticker}</div>
+            <div className="mt-4 mt-sm-0 col-12 col-sm-6">
+              <div className='d-flex flex-column flex-md-row'>
+                <div className='semi-card mb-3 d-flex align-items-center'><b>Company Name:</b> 
+
+                {!showCompanies ? <p className='company-link ms-2' onClick={ () => setShowCompanies(true) }> {zFirst?.company}</p> : 
+                  ( <div className='w-100 px-2'>
+                    <Select
+                        className="basic-single w-100"
+                        classNamePrefix="select"
+                        isClearable={false}
+                        defaultValue={companiesOptions[0]}
+                        isSearchable={true}
+                        onChange={handleSelectCompany}
+                        value={selectedCompany}
+                        name="companies"
+                        options={companiesOptions}
+                    />
+                    <sub className='company-link cursor-pointer float-end my-2' onClick={ () => setShowCompanies(false) }>Close</sub>
+                    </div>)
+                  }
+
+                </div>
+                <div className='semi-card mb-3 ms-md-3'><b>DIV Ticker:</b> {zFirst?.div_ticker}</div>
               </div>
-              <div className='d-flex'>
-                <div className='semi-card'><b>Ticker:</b> {zFirst?.equity_ticker}</div>
-                <div className='semi-card ms-3'><b>Dividend Index:</b> -</div>
+              <div className='d-flex flex-column flex-md-row'>
+                <div className='semi-card mb-md-0 mb-3'><b>Ticker:</b> {zFirst?.equity_ticker}</div>
+                <div className='semi-card mb-md-0 mb-3 ms-md-3'><b>Dividend Index:</b> -</div>
               </div>
             </div>
           </div>
@@ -146,7 +177,7 @@ export default function CompanyOverview({session}) {
           </div>
           <div className='col-md-6 d-flex'>
             <CapitalReturnPolicy  
-              companyID={selectedCompany?.company_id}
+              companyID={selectedCompany?.value}
               session={session}
             />
           </div>

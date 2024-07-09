@@ -1,9 +1,8 @@
 'use client';
-
 import React, { useState, forwardRef, useImperativeHandle } from "react";
-import {Select} from 'react-select'
+import CreatableSelect, {Select} from 'react-select/creatable';
 
-const CreatableSelectElement = forwardRef(({ options, onCreate, onSelect }, ref) => {
+const SelectElement = forwardRef(({ options, onCreate, onSelect }, ref) => {
   const [selectedOption, setSelectedOption] = useState(null);
 
   useImperativeHandle(ref, () => ({
@@ -60,11 +59,11 @@ const CreatableSelectElement = forwardRef(({ options, onCreate, onSelect }, ref)
         value={selectedOption}
         styles={customStyles}
         classNamePrefix="react-select"
-      />
+      />    
     </>
   );
 });
 
-CreatableSelectElement.displayName = 'CreatableSelectElement';
+SelectElement.displayName = 'SelectElement';
 
-export default CreatableSelectElement;
+export default SelectElement;

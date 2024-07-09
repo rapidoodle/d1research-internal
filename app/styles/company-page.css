@@ -42,7 +42,7 @@ background-color: #CBD5D3;
 color: #1D322B;
 }
 
-.financial-overview th, td, p, .analyst-comments ul > li {
+.financial-overview th, td, .analyst-comments ul > li {
 padding: 8px;
 color: #2F5651!important;
 margin-bottom: 0;
@@ -114,15 +114,17 @@ table tr td.second-title div{
     background-color: #F7F1E3;
     border: 1px solid #2F5651;
     border-radius: 8px;
-    padding: 0.5rem
+    padding: 0.5rem;
+    width: 100%;
 }
+
+
 .header-container{
     background-color: #fff!important;
     border-bottom: 1px solid #dee2e6;
     margin-left:-23px;
     margin-right:-23px;
     margin-top:-23px;
-    padding: 36px;
     margin-bottom: 1rem;
 }
 
@@ -140,4 +142,35 @@ table tr td.second-title div{
   margin-bottom: 0;
   cursor: pointer;
   color: #2F5651;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+
+}
+
+p.company-link{
+    margin-bottom: 0;
+    color:cornflowerblue;
+    cursor: pointer;
 }

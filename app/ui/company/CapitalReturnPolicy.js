@@ -1,12 +1,7 @@
-import ButtonSpinner from '@/app/components/ButtonSpinner';
 import ModalComponent from '@/app/components/ModalComponent';
 import PageSpinner from '@/app/components/PageSpinner';
-import { faEdit, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Editor } from '@tinymce/tinymce-react';
 import { useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap';
-import { toast } from 'react-toastify';
 
 export default function CapitalReturnPolicy({companyID, session}) {
     const [showModal, setShowModal] = useState(false);

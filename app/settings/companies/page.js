@@ -50,7 +50,7 @@ export default function Page(searchParams) {
             <Modal.Title>Add new company</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-          <NewCompanyForm onCompanyAdded={handleCompanyAdded} />
+            <NewCompanyForm onCompanyAdded={handleCompanyAdded} />
           </Modal.Body>
         </Modal>
     </main>

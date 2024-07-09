@@ -52,7 +52,7 @@ export default async function RootLayout({ children }) {
               </nav>
               )}
               <main>
-                {children}
+                    {children}
               </main>
             </div>
           </div>
