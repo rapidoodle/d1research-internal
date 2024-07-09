@@ -4,7 +4,6 @@ const getUniqueKey = async (key) => {
   try {
     const query = `SELECT * FROM unique_keys`;
     const result = await sql.query(query);
-    console.log(result.rows);
     return { data: result.rows };
 
   } catch (error) {
