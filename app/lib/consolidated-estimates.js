@@ -30,7 +30,9 @@ export async function getConsolidatedEstimates() {
         WHERE
           rn <= 4
         GROUP BY
-          company, equity_ticker;
+          company, equity_ticker
+        ORDER BY
+          company ASC;
         `;
       const result = await sql.query(query);
       console.log(result.rows);

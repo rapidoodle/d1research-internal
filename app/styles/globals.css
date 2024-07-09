@@ -90,3 +90,14 @@ table > thead > th {
 .border-bottom {
   border-bottom: 1px solid #ddd; /* or any other desired style */
 }
+
+.f-12 {
+  font-size: 12px;
+}
+.f-13{
+  font-size: 13px;
+}
+.d1-link{
+  text-decoration: none!important;
+  color: #2F5651!important;
+}

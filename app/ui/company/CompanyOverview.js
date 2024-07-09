@@ -63,10 +63,11 @@ export default function CompanyOverview({session}) {
           value: company.company_id,
           label: company.company,
           equity_ticker: company.equity_ticker
-      }));
+        }));
 
-      setCompaniesOptions(formattedOptions);
-      setSelectedCompany(formattedOptions[0]);
+
+        setCompaniesOptions(formattedOptions);
+        setSelectedCompany(formattedOptions[0]);
 
       } catch (error) {
         console.log('Failed to fetch companies:', error);
@@ -75,6 +76,15 @@ export default function CompanyOverview({session}) {
 
     fetchCompanies();
   }, [pathname, router]);
+
+  const filterOption = (option, inputValue) => {
+    const { label, data } = option;
+
+    return (
+      label.toLowerCase().includes(inputValue.toLowerCase()) ||
+      data.equity_ticker.toLowerCase().includes(inputValue.toLowerCase())
+    );
+  };
 
   useEffect(() => {
     if (selectedCompany) {
@@ -146,6 +156,7 @@ export default function CompanyOverview({session}) {
                         classNamePrefix="select"
                         isClearable={false}
                         defaultValue={companiesOptions[0]}
+                        filterOption={filterOption}
                         isSearchable={true}
                         onChange={handleSelectCompany}
                         value={selectedCompany}
