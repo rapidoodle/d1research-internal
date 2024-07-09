@@ -25,13 +25,14 @@ margin-top: 20px;
 
 /* make all table responsive */
 .table-responsive {
-overflow-x: auto!important;
+    overflow-x: auto!important;
 }
 
 
 table {
-width: 100%;
-border-collapse: collapse;
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 0!important;
 }
 .card{
 padding:1.2rem!important
@@ -55,7 +56,7 @@ h4{
 margin-bottom: 0;
 }
 
-th {
+.financial-overview table thead th {
 background-color: #F7F1E3!important;
 border-bottom: none!important;
 }
@@ -90,7 +91,7 @@ hr{
     border-color: #2F5651;
 }
 .bg-cream{
-    background-color: #F7F1E3;
+    background-color: #F7F1E3!important;
 }
 table tr td{
   border: none!important;
@@ -106,7 +107,7 @@ table tr td.second-title div{
     padding-top:.5rem;
     padding-bottom:.5rem;
     padding-left: 2rem;
-    font-size: 20px;
+    font-size: 18px;
     color: #2F5651;
 }
 
@@ -128,9 +129,13 @@ table tr td.second-title div{
     margin-bottom: 1rem;
 }
 
-.comment-container{
-  max-height: 300px;
-  min-height: 175px;
+.ac-comment-container{
+  max-height: 280px;
+  overflow-y: scroll;
+}
+
+.crp-comment-container{
+  max-height: 170px;
   overflow-y: scroll;
 }
 
@@ -143,7 +148,9 @@ table tr td.second-title div{
   cursor: pointer;
   color: #2F5651;
 }
-
+table thead tr th{
+    font-weight: 500!important
+}
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
 
@@ -173,4 +180,7 @@ p.company-link{
     margin-bottom: 0;
     color:cornflowerblue;
     cursor: pointer;
+}
+table tr td.font-medium{
+    font-weight: 500;
 }

@@ -32,11 +32,11 @@ export default function RiskScenarios({zFirst, zSecond, zThird, zFourth}) {
                         <td>{formatCompanyData(zFourth?.z_bear)}</td>
                         </tr>
                         <tr>
-                        <td>Central (40%)</td>
-                        <td>5.30</td>
-                        <td>4.75</td>
-                        <td>4.90</td>
-                        <td>5.10</td>
+                        <td className="font-medium">Central (40%)</td>
+                        <td className="font-medium">5.30</td>
+                        <td className="font-medium">4.75</td>
+                        <td className="font-medium">4.90</td>
+                        <td className="font-medium">5.10</td>
                         </tr>
                         <tr>
                         <td>Bull (20%)</td>
@@ -53,11 +53,11 @@ export default function RiskScenarios({zFirst, zSecond, zThird, zFourth}) {
                         <td>{formatCompanyData(zFourth?.z_very_bull)}</td>
                         </tr>
                         <tr>
-                        <td>Risk adj. DPS</td>
-                        <td>{formatCompanyData(zFirst?.risk_adj_dps_z)}</td>
-                        <td>{formatCompanyData(zSecond?.risk_adj_dps_z)}</td>
-                        <td>{formatCompanyData(zThird?.risk_adj_dps_z)}</td>
-                        <td>{formatCompanyData(zFourth?.risk_adj_dps_z)}</td>
+                        <td className="font-medium">Risk adj. DPS</td>
+                        <td className="font-medium">{formatCompanyData(zFirst?.risk_adj_dps_z)}</td>
+                        <td className="font-medium">{formatCompanyData(zSecond?.risk_adj_dps_z)}</td>
+                        <td className="font-medium">{formatCompanyData(zThird?.risk_adj_dps_z)}</td>
+                        <td className="font-medium">{formatCompanyData(zFourth?.risk_adj_dps_z)}</td>
                         </tr>
                         <tr className='highlight'>
                         <td>Difference to Central</td>

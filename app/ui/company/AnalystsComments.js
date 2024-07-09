@@ -3,7 +3,7 @@ import PageSpinner from '@/app/components/PageSpinner';
 import { Editor } from '@tinymce/tinymce-react';
 import { useEffect, useState } from 'react';
 
-export default function CapitalReturnPolicy({companyID, session}) {
+export default function AnalystsComments({companyID, session}) {
     const [showModal, setShowModal] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
     const [commentID, setCommentID] = useState(null);
@@ -27,7 +27,7 @@ export default function CapitalReturnPolicy({companyID, session}) {
     const handleSave = () => {
         setLoading(true);
 
-        const url = '/api/capital-return-policy';
+        const url = '/api/analysts-comments';
         const method = isEdit ? 'PATCH' : 'POST';
         const data = isEdit ? 
             { comment: comment, id: commentID} : 
@@ -71,7 +71,7 @@ export default function CapitalReturnPolicy({companyID, session}) {
             setSomeComments([]);
         }        
 
-        fetch(`/api/capital-return-policy/?company_id=${companyID}&limit=${commentLimit}&showAll=${showAll}`)
+        fetch(`/api/analysts-comments/?company_id=${companyID}&limit=${commentLimit}&showAll=${showAll}`)
         .then(res => res.json())
         .then(data => {
             console.log(data);
@@ -101,7 +101,7 @@ export default function CapitalReturnPolicy({companyID, session}) {
         alert(comment.id);
         setLoading(true);
         try {
-            fetch(`/api/capital-return-policy/?comment_id=${comment.id}`, {
+            fetch(`/api/analysts-comments/?comment_id=${comment.id}`, {
                 method: 'DELETE',
             })
             .then(res => res.json())
@@ -125,7 +125,7 @@ export default function CapitalReturnPolicy({companyID, session}) {
         <>
         <div className='card flex-fill'>
             <div className='d-flex align-items-center'>
-                <h4 className='flex-grow-1 mb-0'>Capital return policy</h4>
+                <h4 className='flex-grow-1 mb-0'>Analysts comments</h4>
                 { session && (session.user.access_level === 'Admin' || session.user.access_level === 'Analyst') && 
                     <a className='page-link me-2' onClick={handleShow}>New</a>
                 }
@@ -133,7 +133,7 @@ export default function CapitalReturnPolicy({companyID, session}) {
                 { someComments.length > 0 && <a className='page-link' onClick={handleShowAll}>View all</a> }
             </div>
             <hr />
-            <div className='crp-comment-container d-flex flex-column'>
+            <div className='ac-comment-container d-flex flex-column'>
                 <div className='flex-grow-1'>
                     <div className='mb-3'>
                     {loading ? (

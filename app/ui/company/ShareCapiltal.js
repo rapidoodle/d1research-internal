@@ -18,11 +18,11 @@ export default function ShareCapital({zFirst, zSecond, zThird, zFourth}) {
                     </thead>
                     <tbody>
                         <tr>
-                        <td>Shares in issue</td>
-                        <td>{formatCompanyData(zFirst?.share_in_issue)}</td>
-                        <td>{formatCompanyData(zSecond?.share_in_issue)}</td>
-                        <td>{formatCompanyData(zThird?.share_in_issue)}</td>
-                        <td>{formatCompanyData(zFourth?.share_in_issue)}</td>
+                        <td className="font-medium">Shares in issue</td>
+                        <td className="font-medium">{formatCompanyData(zFirst?.share_in_issue)}</td>
+                        <td className="font-medium">{formatCompanyData(zSecond?.share_in_issue)}</td>
+                        <td className="font-medium">{formatCompanyData(zThird?.share_in_issue)}</td>
+                        <td className="font-medium">{formatCompanyData(zFourth?.share_in_issue)}</td>
                         </tr>
                         <tr>
                         <td>Treasury shares</td>
@@ -32,11 +32,11 @@ export default function ShareCapital({zFirst, zSecond, zThird, zFourth}) {
                         <td>{formatCompanyData(zFourth?.treasury_shares)}</td>
                         </tr>
                         <tr>
-                        <td>Shares outstanding</td>
-                        <td>{formatCompanyData(zFirst?.shares_outstanding)}</td>
-                        <td>{formatCompanyData(zSecond?.shares_outstanding)}</td>
-                        <td>{formatCompanyData(zThird?.shares_outstanding)}</td>
-                        <td>{formatCompanyData(zFourth?.shares_outstanding)}</td>
+                        <td className="font-medium">Shares outstanding</td>
+                        <td className="font-medium">{formatCompanyData(zFirst?.shares_outstanding)}</td>
+                        <td className="font-medium">{formatCompanyData(zSecond?.shares_outstanding)}</td>
+                        <td className="font-medium">{formatCompanyData(zThird?.shares_outstanding)}</td>
+                        <td className="font-medium">{formatCompanyData(zFourth?.shares_outstanding)}</td>
                         </tr>
                         <tr>
                         <td>Av. Weigh. Sh. cap</td>

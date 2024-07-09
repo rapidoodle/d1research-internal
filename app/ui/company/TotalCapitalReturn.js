@@ -1,4 +1,4 @@
-import { formatCompanyData, formatCurrencyWithDollar } from "@/app/lib/utils";
+import { formatCompanyData, formatNumber } from "@/app/lib/utils";
 
 export default function TotalCapitalReturn({zFirst, zSecond, zThird, zFourth}) {
     return (<>
@@ -19,38 +19,38 @@ export default function TotalCapitalReturn({zFirst, zSecond, zThird, zFourth}) {
                 <tbody>
                     <tr>
                     <td>Dividend</td>
-                    <td>{formatCurrencyWithDollar(zFirst?.dividend)}</td>
-                    <td>{formatCurrencyWithDollar(zSecond?.dividend)}</td>
-                    <td>{formatCurrencyWithDollar(zThird?.dividend)}</td>
-                    <td>{formatCurrencyWithDollar(zFourth?.dividend)}</td>
+                    <td>{formatNumber(zFirst?.dividend)}</td>
+                    <td>{formatNumber(zSecond?.dividend)}</td>
+                    <td>{formatNumber(zThird?.dividend)}</td>
+                    <td>{formatNumber(zFourth?.dividend)}</td>
                     </tr>
                     <tr>
                     <td>Share Buyback</td>
-                    <td>{formatCurrencyWithDollar(zFirst?.share_buyback)}</td>
-                    <td>{formatCurrencyWithDollar(zSecond?.share_buyback)}</td>
-                    <td>{formatCurrencyWithDollar(zThird?.share_buyback)}</td>
-                    <td>{formatCurrencyWithDollar(zFourth?.share_buyback)}</td>
+                    <td>{formatNumber(zFirst?.share_buyback)}</td>
+                    <td>{formatNumber(zSecond?.share_buyback)}</td>
+                    <td>{formatNumber(zThird?.share_buyback)}</td>
+                    <td>{formatNumber(zFourth?.share_buyback)}</td>
                     </tr>
                     <tr>
-                    <td>Total Cap Return</td>
-                    <td>{formatCurrencyWithDollar(zFirst?.total_capital_return)}</td>
-                    <td>{formatCurrencyWithDollar(zSecond?.total_capital_return)}</td>
-                    <td>{formatCurrencyWithDollar(zThird?.total_capital_return)}</td>
-                    <td>{formatCurrencyWithDollar(zFourth?.total_capital_return)}</td>
+                    <td className="font-medium">Total Cap Return</td>
+                    <td className="font-medium">{formatNumber(zFirst?.total_capital_return)}</td>
+                    <td className="font-medium">{formatNumber(zSecond?.total_capital_return)}</td>
+                    <td className="font-medium">{formatNumber(zThird?.total_capital_return)}</td>
+                    <td className="font-medium">{formatNumber(zFourth?.total_capital_return)}</td>
                     </tr>
                     <tr>
                     <td>Net inc per before</td>
-                    <td>{formatCurrencyWithDollar(zFirst?.net_debt)}</td>
-                    <td>{formatCurrencyWithDollar(zSecond?.net_debt)}</td>
-                    <td>{formatCurrencyWithDollar(zThird?.net_debt)}</td>
-                    <td>{formatCurrencyWithDollar(zFourth?.net_debt)}</td>
+                    <td>{formatNumber(zFirst?.net_debt)}</td>
+                    <td>{formatNumber(zSecond?.net_debt)}</td>
+                    <td>{formatNumber(zThird?.net_debt)}</td>
+                    <td>{formatNumber(zFourth?.net_debt)}</td>
                     </tr>
                     <tr>
-                    <td>Capital payout (%)</td>
-                    <td>{formatCompanyData(zFirst?.capital_payout_percent, true)}</td>
-                    <td>{formatCompanyData(zSecond?.capital_payout_percent, true)}</td>
-                    <td>{formatCompanyData(zThird?.capital_payout_percent, true)}</td>
-                    <td>{formatCompanyData(zFourth?.capital_payout_percent, true)}</td>
+                    <td className="font-medium">Capital payout (%)</td>
+                    <td className="font-medium">{formatCompanyData(zFirst?.capital_payout_percent, true)}</td>
+                    <td className="font-medium">{formatCompanyData(zSecond?.capital_payout_percent, true)}</td>
+                    <td className="font-medium">{formatCompanyData(zThird?.capital_payout_percent, true)}</td>
+                    <td className="font-medium">{formatCompanyData(zFourth?.capital_payout_percent, true)}</td>
                     </tr>
                 </tbody>
             </table>

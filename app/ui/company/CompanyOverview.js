@@ -9,7 +9,6 @@ import { useRouter } from 'next/navigation'
 import D1DPSForecast from './D1DPSForecast';
 import CapitalReturnPolicy from './CapitalReturnPolicy';
 import RiskScenarios from './RiskScenarios';
-import AnalystComments from './AnalystComments';
 import OverviewFinancials from './OverviewFinancials';
 import UpcomingEvents from './UpcomingEvents';
 import DPSCalendar from './DPSCalendar';
@@ -18,6 +17,7 @@ import ExDivCalendar from './ExDivCalendar';
 import TotalCapitalReturn from './TotalCapitalReturn';
 import PeerComparisonDPSPayoutRatio from './PeerComparisonDPSPayoutRatio';
 import Select from 'react-select'
+import AnalystsComments from './AnalystsComments';
 
 export default function CompanyOverview({session}) {
   const pathname = usePathname();
@@ -194,8 +194,9 @@ export default function CompanyOverview({session}) {
             />
           </div>
           <div className='col-md-6 d-flex'>
-            <AnalystComments 
-              uniqueUrlKey={uniqueUrlKey} />
+            <AnalystsComments 
+              companyID={selectedCompany?.value}
+              session={session} />
           </div>
         </div>
         

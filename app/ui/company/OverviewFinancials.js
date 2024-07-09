@@ -1,4 +1,4 @@
-import { formatCurrencyWithDollar } from "@/app/lib/utils";
+import { formatNumber } from "@/app/lib/utils";
 
 export default function OverviewFinancials({zFirst, zSecond, zThird, zFourth}) {
     return (<>
@@ -18,97 +18,97 @@ export default function OverviewFinancials({zFirst, zSecond, zThird, zFourth}) {
                     </thead>
                     <tbody>
                         <tr>
-                        <td colSpan={5} className='py-4 px-0 second-title'>
+                        <td colSpan={5} className='px-0 second-title'>
                             <div className='bg-gray'>Profit & Loss</div>
                         </td>
                         </tr>
                         <tr>
                         <td>Net income</td>
-                        <td>{formatCurrencyWithDollar(zFirst?.net_income)}</td>
-                        <td>{formatCurrencyWithDollar(zSecond?.net_income)}</td>
-                        <td>{formatCurrencyWithDollar(zThird?.net_income)}</td>
-                        <td>{formatCurrencyWithDollar(zFourth?.net_income)}</td>
+                        <td>{formatNumber(zFirst?.net_income)}</td>
+                        <td>{formatNumber(zSecond?.net_income)}</td>
+                        <td>{formatNumber(zThird?.net_income)}</td>
+                        <td>{formatNumber(zFourth?.net_income)}</td>
                         
                         </tr>
                         <tr>
-                        <td>AWSC</td>
-                        <td>{formatCurrencyWithDollar(zFirst?.av_weighted_share_cap)}</td>
-                        <td>{formatCurrencyWithDollar(zSecond?.av_weighted_share_cap)}</td>
-                        <td>{formatCurrencyWithDollar(zThird?.av_weighted_share_cap)}</td>
-                        <td>{formatCurrencyWithDollar(zFourth?.av_weighted_share_cap)}</td>
+                        <td>Avg. weighted shares</td>
+                        <td>{formatNumber(zFirst?.av_weighted_share_cap)}</td>
+                        <td>{formatNumber(zSecond?.av_weighted_share_cap)}</td>
+                        <td>{formatNumber(zThird?.av_weighted_share_cap)}</td>
+                        <td>{formatNumber(zFourth?.av_weighted_share_cap)}</td>
                         </tr>
                         <tr>
-                        <td>EPS</td>
-                        <td>{formatCurrencyWithDollar(zFirst?.eps)}</td>
-                        <td>{formatCurrencyWithDollar(zSecond?.eps)}</td>
-                        <td>{formatCurrencyWithDollar(zThird?.eps)}</td>
-                        <td>{formatCurrencyWithDollar(zFourth?.eps)}</td>
+                        <td>EPS (€)</td>
+                        <td>{formatNumber(zFirst?.eps)}</td>
+                        <td>{formatNumber(zSecond?.eps)}</td>
+                        <td>{formatNumber(zThird?.eps)}</td>
+                        <td>{formatNumber(zFourth?.eps)}</td>
                         </tr>
                         <tr>
-                        <td>DPS</td>
-                        <td>{formatCurrencyWithDollar(zFirst?.dps_fy)}</td>
-                        <td>{formatCurrencyWithDollar(zSecond?.dps_fy)}</td>
-                        <td>{formatCurrencyWithDollar(zThird?.dps_fy)}</td>
-                        <td>{formatCurrencyWithDollar(zFourth?.dps_fy)}</td>
+                        <td>DPS (€)</td>
+                        <td>{formatNumber(zFirst?.dps_fy)}</td>
+                        <td>{formatNumber(zSecond?.dps_fy)}</td>
+                        <td>{formatNumber(zThird?.dps_fy)}</td>
+                        <td>{formatNumber(zFourth?.dps_fy)}</td>
                         </tr>
                         <tr>
                         <td>Payout %</td>
-                        <td>{formatCurrencyWithDollar(zFirst?.dps_payout_ratio)}</td>
-                        <td>{formatCurrencyWithDollar(zSecond?.dps_payout_ratio)}</td>
-                        <td>{formatCurrencyWithDollar(zThird?.dps_payout_ratio)}</td>
-                        <td>{formatCurrencyWithDollar(zFourth?.dps_payout_ratio)}</td>
+                        <td>{formatNumber(zFirst?.dps_payout_ratio)}</td>
+                        <td>{formatNumber(zSecond?.dps_payout_ratio)}</td>
+                        <td>{formatNumber(zThird?.dps_payout_ratio)}</td>
+                        <td>{formatNumber(zFourth?.dps_payout_ratio)}</td>
                         </tr>
                         <tr>
-                        <td colSpan={5} className='py-4 px-0 second-title'>
+                        <td colSpan={5} className='px-0 second-title'>
                             <div className='bg-gray'>Cf Statement</div>
                         </td>
                         </tr>
                         <tr>
-                        <td>op CF</td>
-                        <td>{formatCurrencyWithDollar(zFirst?.op_cash_flow)}</td>
-                        <td>{formatCurrencyWithDollar(zSecond?.op_cash_flow)}</td>
-                        <td>{formatCurrencyWithDollar(zThird?.op_cash_flow)}</td>
-                        <td>{formatCurrencyWithDollar(zFourth?.op_cash_flow)}</td>
+                        <td className="font-medium">op CF</td>
+                        <td className="font-medium">{formatNumber(zFirst?.op_cash_flow)}</td>
+                        <td className="font-medium">{formatNumber(zSecond?.op_cash_flow)}</td>
+                        <td className="font-medium">{formatNumber(zThird?.op_cash_flow)}</td>
+                        <td className="font-medium">{formatNumber(zFourth?.op_cash_flow)}</td>
                         </tr>
                         <tr className='highlight'>
                         <td>Investments</td>
-                        <td>{formatCurrencyWithDollar(zFirst?.capex)}</td>
-                        <td>{formatCurrencyWithDollar(zSecond?.capex)}</td>
-                        <td>{formatCurrencyWithDollar(zThird?.capex)}</td>
-                        <td>{formatCurrencyWithDollar(zFourth?.capex)}</td>
+                        <td>{formatNumber(zFirst?.capex)}</td>
+                        <td>{formatNumber(zSecond?.capex)}</td>
+                        <td>{formatNumber(zThird?.capex)}</td>
+                        <td>{formatNumber(zFourth?.capex)}</td>
                         </tr>
                         <tr>
-                        <td>FCF</td>
-                        <td>{formatCurrencyWithDollar(zFirst?.free_cash_flow)}</td>
-                        <td>{formatCurrencyWithDollar(zSecond?.free_cash_flow)}</td>
-                        <td>{formatCurrencyWithDollar(zThird?.free_cash_flow)}</td>
-                        <td>{formatCurrencyWithDollar(zFourth?.free_cash_flow)}</td>
+                        <td className="font-medium">FCF</td>
+                        <td className="font-medium">{formatNumber(zFirst?.free_cash_flow)}</td>
+                        <td className="font-medium">{formatNumber(zSecond?.free_cash_flow)}</td>
+                        <td className="font-medium">{formatNumber(zThird?.free_cash_flow)}</td>
+                        <td className="font-medium">{formatNumber(zFourth?.free_cash_flow)}</td>
                         </tr>
                         <tr className='highlight'>
                         <td>Div</td>
-                        <td>{formatCurrencyWithDollar(zFirst?.dividend)}</td>
-                        <td>{formatCurrencyWithDollar(zSecond?.dividend)}</td>
-                        <td>{formatCurrencyWithDollar(zThird?.dividend)}</td>
-                        <td>{formatCurrencyWithDollar(zFourth?.dividend)}</td>
+                        <td>{formatNumber(zFirst?.dividend)}</td>
+                        <td>{formatNumber(zSecond?.dividend)}</td>
+                        <td>{formatNumber(zThird?.dividend)}</td>
+                        <td>{formatNumber(zFourth?.dividend)}</td>
                         </tr>
                         <tr className='highlight'>
                         <td>Share BB</td>
-                        <td>{formatCurrencyWithDollar(zFirst?.share_buyback)}</td>
-                        <td>{formatCurrencyWithDollar(zSecond?.share_buyback)}</td>
-                        <td>{formatCurrencyWithDollar(zThird?.share_buyback)}</td>
-                        <td>{formatCurrencyWithDollar(zFourth?.share_buyback)}</td>
+                        <td>{formatNumber(zFirst?.share_buyback)}</td>
+                        <td>{formatNumber(zSecond?.share_buyback)}</td>
+                        <td>{formatNumber(zThird?.share_buyback)}</td>
+                        <td>{formatNumber(zFourth?.share_buyback)}</td>
                         </tr>
                         <tr>
-                        <td colSpan={5} className='py-4 px-0 second-title'>
+                        <td colSpan={5} className='px-0 second-title'>
                             <div className='bg-gray'>B/S</div>
                         </td>
                         </tr>
                         <tr>
                         <td>Net Cash (incl. Div)</td>
-                        <td>{formatCurrencyWithDollar(zFirst?.total_capital_return)}</td>
-                        <td>{formatCurrencyWithDollar(zSecond?.total_capital_return)}</td>
-                        <td>{formatCurrencyWithDollar(zThird?.total_capital_return)}</td>
-                        <td>{formatCurrencyWithDollar(zFourth?.total_capital_return)}</td>
+                        <td>{formatNumber(zFirst?.total_capital_return)}</td>
+                        <td>{formatNumber(zSecond?.total_capital_return)}</td>
+                        <td>{formatNumber(zThird?.total_capital_return)}</td>
+                        <td>{formatNumber(zFourth?.total_capital_return)}</td>
                         </tr>
                     </tbody>
                 </table>
