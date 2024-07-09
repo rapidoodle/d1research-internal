@@ -12,7 +12,6 @@ export default function CapitalReturnPolicy({companyID, session}) {
     const [loading, setLoading] = useState(false);
     const [someComments, setSomeComments] = useState([]);
     const [allComments, setAllComments] = useState([]);
-    const userSession = session.user;
     const commentLimit = 3;
 
     const handleShow = () => setShowModal(true);
@@ -126,9 +125,8 @@ export default function CapitalReturnPolicy({companyID, session}) {
         <>
         <div className='card flex-fill'>
             <div className='d-flex align-items-center'>
-                {JSON.stringify(session)}
                 <h4 className='flex-grow-1 mb-0'>Capital return policy</h4>
-                { userSession && (userSession.access_level === 'Admin' || userSession.access_level === 'Analyst') && 
+                { session && (session.user.access_level === 'Admin' || session.user.access_level === 'Analyst') && 
                     <a className='page-link me-2' onClick={handleShow}>New</a>
                 }
 
@@ -152,7 +150,7 @@ export default function CapitalReturnPolicy({companyID, session}) {
                                     <div>
                                         <div dangerouslySetInnerHTML={{ __html: comment.comment }} />
                                     </div>
-                                    {userSession && (userSession.access_level === 'Admin' || userSession.access_level === 'Analyst') &&
+                                    {session && (session.user.access_level === 'Admin' || session.user.access_level === 'Analyst') &&
                                         <div className='d-flex align-items-center'>
                                             <a className='page-link' onClick={() => handleEdit(comment)}>Edit</a>
                                             <a className='page-link ms-2 text-danger' onClick={() => handleDelete(comment)}>Delete</a>
