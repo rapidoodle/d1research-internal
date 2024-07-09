@@ -40,7 +40,7 @@ export default function ConsolidatedEstimatesOverview({session}) {
     return (<>
       <div className="container-fluid financial-overview p-2 p-md-4">
         <div className="row mb-md-3">
-            <div className="col-12 col-sm-6 d-flex align-items-center justify-content-md-start justify-content-center mt-4 mt-md-0">
+            <div className="col-12 col-sm-6 d-flex align-items-center justify-content-sm-start justify-content-center mt-4 mt-md-0">
               <Image
                 src="https://d1researchstorage.s3.amazonaws.com/company-logo-rectangle.png"
                 alt="Company Logo"
@@ -81,9 +81,11 @@ export default function ConsolidatedEstimatesOverview({session}) {
                 </div>
                 <div className='col-12 col-md-4 mt-4 mt-md-0'>
                 <p className='font-medium'>Annualized discount</p>
+                  <div className='table-responsive'>
                     <table className='table table-responsive table-striped table-hover'>
                         <thead>
                             <tr>
+                                <th className='d-block d-md-none'>Ticker</th>
                                 <th>Z5</th>
                                 <th>Z6</th>
                                 <th>Z7</th>
@@ -93,6 +95,7 @@ export default function ConsolidatedEstimatesOverview({session}) {
                         {allData.map((data, index) => {
                         return (
                             <tr key={index}>
+                              <td className='d-block d-md-none'>{data.equity_ticker}</td>
                               <td>{coloredNumber(data.z6, false, true)}</td>
                               <td>{coloredNumber(data.z7, false, true)}</td>
                               <td>{coloredNumber(data.z8, false, true)}</td>
@@ -101,6 +104,7 @@ export default function ConsolidatedEstimatesOverview({session}) {
                         })}
                         </tbody>
                     </table>
+                  </div>
                 </div>
             </div>
         </div>
