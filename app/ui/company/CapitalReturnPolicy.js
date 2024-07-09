@@ -135,6 +135,8 @@ export default function CapitalReturnPolicy({companyID, session}) {
             <hr />
             <div className='comment-container d-flex flex-column'>
                 <div className='flex-grow-1'>
+                {JSON.stringify(session)}
+
                     <div className='mb-3'>
                     {loading ? (
                         <PageSpinner />
@@ -150,7 +152,6 @@ export default function CapitalReturnPolicy({companyID, session}) {
                                     <div>
                                         <div dangerouslySetInnerHTML={{ __html: comment.comment }} />
                                     </div>
-                                    {JSON.stringify(session)}
                                     {session && (session.user.access_level === 'Admin' || session.user.access_level === 'Analyst') &&
                                         <div className='d-flex align-items-center'>
                                             <a className='page-link' onClick={() => handleEdit(comment)}>Edit</a>
