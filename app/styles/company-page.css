@@ -184,3 +184,19 @@ p.company-link{
 table tr td.font-medium{
     font-weight: 500;
 }
+.font-medium{
+    font-weight: 500;
+}
+
+.negative-number, .positive-number{
+    color: #2F5651;
+    text-align: center;
+    width: 65px;
+    border-radius: 0.4rem;
+}
+.negative-number{
+    background-color: #F6C5C5;
+}
+.positive-number{
+    background-color: #C5F6D0;
+}

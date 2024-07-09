@@ -49,8 +49,17 @@ const SideNav = () => {
               pathname={pathname} 
               faIcon={faBuilding} 
               label={'Company overview'} 
-              uniqueKeyType={'company-overview'}
+              uniqueKeyType={'company_overview_key'}
               path={'/company-overview'}
+            />
+        </li>
+        <li className="nav-item">
+            <SideNavLink 
+              pathname={pathname} 
+              faIcon={faBuilding} 
+              label={'Estimates'} 
+              uniqueKeyType={'consolidated_estimates_key'}
+              path={'/consolidated-estimates'}
             />
         </li>
         <li className="nav-item">

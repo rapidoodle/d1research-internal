@@ -1,3 +1,5 @@
+import { Badge } from "react-bootstrap";
+
 export const formatCurrency = (amount) => {
   return (amount / 100).toLocaleString('en-US', {
     style: 'currency',
@@ -107,6 +109,33 @@ export const formatNumber = (number, isPercent) => {
     
     if(isPercent){
       return finalNumber+ '%';
+    }
+  
+    return finalNumber;
+  }
+}
+
+export const coloredNumber = (number, isPercent = false, isColored = false) => {
+  //check if number or string is passed
+  if(!number){
+    return "-" ;
+  }else{
+
+    if(number === 'NaN'){
+      return;
+    }
+
+    const num = Number(number);
+    const finalNumber = Number.isInteger(num) ? num : num.toFixed(2);
+    
+    if(isPercent){
+      return finalNumber+ '%';
+    }
+
+    if(isColored){
+      return finalNumber > 0 ? 
+      <div class="positive-number">{finalNumber}</div> :
+      <div class="negative-number">{finalNumber}</div> ;
     }
   
     return finalNumber;

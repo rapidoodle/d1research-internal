@@ -14,7 +14,7 @@ const SideNavLink =({pathname, faIcon, path, label, uniqueKeyType}) => {
             try{
                 const response = await fetch(`/api/unique-keys?key=${uniqueKeyType}`);
                 const data = await response.json();
-                const key = data.data[0].company_overview_key;
+                const key = data.data[0][uniqueKeyType];
                 setUniqueKey(key);
                 setNewPath(`${path}/${key}`);
             } catch (error) {

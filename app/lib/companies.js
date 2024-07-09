@@ -59,7 +59,17 @@ export async function getCompanyByTicker(ticker) {
   }
 }
 
-
+export async function getAllCompanies(fields) {
+  try {
+    const query = `SELECT ${fields} FROM companies`;
+    const result = await sql.query(query);
+    console.log(result.rows);
+    return { data: result.rows };
+  } catch (error) {
+    console.error('Error fetching companies:', error);
+    return { error: 'Error fetching companies' };
+  }
+}
 
 export async function getCompanies(req) {
   const { searchParams } = new URL(req.url);
