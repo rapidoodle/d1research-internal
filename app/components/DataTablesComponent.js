@@ -1,7 +1,8 @@
 import DataTable, { createTheme } from 'react-data-table-component';
 import '../styles/consolidated-estimates.css';
+import PageSpinner from './PageSpinner';
 
-export default function DataTableComponent({columns, data, key}) {
+export default function DataTableComponent({columns, data, key, loading}) {
 
 	return (
 		<DataTable
@@ -10,6 +11,8 @@ export default function DataTableComponent({columns, data, key}) {
             striped
             keyField={key}
 			data={data}
+			progressPending={loading} 
+			progressComponent={<PageSpinner />}
 		/>
 	);
 };

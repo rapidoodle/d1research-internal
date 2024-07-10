@@ -1,7 +1,11 @@
 import { sql } from "@vercel/postgres";
-import { createClinkedEvent } from "./clinked/events";
+import { getLoggedUser } from "./users";
+import { authOptions } from "@/auth";
+import { cleanComment } from "./utils";
+import { NextResponse } from "next/server";
 
   export async function createEvent(req) {
+    const loggedInUser = await getLoggedUser(authOptions);
     if (req.method !== 'POST') {
       return { error: 'Method not allowed' };
     }
@@ -11,8 +15,6 @@ import { createClinkedEvent } from "./clinked/events";
         recurrence, 
         company, 
         allDay, 
-        color, 
-        endDate, 
         description, 
         assignees, 
         location, 
@@ -22,12 +24,12 @@ import { createClinkedEvent } from "./clinked/events";
         tags 
       } = await req.json();
 
-      if (!startDate || !endDate || !friendlyName) {
-        return { error: 'recurrence, startDate, endDate, and friendlyName are required' };
-      }
+      const color = '#';
+      const endDate = startDate;
+      const newDescription = await cleanComment(description);
 
       // Insert data into the events table
-      await sql`
+      const query = `
         INSERT INTO events (
           recurrence, 
           company_id, 
@@ -40,43 +42,48 @@ import { createClinkedEvent } from "./clinked/events";
           sharing, 
           start_date, 
           friendly_name, 
-          tags
+          tags,
+          updated_by
         ) VALUES (
           ${recurrence}, 
-          ${company}, 
-          ${allDay}, 
-          ${color}, 
-          ${endDate}, 
-          ${description}, 
-          ${assignees}, 
-          ${location}, 
-          ${sharing}, 
-          ${startDate}, 
-          ${friendlyName}, 
-          ${tags}
+          '${company}', 
+          '${allDay}', 
+          '${color}', 
+          '${endDate}', 
+          '${newDescription}', 
+          '${assignees}', 
+          '${location}', 
+          '${sharing}', 
+          '${startDate}', 
+          '${friendlyName}', 
+          '${tags}',
+          '${loggedInUser.id}'
         );
-      `;
+      `
+
+      console.log(query);
+     const response =  await sql.query(query);
 
       // Assuming createCompanyAsNote is a function that interacts with another service
-      const clinkedResponse = await createClinkedEvent({
-        recurrence, 
-        allDay, 
-        color, 
-        endDate, 
-        description, 
-        assignees, 
-        location, 
-        sharing, 
-        startDate, 
-        friendlyName, 
-        tags
-      });
+      // const clinkedResponse = await createClinkedEvent({
+      //   recurrence, 
+      //   allDay, 
+      //   color, 
+      //   endDate, 
+      //   description, 
+      //   assignees, 
+      //   location, 
+      //   sharing, 
+      //   startDate, 
+      //   friendlyName, 
+      //   tags
+      // });
 
-      if(!clinkedResponse){
-        throw new Error('Failed to create event in Clinked');
-      }
+      // if(!clinkedResponse){
+      //   throw new Error('Failed to create event in Clinked');
+      // }
 
-      return { message: 'Event created successfully' };
+      return NextResponse.json(response);
     } catch (error) {
       
       console.log(error);

@@ -90,8 +90,8 @@ export default function NewEventForm({ onEventAdded }) {
         const description  = e.target.description.value;
         const location     = e.target.location.value;
         const startDate    = e.target.startDate.value;
-        const endDate      = e.target.endDate.value;
-        const color        = e.target.color.value;
+        // const endDate      = e.target.endDate.value;
+        // const color        = e.target.color.value;
         const tagsString    = selectedTags.map(tag => tag.label).join(', ');
 
 
@@ -102,11 +102,11 @@ export default function NewEventForm({ onEventAdded }) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                recurrence: '',
+                recurrence: false,
                 company: selectedCompany,
                 allDay: false,
-                color: color,
-                endDate: endDate,
+                // color: color,
+                // endDate: endDate,
                 description: description,
                 assignees: [],
                 location: location,
@@ -118,12 +118,11 @@ export default function NewEventForm({ onEventAdded }) {
         })
         .then(res => res.json())
         .then(data => {
-            
             e.target.friendlyName.value = '';
             e.target.location.value = '';
             e.target.startDate.value = '';
-            e.target.endDate.value = '';
-            e.target.color.value = '';
+            // e.target.endDate.value = '';
+            // e.target.color.value = '';
             setSelectedTags([]);
             setDescription('');
             tagsCreatableSelectRef.current.clearSelection();
@@ -131,19 +130,7 @@ export default function NewEventForm({ onEventAdded }) {
             setLoading(false);
         })
         .catch(err => {
-            toast.error('Something ain\'t right', {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-                transition: Bounce,
-            });
-            onEventAdded();
-
+            console.log(err);
             setLoading(false);
         });
     }
@@ -243,10 +230,10 @@ export default function NewEventForm({ onEventAdded }) {
                         </div>
                         <div className="row mb-3">
                             <div className="col-6">
-                                <label htmlFor="startDate" className="form-label">Start date:</label>
-                                <input type="datetime-local" className="form-control" id="startDate" name="startDate" required />
+                                <label htmlFor="startDate" className="form-label">Event date:</label>
+                                <input type="date" className="form-control" id="startDate" name="startDate" required />
                             </div>
-                            <div className="col-6">
+                            {/* <div className="col-6">
                                 <label htmlFor="endDate" className="form-label">End date:</label>
                                 <input type="datetime-local" className="form-control" id="endDate" name="endDate" required />
                             </div>
@@ -256,7 +243,7 @@ export default function NewEventForm({ onEventAdded }) {
                                 <label htmlFor="color" className="form-label">Color</label>
                                 <input type="color" className="form-control" id="color" name="color" required />
 
-                            </div>
+                            </div> */}
                             <div className="col-6">
                                 <label htmlFor="eventTags" className="form-label">Tags</label>
                                 <TagsSelectElement 

@@ -123,20 +123,21 @@ async function seedEvents(client) {
       CREATE TABLE events (
         id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
         recurrence VARCHAR(255),
-        company_id INT,
+        company_id UUID NOT NULL,
         all_day BOOLEAN,
         color VARCHAR(7),
         end_date TIMESTAMP WITH TIME ZONE,
         description TEXT,
-        assignees TEXT[],
+        assignees TEXT,
         location VARCHAR(255),
         sharing VARCHAR(50),
         start_date TIMESTAMP WITH TIME ZONE,
         friendly_name VARCHAR(255),
         tags TEXT,
+        approved INT DEFAULT 0,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_by UUID NOT NULL
+        updated_by UUID
       );
       `;
   
@@ -385,17 +386,17 @@ async function seedCapitalReturnPolicy(client) {
 async function main() {
   const client = await db.connect();
 
-  await seedFinancialData(client);
+  // await seedFinancialData(client);
   // await seedKeyTable(client);
-  await seedCompanies(client);
-  await seedTags(client);
+  // await seedCompanies(client);
+  // await seedTags(client);
   await seedEvents(client);
-  await seedUsers(client);
-  await seedSectors(client);
+  // await seedUsers(client);
+  // await seedSectors(client);
   // await seedUserAccess(client);
-  await seedAnalystsComments(client);
-  await seedLatestManagementStatement(client);
-  await seedCapitalReturnPolicy(client);
+  // await seedAnalystsComments(client);
+  // await seedLatestManagementStatement(client);
+  // await seedCapitalReturnPolicy(client);
 
 
   await client.end();

@@ -7,9 +7,11 @@ import { faCalendar, faEdit, faEye, faList } from '@fortawesome/free-solid-svg-i
 import Pagination from '@/app/components/Pagination';
 import formatDate from '@/app/utils';
 import { Scheduler } from '@aldabil/react-scheduler';
+import DataTableComponent from '@/app/components/DataTablesComponent';
+import { eventsColumns } from '@/app/lib/table-columns/columns';
 
 const EventsTable = ({query, currentPage, eventAdded}) => {
-  const [companies, setCompanies] = useState([]);
+  const [events, setEvents] = useState([]);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(currentPage);
   const [pageSize] = useState(10); 
@@ -25,7 +27,7 @@ const EventsTable = ({query, currentPage, eventAdded}) => {
       try {
         const response = await fetch(`/api/events?&search=${query}&currentPage=${page}&pageSize=${pageSize}`);
         const data = await response.json();
-        setCompanies(data.data);
+        setEvents(data.data);
         setTotalRecords(data.totalRecords);
         setLoading(false);
 
@@ -69,45 +71,7 @@ const EventsTable = ({query, currentPage, eventAdded}) => {
         </div>
         {!isCalendarView && ( <>
       <div className='table-responsive'>
-        <table className="table table-hovered table-condensed table-striped">
-            <thead>
-              <tr>
-                  <th>Company</th>
-                  <th>Title</th>
-                  <th>Start date</th>
-                  <th>End date</th>
-                  <th>Location</th>
-                  <th>Tags</th>
-                  <th></th>
-              </tr>
-            </thead>
-            <tbody>
-            {companies.map((row) => (
-                <tr key={row.id}>
-                  <td>{row.company}</td>
-                  <td>{row.friendly_name}</td>
-                  <td>{formatDate(row.start_date)}</td>
-                  <td>{formatDate(row.end_date)}</td>
-                  <td>{row.location}</td>
-                  <td>{row.tags.split(',').map((tag, index) => 
-                    <span className='badge me-1 badge-tag' key={index}>
-                      { tag }
-                    </span>)}
-                  </td>
-                  <td align='right'>
-                    <button className='btn btn-success btn-sm'>
-                      <span><FontAwesomeIcon icon={faEdit} /> Edit</span>
-                    </button>
-                  </td>
-                </tr>
-            ))}
-            {companies.length === 0 && (
-              <><tr>
-                <td colSpan={44} align='center'>No available data</td>
-                </tr></>
-            )}
-            </tbody>
-        </table>
+        <DataTableComponent columns={eventsColumns} data={events} />
       </div> 
       {totalRecords > 0 && ( 
       <Pagination page={page} totalPages={totalPages} setPage={setPage} />

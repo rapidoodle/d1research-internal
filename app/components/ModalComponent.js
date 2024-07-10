@@ -2,7 +2,19 @@ import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import ButtonSpinner from './ButtonSpinner';
 
-const ModalComponent = ({ show, handleClose, handleSave, title, children, size, loading, isPrintable, handlePrint }) => {
+const ModalComponent = ({ 
+    show, 
+    handleClose, 
+    handleSave, 
+    title, 
+    children, 
+    size, 
+    loading, 
+    isPrintable, 
+    handlePrint,
+    buttonText='Save changes', 
+    buttonLoadingText='' }
+  ) => {
   return (
     <Modal 
       show={show} 
@@ -20,7 +32,7 @@ const ModalComponent = ({ show, handleClose, handleSave, title, children, size, 
         
         {!isPrintable ? 
         <Button variant="primary" disabled={loading} onClick={handleSave}>
-          { loading && <ButtonSpinner /> } Save Changes
+          { loading ? <><ButtonSpinner /> {buttonLoadingText}</> : buttonText }
         </Button>
         :
         <Button variant="primary"  onClick={handlePrint}>

@@ -95,9 +95,13 @@ table > thead > th {
   font-size: 12px;
 }
 .f-13{
-  font-size: 13px;
+  font-size: 13px!important;
 }
 .d1-link{
   text-decoration: none!important;
   color: #2F5651!important;
+}
+
+.bg-cream{
+  background-color: #FEFCF8;
 }

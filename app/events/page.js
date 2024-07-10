@@ -13,6 +13,7 @@ export default function Page(searchParams) {
   const currentPage = Number(searchParams.searchParams?.page) || 1;
   const [eventAdded, setEventAdded] = useState(false);
   const [show, setShow] = useState(false);
+  const [scrapeData, setScrapeData] = useState([]);
 
   // Callback to update the state
   const handleEventAdded = () => {
@@ -22,12 +23,26 @@ export default function Page(searchParams) {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const handleScraper = async () => {
+    try {
+      const response = await fetch('/api/scraper?site=total');
+      if (!response.ok) {
+        throw new Error('Error scraping events');
+      }
+
+      setScrapeData(await response.json());
+      
+    } catch (error) {
+      console.error('Error scraping events:', error);
+    }
+  }
   
     return (
       <main>
         <div className="bg-light p-3 row">
           <h5 className="mb-0 col">Events</h5>
-
+          {JSON.stringify(scrapeData)}
           <div className="ms-auto col d-flex justify-content-end">
             <div>
               <Search placeholder="Event name" />
@@ -35,6 +50,10 @@ export default function Page(searchParams) {
 
             <Button size="sm" variant="primary" onClick={handleShow}>
               <FontAwesomeIcon icon={faPlus} className="me-1" /> Add new event
+            </Button>
+
+            <Button className="ms-2" size="sm" variant="primary" onClick={handleScraper}>
+              <FontAwesomeIcon icon={faPlus} className="me-1" /> Scrapeeee
             </Button>
           </div>
         </div>

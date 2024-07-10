@@ -1,12 +1,9 @@
 'use client';
+import { useEffect, useState } from 'react';
 
-import ButtonSpinner from '@/app/components/ButtonSpinner';
-import { useState } from 'react';
-
-const CsvUploader = ({ onFileUploaded }) => {
+const CsvUploader = ({ onFileUploaded, isSave, setLoading }) => {
   const [file, setFile] = useState(null);
   const [message, setMessage] = useState('');
-  const [loading, setLoading] = useState('');
   const [error, setError] = useState('');
 
   const handleFileChange = (e) => {
@@ -30,6 +27,7 @@ const CsvUploader = ({ onFileUploaded }) => {
 
     setLoading(true);
 
+    console.log('Uploading file...');
     try {
       const formData = new FormData();
       formData.append('file', file);
@@ -52,11 +50,17 @@ const CsvUploader = ({ onFileUploaded }) => {
     }
   };
 
+  // Use useEffect to call handleUpload when isSave is true
+  useEffect(() => {
+    console.log(isSave);
+    if (isSave) {
+      handleUpload();
+    }
+  }, [isSave]);
+
   return (
     <div className="container-fluid mb-3 bg-light p-3">
       <input type="file" onChange={handleFileChange} className="form-control mb-3" />
-      <button disabled={loading || error} onClick={handleUpload} className="btn btn-primary float-end">
-        { loading ? <><ButtonSpinner></ButtonSpinner> Processing file. Please wait..</> :  'Upload' }</button>
       {message && <p className="text-danger mt-3">{message}</p>}
     </div>
   );

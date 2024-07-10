@@ -28,17 +28,17 @@ export default async function RootLayout({ children }) {
     <html lang="en">
       <Script src="https://cdn.tiny.cloud/1/91bcdbfny5tnu8bq25au5l90anmsln11hures27u8oek7aid/tinymce/7/tinymce.min.js" referrerpolicy="origin"></Script>
       <body className={montserrat.className}>
-        <div className="container-fluid">
+        <div className="">
           <div className="row">
             {session && (
-              <nav className="col-md-3 col-lg-3 d-md-block bg-light sidebar">
+              <nav className="col-md-3 col-lg-2 d-md-block bg-cream sidebar">
                 <SideNav />
               </nav>
             )}
-            <div className={`col-12 ${session ? 'col-md-9 ms-sm-auto col-lg-9' : ''}`}>
+            <div className={`col-12 ${session ? 'col-md-9 ms-sm-auto col-lg-10' : ''}`}>
             {session && (
-              <nav className="navbar navbar-expand-lg navbar-light bg-light text-white mb-3 d-none d-md-block">
-                <div className="container-fluid">
+              <nav className="row navbar navbar-expand-lg navbar-light bg-light text-white mb-3 d-none d-md-block">
+                <div className="col container-fluid">
                   <div className="w-100 d-flex justify-content-between align-items-center p-3">
                     <div></div>
                     <div className='d-flex'>

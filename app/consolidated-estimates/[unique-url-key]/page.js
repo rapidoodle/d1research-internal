@@ -7,7 +7,7 @@ export default async function Page() {
     const session = await getServerSession(authOptions);
 
     return (
-        <div className="company-page border mt-3">
+        <div className="d-flex justify-content-center">
             <ConsolidatedEstimatesOverview session={session} />
         </div>
     )

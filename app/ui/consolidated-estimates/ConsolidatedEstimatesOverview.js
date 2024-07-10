@@ -2,64 +2,15 @@
 
 import React, { useEffect, useState } from 'react';
 import '@/app/styles/company-page.css';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation'
-import { coloredNumber, formatNumber } from '@/app/lib/utils';
-import DataTable from 'react-data-table-component';
-import DataTableComponent from '@/app/components/DataTables';
+import DataTableComponent from '@/app/components/DataTablesComponent';
+import { annualizedDiscountColumns, dpsForecastColumns } from '@/app/lib/table-columns/columns';
 
 export default function ConsolidatedEstimatesOverview({session}) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [allData, setAllData] = useState([]);
-  const dPSTableColumns = [{
-    name: 'Ticker',
-    selector: row => row.equity_ticker,
-    sortable: true,
-    cell: row => <a href={`https://insider.d1research.com/groups/distribution/notes/annualized_discount/view/activity?ticker=${row.equity_ticker}`} className='d1-link' target='_blank'>{row.equity_ticker}</a>
-  },
-  {
-    name: 'Z4',
-    selector: row => row.z1,
-    sortable: true,
-  },
-  {
-    name: 'Z5',
-    selector: row => row.z2,
-    sortable: true,
-  },
-  {
-    name: 'Z6',
-    selector: row => row.z3,
-    sortable: true,
-  },
-  {
-    name: 'Z7',
-    selector: row => row.z4,
-    sortable: true,
-  }];
 
-  const aDTableColumns = [{
-    name: 'Ticker',
-    selector: row => row.equity_ticker,
-    sortable: true,
-    
-  },
-  {
-    name: 'Z5',
-    selector: row => coloredNumber(row.z6, false, true),
-    sortable: true,
-  },
-  {
-    name: 'Z6',
-    selector: row => coloredNumber(row.z7, false, true),
-    sortable: true,
-  },
-  {
-    name: 'Z7',
-    selector: row => coloredNumber(row.z8, false, true),
-    sortable: true,
-  }];
   
   useEffect(() => {
       const fetchFinancialData = async () => {
@@ -88,19 +39,20 @@ export default function ConsolidatedEstimatesOverview({session}) {
 
   if(!loading){
     return (<>
-      <div className="container-fluid financial-overview p-2 p-md-4">
+
+      <div className="company-page border mt-4 container-fluid financial-overview p-2 p-md-4">
         <div className='main-container'>
             <div className='row'>
                 <div className='col-12 col-md-8'>
                   <p className='font-medium'>D1 DPS estimates</p>
                   <div className='table-responsive' id='dps-table-container'>
-                    <DataTableComponent key={'dps-table'} columns={dPSTableColumns} data={allData} />
+                    <DataTableComponent key={'dps-table'} columns={dpsForecastColumns} data={allData} />
                   </div>
                 </div>
                 <div className='col-12 col-md-4 mt-4 mt-md-0'>
                 <p className='font-medium'>Annualized discount</p>
                   <div className='table-responsive' id='ad-table-container'>
-                    <DataTableComponent key={'ad-table'} columns={aDTableColumns} data={allData} />
+                    <DataTableComponent key={'ad-table'} columns={annualizedDiscountColumns} data={allData} />
                   </div>
                 </div>
             </div>
