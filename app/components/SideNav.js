@@ -12,9 +12,13 @@ import SideNavLink from './SideNavLink';
 const SideNav = () => {
   const pathname = usePathname();
   const [settingsCollapsed, setSettingsCollapsed] = useState(true);
+  const [eventsCollapsed, setEventsCollapsed] = useState(true);
   
   const toggleSettings = () => {
     setSettingsCollapsed(!settingsCollapsed);
+  };
+  const toggleEvents = () => {
+    setEventsCollapsed(!eventsCollapsed);
   };
 
   return (
@@ -32,16 +36,6 @@ const SideNav = () => {
                 },
             )}>
             <FontAwesomeIcon icon={faFileExcel} /> Master
-            </Link>
-        </li>
-        <li className="nav-item">
-            <Link href="/events" className={clsx(
-                'nav-link',
-                {
-                'active': pathname === '/events',
-                },
-            )}>
-            <FontAwesomeIcon icon={faCalendarAlt} />  Events
             </Link>
         </li>
         <li className="nav-item">
@@ -65,6 +59,31 @@ const SideNav = () => {
         <li className="nav-item">
           <button 
             className="nav-link btn btn-link d-flex align-items-center w-100"
+            onClick={toggleEvents}
+            aria-expanded={!eventsCollapsed}
+          >
+            <FontAwesomeIcon icon={faCalendarAlt} /> 
+              <span className='ms-1'>Events</span> 
+              <span className='ms-auto'><FontAwesomeIcon icon={eventsCollapsed ? faChevronRight : faChevronDown} /></span>
+          </button>
+          <div className={clsx('collapse', { 'show': !eventsCollapsed })}>
+            <ul className="nav flex-column ms-3">
+              <li className="nav-item">
+                <Link href="/events/pending" className={clsx('nav-link', { 'active': pathname === '/events/pending' })}>
+                 Pending
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link href="/events/approved" className={clsx('nav-link', { 'active': pathname === '/events/approved' })}>
+                  Approved
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <li className="nav-item">
+          <button 
+            className="nav-link btn btn-link d-flex align-items-center w-100"
             onClick={toggleSettings}
             aria-expanded={!settingsCollapsed}
           >
@@ -76,12 +95,12 @@ const SideNav = () => {
             <ul className="nav flex-column ms-3">
               <li className="nav-item">
                 <Link href="/settings/companies" className={clsx('nav-link', { 'active': pathname === '/settings/companies' })}>
-                 <FontAwesomeIcon icon={faBuilding} /> Company
+                 Companies
                 </Link>
               </li>
               <li className="nav-item">
                 <Link href="/settings/users" className={clsx('nav-link', { 'active': pathname === '/settings/users' })}>
-                  <FontAwesomeIcon icon={faUsers} /> Users
+                  Users
                 </Link>
               </li>
             </ul>

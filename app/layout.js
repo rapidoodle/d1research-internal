@@ -12,7 +12,10 @@ import Signout from './components/Signout';
 import Script from 'next/script';
 import ToastComponent from './components/Toast';
 import { authOptions } from './api/auth/[...nextauth]/route';
+import moment from 'moment-timezone';
 
+// Set the default timezone to Europe/Berlin (Germany)
+moment.tz.setDefault('Europe/Berlin');
 const roboto = Roboto({ subsets: ["latin"], weight: ['100', '300', '400', '500', '700', '900']});
 const montserrat = Montserrat({ subsets: ["latin"], weight: ['100', '300', '400', '500', '700', '900']});
 

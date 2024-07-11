@@ -75,19 +75,28 @@ export async function getCompanies(req) {
   const { searchParams } = new URL(req.url);
   const search = searchParams.get('search') || '';
   const currentPage = parseInt(searchParams.get('currentPage') || '1', 10);
-  const pageSize = parseInt(searchParams.get('pageSize') || '10', 10);
+  const pageSize = searchParams.get('pageSize'); // Read pageSize as a string
 
   try {
-    const offset = (currentPage - 1) * pageSize;
-    const query = `SELECT c.id as company_id, c.equity_ticker, c.unique_url_key as url_key, c.name as company, s.name as sector, c.tags
+    // Base query
+    let query = `SELECT c.id as company_id, c.equity_ticker, c.unique_url_key as url_key, c.name as company, s.name as sector, c.tags
     FROM companies c LEFT JOIN sectors s ON c.sector_id = s.id
-     WHERE c.name ILIKE $1 LIMIT $2 OFFSET $3`;
-     
-    const values = [`%${search}%`, pageSize, offset];
-    const result = await sql.query(query, values);
+    WHERE c.name ILIKE $1`;
     
-    const totalQuery = `SELECT COUNT(*) FROM companies WHERE name ILIKE $1`;
+    // Values for the base query
+    let values = [`%${search}%`];
+    
+    // Modify query if pageSize is provided
+    if (pageSize) {
+      const offset = (currentPage - 1) * parseInt(pageSize, 10);
+      query += ` LIMIT $2 OFFSET $3`;
+      values.push(parseInt(pageSize, 10), offset);
+    }
+    
+    const result = await sql.query(query, values);
 
+    // Get the total number of records
+    const totalQuery = `SELECT COUNT(*) FROM companies WHERE name ILIKE $1`;
     const totalResult = await sql.query(totalQuery, [`%${search}%`]);
     const totalRecords = parseInt(totalResult.rows[0].count, 10);
 
@@ -95,7 +104,7 @@ export async function getCompanies(req) {
       data: result.rows,
       totalRecords,
       currentPage,
-      pageSize,
+      pageSize: pageSize ? parseInt(pageSize, 10) : totalRecords, // If no pageSize, return totalRecords as pageSize
     };
 
   } catch (error) {
@@ -104,11 +113,12 @@ export async function getCompanies(req) {
   }
 };
 
+
 export async function getCompanyByName(req){
   try {
-    const result = await sql`SELECT * FROM companies WHERE name = ${req.name}`;
-
-    return { data: result.rows };
+    const query = `SELECT * FROM companies WHERE LOWER(name) LIKE $1`;
+    const result = await sql.query(query, [req.name]);
+    return { data: result.rows[0] };
 
   } catch (error) {
     console.error('Error fetching companies:', error);

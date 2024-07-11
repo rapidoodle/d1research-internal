@@ -1,6 +1,11 @@
 import { formatNumber } from "@/app/lib/utils";
 
 export default function D1DPSForecast({zFirst, zSecond, zThird, zFourth}) {
+  zFirst.difference = ((zFirst.current_price_z / zFirst.dps_z - 1) * - 1) * 100;
+  zSecond.difference = (zSecond.current_price_z / zSecond.dps_z - 1) * - 1;
+  zThird.difference = (zThird.current_price_z / zThird.dps_z - 1)  * - 1 ;
+  zFourth.difference = (zFourth.current_price_z / zFourth.dps_z - 1)  * - 1 * 100;
+  //percentrage format
     return (
     <div className="card dps-forecast flex-fill">
         <h4>D1 DPS forecast</h4>
@@ -33,10 +38,10 @@ export default function D1DPSForecast({zFirst, zSecond, zThird, zFourth}) {
               </tr>
               <tr>
                 <td className="bg-cream font-medium">Difference %</td>
-                <td className="bg-cream">0%</td>
-                <td className='bg-cream'>3%</td>
-                <td className='bg-cream text-danger'>-7%</td>
-                <td className='bg-cream text-success'>17%</td>
+                <td>{formatNumber(zFirst?.difference)}</td>
+                <td>{formatNumber(zSecond?.difference)}</td>
+                <td>{formatNumber(zThird?.difference)}</td>
+                <td>{formatNumber(zFourth?.difference)}</td>
               </tr>
             </tbody>
           </table>

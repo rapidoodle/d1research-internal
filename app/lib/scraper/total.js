@@ -4,7 +4,8 @@ import parse from 'node-html-parser';
 
 export async function scrapeTotalEvents() {
     try {
-      const { data } = await axios.get('https://totalenergies.com/news/calendar');
+      const url = 'https://totalenergies.com/news/calendar';
+      const { data } = await axios.get(url);
       const root = parse(data);
       const events = [];
       const currentDate = moment().startOf('day');
@@ -17,7 +18,7 @@ export async function scrapeTotalEvents() {
         const date = moment(dateText, 'MM/DD YYYY').startOf('day');
   
         if (date.isValid() && (date.isAfter(currentDate) || date.isSame(currentDate))) {
-          events.push({ date: date.format('MM/DD/YYYY'), description });
+          events.push({ date: date.format('YYYY-MM-DD'), description, url : url });
         }
       });
   

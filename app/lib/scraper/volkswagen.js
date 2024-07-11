@@ -5,7 +5,8 @@ import { createEvent } from '../events';
 
 export async function scrapeVolkswagenEvents() {
   try {
-    const { data } = await axios.get('https://www.volkswagen-group.com/en/events');
+    const url = 'https://www.volkswagen-group.com/en/events';
+    const { data } = await axios.get(url);
     const root = parse(data);
     const events = [];
     const currentDate = moment().startOf('day');
@@ -17,14 +18,10 @@ export async function scrapeVolkswagenEvents() {
       const dateText = `${day} ${monthYear}`;
       const eventDate = moment(dateText, 'DD MMM YYYY').startOf('day');
 
-      console.log('date:', eventDate, 'currentDate:', currentDate);
       if (eventDate.isValid() && (eventDate.isAfter(currentDate) || eventDate.isSame(currentDate))) {
-        events.push({ date: eventDate.format('DD MMM YYYY'), description });
+        events.push({ date: eventDate.format('YYYY-MM-DD'), description, url : url });
       }
     });
-
-
-    const response = await createEvent(events);
 
     return events;
   } catch (error) {

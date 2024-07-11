@@ -2,6 +2,7 @@ import formatDate from "@/app/utils";
 import { coloredNumber, formatNumber } from "../utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import moment from "moment";
 
 export const financialDataColumns = [  { name: 'Year', selector: row => row.year, sortable: true },
     { name: 'Company', selector: row => row.company, sortable: true },
@@ -84,21 +85,24 @@ export const financialDataColumns = [  { name: 'Year', selector: row => row.year
   },
   {
     name: 'Z5',
-    selector: row => coloredNumber(row.z6, false, true),
+    cell: row => coloredNumber(row.z6, false, true),
+    selector: row => row.z6,
     sortable: true,
   },
   {
     name: 'Z6',
-    selector: row => coloredNumber(row.z7, false, true),
+    cell: row => coloredNumber(row.z7, false, true),
+    selector: row => row.z7,
     sortable: true,
   },
   {
     name: 'Z7',
-    selector: row => coloredNumber(row.z8, false, true),
+    cell: row => coloredNumber(row.z8, false, true),
+    selector: row => row.z8,
     sortable: true,
   }];
 
-  export const eventsColumns = [
+  export const pendingEventsColumns = [
     {
       name: 'Company',
       selector: row => row.company,
@@ -145,4 +149,60 @@ export const financialDataColumns = [  { name: 'Year', selector: row => row.year
       button: true,
     }
   ];
+
+  export const approvedEventsColumns = [
+    {
+      name: 'Title',
+      selector: row => row.friendlyName,
+      sortable: true,
+    },
+    {
+      name: 'Event date',
+      selector: row => row.startDate,
+      sortable: true,
+    },
+    {
+      name: 'Location',
+      selector: row => row.location,
+      sortable: true,
+    },
+    {
+      name: 'Tags',
+      selector: row => row.tags.split(',').map((tag, index) => (
+        <span className='badge me-1 badge-tag' key={index}>
+          { tag }
+        </span>
+      )),
+      sortable: false,
+    }
+  ];
+
+  export const companiesTableColumns = [
+    {
+      name: 'ID',
+      selector: row => row.id,
+      sortable: true,
+      omit: true, // omit this column from being displayed
+    },
+    {
+      name: 'Name',
+      selector: row => row.company,
+      sortable: true,
+    },
+    {
+      name: 'Equity Ticker',
+      selector: row => row.equity_ticker,
+      sortable: true,
+    },
+    {
+      name: 'Tags',
+      selector: row => row.tags.split(',').map((tag, index) => (
+        <span className='badge me-1 badge-tag' key={index}>
+          { tag }
+        </span>
+      )),
+      sortable: true,
+    },
+  ];
+  
   

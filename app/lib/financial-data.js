@@ -268,6 +268,7 @@ export async function getFinancialData(req) {
     const query = `
       SELECT * FROM financial_data
       WHERE company ILIKE $1
+      ORDER BY company ASC
       LIMIT $2 OFFSET $3
     `;
     const values = [`%${search}%`, pageSize, offset];

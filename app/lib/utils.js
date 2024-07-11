@@ -1,3 +1,4 @@
+import moment from "moment";
 import { Badge } from "react-bootstrap";
 
 export const formatCurrency = (amount) => {
@@ -178,4 +179,20 @@ export const formatCurrencyWithDollar = (amount) => {
 
 export const cleanComment = (comment) => {
   return comment.replace(/'/g, "''").replace(/"/g, '""');
+}
+export const cleanedString = (input) => {
+  // Replace double single quotes with a single quote
+  let cleanedString = input.replace(/''/g, "'");
+  // Escape single quotes for SQL insertion
+  cleanedString = cleanedString.replace(/'/g, "''");
+  return cleanedString;
+}
+// Function to get start and end date
+export const getStartAndEndDate = (dateInput, offset = '+01:00') => {
+  let startDate = moment(dateInput).utcOffset(offset).startOf('day'); // 00:00:00
+  let endDate = moment(dateInput).utcOffset(offset).endOf('day'); // 23:59:59
+  return {
+    startDate: startDate.format('DD MMMM YYYY hh:mm A'),
+    endDate: endDate.format('DD MMMM YYYY hh:mm A')
+  };
 }

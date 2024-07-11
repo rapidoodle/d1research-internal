@@ -12,10 +12,10 @@ export async function createClinkedEvent(reqData) {
     //   Define the request body for the API call
       const body = {
         "recurrence" : null,
-        "allDay" : false,
-        "color" : reqData.color,
-        "endDate" : formatClinkedDate(reqData.endDate),
-        'description' : reqData.description,
+        "allDay" : true,
+        "color" : "#2E9DFF",
+        "endDate" : formatClinkedDate(reqData.startDate),
+        'description' : reqData.c_description,
         "assignees" : ['rperez@d1research.com'],
         "location" : reqData.location,
         "sharing" : "MEMBERS",
@@ -38,13 +38,10 @@ export async function createClinkedEvent(reqData) {
       // Parse the response body
       const data = await response.json();
 
-      console.log('response create: ', data, accessToken, `${config.baseURL}/v3/groups/${config.defaultGroup}/events`);
-
       // Check if the response is not OK
       if (!response.ok) {
         throw new Error(`Failed to create event`);
       }
-
 
       return data;
   
@@ -55,3 +52,25 @@ export async function createClinkedEvent(reqData) {
   }
 
   
+  export async function getAllClinkedEvents() {
+    try {
+      // Retrieve the access token
+      const accessToken = await getAccessToken();
+
+      // Make the API call to create the note
+      const response = await fetch(`${config.baseURL}/v3/groups/${config.defaultGroup}/events`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+      
+      // Parse the response body
+      const data = await response.json();
+
+      return data;
+    } catch (error) {
+      console.error('Error creating company as note:', error);
+      throw error;
+}}

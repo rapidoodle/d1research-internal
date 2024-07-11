@@ -6,12 +6,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faEye } from '@fortawesome/free-solid-svg-icons';
 import Pagination from '@/app/components/Pagination';
 import { cleanCompanyName } from '@/app/lib/utils';
+import DataTableComponent from '@/app/components/DataTablesComponent';
+import { companiesTableColumns } from '@/app/lib/table-columns/columns';
 
 const CompaniesTable = ({query, currentPage, companyAdded}) => {
   const [companies, setCompanies] = useState([]);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(currentPage);
-  const [pageSize] = useState(20); // You can make this adjustable if needed
+  const [pageSize] = useState(1000); // You can make this adjustable if needed
   const [totalRecords, setTotalRecords] = useState(0);
   const [loading, setLoading] = useState(true);
 
@@ -46,6 +48,7 @@ const CompaniesTable = ({query, currentPage, companyAdded}) => {
   if(!loading){
   return (
     <div>
+      <DataTableComponent columns={companiesTableColumns} data={companies} />
       {/* <div className='table-responsive'>
         <table className="table table-hovered table-condensed table-striped">
             <thead>

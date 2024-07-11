@@ -32,11 +32,11 @@ export default function RiskScenarios({zFirst, zSecond, zThird, zFourth}) {
                         <td>{formatCompanyData(zFourth?.z_bear)}</td>
                         </tr>
                         <tr>
-                        <td className="font-medium">Central (40%)</td>
-                        <td className="font-medium">5.30</td>
-                        <td className="font-medium">4.75</td>
-                        <td className="font-medium">4.90</td>
-                        <td className="font-medium">5.10</td>
+                            <td className="font-medium">Central (40%)</td>
+                        <td>{formatCompanyData(zFirst?.dps_z)}</td>
+                        <td>{formatCompanyData(zSecond?.dps_z)}</td>
+                        <td>{formatCompanyData(zThird?.dps_z)}</td>
+                        <td>{formatCompanyData(zFourth?.dps_z)}</td>
                         </tr>
                         <tr>
                         <td>Bull (20%)</td>

@@ -4,9 +4,9 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Search from "@/app/ui/search";
-import EventsTable from "../ui/events/eventsTable";
 import { Button, Modal } from "react-bootstrap";
-import NewEventForm from "../ui/events/NewEventForm";
+import NewEventForm from "../../ui/events/NewEventForm";
+import PendingEventsTable from "@/app/ui/events/pending-events-table";
 
 export default function Page(searchParams) {
   const query = searchParams.searchParams?.query || '';
@@ -24,25 +24,25 @@ export default function Page(searchParams) {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const handleScraper = async () => {
-    try {
-      const response = await fetch('/api/scraper?site=total');
-      if (!response.ok) {
-        throw new Error('Error scraping events');
-      }
+  // const handleScraper = async () => {
+  //   try {
+  //     const response = await fetch('/api/scraper?site=total');
+  //     if (!response.ok) {
+  //       throw new Error('Error scraping events');
+  //     }
 
-      setScrapeData(await response.json());
+  //     setScrapeData(await response.json());
       
-    } catch (error) {
-      console.error('Error scraping events:', error);
-    }
-  }
+  //   } catch (error) {
+  //     console.error('Error scraping events:', error);
+  //   }
+  // }
   
     return (
       <main>
         <div className="bg-light p-3 row">
-          <h5 className="mb-0 col">Events</h5>
-          {JSON.stringify(scrapeData)}
+          <h5 className="mb-0 col">Pending approval events</h5>
+          {/* {JSON.stringify(scrapeData)} */}
           <div className="ms-auto col d-flex justify-content-end">
             <div>
               <Search placeholder="Event name" />
@@ -52,14 +52,14 @@ export default function Page(searchParams) {
               <FontAwesomeIcon icon={faPlus} className="me-1" /> Add new event
             </Button>
 
-            <Button className="ms-2" size="sm" variant="primary" onClick={handleScraper}>
+            {/* <Button className="ms-2" size="sm" variant="primary" onClick={handleScraper}>
               <FontAwesomeIcon icon={faPlus} className="me-1" /> Scrapeeee
-            </Button>
+            </Button> */}
           </div>
         </div>
 
         <div className="mt-3">
-          <EventsTable 
+          <PendingEventsTable 
             query={ query }
             currentPage={ currentPage }
             eventAdded={ eventAdded } />
