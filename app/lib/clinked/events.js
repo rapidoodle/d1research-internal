@@ -1,6 +1,7 @@
 import config from "@/app/config/clinked";
 import { getAccessToken } from "./auth";
 import { formatClinkedDate } from "../utils";
+import moment from "moment";
 
 //create company
 export async function createClinkedEvent(reqData) {
@@ -58,7 +59,11 @@ export async function createClinkedEvent(reqData) {
       const accessToken = await getAccessToken();
 
       // Make the API call to create the note
-      const response = await fetch(`${config.baseURL}/v3/groups/${config.defaultGroup}/events`, {
+      const today = moment().format('YYYY-MM-DD');
+      const twoYearsLater = moment().add(1, 'years').format('YYYY-MM-DD');
+      const query = `${config.baseURL}/v3/groups/${config.defaultGroup}/events?dateStart=${today}&dateEnd=${twoYearsLater}`;
+      
+      const response = await fetch(query, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -68,6 +73,34 @@ export async function createClinkedEvent(reqData) {
       
       // Parse the response body
       const data = await response.json();
+
+      console.log('Clinked events:', query, accessToken, data);
+
+      return data;
+    } catch (error) {
+      console.error('Error creating company as note:', error);
+      throw error;
+}}
+
+export async function deleteClinkedEvent(eventId) {
+    try {
+      // Retrieve the access token
+      const accessToken = await getAccessToken();
+      const query = `${config.baseURL}/v3/groups/${config.defaultGroup}/events/${eventId}`;
+
+      // Make the API call to create the note
+      const response = await fetch(query, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+      
+      // Parse the response body
+      const data = await response.json();
+
+      console.log('Clinked event deleted:', data, query);
 
       return data;
     } catch (error) {

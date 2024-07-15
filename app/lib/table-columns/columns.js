@@ -48,6 +48,10 @@ export const financialDataColumns = [  { name: 'Year', selector: row => row.year
     { name: 'Ex Date Q2', selector: row => row.ex_date_q2, sortable: true },
     { name: 'Ex Date Q3', selector: row => row.ex_date_q3, sortable: true },
     { name: 'Ex Date Q4', selector: row => row.ex_date_q4, sortable: true },
+    { name: 'Peer 1', selector: row => row.peer_1, sortable: true },
+    { name: 'Peer 2', selector: row => row.peer_2, sortable: true },
+    { name: 'Peer 3', selector: row => row.peer_3, sortable: true },
+    { name: 'Peer 4', selector: row => row.peer_4, sortable: true },
   ];
 
   export const dpsForecastColumns = [{
@@ -102,7 +106,7 @@ export const financialDataColumns = [  { name: 'Year', selector: row => row.year
     sortable: true,
   }];
 
-  export const pendingEventsColumns = [
+  export const pendingEventsColumns = (handleReview, hanldeApprove, handleIgnore) => [
     {
       name: 'Company',
       selector: row => row.company,
@@ -138,19 +142,20 @@ export const financialDataColumns = [  { name: 'Year', selector: row => row.year
       sortable: false,
     },
     {
-      name: '',
+      name: 'Actions',
       cell: row => (
-        <button className='btn btn-success btn-sm'>
-          <span><FontAwesomeIcon icon={faEdit} /> Edit</span>
-        </button>
+        <div className="d-flex">
+          <a href="#" onClick={ () => handleReview(row) }>Review</a>
+          <a href="#" className="ms-1 text-success" onClick={ () => hanldeApprove(row) }>Approve</a>
+          <a href="#" className="ms-1 text-danger" onClick={ () => handleIgnore(row) }>Ignore</a>
+        </div>
       ),
       ignoreRowClick: true,
-      allowOverflow: true,
       button: true,
     }
   ];
 
-  export const approvedEventsColumns = [
+  export const approvedEventsColumns = (handleDelete, handleEdit) => [
     {
       name: 'Title',
       selector: row => row.friendlyName,
@@ -174,6 +179,17 @@ export const financialDataColumns = [  { name: 'Year', selector: row => row.year
         </span>
       )),
       sortable: false,
+    },
+    {
+      name: 'Actions',
+      cell: row => (
+        <div className="d-flex" style={{width: '300px'}}>
+          <a href="#" onClick={ () => handleEdit(row) }>Edit</a>
+          <a href="#" className="ms-2 text-danger" onClick={ () => handleDelete(row) }>Delete</a>
+        </div>
+      ),
+      ignoreRowClick: true,
+      button: true,
     }
   ];
 

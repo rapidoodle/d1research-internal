@@ -263,12 +263,14 @@ async function seedUsers(client) {
     console.log(`Created "users" table`);
 
     // Insert data into the "users" table
-    const hashedPassword = await bcrypt.hash('123456', 10);
+    const hashedPassword = await bcrypt.hash('D1Research2024!', 10);
     const insertedUsers =  await client.sql`
         INSERT INTO users (name, email, password, access_level, updated_by)
         VALUES 
-          ('Ralfh Bryan Perez', 'rperez@d1research.com', ${hashedPassword}, '8bc68f16-4f71-4e4c-b776-b7864149dbae', uuid_generate_v4()), 
-          ('Thomas Aaby', 'taaby@d1research.com', ${hashedPassword}, '8bc68f16-4f71-4e4c-b776-b7864149dbae', uuid_generate_v4())
+          ('Ralfh Bryan Perez', 'rperez@d1research.com', ${hashedPassword}, 'db90858b-7bad-4dd5-8913-1ffe39f3dd18', uuid_generate_v4()), 
+          ('Thomas Aaby', 'taaby@d1research.com', ${hashedPassword}, 'db90858b-7bad-4dd5-8913-1ffe39f3dd18', uuid_generate_v4()),
+          ('Benjamin Peters', 'bpeters@d1research.com', ${hashedPassword}, 'bbb38c08-1e0f-4b8d-b77e-4968cff7069d', uuid_generate_v4()),
+          ('Rafael Miranda', 'rmiranda@d1research.com', ${hashedPassword}, 'bbb38c08-1e0f-4b8d-b77e-4968cff7069d', uuid_generate_v4())
         ON CONFLICT (email) DO NOTHING;
       `;
 
@@ -390,8 +392,8 @@ async function main() {
   // await seedKeyTable(client);
   // await seedCompanies(client);
   // await seedTags(client);
-  await seedEvents(client);
-  // await seedUsers(client);
+  // await seedEvents(client);
+  await seedUsers(client);
   // await seedSectors(client);
   // await seedUserAccess(client);
   // await seedAnalystsComments(client);

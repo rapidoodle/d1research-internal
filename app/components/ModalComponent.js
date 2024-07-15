@@ -39,7 +39,6 @@ const ModalComponent = ({
            Print
         </Button>
         }
-
       </Modal.Footer>
     </Modal>
   );

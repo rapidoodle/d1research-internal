@@ -26,8 +26,8 @@ const authOptions = {
 
         try {
           // Query the user from the database
-          const response = await sql`
-            SELECT u.*, a.access_level FROM users as u LEFT JOIN user_access as a ON u.access_level = a.id WHERE u.email='rperez@d1research.com'`;
+          const query = 'SELECT u.*, a.access_level FROM users as u LEFT JOIN user_access as a ON u.access_level = a.id WHERE u.email = $1';
+          const response = await sql.query(query, [credentials.email]);
           const user = response.rows[0];
           // Check if the user exists
           if (!user) {

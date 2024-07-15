@@ -105,3 +105,6 @@ table > thead > th {
 .bg-cream{
   background-color: #FEFCF8;
 }
+.rdt_TableCell[data-column-id="7"], .rdt_TableCol[data-column-id="7"] {
+  min-width: 200px!important;
+}

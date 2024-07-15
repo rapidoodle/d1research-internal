@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createEvent, getEvents } from '@/app/lib/events';
+import { createEvent, getEvents, setEventStatus, updateEvent } from '@/app/lib/events';
 
 
 export const routeSegmentConfig = {
@@ -39,4 +39,28 @@ export async function GET(req) {
         console.error('Error fetching events:', error);
         return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
     }
+}
+
+export async function PATCH(req) {
+    if (req.method !== 'PATCH') {
+        return NextResponse.json({ message: 'Method not allowed' }, { status: 405 });
+    }
+    const request = await req.json();
+    let data;
+
+    if(request.action && request.action === 'set-status') {
+        data = await setEventStatus(request);
+
+        console.log(data);
+    }else{
+        data = await updateEvent(req);
+
+        if (data.error) {
+            return NextResponse.json({ message: data.error }, { status: 500 });
+        }
+
+    }
+
+    return NextResponse.json(data);
+
 }

@@ -4,7 +4,6 @@ import { authOptions } from "@/auth";
 import { cleanComment, cleanedString } from "./utils";
 import { NextResponse } from "next/server";
 import moment from "moment";
-import { createClinkedEvent } from "./clinked/events";
 
   export async function createEvent(req, isForm = false) {
 
@@ -45,19 +44,17 @@ import { createClinkedEvent } from "./clinked/events";
         recurrence = false;
         company = req.company_id;
         allDay = true;
-        description = req.description;
+        description = req.c_description;
         c_description = req.c_description;
         assignees = '[]';
         location = 'Online';
         startDate = req.date;
-        endDate   = req.date;
-        friendlyName = `[${req.equity_ticker}] ${req.description}`;
+        endDate   = req.end_date ? req.end_date : req.date;
+        friendlyName = req.friendly_name;
         tags = `${req.name}, ${req.tags}`;
       }
 
       const color           = '#2E9DFF';
-      const newDescription  = await cleanComment(description);
-      const newFiendlyName  = await cleanComment(friendlyName);
       startDate = moment(startDate).format('YYYY-MM-DD');
 
       // Insert data into the events table
@@ -81,7 +78,7 @@ import { createClinkedEvent } from "./clinked/events";
           '${company}', 
           '${allDay}', 
           '${color}', 
-          '${startDate}', 
+          '${endDate}', 
           $1, 
           '${assignees}', 
           '${location}', 
@@ -93,28 +90,7 @@ import { createClinkedEvent } from "./clinked/events";
         );
       `;
 
-     const response =  await sql.query(query, [newDescription, newFiendlyName]);
-
-      // Assuming createCompanyAsNote is a function that interacts with another service
-      // const clinkedResponse = await createClinkedEvent({
-      //   recurrence, 
-      //   allDay, 
-      //   color, 
-      //   startDate, 
-      //   c_description, 
-      //   assignees, 
-      //   location, 
-      //   sharing, 
-      //   startDate, 
-      //   friendlyName, 
-      //   tags
-      // });
-      
-      // console.log(clinkedResponse);
-
-      // if(!clinkedResponse){
-      //   throw new Error('Failed to create event in Clinked');
-      // }
+     const response =  await sql.query(query, [description, friendlyName]);
 
       // return NextResponse.json([{ message: 'Event created successfully' }]);
       return NextResponse.json(response);
@@ -124,7 +100,69 @@ import { createClinkedEvent } from "./clinked/events";
 
       return { error: 'Error creating event' };
     }
+}
+
+export async function updateEvent(req) {
+  const loggedInUser = await getLoggedUser(authOptions);
+
+  if (req.method !== 'PATCH') {
+    return { error: 'Method not allowed' };
   }
+
+  try {
+    const { id, description, friendlyName, location, startDate, tags, company } = await req.json();
+
+    console.log(id, description, friendlyName, location, startDate, tags, company);
+
+    const newDescription = await cleanComment(description);
+    const newFriendlyName = await cleanComment(friendlyName);
+
+    const query = `
+      UPDATE events
+      SET description = $1, 
+      friendly_name = $2,  
+      location = $3,  
+      start_date = $4,  
+      end_date = $4,  
+      tags = $5,  
+      company_id = $6,  
+      updated_by = '${loggedInUser.id}'
+      WHERE id = $7
+    `;
+
+    const response = await sql.query(query, [description, newFriendlyName, location, startDate, tags, company.value, id]);
+
+    return NextResponse.json(response);
+
+  } catch (error) {
+    console.error('Error updating event:', error);
+    return { error: 'Error updating event' };
+  }
+}
+
+export async function setEventStatus(req) {
+  const loggedInUser = await getLoggedUser(authOptions);
+
+  try {
+    const { id, status } = req;
+
+    const query = `
+      UPDATE events
+      SET status = $1, 
+      updated_by = '${loggedInUser.id}'
+      WHERE id = $2
+    `;
+
+    const response = await sql.query(query, [status, id]);
+
+    return NextResponse.json(response);
+
+  } catch (error) {
+    console.error('Error updating event status:', error);
+    return { error: 'Error updating event status' };
+  }
+}
+
 
 export async function getEvents(req) {
   const { searchParams } = new URL(req.url);
@@ -165,10 +203,9 @@ export async function getEvents(req) {
 
 export async function getEventByDateAndDescription(companyId, date, description){
   try {
-    const newDescription = await cleanComment(description);
-    const query = `SELECT id FROM events WHERE start_date = $1 AND description = $2 AND company_id = $3`;
-    const result = await sql.query(query, [date, newDescription, companyId]);
-    
+    const query = `SELECT id FROM events WHERE start_date = $1 AND friendly_name = $2 AND company_id = $3`;
+    const result = await sql.query(query, [date, description, companyId]);
+
     return { data: result.rowCount };
   }catch (error){
     console.error('Error fetching event:', error);

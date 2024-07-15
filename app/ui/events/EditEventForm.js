@@ -2,7 +2,6 @@
 
 import TagsSelectElement from "@/app/components/TagsSelectElement";
 import React, { useState, useEffect, useRef } from "react";
-import { Bounce, toast } from "react-toastify";
 import Select from 'react-select'
 import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,7 +9,7 @@ import { faSave } from "@fortawesome/free-solid-svg-icons";
 import { Editor } from "@tinymce/tinymce-react";
 import ButtonSpinner from "@/app/components/ButtonSpinner";
 
-export default function NewEventForm({ onEventAdded }) {
+export default function EditEventForm({ onEventAdded, event, handleSave }) {
 
     const [companiesOptions, setCompaniesOptions] = useState([]);
     const [tagsOptions, setTagsOptions] = useState([]);
@@ -35,6 +34,16 @@ export default function NewEventForm({ onEventAdded }) {
 
                 setCompaniesOptions(formattedOptions);
                 setLoading(false);
+
+                if(event){
+
+                    //set event values
+                    const selectedCompany = formattedOptions.find(company => company.value === event.company_id);
+                    setSelectedCompany(selectedCompany);
+
+                    setDescription(event.description);
+                    setSelectedTags(event.tags.split(',').map(tag => ({ value: tag, label: tag })));
+                }
             } catch (error) {
                 console.error('Error fetching tags:', error);
                 setLoading(false);
@@ -67,73 +76,80 @@ export default function NewEventForm({ onEventAdded }) {
 
     const onSubmit = (e) => {
         e.preventDefault();
-
+    
         if (!selectedCompany) {
             alert('select company');
-            
             setLoading(false);
-            
             return;
         }
-
+    
         if (!selectedTags) {
-                alert('select tags');
-            
+            alert('select tags');
             setLoading(false);
-            
             return;
         }
-
+    
         setLoading(true);
-
+    
         const friendlyName = e.target.friendlyName.value;
-        const description  = e.target.description.value;
-        const location     = e.target.location.value;
-        const startDate    = e.target.startDate.value;
-        // const endDate      = e.target.endDate.value;
-        // const color        = e.target.color.value;
-        const tagsString    = selectedTags.map(tag => tag.label).join(', ');
+        const description = e.target.description.value;
+        const location = e.target.location.value;
+        const startDate = e.target.startDate.value;
+        const tagsString = selectedTags.map(tag => tag.label).join(', ');
+    
+        var eventData = {
+            recurrence: false,
+            company: selectedCompany,
+            allDay: false,
+            description: description,
+            assignees: [],
+            location: location,
+            sharing: 'Members',
+            startDate: startDate,
+            friendlyName: friendlyName,
+            tags: tagsString
+        };
 
-
-        // Create a new company
+        if(event){
+            eventData.id = event.id;
+        }
+    
+        const method = event ? 'PATCH' : 'POST';
+    
         fetch('/api/events', {
-            method: 'POST',
+            method: method,
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                recurrence: false,
-                company: selectedCompany,
-                allDay: false,
-                // color: color,
-                // endDate: endDate,
-                description: description,
-                assignees: [],
-                location: location,
-                sharing: 'Members',
-                startDate: startDate,
-                friendlyName: friendlyName,
-                tags: tagsString
-            })
+            body: JSON.stringify(eventData)
         })
         .then(res => res.json())
         .then(data => {
             e.target.friendlyName.value = '';
             e.target.location.value = '';
             e.target.startDate.value = '';
-            // e.target.endDate.value = '';
-            // e.target.color.value = '';
             setSelectedTags([]);
             setDescription('');
             tagsCreatableSelectRef.current.clearSelection();
             onEventAdded();
             setLoading(false);
+
+            console.log('update response: ', data);
         })
         .catch(err => {
             console.log(err);
             setLoading(false);
         });
-    }
+    };
+
+    useEffect(() => {
+        if (handleSave) {
+            console.log(handleSave);
+            document.getElementById('editEventForm').dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+        }
+    }, [handleSave]);
+
+    
 
     const handleSelectCompany = (selectedOption) => {
         setSelectedCompany(selectedOption.value);
@@ -193,7 +209,7 @@ export default function NewEventForm({ onEventAdded }) {
         <div className="container-fluid">
             <div className="row">
                 <div className="col">
-                    <form onSubmit={onSubmit}>
+                    <form onSubmit={onSubmit} id="editEventForm">
 
                     <div className="row mb-3">
                             <div className="col-6">
@@ -204,6 +220,7 @@ export default function NewEventForm({ onEventAdded }) {
                                     isClearable={true}
                                     isSearchable={true}
                                     onChange={handleSelectCompany}
+                                    value={selectedCompany}
                                     name="color"
                                     options={companiesOptions}
                                 />
@@ -213,7 +230,7 @@ export default function NewEventForm({ onEventAdded }) {
                         <div className="row mb-3">
                             <div className="col">
                                 <label htmlFor="friendlyName" className="form-label">Title</label>
-                                <input type="text" className="form-control" id="friendlyName" name="friendlyName" required />
+                                <input type="text" className="form-control" id="friendlyName" name="friendlyName" required defaultValue={event?.friendly_name} />
                             </div>
                         </div>
                         <div className="mb-3">
@@ -227,11 +244,11 @@ export default function NewEventForm({ onEventAdded }) {
                         <div className="row mb-3">
                             <div className="col-6">
                                 <label htmlFor="startDate" className="form-label">Event date:</label>
-                                <input type="date" className="form-control" id="startDate" name="startDate" required />
+                                <input type="date" className="form-control" id="startDate" name="startDate" required value={event && new Date(event.start_date).toISOString().split('T')[0]} />
                             </div>
                             <div className="col-6">
                                 <label htmlFor="location" className="form-label">Location</label>
-                                <input type="text" className="form-control" id="location" name="location" required />
+                                <input type="text" className="form-control" id="location" name="location" required  defaultValue={event?.location}/>
                             </div>
                             {/* <div className="col-6">
                                 <label htmlFor="endDate" className="form-label">End date:</label>
@@ -244,23 +261,20 @@ export default function NewEventForm({ onEventAdded }) {
                                 <input type="color" className="form-control" id="color" name="color" required />
 
                             </div> */}
+                        </div>
 
-                        </div>
                         <div className="row">
-                            <div className="col">
-                                <label htmlFor="eventTags" className="form-label">Tags</label>
-                                <TagsSelectElement 
-                                    options={tagsOptions} 
-                                    onCreate={handleCreateTag} 
-                                    ref={tagsCreatableSelectRef}
-                                    onSelect={handleSelectTag} 
-                                    selectedTags={selectedTags}
-                                />
+                                <div className="col">
+                                    <label htmlFor="eventTags" className="form-label">Tags</label>
+                                    <TagsSelectElement 
+                                        options={tagsOptions} 
+                                        onCreate={handleCreateTag} 
+                                        ref={tagsCreatableSelectRef}
+                                        onSelect={handleSelectTag} 
+                                        selectedTags={selectedTags}
+                                    />
+                                </div>
                             </div>
-                        </div>
-                        <Button type="submit" className="mt-4 float-end" disabled={loading}>
-                            <FontAwesomeIcon icon={faSave} className="me-1" /> {loading ? <ButtonSpinner /> : 'Create'}
-                        </Button>
                     </form>
                 </div>
             </div>
