@@ -8,7 +8,6 @@ export default function PeerComparisonDPSPayoutRatio({zFirst, zSecond, zThird, z
     const [chartSeries, setChartSeries] = useState([]);
     const [showChart, setShowChart] = useState(false);
 
-
     useEffect(() => {
 
         const fetchPeerDPS = async () => {
@@ -42,7 +41,7 @@ export default function PeerComparisonDPSPayoutRatio({zFirst, zSecond, zThird, z
         }
 
         fetchPeerDPS();
-    }, []);
+    }, [zFirst, zSecond, zThird, zFourth]);
 
     return (<>
         <div className="card peer-comparison flex-fill">
