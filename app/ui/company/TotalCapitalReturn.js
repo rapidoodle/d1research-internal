@@ -50,11 +50,11 @@ export default function TotalCapitalReturn({zFirst, zSecond, zThird, zFourth}) {
                         <td className="font-medium">{formatNumber(zFourth?.total_capital_return)}</td>
                         </tr>
                         <tr>
-                        <td>Net inc per before</td>
-                        <td>{formatNumber(zFirst?.net_debt)}</td>
-                        <td>{formatNumber(zSecond?.net_debt)}</td>
-                        <td>{formatNumber(zThird?.net_debt)}</td>
-                        <td>{formatNumber(zFourth?.net_debt)}</td>
+                        <td>Net inc year before</td>
+                        <td></td>
+                        <td>{formatNumber(zFirst?.net_income)}</td>
+                        <td>{formatNumber(zSecond?.net_income)}</td>
+                        <td>{formatNumber(zThird?.net_income)}</td>
                         </tr>
                         <tr>
                         <td className="font-medium">Capital payout (%)</td>

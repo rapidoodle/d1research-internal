@@ -7,12 +7,11 @@ export default function UpcomingEvents( { allData } ) {
 
     const fetchEvents = async () => {
         setLoading(true);
-        const response = await fetch('/api/events', {
+        const response = await fetch(`/api/events?equity_ticker=${ticker}&type=company`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({equity_ticker : ticker, type : 'company'}),
+            }
         }
         );
         const data = await response.json();
@@ -38,13 +37,13 @@ export default function UpcomingEvents( { allData } ) {
                         </tr>
                     </thead>
                     <tbody>
-                        {events.map((event) => (
+                        {/* {events.map((event) => (
                         <tr>
                             <td>{event.start_date}</td>
                             <td>{event.friendly_name}</td>
                         </tr>
                         ))
-                        }
+                        } */}
                     </tbody>
                 </table>
             </div>

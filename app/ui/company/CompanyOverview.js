@@ -23,6 +23,7 @@ export default function CompanyOverview({session}) {
   const pathname = usePathname();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const [zPrev, setZPrev] = useState([]);
   const [zFirst, setZFirst] = useState([]);
   const [zSecond, setZSecond] = useState([]);
   const [zThird, setZThird] = useState([]);
@@ -101,6 +102,8 @@ export default function CompanyOverview({session}) {
           const reverseData = data.reverse();
           setAllData(reverseData);
 
+          console.log(reverseData);
+
           if (data[0]) {
 
             const yearDigit = data[0].year.toString().slice(-1);
@@ -108,7 +111,7 @@ export default function CompanyOverview({session}) {
             data[0].year_digit = yearDigit;
             data[0].year_2digit = year2Digit;
 
-            setZFirst(data[0]);
+            setZPrev(data[0]);
 
           }
           if (data[1]) {
@@ -117,7 +120,7 @@ export default function CompanyOverview({session}) {
             data[1].year_digit = yearDigit;
             data[1].year_2digit = year2Digit;
 
-            setZSecond(data[1]);
+            setZFirst(data[1]);
 
           }
           if (data[2]) {
@@ -126,7 +129,7 @@ export default function CompanyOverview({session}) {
             data[2].year_digit = yearDigit;
             data[2].year_2digit = year2Digit;
 
-            setZThird(data[2]);
+            setZSecond(data[2]);
           }
           if (data[3]) {
             const yearDigit = data[3].year.toString().slice(-1);
@@ -134,7 +137,15 @@ export default function CompanyOverview({session}) {
             data[3].year_digit = yearDigit;
             data[3].year_2digit = year2Digit;
 
-            setZFourth(data[3]);
+            setZThird(data[3]);
+          }
+          if (data[4]) {
+            const yearDigit = data[4].year.toString().slice(-1);
+            const year2Digit = `${data[4].year.toString().slice(2)}${data[3].year > new Date().getFullYear() ? 'e' : ''}`;
+            data[4].year_digit = yearDigit;
+            data[4].year_2digit = year2Digit;
+
+            setZFourth(data[4]);
           }
 
           setLoading(false);

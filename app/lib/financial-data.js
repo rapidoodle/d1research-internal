@@ -53,7 +53,7 @@ export async function uploadFinancialData (req, res) {
       parser.on('end', async function() {
         try {
           // Remove all from financial_data table to avoid duplicates
-          await sql`DELETE FROM financial_data;`;
+          // await sql`DELETE FROM financial_data;`;
 
           for (const row of records) {
             try {
@@ -68,6 +68,8 @@ export async function uploadFinancialData (req, res) {
               //get logged in user id
               if (financialDataResult.rows.length > 0) {
                 console.log(`Data for ${company} in ${year} already exists`);
+                //if the company already exists, update the data
+                // await sql`UPDATE financial_data SET`
               }else{
                 await sql`
                 INSERT INTO financial_data (
@@ -249,7 +251,7 @@ export async function getFinancialDataByCompanyTicker(ticker, fields = '*') {
   const financialDataQuery = `
     SELECT ${fields} FROM financial_data
     WHERE equity_ticker = $1
-    ORDER BY year DESC LIMIT 4
+    ORDER BY year DESC LIMIT 5
   `;
 
   const financialDataResult = await sql.query(financialDataQuery, [ticker]);
