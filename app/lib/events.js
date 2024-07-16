@@ -30,17 +30,20 @@ import { createClinkedEvent } from "./clinked/events";
 
       if(isForm){
         const formData = await req.json();
-        recurrence = formData.get('recurrence');
-        company = formData.get('company');
+
+        recurrence = formData.recurrence;
+        company = formData.company;
         allDay = true;
-        description = formData.get('description');
-        assignees = formData.get('assignees');
-        location = formData.get('location');
-        sharing = formData.get('sharing');
-        startDate = formData.get('startDate');
-        endDate = formData.get('startDate');
-        friendlyName = formData.get('friendlyName');
-        tags = formData.get('tags');
+        description = formData.description;
+        c_description = formData.description;
+        assignees = formData.assignees;
+        location = formData.location;
+        sharing = formData.sharing;
+        startDate = formData.startDate;
+        endDate = formData.startDate;
+        friendlyName = formData.friendlyName;
+        tags = formData.tags;
+
       } else {
         recurrence = false;
         company = req.company_id;
@@ -91,6 +94,8 @@ import { createClinkedEvent } from "./clinked/events";
         );
       `;
 
+      console.log(query)
+
      const response =  await sql.query(query, [description, friendlyName]);
 
       // return NextResponse.json([{ message: 'Event created successfully' }]);
@@ -106,17 +111,8 @@ import { createClinkedEvent } from "./clinked/events";
 export async function updateEvent(req) {
   const loggedInUser = await getLoggedUser(authOptions);
 
-  if (req.method !== 'PATCH') {
-    return { error: 'Method not allowed' };
-  }
-
   try {
-    const { id, description, friendlyName, location, startDate, tags, company } = await req.json();
-
-    console.log(id, description, friendlyName, location, startDate, tags, company);
-
-    const newDescription = await cleanComment(description);
-    const newFriendlyName = await cleanComment(friendlyName);
+    const { id, description, friendlyName, location, startDate, tags, company } = req;
 
     const query = `
       UPDATE events
@@ -131,7 +127,9 @@ export async function updateEvent(req) {
       WHERE id = $7
     `;
 
-    const response = await sql.query(query, [description, newFriendlyName, location, startDate, tags, company.value, id]);
+    const response = await sql.query(query, [description, friendlyName, location, startDate, tags, company.value, id]);
+
+    console.log(response);
 
     return NextResponse.json(response);
 

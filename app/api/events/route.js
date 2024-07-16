@@ -14,7 +14,7 @@ export async function POST(req) {
         return NextResponse.json({ message: 'Method not allowed' }, { status: 405 });
     }
 
-    const data = await createEvent(req);
+    const data = await createEvent(req, true);
 
     if (data.error) {
         return NextResponse.json({ message: data.error }, { status: 500 });
@@ -59,15 +59,11 @@ export async function PATCH(req) {
 
     if(request.action && request.action === 'set-status') {
         data = await setEventStatus(request);
-
-        console.log(data);
     }else{
-        data = await updateEvent(req);
-
+        data = await updateEvent(request);
         if (data.error) {
             return NextResponse.json({ message: data.error }, { status: 500 });
         }
-
     }
 
     return NextResponse.json(data);

@@ -56,7 +56,7 @@ const PendingEventsTable = ({query, currentPage, eventAdded}) => {
     
       fetchEvents();
 
-  }, [query, page, pageSize, eventAdded, fetchEvents]);
+  }, [query, page, pageSize, eventAdded]);
 
   const totalPages = Math.ceil(totalRecords / pageSize);
 
