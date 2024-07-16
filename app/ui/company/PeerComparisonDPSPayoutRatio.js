@@ -8,37 +8,39 @@ export default function PeerComparisonDPSPayoutRatio({zFirst, zSecond, zThird, z
     const [chartSeries, setChartSeries] = useState([]);
     const [showChart, setShowChart] = useState(false);
 
-    const fetchPeerDPS = async () => {
-        const peers = []
-
-        for (let i = 1; i <= 4; i++) {
-            const peer = zFirst[`peer_${i}`];
-            if (peer) {
-                peers.push(peer);
-            }
-        }
-        const responses = await Promise.all(peers.map(async (peer) => {
-            const query = `/api/financial-data?equity_ticker=${peer}&type=peer`;
-            const data = await fetch(query);
-            return await data.json();
-        }));
-    
-        // Update state with all responses at once
-        setPeersDPS(responses);
-
-        const chartSeries = responses.map(companyData => {
-            return {
-              name: companyData[0].equity_ticker,
-              data: companyData.map(item => item.dps_z)
-            };
-          });
-
-          console.log(chartSeries)
-        setChartSeries(chartSeries);
-        
-    }
 
     useEffect(() => {
+
+        const fetchPeerDPS = async () => {
+            const peers = []
+
+            for (let i = 1; i <= 4; i++) {
+                const peer = zFirst[`peer_${i}`];
+                if (peer) {
+                    peers.push(peer);
+                }
+            }
+            const responses = await Promise.all(peers.map(async (peer) => {
+                const query = `/api/financial-data?equity_ticker=${peer}&type=peer`;
+                const data = await fetch(query);
+                return await data.json();
+            }));
+        
+            // Update state with all responses at once
+            setPeersDPS(responses);
+
+            const chartSeries = responses.map(companyData => {
+                return {
+                name: companyData[0].equity_ticker,
+                data: companyData.map(item => item.dps_z)
+                };
+            });
+
+            console.log(chartSeries)
+            setChartSeries(chartSeries);
+            
+        }
+
         fetchPeerDPS();
     }, []);
 
