@@ -64,9 +64,9 @@ export default function PeerComparisonDPSPayoutRatio({zFirst, zSecond, zThird, z
                         </tr>
                     </thead>
                     <tbody>
-                        {peersDPS.map((peer) => {
+                        {peersDPS.map((peer, index) => {
                             return (
-                                <tr>
+                                <tr key={index}>
                                     <td>{peer[0].equity_ticker
                                     }</td>
                                     <td>{formatNumber(peer[0].dps_z)}</td>
