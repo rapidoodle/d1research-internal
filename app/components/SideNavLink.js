@@ -27,7 +27,7 @@ const SideNavLink =({pathname, faIcon, path, label, uniqueKeyType}) => {
         }else{
             setNewPath(path);
         }
-    }, [uniqueKeyType]);
+    }, [uniqueKeyType, setNewPath, path]);
 
     return (
         <Link href={`${newPath}`} className={clsx(

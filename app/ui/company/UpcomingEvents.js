@@ -5,22 +5,23 @@ export default function UpcomingEvents( { allData } ) {
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState (false);
 
-    const fetchEvents = async () => {
-        setLoading(true);
-        const response = await fetch(`/api/events?equity_ticker=${ticker}&type=company`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        }
-        );
-        const data = await response.json();
-        setEvents(data);
-        setLoading(false);
-        return data;
-    }
 
     useEffect(() => {
+        const fetchEvents = async () => {
+            setLoading(true);
+            const response = await fetch(`/api/events?equity_ticker=${ticker}&type=company`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }
+            );
+            const data = await response.json();
+            setEvents(data);
+            setLoading(false);
+            return data;
+        }
+        
         fetchEvents();
     }, []);
 

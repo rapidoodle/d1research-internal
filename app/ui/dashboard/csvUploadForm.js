@@ -19,41 +19,42 @@ const CsvUploader = ({ onFileUploaded, isSave, setLoading }) => {
     }
   };
 
-  const handleUpload = async () => {
-    if (!file) {
-      setMessage('Please select a file first.');
-      return;
-    }
-
-    setLoading(true);
-
-    console.log('Uploading file...');
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
-
-      const res = await fetch('/api/financial-data', {
-        method: 'POST',
-        body: formData,
-      });
-      console.log('res', res);
-      if(res.ok){
-        const data = await res.json();
-        setMessage(data.message);
-        onFileUploaded();
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      setMessage('An error occurred while uploading the file.');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   // Use useEffect to call handleUpload when isSave is true
   useEffect(() => {
     console.log(isSave);
     if (isSave) {
+      const handleUpload = async () => {
+        if (!file) {
+          setMessage('Please select a file first.');
+          return;
+        }
+    
+        setLoading(true);
+    
+        console.log('Uploading file...');
+        try {
+          const formData = new FormData();
+          formData.append('file', file);
+    
+          const res = await fetch('/api/financial-data', {
+            method: 'POST',
+            body: formData,
+          });
+          console.log('res', res);
+          if(res.ok){
+            const data = await res.json();
+            setMessage(data.message);
+            onFileUploaded();
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          setMessage('An error occurred while uploading the file.');
+        } finally {
+          setLoading(false);
+        }
+      };
+
       handleUpload();
     }
   }, [isSave]);

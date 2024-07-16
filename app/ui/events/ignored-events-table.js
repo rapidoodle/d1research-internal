@@ -56,7 +56,7 @@ const IgnoredEventsTable = ({query, currentPage, eventAdded}) => {
     
       fetchEvents();
 
-  }, [query, page, pageSize, eventAdded]);
+  }, [query, page, pageSize, eventAdded, fetchEvents]);
 
   const totalPages = Math.ceil(totalRecords / pageSize);
 

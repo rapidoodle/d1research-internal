@@ -72,7 +72,7 @@ export default function EditEventForm({ onEventAdded, event, handleSave }) {
         };
 
         fetchTags();
-    }, []);
+    }, [event]);
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -144,7 +144,6 @@ export default function EditEventForm({ onEventAdded, event, handleSave }) {
 
     useEffect(() => {
         if (handleSave) {
-            console.log(handleSave);
             document.getElementById('editEventForm').dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
         }
     }, [handleSave]);
