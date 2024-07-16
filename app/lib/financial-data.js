@@ -72,7 +72,6 @@ export async function uploadFinancialData (req, res) {
                   // await sql`UPDATE financial_data SET`
 
                   //if share price or current price z is different, update the record and insert previous record to keep history
-                  console.log(financialDataResult.rows[0]['share_price'], row['Share price'], financialDataResult.rows[0]['current_price_z'], row['Current Price z']);
 
                   if((Number(financialDataResult.rows[0]['share_price'] !== Number(row['Share price'])) || 
                       Number(financialDataResult.rows[0]['current_price_z']) !== Number(row['Current Price z']))){
@@ -83,21 +82,19 @@ export async function uploadFinancialData (req, res) {
 
                     if(row['Share price'] && (Number(financialDataResult.rows[0]['share_price']) !== Number(row['Share price']))){
                       sharePriceQuery = `share_price = ${cleanCurrency(row['Share price'])},`;
+                      console.log('Share price query', sharePriceQuery);
                     }
 
-                    if(row['Current Price z'] && (Number(financialDataResult.rows[0]['share_price']) !== Number(row['Share price']))){
+                    if(row['Current Price z'] && (Number(financialDataResult.rows[0]['current_price_z']) !== Number(row['Current Price z']))){
                       currentPriceZQuery = `current_price_z = ${cleanCurrency(row['Current Price z'])},`;
+                      console.log('Current price z query', currentPriceZQuery);
                     }
 
                     const updateQuery = `UPDATE financial_data SET ${sharePriceQuery} ${currentPriceZQuery} updated_by = $1 WHERE equity_ticker = $2 AND year = $3`;
 
                     const updateResponse = await sql.query(updateQuery, [loggedUser.id, row['Equity Ticker'], row['Year']]);
 
-                    console.log('Updating share price and current price z for', row['Equity Ticker'], row['Year'], updateResponse);
-
                     const insertQuery = `INSERT INTO financial_data_history (year, company, equity_ticker, share_price, current_price_z, updated_by) VALUES ($1, $2, $3, $4, $5, $6);`;
-
-                    console.log(updateQuery);
 
                     await sql.query(insertQuery, [financialDataResult.rows[0]['year'], financialDataResult.rows[0]['company'], financialDataResult.rows[0]['equity_ticker'], financialDataResult.rows[0]['share_price'], financialDataResult.rows[0]['current_price_z'], loggedUser.id]);
 
