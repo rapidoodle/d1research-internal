@@ -8,12 +8,12 @@ import Pagination from '@/app/components/Pagination';
 import formatDate from '@/app/utils';
 import { Scheduler } from '@aldabil/react-scheduler';
 import DataTableComponent from '@/app/components/DataTablesComponent';
-import { pendingEventsColumns } from '@/app/lib/table-columns/columns';
 import ModalComponent from '@/app/components/ModalComponent';
 import EditEventForm from './EditEventForm';
 import Swal from 'sweetalert2';
+import { ignoredEventsColumns } from '@/app/lib/table-columns/columns';
 
-const PendingEventsTable = ({query, currentPage, eventAdded}) => {
+const IgnoredEventsTable = ({query, currentPage, eventAdded}) => {
   const [events, setEvents] = useState([]);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(currentPage);
@@ -31,7 +31,7 @@ const PendingEventsTable = ({query, currentPage, eventAdded}) => {
   const fetchEvents = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`/api/events?&search=${query}&currentPage=${page}&pageSize=${pageSize}&status=0`);
+      const response = await fetch(`/api/events?&search=${query}&currentPage=${page}&pageSize=${pageSize}&status=2`);
       const data = await response.json();
       setEvents(data.data);
       setTotalRecords(data.totalRecords);
@@ -101,26 +101,8 @@ const PendingEventsTable = ({query, currentPage, eventAdded}) => {
       }
     })
    }
-
-   const handleIgnore = (event) => {
-    Swal.fire({
-      title: 'Ignore event?',
-      text: "Are you sure you want to ignore this event?",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Ignore'
-    }).then(async (result) => {
-      console.log(result);
-      if (result.isConfirmed) {
-        handleChangeStatus(event, 2);
-      }
-    })
-
-   }
  
-   const pendingEventsColumnsWithActions = pendingEventsColumns(handleReview, handleApprove, handleIgnore);
+   const ignoredEventsColumnsWithActions = ignoredEventsColumns(handleReview, handleApprove);
 
    const handleChangeStatus = async(event, status) => {
     try {
@@ -179,7 +161,7 @@ const PendingEventsTable = ({query, currentPage, eventAdded}) => {
         </div>
         {!isCalendarView && ( <>
       <div className='table-responsive'>
-        <DataTableComponent columns={pendingEventsColumnsWithActions} data={events} />
+        <DataTableComponent columns={ignoredEventsColumnsWithActions} data={events} />
       </div> 
       {totalRecords > 0 && ( 
       <Pagination page={page} totalPages={totalPages} setPage={setPage} />
@@ -216,4 +198,4 @@ const PendingEventsTable = ({query, currentPage, eventAdded}) => {
 }
 };
 
-export default PendingEventsTable;
+export default IgnoredEventsTable;

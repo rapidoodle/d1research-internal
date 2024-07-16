@@ -200,3 +200,15 @@ table tr td.font-medium{
 .positive-number{
     background-color: #C5F6D0;
 }
+
+.financial-overview-page{
+    border:1px solid #dee2e6;
+    background-color: #FEFCF8;
+    color: #2F5651;
+    max-width: 700px;
+}
+
+.company-page table thead th{
+    background-color: #f7f1e3 !important;
+    border-bottom: none !important;
+}

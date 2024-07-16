@@ -74,8 +74,6 @@ export default function CapitalReturnPolicy({companyID, session}) {
         fetch(`/api/capital-return-policy/?company_id=${companyID}&limit=${commentLimit}&showAll=${showAll}`)
         .then(res => res.json())
         .then(data => {
-            console.log(data);
-            
             if(showAll) {
                 setAllComments(data.data);
             }else{
@@ -106,7 +104,6 @@ export default function CapitalReturnPolicy({companyID, session}) {
             })
             .then(res => res.json())
             .then(data => {
-                console.log(data);
                 fetchCRPComments(companyID);
                 setLoading(false);
             })

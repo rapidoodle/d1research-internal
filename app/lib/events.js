@@ -4,6 +4,7 @@ import { authOptions } from "@/auth";
 import { cleanComment, cleanedString } from "./utils";
 import { NextResponse } from "next/server";
 import moment from "moment";
+import { createClinkedEvent } from "./clinked/events";
 
   export async function createEvent(req, isForm = false) {
 
@@ -141,6 +142,12 @@ export async function updateEvent(req) {
 }
 
 export async function setEventStatus(req) {
+
+  //STATUS 
+  // 0 - Pending
+  // 1 - Approved
+  // 2 - Ignored
+
   const loggedInUser = await getLoggedUser(authOptions);
 
   try {
@@ -151,9 +158,29 @@ export async function setEventStatus(req) {
       SET status = $1, 
       updated_by = '${loggedInUser.id}'
       WHERE id = $2
+      RETURNING *
     `;
 
     const response = await sql.query(query, [status, id]);
+    const returns = response.rows[0];
+
+    //push the event to clinked if approved
+    if(status === 1){
+      const body = {
+        description: returns.description,
+        friendlyName: returns.friendly_name,
+        location: returns.location,
+        startDate: returns.start_date,
+        // endDate: returns.end_date,
+        memberPermission: 1,
+        tags: returns.tags
+      };
+
+      console.log('clinked body:', body);
+
+      const clinkedResponse = await createClinkedEvent(body);
+      console.log('clinkedResponse:', clinkedResponse);
+    }
 
     return NextResponse.json(response);
 
@@ -163,21 +190,41 @@ export async function setEventStatus(req) {
   }
 }
 
+export async function getEventByEquityTicker(equityTicker) {
+  try {
+    const query = `
+      SELECT * FROM events WHERE company_id = $1
+    `;
+
+    const result
+    = await sql.query(query, [equityTicker]);
+
+    return { data: result.rows };
+
+  } catch (error) {
+
+    console.error('Error fetching event:', error);
+
+    return { error: 'Error fetching event' };
+  }
+}
+
 
 export async function getEvents(req) {
   const { searchParams } = new URL(req.url);
-  const search = searchParams.get('search') || '';
+  const search      = searchParams.get('search') || '';
   const currentPage = parseInt(searchParams.get('currentPage') || '1', 10);
-  const pageSize = parseInt(searchParams.get('pageSize') || '10', 10);
+  const pageSize    = parseInt(searchParams.get('pageSize') || '10', 10);
+  const status      = searchParams.get('status');
 
   try {
     const offset = (currentPage - 1) * pageSize;
     const query = `SELECT e.*, c.name as company
     FROM events e LEFT JOIN companies c ON c.id = e.company_id
-     WHERE e.friendly_name ILIKE $1 OR c.name ILIKE $1 LIMIT $2 OFFSET $3`;
+     WHERE (e.friendly_name ILIKE $1 OR c.name ILIKE $1) AND e.status = $2 LIMIT $3 OFFSET $4`;
      
     console.log(query);
-    const values = [`%${search}%`, pageSize, offset];
+    const values = [`%${search}%`, status, pageSize, offset];
     const result = await sql.query(query, values);
     
     const totalQuery = `

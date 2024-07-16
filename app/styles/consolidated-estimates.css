@@ -18,14 +18,14 @@
 
   /* first child of div.rdt_Table */
   /* media for tablet and mobile */
-    @media (max-width: 767.98px) {
+    /* @media (max-width: 767.98px) {
         div#ad-table-container div.rdt_Table div.rdt_TableHeadRow div.rdt_TableCol, div#ad-table-container div.rdt_Table div.rdt_TableRow div.rdt_TableCell  {
             padding-left:10px!important;
             padding-right:10px!important;
         }
-    }
+    } */
     /* media for md size screen */
-    @media (min-width: 768px) {
+    /* @media (min-width: 768px) {
         div#ad-table-container div.rdt_Table div.rdt_TableHeadRow div.rdt_TableCol:first-child {
             display: none!important;
         }
@@ -37,4 +37,4 @@
 
   div#ad-table-container div.rdt_Table {
     font-size: 100px!important;
-  }
+  } */

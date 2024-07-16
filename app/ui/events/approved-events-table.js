@@ -22,7 +22,6 @@ const ApprovedEventsTable = ({query, currentPage, eventAdded}) => {
   const [loading, setLoading] = useState(true);
   const [calendarEvents, setCalendarEvents] = useState([]);
   const [isCalendarView, setIsCalendarView] = useState(false);
-  const initialRender = useRef(true);
 
   useEffect(() => {
     

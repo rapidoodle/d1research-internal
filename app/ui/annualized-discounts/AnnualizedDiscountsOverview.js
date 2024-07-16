@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import DataTableComponent from '@/app/components/DataTablesComponent';
 import { annualizedDiscountColumns, dpsForecastColumns } from '@/app/lib/table-columns/columns';
 
-export default function ConsolidatedEstimatesOverview({session}) {
+export default function AnnualiazedDiscountsOverview({session}) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [allData, setAllData] = useState([]);
@@ -43,10 +43,10 @@ export default function ConsolidatedEstimatesOverview({session}) {
       <div className="financial-overview-page mt-3 p-2 p-md-4">
         <div className='main-container'>
             <div className='row'>
-                <div className='col-12'>
-                  <p className='font-medium'>D1 DPS estimates</p>
-                  <div className='table-responsive d-flex justify-content-center' id='dps-table-container'>
-                    <DataTableComponent key={'dps-table'} columns={dpsForecastColumns} data={allData} />
+                <div className='col-12 mt-md-0'>
+                <p className='font-medium'>Annualized discount</p>
+                  <div className='table-responsive' id='ad-table-container'>
+                    <DataTableComponent key={'ad-table'} columns={annualizedDiscountColumns} data={allData} />
                   </div>
                 </div>
             </div>

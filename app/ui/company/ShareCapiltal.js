@@ -8,12 +8,12 @@ export default function ShareCapital({zFirst, zSecond, zThird, zFourth}) {
             <div className="table-responsive">
                 <table className="table table-responsive">
                     <thead>
-                        <tr>
-                        <th></th>
-                        <th>FY23</th>
-                        <th>FY24</th>
-                        <th>FY25</th>
-                        <th>FY26</th>
+                    <tr>
+                            <th></th>
+                            <th>{`FY${zFirst.year_2digit}`}</th>
+                            <th>{`FY${zSecond.year_2digit}`}</th>
+                            <th>{`FY${zThird.year_2digit}`}</th>
+                            <th>{`FY${zFourth.year_2digit}`}</th>
                         </tr>
                     </thead>
                     <tbody>

@@ -6,19 +6,23 @@ import clsx from 'clsx';
 import { useState } from 'react';
 import { signOut } from 'next-auth/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBuilding, faCalendarAlt, faCaretDown, faCaretRight, faChevronDown, faChevronRight, faCogs, faFileExcel, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faBuilding, faCalendarAlt, faCaretDown, faCaretRight, faCashRegister, faChartArea, faChartBar, faChartColumn, faChevronDown, faChevronRight, faCogs, faFileExcel, faUsers } from '@fortawesome/free-solid-svg-icons';
 import SideNavLink from './SideNavLink';
 
 const SideNav = () => {
   const pathname = usePathname();
   const [settingsCollapsed, setSettingsCollapsed] = useState(true);
   const [eventsCollapsed, setEventsCollapsed] = useState(true);
+  const [masterCollapsed, setMasterCollapsed] = useState(true);
   
   const toggleSettings = () => {
     setSettingsCollapsed(!settingsCollapsed);
   };
   const toggleEvents = () => {
     setEventsCollapsed(!eventsCollapsed);
+  };
+  const toggleMaster = () => {
+    setMasterCollapsed(!masterCollapsed);
   };
 
   return (
@@ -29,32 +33,49 @@ const SideNav = () => {
       </h6>
       <ul className="nav nav-pills flex-column mb-auto">
         <li className="nav-item">
-            <Link href="/" className={clsx(
-                'nav-link',
-                {
-                'active': pathname === '/',
-                },
-            )}>
-            <FontAwesomeIcon icon={faFileExcel} /> Master
-            </Link>
+          <Link href="/" className={clsx('nav-link', { 'active': pathname === '/' })}>
+            Master file
+          </Link>
         </li>
-        <li className="nav-item">
-            <SideNavLink 
-              pathname={pathname} 
-              faIcon={faBuilding} 
-              label={'Company overview'} 
-              uniqueKeyType={'company_overview_key'}
-              path={'/company-overview'}
-            />
-        </li>
-        <li className="nav-item">
-            <SideNavLink 
-              pathname={pathname} 
-              faIcon={faBuilding} 
-              label={'Estimates'} 
-              uniqueKeyType={'consolidated_estimates_key'}
-              path={'/consolidated-estimates'}
-            />
+        <li className='nav-item'>
+          <button 
+            className="nav-link btn btn-link d-flex align-items-center w-100"
+            onClick={toggleMaster}
+            aria-expanded={!masterCollapsed}
+          >
+            <FontAwesomeIcon icon={faChartColumn} /> 
+              <span className='ms-1'>Financial Overview</span> 
+              <span className='ms-auto'><FontAwesomeIcon icon={masterCollapsed ? faChevronRight : faChevronDown} /></span>
+          </button>
+          <div className={clsx('collapse', { 'show': !masterCollapsed })}>
+            <ul className="nav flex-column ms-3">
+                <li className="nav-item">
+                    <SideNavLink 
+                      pathname={pathname} 
+                      label={'Companies'} 
+                      uniqueKeyType={'company_overview_key'}
+                      path={'/financial-overview/companies'}
+                    />
+                </li>
+                <li className="nav-item">
+                  <SideNavLink 
+                  pathname={pathname} 
+                  label={'Estimates'} 
+                  uniqueKeyType={'consolidated_estimates_key'}
+                  path={'/financial-overview/consolidated-estimates'}
+                />
+              </li>
+              <li className="nav-item">
+                  <SideNavLink 
+                  pathname={pathname} 
+                  label={'Discounts'} 
+                  uniqueKeyType={'annualized_discounts_key'}
+                  path={'/financial-overview/annualized-discounts'}
+                />
+              </li>
+            </ul>
+          </div>
+
         </li>
         <li className="nav-item">
           <button 
@@ -76,6 +97,11 @@ const SideNav = () => {
               <li className="nav-item">
                 <Link href="/events/approved" className={clsx('nav-link', { 'active': pathname === '/events/approved' })}>
                   Approved
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link href="/events/ignored" className={clsx('nav-link', { 'active': pathname === '/events/ignored' })}>
+                  Ignored
                 </Link>
               </li>
             </ul>

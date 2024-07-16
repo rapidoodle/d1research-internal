@@ -1,58 +1,96 @@
+import ApexLineChartComponent from "@/app/components/ApexLineChartComponent";
+import { formatNumber } from "@/app/lib/utils";
+import { useEffect, useState } from "react";
+
 export default function PeerComparisonDPSPayoutRatio({zFirst, zSecond, zThird, zFourth}) {
+
+    const [peersDPS, setPeersDPS] = useState([]);
+    const [chartSeries, setChartSeries] = useState([]);
+    const [showChart, setShowChart] = useState(false);
+
+    const fetchPeerDPS = async () => {
+        const peers = []
+
+        for (let i = 1; i <= 4; i++) {
+            const peer = zFirst[`peer_${i}`];
+            if (peer) {
+                peers.push(peer);
+            }
+        }
+        const responses = await Promise.all(peers.map(async (peer) => {
+            const query = `/api/financial-data?equity_ticker=${peer}&type=peer`;
+            const data = await fetch(query);
+            return await data.json();
+        }));
+    
+        // Update state with all responses at once
+        setPeersDPS(responses);
+
+        const chartSeries = responses.map(companyData => {
+            return {
+              name: companyData[0].equity_ticker,
+              data: companyData.map(item => item.dps_z)
+            };
+          });
+
+          console.log(chartSeries)
+        setChartSeries(chartSeries);
+        
+    }
+
+    useEffect(() => {
+        fetchPeerDPS();
+    }, []);
+
     return (<>
         <div className="card peer-comparison flex-fill">
-            <h4>Peer comparison DPS payout ratio (%)</h4>
+            <div className='d-flex align-items-center'>
+                <h4 className='flex-grow-1 mb-0'>Peer comparison DPS payout ratio (%)</h4>
+                <a className='page-link me-2' onClick={() => setShowChart(!showChart)}>View {showChart ? 'table' : 'chart'}</a>
+            </div>
             <hr />
+            {!showChart ? 
+            <>
             <div className="table-responsive">
                 <table className="table table-responsive">
                     <thead>
                         <tr>
-                        <th>Name</th>
-                        <th>FY23</th>
-                        <th>FY24</th>
-                        <th>FY25</th>
-                        <th>FY26</th>
+                            <th>Ticker</th>
+                            <th>{`FY${zFirst.year_2digit}`}</th>
+                            <th>{`FY${zSecond.year_2digit}`}</th>
+                            <th>{`FY${zThird.year_2digit}`}</th>
+                            <th>{`FY${zFourth.year_2digit}`}</th>
                         </tr>
                     </thead>
                     <tbody>
+                        {peersDPS.map((peer) => {
+                            return (
+                                <tr>
+                                    <td>{peer[0].equity_ticker
+                                    }</td>
+                                    <td>{formatNumber(peer[0].dps_z)}</td>
+                                    <td>{formatNumber(peer[1].dps_z)}</td>
+                                    <td>{formatNumber(peer[2].dps_z)}</td>
+                                    <td>{formatNumber(peer[3].dps_z)}</td>
+                                </tr>
+                            );
+
+                        })}
+                        {!peersDPS.length &&
                         <tr>
-                        <td>MBG</td>
-                        <td>39</td>
-                        <td>40</td>
-                        <td>40</td>
-                        <td>39</td>
+                            <td colSpan={5} align="center" className="pt-4">No records found</td>
                         </tr>
-                        <tr>
-                        <td>VW</td>
-                        <td>28</td>
-                        <td>30</td>
-                        <td>28</td>
-                        <td>32</td>
-                        </tr>
-                        <tr>
-                        <td>BMW</td>
-                        <td>34</td>
-                        <td>35</td>
-                        <td>36</td>
-                        <td>38</td>
-                        </tr>
-                        <tr>
-                        <td>STLAM</td>
-                        <td>26</td>
-                        <td>31</td>
-                        <td>28</td>
-                        <td>31</td>
-                        </tr>
-                        <tr>
-                        <td>RNO</td>
-                        <td>17</td>
-                        <td>25</td>
-                        <td>28</td>
-                        <td>31</td>
-                        </tr>
+                        }
                     </tbody>
                 </table>
             </div>
+            </> :
+
+            <ApexLineChartComponent
+                xaxisData={[`FY${zFirst.year_2digit}`, `FY${zSecond.year_2digit}`, `FY${zThird.year_2digit}`, `FY${zFourth.year_2digit}`]}
+                seriesData={chartSeries}
+            />
+            }
         </div>    
     </>
     );

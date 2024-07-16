@@ -193,6 +193,54 @@ export const financialDataColumns = [  { name: 'Year', selector: row => row.year
     }
   ];
 
+  export const ignoredEventsColumns = (handleReview, hanldeApprove) => [
+    {
+      name: 'Company',
+      selector: row => row.company,
+      sortable: true,
+    },
+    {
+      name: 'Title',
+      selector: row => row.friendly_name,
+      sortable: true,
+    },
+    {
+      name: 'Start date',
+      selector: row => formatDate(row.start_date),
+      sortable: true,
+    },
+    {
+      name: 'End date',
+      selector: row => formatDate(row.end_date),
+      sortable: true,
+    },
+    {
+      name: 'Location',
+      selector: row => row.location,
+      sortable: true,
+    },
+    {
+      name: 'Tags',
+      selector: row => row.tags.split(',').map((tag, index) => (
+        <span className='badge me-1 badge-tag' key={index}>
+          { tag }
+        </span>
+      )),
+      sortable: false,
+    },
+    {
+      name: 'Actions',
+      cell: row => (
+        <div className="d-flex">
+          {/* <a href="#" onClick={ () => handleReview(row) }>Review</a> */}
+          <a href="#" className="ms-1 text-success" onClick={ () => hanldeApprove(row) }>Approve</a>
+        </div>
+      ),
+      ignoreRowClick: true,
+      button: true,
+    }
+  ];
+
   export const companiesTableColumns = [
     {
       name: 'ID',

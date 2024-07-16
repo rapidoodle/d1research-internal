@@ -97,22 +97,43 @@ export default function CompanyOverview({session}) {
             throw new Error(`Error: ${response.statusText}`);
           }
           const data = await response.json();
-          console.log(data);
-
           // Set all data in reverse order
           const reverseData = data.reverse();
           setAllData(reverseData);
 
           if (data[0]) {
+
+            const yearDigit = data[0].year.toString().slice(-1);
+            const year2Digit = `${data[0].year.toString().slice(2)}${data[0].year > new Date().getFullYear() ? 'e' : ''}`;
+            data[0].year_digit = yearDigit;
+            data[0].year_2digit = year2Digit;
+
             setZFirst(data[0]);
+
           }
           if (data[1]) {
+            const yearDigit = data[1].year.toString().slice(-1);
+            const year2Digit = `${data[1].year.toString().slice(2)}${data[1].year > new Date().getFullYear() ? 'e' : ''}`;
+            data[1].year_digit = yearDigit;
+            data[1].year_2digit = year2Digit;
+
             setZSecond(data[1]);
+
           }
           if (data[2]) {
+            const yearDigit = data[2].year.toString().slice(-1);
+            const year2Digit = `${data[2].year.toString().slice(2)}${data[2].year > new Date().getFullYear() ? 'e' : ''}`;
+            data[2].year_digit = yearDigit;
+            data[2].year_2digit = year2Digit;
+
             setZThird(data[2]);
           }
           if (data[3]) {
+            const yearDigit = data[3].year.toString().slice(-1);
+            const year2Digit = `${data[3].year.toString().slice(2)}${data[3].year > new Date().getFullYear() ? 'e' : ''}`;
+            data[3].year_digit = yearDigit;
+            data[3].year_2digit = year2Digit;
+
             setZFourth(data[3]);
           }
 
@@ -135,7 +156,7 @@ export default function CompanyOverview({session}) {
 
   if(!loading && selectedCompany){
     return (<>
-      <div className="container-fluid financial-overview p-2 p-md-4">
+      <div className="company-page p-2 p-md-4">
         <div className="row mb-md-3">
             <div className="col-12 col-sm-6 d-flex align-items-center justify-content-md-start justify-content-center mt-4 mt-md-0">
               <Image
@@ -222,7 +243,9 @@ export default function CompanyOverview({session}) {
             />
           </div>
           <div className='col-md-6 d-flex flex-column'>
-            <UpcomingEvents />
+            <UpcomingEvents 
+              allData={allData} 
+            />
 
             <DPSCalendar 
               allData={allData} />
@@ -271,6 +294,6 @@ export default function CompanyOverview({session}) {
       </>
     );
   }else{
-    return <div className='p-3'>Loading...</div>
+    return <div>Loading...</div>
   }
 };

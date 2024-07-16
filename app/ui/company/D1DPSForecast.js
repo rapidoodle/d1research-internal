@@ -15,10 +15,10 @@ export default function D1DPSForecast({zFirst, zSecond, zThird, zFourth}) {
             <thead>
               <tr>
                 <th></th>
-                <th>Z4</th>
-                <th>Z5</th>
-                <th>Z6</th>
-                <th>Z7</th>
+                <th>{`Z${zFirst.year_digit}`}</th>
+                <th>{`Z${zSecond.year_digit}`}</th>
+                <th>{`Z${zThird.year_digit}`}</th>
+                <th>{`Z${zFourth.year_digit}`}</th>
               </tr>
             </thead>
             <tbody>

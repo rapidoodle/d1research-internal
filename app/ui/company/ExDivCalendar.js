@@ -5,7 +5,7 @@ export default function ExDivCalendar({allData}) {
     <div className="card ex-div-calendar flex-fill">
         <h4>Ex-div calendar</h4>
         <hr />
-        <table>
+        <table className="table table-responsive">
         <thead>
             <tr>
             <th>Year</th>

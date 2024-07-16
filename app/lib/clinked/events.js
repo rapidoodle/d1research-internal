@@ -2,6 +2,7 @@ import config from "@/app/config/clinked";
 import { getAccessToken } from "./auth";
 import { formatClinkedDate } from "../utils";
 import moment from "moment";
+import { unstable_noStore as noStore } from 'next/cache';
 
 //create company
 export async function createClinkedEvent(reqData) {
@@ -55,6 +56,7 @@ export async function createClinkedEvent(reqData) {
   
   export async function getAllClinkedEvents() {
     try {
+      noStore();
       // Retrieve the access token
       const accessToken = await getAccessToken();
 

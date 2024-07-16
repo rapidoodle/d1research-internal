@@ -244,12 +244,12 @@ export async function uploadFinancialData (req, res) {
     return NextResponse.json({ message: 'File processed and data inserted successfully'});
 };
 
-export async function getFinancialDataByCompanyTicker(ticker){
+export async function getFinancialDataByCompanyTicker(ticker, fields = '*') {
   //fetch financial data for the company, fetch latest 4 only
   const financialDataQuery = `
-    SELECT * FROM financial_data
+    SELECT ${fields} FROM financial_data
     WHERE equity_ticker = $1
-    ORDER BY year DESC
+    ORDER BY year DESC LIMIT 4
   `;
 
   const financialDataResult = await sql.query(financialDataQuery, [ticker]);

@@ -28,14 +28,23 @@ export async function GET(req) {
         return NextResponse.json({ message: 'Method not allowed' }, { status: 405 });
     }
 
-    try {
-        const data = await getEvents(req);
-        if (data.error) {
-            return NextResponse.json({ message: data.error }, { status: 500 });
-        }
+    const { searchParams } = new URL(req.url);
+    const equityTicker = searchParams.get('equity_ticker');
+    const type         = searchParams.get('type');
 
-        return NextResponse.json(data);
-    } catch (error) {
+    try {
+        if(!type){
+            
+            const data = await getEvents(req);
+            if (data.error) {
+                return NextResponse.json({ message: data.error }, { status: 500 });
+            }
+            
+            return NextResponse.json(data);
+        }else{
+            const data = await getEventByEquityTicker(equityTicker);
+        }
+        } catch (error) {
         console.error('Error fetching events:', error);
         return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
     }

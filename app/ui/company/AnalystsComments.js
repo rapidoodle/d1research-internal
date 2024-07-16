@@ -43,8 +43,6 @@ export default function AnalystsComments({companyID, session}) {
               body: JSON.stringify(data),
             });
             const result = await response.json();
-            console.log(result);
-            console.log(isEdit ? 'Updated!' : 'Saved!');
             setShowModal(false);
             setComment('');
             fetchCRPComments(companyID);
@@ -74,8 +72,6 @@ export default function AnalystsComments({companyID, session}) {
         fetch(`/api/analysts-comments/?company_id=${companyID}&limit=${commentLimit}&showAll=${showAll}`)
         .then(res => res.json())
         .then(data => {
-            console.log(data);
-            
             if(showAll) {
                 setAllComments(data.data);
             }else{
