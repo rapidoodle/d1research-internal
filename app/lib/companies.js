@@ -81,7 +81,7 @@ export async function getCompanies(req) {
     // Base query
     let query = `SELECT c.id as company_id, c.equity_ticker, c.unique_url_key as url_key, c.name as company, s.name as sector, c.tags
     FROM companies c LEFT JOIN sectors s ON c.sector_id = s.id
-    WHERE c.name ILIKE $1`;
+    WHERE c.name ILIKE $1 ORDER BY c.name ASC`;
     
     // Values for the base query
     let values = [`%${search}%`];

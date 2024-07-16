@@ -1,7 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { FinancialDataTableSkeleton } from '../skeletons';
 import Pagination from '@/app/components/Pagination';
-import { formatNumber } from '@/app/lib/utils';
 import DataTableComponent from '@/app/components/DataTablesComponent';
 import { financialDataColumns } from '@/app/lib/table-columns/columns';
 
@@ -12,8 +10,6 @@ const FinancialDataTable = ({ query, currentPage, fileUploaded }) => {
   const [pageSize] = useState(1000); // You can make this adjustable if needed
   const [totalRecords, setTotalRecords] = useState(0);
   const [loading, setLoading] = useState(true);
-
-  const initialRender = useRef(true);
 
   useEffect(() => {
     const fetchFinancialData = async () => {

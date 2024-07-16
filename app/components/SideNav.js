@@ -34,7 +34,7 @@ const SideNav = () => {
       <ul className="nav nav-pills flex-column mb-auto">
         <li className="nav-item">
           <Link href="/" className={clsx('nav-link', { 'active': pathname === '/' })}>
-            Master file
+            <FontAwesomeIcon icon={faFileExcel} /> Master file
           </Link>
         </li>
         <li className='nav-item'>

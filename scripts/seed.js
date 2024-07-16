@@ -71,10 +71,42 @@ async function seedFinancialData(client) {
       createTable
     };
     } catch (error) {
-    console.error('Error seeding users:', error);
-    throw error;
+      console.error('Error seeding users:', error);
+      throw error;
     }
+}
+
+async function seedFinancialDataHistory(client) {
+  try {
+    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+    // Drop the table if it exists
+    await client.sql`DROP TABLE IF EXISTS financial_data_history`;
+
+    // Create the "users" table if it doesn't exist
+    const createTable = await client.sql`
+      CREATE TABLE financial_data_history (
+        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+        year INT,
+        company VARCHAR(255),
+        equity_ticker VARCHAR(255),
+        share_price FLOAT,
+        current_price_z FLOAT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_by UUID NOT NULL
+      );
+    `;
+
+    console.log(`Created "financial_data" table`);
+
+    return {
+      createTable
+    };
+    } catch (error) {
+      console.error('Error seeding users:', error);
+      throw error;
     }
+}
 
 
 
@@ -388,12 +420,13 @@ async function seedCapitalReturnPolicy(client) {
 async function main() {
   const client = await db.connect();
 
+  await seedFinancialDataHistory(client);
   // await seedFinancialData(client);
   // await seedKeyTable(client);
   // await seedCompanies(client);
   // await seedTags(client);
   // await seedEvents(client);
-  await seedUsers(client);
+  // await seedUsers(client);
   // await seedSectors(client);
   // await seedUserAccess(client);
   // await seedAnalystsComments(client);

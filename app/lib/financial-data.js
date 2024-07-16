@@ -57,20 +57,56 @@ export async function uploadFinancialData (req, res) {
 
           for (const row of records) {
             try {
-              const company = row['Company'];
-              const year = row['Year'];
+
               //check financial_data table for company name and year and insert if not present
               const financialDataQuery = `
                 SELECT * FROM financial_data
-                WHERE company = $1 AND year = $2
+                WHERE company = $1 AND year = $2 AND equity_ticker = $3
               `;
-              const financialDataResult = await sql.query(financialDataQuery, [company, year]);
+              const financialDataResult = await sql.query(financialDataQuery, [row['Company'], row['Year'], row['Equity Ticker']]);
+              
               //get logged in user id
               if (financialDataResult.rows.length > 0) {
-                console.log(`Data for ${company} in ${year} already exists`);
-                //if the company already exists, update the data
-                // await sql`UPDATE financial_data SET`
+                  console.log(`Data for ${row['Company']} in ${row['Year']} already exists`);
+                  //if the company already exists, update the data
+                  // await sql`UPDATE financial_data SET`
+
+                  //if share price or current price z is different, update the record and insert previous record to keep history
+                  console.log(financialDataResult.rows[0]['share_price'], row['Share price'], financialDataResult.rows[0]['current_price_z'], row['Current Price z']);
+
+                  if((Number(financialDataResult.rows[0]['share_price'] !== Number(row['Share price'])) || 
+                      Number(financialDataResult.rows[0]['current_price_z']) !== Number(row['Current Price z']))){
+
+                    //update share price and current price z if share price or current price is not empty
+                    var sharePriceQuery = '';
+                    var currentPriceZQuery = '';
+
+                    if(row['Share price'] && (Number(financialDataResult.rows[0]['share_price']) !== Number(row['Share price']))){
+                      sharePriceQuery = `share_price = ${cleanCurrency(row['Share price'])},`;
+                    }
+
+                    if(row['Current Price z'] && (Number(financialDataResult.rows[0]['share_price']) !== Number(row['Share price']))){
+                      currentPriceZQuery = `current_price_z = ${cleanCurrency(row['Current Price z'])},`;
+                    }
+
+                    const updateQuery = `UPDATE financial_data SET ${sharePriceQuery} ${currentPriceZQuery} updated_by = $1 WHERE equity_ticker = $2 AND year = $3`;
+
+                    const updateResponse = await sql.query(updateQuery, [loggedUser.id, row['Equity Ticker'], row['Year']]);
+
+                    console.log('Updating share price and current price z for', row['Equity Ticker'], row['Year'], updateResponse);
+
+                    const insertQuery = `INSERT INTO financial_data_history (year, company, equity_ticker, share_price, current_price_z, updated_by) VALUES ($1, $2, $3, $4, $5, $6);`;
+
+                    console.log(updateQuery);
+
+                    await sql.query(insertQuery, [financialDataResult.rows[0]['year'], financialDataResult.rows[0]['company'], financialDataResult.rows[0]['equity_ticker'], financialDataResult.rows[0]['share_price'], financialDataResult.rows[0]['current_price_z'], loggedUser.id]);
+
+                  }else{
+                    console.log("Share price and current price z are the same, no need to update");
+                  }
+                
               }else{
+                console.log(`Data for ${row['Company']} in ${row['Year']} does not exist, inserting`);
                 await sql`
                 INSERT INTO financial_data (
                   year, company, sector, equity_ticker, share_price, div_ticker, p_and_l_fx,
@@ -132,102 +168,103 @@ export async function uploadFinancialData (req, res) {
                   ${loggedUser.id}
                 );`;
 
-                //check sectors table for sector name and insert if not present
-              const sector = row['Sector'];
-              const sectorResult = await getSectorByName({ name: sector });
-              var sectorId = null;
-              if (sectorResult.data.length === 0) {
-                const  sectorInsertResponse = await createSectors({ name: sector, updated_by: loggedUser.id  }, false);
-                sectorId = sectorInsertResponse.data.id;
-                console.log('New sector inserted', sectorInsertResponse.data, sectorId);
-              }else{
-                sectorId = sectorResult.data[0].id
-                console.log('Sector already exists', sectorResult.data, sectorId);
-              }
 
-              //check companies table for compny name and year and insert if not present, use sector id from sectors table or newly inserted sector
-              var tags = `${row['Equity Ticker']}, ${row['Div Ticker']}`;
+            //     //check sectors table for sector name and insert if not present
+            //   const sector = row['Sector'];
+            //   const sectorResult = await getSectorByName({ name: sector });
+            //   var sectorId = null;
+            //   if (sectorResult.data.length === 0) {
+            //     const  sectorInsertResponse = await createSectors({ name: sector, updated_by: loggedUser.id  }, false);
+            //     sectorId = sectorInsertResponse.data.id;
+            //     console.log('New sector inserted', sectorInsertResponse.data, sectorId);
+            //   }else{
+            //     sectorId = sectorResult.data[0].id
+            //     console.log('Sector already exists', sectorResult.data, sectorId);
+            //   }
 
-              //add index1, index2, index3 to tags if not null
-              if (row['Index1']) {
-                tags += `, ${row['Index1']}`;
-              }
-              if (row['Index2']) {
-                tags += `, ${row['Index2']}`;
-              }
-              if (row['Index3']) {
-                tags += `, ${row['Index3']}`;
-              }
+            //   //check companies table for compny name and year and insert if not present, use sector id from sectors table or newly inserted sector
+            //   var tags = `${row['Equity Ticker']}, ${row['Div Ticker']}`;
+
+            //   //add index1, index2, index3 to tags if not null
+            //   if (row['Index1']) {
+            //     tags += `, ${row['Index1']}`;
+            //   }
+            //   if (row['Index2']) {
+            //     tags += `, ${row['Index2']}`;
+            //   }
+            //   if (row['Index3']) {
+            //     tags += `, ${row['Index3']}`;
+            //   }
               
-              const companyResult = await getCompanyByTicker(row['Equity Ticker']);
-                console.log('Company result', companyResult.data.rowCount);
-              if (companyResult.data.rowCount === 0) {
-                const createCompanyResponse = await createCompany({ name: company, equity_ticker: row['Equity Ticker'],  sector_id: sectorId, tags: tags, template: false, member_permission: 1, updated_by: loggedUser.id }, false); 
-                console.log('New company inserted', createCompanyResponse);
-              }else{
-                console.log('Company already exists', companyResult.data);
-              }
+            //   const companyResult = await getCompanyByTicker(row['Equity Ticker']);
+            //     console.log('Company result', companyResult.data.rowCount);
+            //   if (companyResult.data.rowCount === 0) {
+            //     const createCompanyResponse = await createCompany({ name: company, equity_ticker: row['Equity Ticker'],  sector_id: sectorId, tags: tags, template: false, member_permission: 1, updated_by: loggedUser.id }, false); 
+            //     console.log('New company inserted', createCompanyResponse);
+            //   }else{
+            //     console.log('Company already exists', companyResult.data);
+            //   }
 
-              //check if Equity Ticker is present in tags table and insert if not present
-            const equityTicker = row['Equity Ticker'];
+            //   //check if Equity Ticker is present in tags table and insert if not present
+            // const equityTicker = row['Equity Ticker'];
             
-            if(equityTicker){
-              const equityTickerRes = await getTagByName({ name: equityTicker });
-              if(equityTickerRes.data.length === 0){
-                let equityTickerTagResponse = await createTag({ name: equityTicker, updated_by: loggedUser.id }, false);
-                console.log(equityTickerTagResponse);
-              }else{
-                console.log(`${equityTicker} already exists`);
-              }
-            }
+            // if(equityTicker){
+            //   const equityTickerRes = await getTagByName({ name: equityTicker });
+            //   if(equityTickerRes.data.length === 0){
+            //     let equityTickerTagResponse = await createTag({ name: equityTicker, updated_by: loggedUser.id }, false);
+            //     console.log(equityTickerTagResponse);
+            //   }else{
+            //     console.log(`${equityTicker} already exists`);
+            //   }
+            // }
 
-            // check if Div Ticker is present in tags table and insert if not present
-            const divTicker = row['Div Ticker'];
-            if(divTicker){
-              const divTickerRes = await getTagByName({ name: divTicker });
-              if(divTickerRes.data.length === 0){
-                let divTagResponse = await createTag({ name: divTicker, updated_by: loggedUser.id }, false);
-                console.log(divTagResponse);
-              }else{
-                console.log(`${divTicker} already exists`);
-              }
-            }
+            // // check if Div Ticker is present in tags table and insert if not present
+            // const divTicker = row['Div Ticker'];
+            // if(divTicker){
+            //   const divTickerRes = await getTagByName({ name: divTicker });
+            //   if(divTickerRes.data.length === 0){
+            //     let divTagResponse = await createTag({ name: divTicker, updated_by: loggedUser.id }, false);
+            //     console.log(divTagResponse);
+            //   }else{
+            //     console.log(`${divTicker} already exists`);
+            //   }
+            // }
 
-            //check if Index1 is present in tags table and insert if not present
-            const index1 = row['Index1'];
-            if(index1){
-              const index1TickerRes = await getTagByName({ name: index1 });
-              if(index1TickerRes.data.length === 0){
-                let index1TagResponse = await createTag({ name: index1, updated_by: loggedUser.id }, false);
-                console.log(index1TagResponse);
-              }else{
-                console.log(`${index1} already exists`);
-              }
-            }
+            // //check if Index1 is present in tags table and insert if not present
+            // const index1 = row['Index1'];
+            // if(index1){
+            //   const index1TickerRes = await getTagByName({ name: index1 });
+            //   if(index1TickerRes.data.length === 0){
+            //     let index1TagResponse = await createTag({ name: index1, updated_by: loggedUser.id }, false);
+            //     console.log(index1TagResponse);
+            //   }else{
+            //     console.log(`${index1} already exists`);
+            //   }
+            // }
 
-            //check if Index2 is present in tags table and insert if not present
-            const index2 = row['Index2'];
-            if(index2){
-              const index2TickerRes = await getTagByName({ name: index2 });
-              if(index2TickerRes.data.length === 0){
-                let index2TagResponse = await createTag({ name: index2, updated_by: loggedUser.id }, false);
-                console.log(index2TagResponse);
-              }else{
-                console.log(`${index2} already exists`);
-              }
-            }
+            // //check if Index2 is present in tags table and insert if not present
+            // const index2 = row['Index2'];
+            // if(index2){
+            //   const index2TickerRes = await getTagByName({ name: index2 });
+            //   if(index2TickerRes.data.length === 0){
+            //     let index2TagResponse = await createTag({ name: index2, updated_by: loggedUser.id }, false);
+            //     console.log(index2TagResponse);
+            //   }else{
+            //     console.log(`${index2} already exists`);
+            //   }
+            // }
 
-            //check if Index3 is present in tags table and insert if not present
-            const index3 = row['Index3'];
-            if(index3){
-              const index3TickerRes = await getTagByName({ name: index3 });
-              if(index3TickerRes.data.length === 0){
-                let index3TagResponse = await createTag({ name: index3, updated_by: loggedUser.id }, false);
-                console.log(index3TagResponse);
-              }else{
-                console.log(`${index3} already exists`);
-              }
-            }
+            // //check if Index3 is present in tags table and insert if not present
+            // const index3 = row['Index3'];
+            // if(index3){
+            //   const index3TickerRes = await getTagByName({ name: index3 });
+            //   if(index3TickerRes.data.length === 0){
+            //     let index3TagResponse = await createTag({ name: index3, updated_by: loggedUser.id }, false);
+            //     console.log(index3TagResponse);
+            //   }else{
+            //     console.log(`${index3} already exists`);
+            //   }
+            // }
             }
             } catch (dbError) {
               console.error('Error inserting data', dbError);
