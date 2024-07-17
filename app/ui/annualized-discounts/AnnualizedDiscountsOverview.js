@@ -41,11 +41,10 @@ export default function AnnualiazedDiscountsOverview({session}) {
   if(!loading){
     return (<>
 
-      <div className="financial-overview-page mt-3 p-2 p-md-4">
+      <div className="mt-3 p-2 p-md-4">
         <div className='main-container'>
             <div className='row'>
                 <div className='col-12 mt-md-0'>
-                <p className='font-medium'>Annualized discount</p>
                   <div className='table-responsive' id='ad-table-container'>
                     <DataTableComponent key={'ad-table'} columns={annualizedDiscountColumns} data={allData} />
                   </div>

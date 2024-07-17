@@ -41,11 +41,10 @@ export default function ConsolidatedEstimatesOverview({session}) {
   if(!loading){
     return (<>
 
-      <div className="financial-overview-page mt-3 p-2 p-md-4">
+      <div className="mt-3 p-2 p-md-4">
         <div className='main-container'>
             <div className='row'>
                 <div className='col-12'>
-                  <p className='font-medium'>D1 DPS estimates</p>
                   <div className='table-responsive d-flex justify-content-center' id='dps-table-container'>
                     <DataTableComponent key={'dps-table'} columns={dpsForecastColumns} data={allData} />
                   </div>

@@ -32,7 +32,7 @@ export async function getConsolidatedEstimates() {
         GROUP BY
           company, equity_ticker
         ORDER BY
-          company ASC;
+          equity_ticker ASC;
         `;
       const result = await sql.query(query);
       console.log(result.rows);
