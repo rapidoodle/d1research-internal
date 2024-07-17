@@ -41,7 +41,7 @@ export default function ConsolidatedEstimatesOverview({session}) {
   if(!loading){
     return (<>
 
-      <div className="mt-3 p-2 p-md-4">
+      <div className="p-2 p-md-4">
         <div className='main-container'>
             <div className='row'>
                 <div className='col-12'>
