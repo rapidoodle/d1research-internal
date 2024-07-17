@@ -1,35 +1,22 @@
 import React, { useState } from 'react';
 import Chart from 'react-apexcharts';
 
-const ApexStackedBarChart = ({xAxisData}) => {
-  const rawData = [
-    [
-      { "dps_z": 8.25, "year": 2027, "company": "VW", "equity_ticker": "VOW3 GY" },
-      { "dps_z": 8, "year": 2026, "company": "VW", "equity_ticker": "VOW3 GY" },
-      { "dps_z": 8.3, "year": 2025, "company": "VW", "equity_ticker": "VOW3 GY" },
-      { "dps_z": 9.06, "year": 2024, "company": "VW", "equity_ticker": "VOW3 GY" }
-    ],
-    [
-      { "dps_z": 4.5, "year": 2027, "company": "Renault", "equity_ticker": "RNO FP" },
-      { "dps_z": 3.75, "year": 2026, "company": "Renault", "equity_ticker": "RNO FP" },
-      { "dps_z": 3, "year": 2025, "company": "Renault", "equity_ticker": "RNO FP" },
-      { "dps_z": 1.85, "year": 2024, "company": "Renault", "equity_ticker": "RNO FP" }
-    ],
-    [
-      { "dps_z": 5.5, "year": 2027, "company": "BMW", "equity_ticker": "BMW GY" },
-      { "dps_z": 5.5, "year": 2026, "company": "BMW", "equity_ticker": "BMW GY" },
-      { "dps_z": 5.65, "year": 2025, "company": "BMW", "equity_ticker": "BMW GY" },
-      { "dps_z": 6, "year": 2024, "company": "BMW", "equity_ticker": "BMW GY" }
-    ],
-    [
-      { "dps_z": 5.05, "year": 2027, "company": "Mercedes", "equity_ticker": "MBG GY" },
-      { "dps_z": 4.8, "year": 2026, "company": "Mercedes", "equity_ticker": "MBG GY" },
-      { "dps_z": 4.7, "year": 2025, "company": "Mercedes", "equity_ticker": "MBG GY" },
-      { "dps_z": 5.3, "year": 2024, "company": "Mercedes", "equity_ticker": "MBG GY" }
-    ]
+const ApexStackedBarChart = ({chartData, xAxisData}) => {
+  const data = [
+    {
+      "Dividend": [5556, 5616, 4744, 4581]
+    },
+    {
+      "Share Buyback": [1941, 4059, 3000, 3000]
+    }
   ];
 
-  const years = [...new Set(rawData.flat().map(item => item.year))].sort((a, b) => a - b);
+  const xAxis = ["FY23", "FY24", "FY26e", "FY27e"];
+
+  const chartSeries = chartData.map(seriesData => ({
+    name: Object.keys(seriesData)[0],
+    data: Object.values(seriesData)[0]
+  }));
 
   const [chartOptions] = useState({
     chart: {
@@ -37,20 +24,35 @@ const ApexStackedBarChart = ({xAxisData}) => {
       height: 350,
       stacked: true,
     },
+    plotOptions: {
+      bar: {
+        horizontal: false,
+      },
+    },
     xaxis: {
-      categories: years,
+      categories: xAxisData,
     },
     stroke: {
       show: true,
       width: 1,
       colors: ['#fff']
     },
+    tooltip: {
+      y: {
+        formatter: function (val) {
+          return val.toLocaleString();
+        }
+      }
+    },
+    fill: {
+      opacity: 1
+    },
+    legend: {
+      position: 'top',
+      horizontalAlign: 'left',
+      offsetX: 40
+    }
   });
-
-  const [chartSeries] = useState(rawData.map(companyData => ({
-    name: companyData[0].company,
-    data: companyData.map(item => item.dps_z)
-  })));
 
   return (
     <div>

@@ -1,6 +1,6 @@
 import { formatNumber } from "@/app/lib/utils";
 
-export default function OverviewFinancials({zFirst, zSecond, zThird, zFourth}) {
+export default function OverviewFinancials({zPrev, zFirst, zSecond, zThird, zFourth}) {
     return (<>
         < div className="card flex-fill">
             <h4>Overview financials</h4>
@@ -10,10 +10,10 @@ export default function OverviewFinancials({zFirst, zSecond, zThird, zFourth}) {
                     <thead>
                         <tr>
                             <th></th>
+                            <th>{`FY${zPrev.year_2digit}`}</th>
                             <th>{`FY${zFirst.year_2digit}`}</th>
                             <th>{`FY${zSecond.year_2digit}`}</th>
                             <th>{`FY${zThird.year_2digit}`}</th>
-                            <th>{`FY${zFourth.year_2digit}`}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -24,39 +24,39 @@ export default function OverviewFinancials({zFirst, zSecond, zThird, zFourth}) {
                         </tr>
                         <tr>
                         <td>Net income</td>
+                        <td>{formatNumber(zPrev?.net_income)}</td>
                         <td>{formatNumber(zFirst?.net_income)}</td>
                         <td>{formatNumber(zSecond?.net_income)}</td>
                         <td>{formatNumber(zThird?.net_income)}</td>
-                        <td>{formatNumber(zFourth?.net_income)}</td>
                         
                         </tr>
                         <tr>
                         <td>Avg. weighted shares</td>
+                        <td>{formatNumber(zPrev?.av_weighted_share_cap)}</td>
                         <td>{formatNumber(zFirst?.av_weighted_share_cap)}</td>
                         <td>{formatNumber(zSecond?.av_weighted_share_cap)}</td>
                         <td>{formatNumber(zThird?.av_weighted_share_cap)}</td>
-                        <td>{formatNumber(zFourth?.av_weighted_share_cap)}</td>
                         </tr>
                         <tr>
                         <td>EPS (€)</td>
+                        <td>{formatNumber(zPrev?.eps)}</td>
                         <td>{formatNumber(zFirst?.eps)}</td>
                         <td>{formatNumber(zSecond?.eps)}</td>
                         <td>{formatNumber(zThird?.eps)}</td>
-                        <td>{formatNumber(zFourth?.eps)}</td>
                         </tr>
                         <tr>
                         <td>DPS (€)</td>
+                        <td>{formatNumber(zPrev?.dps_fy)}</td>
                         <td>{formatNumber(zFirst?.dps_fy)}</td>
                         <td>{formatNumber(zSecond?.dps_fy)}</td>
                         <td>{formatNumber(zThird?.dps_fy)}</td>
-                        <td>{formatNumber(zFourth?.dps_fy)}</td>
                         </tr>
                         <tr>
                         <td>Payout %</td>
+                        <td>{formatNumber(zPrev?.dps_payout_ratio)}</td>
                         <td>{formatNumber(zFirst?.dps_payout_ratio)}</td>
                         <td>{formatNumber(zSecond?.dps_payout_ratio)}</td>
                         <td>{formatNumber(zThird?.dps_payout_ratio)}</td>
-                        <td>{formatNumber(zFourth?.dps_payout_ratio)}</td>
                         </tr>
                         <tr>
                         <td colSpan={5} className='px-0 second-title'>

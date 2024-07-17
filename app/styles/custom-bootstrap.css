@@ -167,3 +167,5 @@ body {
   .w-200{
     max-width: 200px!important;
   }
+  .table-fixed-header          { overflow: auto; height: 100px; }
+.table-fixed-header thead th { position: sticky; top: 0; z-index: 1; }

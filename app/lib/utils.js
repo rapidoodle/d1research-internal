@@ -106,14 +106,33 @@ export const formatNumber = (number, isPercent) => {
     }
 
     const num = Number(number);
-    const finalNumber = Number.isInteger(num) ? num : num.toFixed(2);
+    var finalNumber = Number.isInteger(num) ? num : num.toFixed(2);
     
     if(isPercent){
-      return finalNumber+ '%';
+      return commafy(finalNumber)+ '%';
     }
-  
+
+    //if negative number, remove negative sign and put in parenthesis
+    if(finalNumber < 0){
+      finalNumber = finalNumber.toString().replace('-', '');
+      return '('+ commafy(finalNumber) + ')';
+    }
+
+    finalNumber = commafy(finalNumber);
+
     return finalNumber;
   }
+}
+
+export const commafy = ( num ) => {
+  var str = num.toString().split('.');
+  if (str[0].length >= 4) {
+      str[0] = str[0].replace(/(\d)(?=(\d{3})+$)/g, '$1,');
+  }
+  if (str[1] && str[1].length >= 4) {
+      str[1] = str[1].replace(/(\d{3})/g, '$1 ');
+  }
+  return str.join('.');
 }
 
 export const coloredNumber = (number, isPercent = false, isColored = false) => {

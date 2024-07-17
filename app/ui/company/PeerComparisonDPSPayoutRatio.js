@@ -2,7 +2,7 @@ import ApexLineChartComponent from "@/app/components/ApexLineChartComponent";
 import { formatNumber } from "@/app/lib/utils";
 import { useEffect, useState } from "react";
 
-export default function PeerComparisonDPSPayoutRatio({zFirst, zSecond, zThird, zFourth}) {
+export default function PeerComparisonDPSPayoutRatio({zPrev, zFirst, zSecond, zThird, zFourth}) {
 
     const [peersDPS, setPeersDPS] = useState([]);
     const [chartSeries, setChartSeries] = useState([]);
@@ -35,7 +35,6 @@ export default function PeerComparisonDPSPayoutRatio({zFirst, zSecond, zThird, z
                 };
             });
 
-            console.log(chartSeries)
             setChartSeries(chartSeries);
             
         }
@@ -57,22 +56,23 @@ export default function PeerComparisonDPSPayoutRatio({zFirst, zSecond, zThird, z
                     <thead>
                         <tr>
                             <th>Ticker</th>
+                            <th>{`FY${zPrev.year_2digit}`}</th>
                             <th>{`FY${zFirst.year_2digit}`}</th>
                             <th>{`FY${zSecond.year_2digit}`}</th>
                             <th>{`FY${zThird.year_2digit}`}</th>
-                            <th>{`FY${zFourth.year_2digit}`}</th>
                         </tr>
                     </thead>
                     <tbody>
                         {peersDPS.map((peer, index) => {
+                            //reverse peers to show the latest year first
                             return (
                                 <tr key={index}>
                                     <td>{peer[0].equity_ticker
                                     }</td>
-                                    <td>{formatNumber(peer[0].dps_z)}</td>
-                                    <td>{formatNumber(peer[1].dps_z)}</td>
-                                    <td>{formatNumber(peer[2].dps_z)}</td>
+                                    <td>{formatNumber(peer[4].dps_z)}</td>
                                     <td>{formatNumber(peer[3].dps_z)}</td>
+                                    <td>{formatNumber(peer[2].dps_z)}</td>
+                                    <td>{formatNumber(peer[1].dps_z)}</td>
                                 </tr>
                             );
 

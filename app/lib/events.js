@@ -60,7 +60,7 @@ import { unstable_noStore as noStore } from 'next/cache';
         tags = `${req.name}, ${req.tags}`;
       }
 
-      const color           = '#2E9DFF';
+      const color  = '#2E9DFF';
       startDate = moment(startDate).format('YYYY-MM-DD');
 
       // Insert data into the events table
@@ -96,9 +96,9 @@ import { unstable_noStore as noStore } from 'next/cache';
         );
       `;
 
-      console.log(query)
 
      const response =  await sql.query(query, [description, friendlyName]);
+     console.log(query, response);
 
       // return NextResponse.json([{ message: 'Event created successfully' }]);
       return NextResponse.json(response);
@@ -193,12 +193,10 @@ export async function setEventStatus(req) {
 
 export async function getEventByEquityTicker(equityTicker) {
   try {
-    const query = `
-      SELECT * FROM events WHERE company_id = $1
-    `;
 
-    const result
-    = await sql.query(query, [equityTicker]);
+    //query to select events based on equity ticker from companies table
+    const query = `SELECT e.start_date, e.friendly_name FROM events e LEFT JOIN companies c  ON c.id = e.company_id WHERE c.equity_ticker = $1 AND e.status = 1 ORDER BY e.start_date DESC`;
+    const result = await sql.query(query, [equityTicker]);
 
     return { data: result.rows };
 

@@ -281,7 +281,7 @@ export async function uploadFinancialData (req, res) {
 };
 
 export async function getFinancialDataByCompanyTicker(ticker, fields = '*') {
-  //fetch financial data for the company, fetch latest 4 only
+  //fetch financial data for the company, fetch latest 5 only
   const financialDataQuery = `
     SELECT ${fields} FROM financial_data
     WHERE equity_ticker = $1

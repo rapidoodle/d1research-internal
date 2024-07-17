@@ -248,6 +248,7 @@ export default function CompanyOverview({session}) {
         <div className="row mb-4 d-flex">
           <div className='col-md-6 d-flex mb-4 mb-md-0'>
             <OverviewFinancials
+              zPrev={zPrev}
               zFirst={zFirst}
               zSecond={zSecond}
               zThird={zThird}
@@ -268,6 +269,7 @@ export default function CompanyOverview({session}) {
         <div className="row mb-4 d-flex">
           <div className='col-md-6 d-flex mb-4 mb-md-0'>
             <ShareCapital 
+              zPrev={zPrev}
               zFirst={zFirst}
               zSecond={zSecond}
               zThird={zThird}
@@ -283,6 +285,7 @@ export default function CompanyOverview({session}) {
         <div className="row mb-4 d-flex">
           <div className='col-md-6 d-flex mb-4 mb-md-0'>
             <TotalCapitalReturn 
+              zPrev={zPrev}
               zFirst={zFirst}
               zSecond={zSecond}
               zThird={zThird}
@@ -291,6 +294,7 @@ export default function CompanyOverview({session}) {
           </div>
           <div className='col-md-6 d-flex'>
             <PeerComparisonDPSPayoutRatio
+              zPrev={zPrev}
               zFirst={zFirst}
               zSecond={zSecond}
               zThird={zThird}

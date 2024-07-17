@@ -43,6 +43,11 @@ export async function GET(req) {
             return NextResponse.json(data);
         }else{
             const data = await getEventByEquityTicker(equityTicker);
+            if (data.error) {
+                return NextResponse.json({ message: data.error }, { status: 500 });
+            }
+
+            return NextResponse.json(data);
         }
         } catch (error) {
         console.error('Error fetching events:', error);
