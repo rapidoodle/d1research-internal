@@ -75,10 +75,17 @@ export async function GET(req) {
                 throw new Error(`Unknown site: ${site}`);
         }
 
+        // Ensure scrapedData is an array
+        if (!Array.isArray(scrapedData)) {
+            scrapedData = [];
+        }
+
         //save the scraped data to events table
         const companyResponse = await getCompanyByName({'name' : site});
-        if(companyResponse){
-            const eventsPromises = scrapedData.forEach(async event => {
+        if(companyResponse && scrapedData.length > 0){
+
+            console.log('fuxk', scrapedData, Array.isArray(scrapedData))
+            const eventsPromises = scrapedData?.map(async event => {
                 event.friendly_name  = `${companyResponse.data.equity_ticker} - ${event.description}`;
                 //check if event already exists by date and description
                 const eventResponse = await getEventByDateAndDescription(companyResponse.data.id, event.date, event.friendly_name);
@@ -98,13 +105,13 @@ export async function GET(req) {
                     return await createEvent(event, false);
                     
                 }else{
-                    console.log(companyResponse);
-                    console.log(`${companyResponse.data.id} ${event.description} already exists in the database.`);
+                    console.log(`${companyResponse.data.equity_ticker} ${event.description} already exists in the database.`);
                 }
             });
 
-            //Wait for all createE  vent promises to complete
             await Promise.all(eventsPromises);
+        }else{
+            console.log(`Company ${site} not found in the database.`);
         }
 
       if (scrapedData.error) {
