@@ -12,6 +12,7 @@ import { pendingEventsColumns } from '@/app/lib/table-columns/columns';
 import ModalComponent from '@/app/components/ModalComponent';
 import EditEventForm from './EditEventForm';
 import Swal from 'sweetalert2';
+import PageSpinner from '@/app/components/PageSpinner';
 
 const PendingEventsTable = ({query, currentPage, eventAdded}) => {
   const [events, setEvents] = useState([]);
@@ -124,6 +125,7 @@ const PendingEventsTable = ({query, currentPage, eventAdded}) => {
 
    const handleChangeStatus = async(event, status) => {
     try {
+      setLoading(true);
       const response = await fetch(`/api/events/`, {
         method: 'PATCH',
         headers: {
@@ -134,6 +136,8 @@ const PendingEventsTable = ({query, currentPage, eventAdded}) => {
 
       if (response.ok) {
         if(status === 1){
+
+          setLoading(false);
         Swal.fire(
           'Approved!',
           'Event has been approved.',
@@ -144,8 +148,9 @@ const PendingEventsTable = ({query, currentPage, eventAdded}) => {
             'Event has been ignored.',
             'warning'
           )
-      }
+        }
       }else{
+        setLoading(false);
         Swal.fire(
           'Error!',
           'Error approving event. Please contact support.',
@@ -212,7 +217,7 @@ const PendingEventsTable = ({query, currentPage, eventAdded}) => {
     </div>
   );
 }else{
-  return <EventsTableSkeleton />
+  return <PageSpinner />
 }
 };
 

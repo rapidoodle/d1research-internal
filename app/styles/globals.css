@@ -108,3 +108,19 @@ table > thead > th {
 .rdt_TableCell[data-column-id="7"], .rdt_TableCol[data-column-id="7"] {
   min-width: 200px!important;
 }
+/* styles.css */
+.page-spinner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Dimming effect */
+  z-index: 9999; /* High z-index to ensure it overlays everything */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.page-spinner-logo{
+  animation: blink 1.5s linear infinite; /* Blinking effect */
+}

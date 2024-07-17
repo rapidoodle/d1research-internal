@@ -12,6 +12,7 @@ import { approvedEventsColumns } from '@/app/lib/table-columns/columns';
 import moment from 'moment';
 import { all } from 'axios';
 import Swal from 'sweetalert2';
+import PageSpinner from '@/app/components/PageSpinner';
 
 const ApprovedEventsTable = ({query, currentPage, eventAdded}) => {
   const [events, setEvents] = useState([]);
@@ -63,9 +64,18 @@ const ApprovedEventsTable = ({query, currentPage, eventAdded}) => {
         method: 'DELETE',
       });
       const data = await response.json();
+
       if (!response.ok) {
         throw new Error(data.message);
       }
+
+      setLoading(false);
+      
+      Swal.fire({
+        title: "Deleted!",
+        text: "Event has been deleted.",
+        icon: "success"
+      });
 
       fetchEvents();
 
@@ -91,16 +101,14 @@ const ApprovedEventsTable = ({query, currentPage, eventAdded}) => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
+          setLoading(true);
 
           await handleConfirmDelete(event.id);
-  
-          Swal.fire({
-            title: "Deleted!",
-            text: "Event has been deleted.",
-            icon: "success"
-          });
+
         } catch (error) {
-          console.error('Error deleting event:', error);
+
+          setLoading(false);
+          
           Swal.fire({
             title: "Error!",
             text: "There was a problem deleting the event.",
@@ -148,7 +156,7 @@ const ApprovedEventsTable = ({query, currentPage, eventAdded}) => {
     </div>
   );
 }else{
-  return <EventsTableSkeleton />
+  return <PageSpinner />
 }
 };
 

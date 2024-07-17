@@ -184,7 +184,6 @@ export const financialDataColumns = [  { name: 'Year', selector: row => row.year
       name: 'Actions',
       cell: row => (
         <div className="d-flex" style={{width: '300px'}}>
-          <a href="#" onClick={ () => handleEdit(row) }>Edit</a>
           <a href="#" className="ms-2 text-danger" onClick={ () => handleDelete(row) }>Delete</a>
         </div>
       ),

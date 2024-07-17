@@ -12,6 +12,7 @@ import ModalComponent from '@/app/components/ModalComponent';
 import EditEventForm from './EditEventForm';
 import Swal from 'sweetalert2';
 import { ignoredEventsColumns } from '@/app/lib/table-columns/columns';
+import PageSpinner from '@/app/components/PageSpinner';
 
 const IgnoredEventsTable = ({query, currentPage, eventAdded}) => {
   const [events, setEvents] = useState([]);
@@ -194,7 +195,7 @@ const IgnoredEventsTable = ({query, currentPage, eventAdded}) => {
     </div>
   );
 }else{
-  return <EventsTableSkeleton />
+  return <PageSpinner />
 }
 };
 

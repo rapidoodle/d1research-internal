@@ -5,6 +5,8 @@ import { cleanComment, cleanedString } from "./utils";
 import { NextResponse } from "next/server";
 import moment from "moment";
 import { createClinkedEvent } from "./clinked/events";
+import { unstable_noStore as noStore } from 'next/cache';
+
 
   export async function createEvent(req, isForm = false) {
 
@@ -165,6 +167,7 @@ export async function setEventStatus(req) {
     //push the event to clinked if approved
     if(status === 1){
       const body = {
+        id: returns.id,
         description: returns.description,
         friendlyName: returns.friendly_name,
         location: returns.location,
@@ -209,6 +212,9 @@ export async function getEventByEquityTicker(equityTicker) {
 
 
 export async function getEvents(req) {
+
+  noStore();
+
   const { searchParams } = new URL(req.url);
   const search      = searchParams.get('search') || '';
   const currentPage = parseInt(searchParams.get('currentPage') || '1', 10);
@@ -219,7 +225,7 @@ export async function getEvents(req) {
     const offset = (currentPage - 1) * pageSize;
     const query = `SELECT e.*, c.name as company
     FROM events e LEFT JOIN companies c ON c.id = e.company_id
-     WHERE (e.friendly_name ILIKE $1 OR c.name ILIKE $1) AND e.status = $2 LIMIT $3 OFFSET $4`;
+     WHERE (e.friendly_name ILIKE $1 OR c.name ILIKE $1) AND e.status = $2 ORDER BY company ASC LIMIT $3 OFFSET $4`;
      
     console.log(query);
     const values = [`%${search}%`, status, pageSize, offset];

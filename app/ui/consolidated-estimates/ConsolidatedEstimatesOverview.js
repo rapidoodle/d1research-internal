@@ -5,6 +5,7 @@ import '@/app/styles/company-page.css';
 import { useRouter } from 'next/navigation'
 import DataTableComponent from '@/app/components/DataTablesComponent';
 import { annualizedDiscountColumns, dpsForecastColumns } from '@/app/lib/table-columns/columns';
+import PageSpinner from '@/app/components/PageSpinner';
 
 export default function ConsolidatedEstimatesOverview({session}) {
   const router = useRouter();
@@ -61,6 +62,6 @@ export default function ConsolidatedEstimatesOverview({session}) {
       </>
     );
   }else{
-    return <div className='p-3'>Loading...</div>
+    return <PageSpinner />
   }
 };

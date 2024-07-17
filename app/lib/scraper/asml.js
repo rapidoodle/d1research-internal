@@ -3,12 +3,12 @@ import moment from 'moment';
 import parse from 'node-html-parser';
 
 export async function scrapeAsmlEvents() {
-    const url = 'https://tools.eurolandir.com/tools/fincalendar2/?companycode=nl-asml&lang=en-GB';
 
     try {
         // Fetch the HTML content of the webpage
         const { data } = await axios.get(url);
         const root = parse(data);
+        const url = 'https://tools.eurolandir.com/tools/fincalendar2/?companycode=nl-asml&lang=en-GB';
 
         // Extract the next event
         const nextEventSection = root.querySelector('section.next-event');
@@ -20,7 +20,8 @@ export async function scrapeAsmlEvents() {
 
         const nextEvent = [{
             date: date.isValid() ? date.format('YYYY-MM-DD') : 'Invalid Date',
-            description: eventName || 'No event name available'
+            description: eventName || 'No event name available',
+            url: url
         }];
 
         return nextEvent;

@@ -166,7 +166,8 @@ async function seedEvents(client) {
         start_date TIMESTAMP WITH TIME ZONE,
         friendly_name VARCHAR(255),
         tags TEXT,
-        approved INT DEFAULT 0,
+        clinked_id VARCHAR(255),
+        status INT DEFAULT 0,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_by UUID
@@ -420,12 +421,12 @@ async function seedCapitalReturnPolicy(client) {
 async function main() {
   const client = await db.connect();
 
-  await seedFinancialDataHistory(client);
+  // await seedFinancialDataHistory(client);
   // await seedFinancialData(client);
   // await seedKeyTable(client);
   // await seedCompanies(client);
   // await seedTags(client);
-  // await seedEvents(client);
+  await seedEvents(client);
   // await seedUsers(client);
   // await seedSectors(client);
   // await seedUserAccess(client);

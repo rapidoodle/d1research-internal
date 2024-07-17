@@ -18,6 +18,7 @@ import TotalCapitalReturn from './TotalCapitalReturn';
 import PeerComparisonDPSPayoutRatio from './PeerComparisonDPSPayoutRatio';
 import Select from 'react-select'
 import AnalystsComments from './AnalystsComments';
+import PageSpinner from '@/app/components/PageSpinner';
 
 export default function CompanyOverview({session}) {
   const pathname = usePathname();
@@ -171,7 +172,7 @@ export default function CompanyOverview({session}) {
         <div className="row mb-md-3">
             <div className="col-12 col-sm-6 d-flex align-items-center justify-content-md-start justify-content-center mt-4 mt-md-0">
               <Image
-                src="https://d1researchstorage.s3.amazonaws.com/company-logo-rectangle.png"
+                src="https://d1researchstorage.s3.amazonaws.com/company-logo-rectangle.webp"
                 alt="Company Logo"
                 width={185}
                 height={100}
@@ -305,6 +306,6 @@ export default function CompanyOverview({session}) {
       </>
     );
   }else{
-    return <div>Loading...</div>
+    return <PageSpinner />
   }
 };
