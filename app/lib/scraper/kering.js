@@ -17,7 +17,7 @@ export async function scrapeKeringEvents() {
             const description   = event.titleEvent;
 
             if (date.isValid() && (date.isAfter(currentDate) || date.isSame(currentDate))) {
-                events.push({ date: date.format('YYYY-MM-DD'), description: description, url : 'https://www.kering.com/api/events/?year=2024&type=finance&locale=en' });
+                events.push({ date: date.format('YYYY-MM-DD'), description: description, url : 'https://www.kering.com/en/finance/financial-calendar/' });
             }
         });
 

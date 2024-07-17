@@ -71,34 +71,111 @@ export async function uploadFinancialData (req, res) {
                   //if the company already exists, update the data
                   // await sql`UPDATE financial_data SET`
 
-                  if((Number(financialDataResult.rows[0]['share_price'] !== Number(row['Share price'])) || 
-                      Number(financialDataResult.rows[0]['current_price_z']) !== Number(row['Current Price z']))){
+                if((Number(financialDataResult.rows[0]['dps_z']) !== cleanCurrency(row['DPS z']) && row['DPS z']) || 
+                  (Number(financialDataResult.rows[0]['very_bear_z']) !== cleanCurrency(row['z Very Bear'] && row['z Very Bear'])) || 
+                  (Number(financialDataResult.rows[0]['bear_z']) !== cleanCurrency(row['z Bear']) && row['z Bear']) || 
+                  (Number(financialDataResult.rows[0]['bull_z']) !== cleanCurrency(row['z Bull']) && row['z Bull']) || 
+                  (Number(financialDataResult.rows[0]['very_bull_z']) !== cleanCurrency(row['z Very Bull']) && row['z Very Bull']) || 
+                  (Number(financialDataResult.rows[0]['risk_adj_dps_z']) !== cleanCurrency(row['Risk adj. DPS (z)']) && row['Risk adj. DPS (z)'])){
 
-                    //update share price and current price z if share price or current price is not empty
-                    var sharePriceQuery = '';
-                    var currentPriceZQuery = '';
+                  var dpsZQuery = '';
+                  var veryBearZQuery = '';
+                  var bearZQuery = '';
+                  var bullZQuery = '';
+                  var veryBullZQuery = '';
+                  var riskAdjDpsZQuery = '';
+                  let needUpdate = false;
+                  
+                  if(row['DPS z'] && (Number(financialDataResult.rows[0]['dps_z']) !== Number(row['DPS z']))){
+                    dpsZQuery = `dps_z = ${cleanCurrency(row['DPS z'])},`;
+                    console.log('DPS Z query', dpsZQuery);
 
-                    if(row['Share price'] && (Number(financialDataResult.rows[0]['share_price']) !== Number(row['Share price']))){
-                      sharePriceQuery = `share_price = ${cleanCurrency(row['Share price'])},`;
-                      console.log('Share price query', sharePriceQuery);
-                    }
-
-                    if(row['Current Price z'] && (Number(financialDataResult.rows[0]['current_price_z']) !== Number(row['Current Price z']))){
-                      currentPriceZQuery = `current_price_z = ${cleanCurrency(row['Current Price z'])},`;
-                      console.log('Current price z query', currentPriceZQuery);
-                    }
-
-                    const updateQuery = `UPDATE financial_data SET ${sharePriceQuery} ${currentPriceZQuery} updated_by = $1 WHERE equity_ticker = $2 AND year = $3`;
-
-                    const updateResponse = await sql.query(updateQuery, [loggedUser.id, row['Equity Ticker'], row['Year']]);
-
-                    const insertQuery = `INSERT INTO financial_data_history (year, company, equity_ticker, share_price, current_price_z, updated_by) VALUES ($1, $2, $3, $4, $5, $6);`;
-
-                    await sql.query(insertQuery, [financialDataResult.rows[0]['year'], financialDataResult.rows[0]['company'], financialDataResult.rows[0]['equity_ticker'], financialDataResult.rows[0]['share_price'], financialDataResult.rows[0]['current_price_z'], loggedUser.id]);
-
-                  }else{
-                    console.log("Share price and current price z are the same, no need to update");
+                    needUpdate = true;
                   }
+
+                  if(row['z Very Bear'] && (Number(financialDataResult.rows[0]['very_bear_z']) !== Number(row['z Very Bear']))){
+                    veryBearZQuery = `very_bear_z = ${cleanCurrency(row['z Very Bear'])},`;
+                    console.log('Very Bear Z query', veryBearZQuery);
+
+                    needUpdate = true;
+                  }
+
+                  if(row['z Bear'] && (Number(financialDataResult.rows[0]['bear_z']) !== Number(row['z Bear']))){
+                    bearZQuery = `bear_z = ${cleanCurrency(row['z Bear'])},`;
+                    console.log('Bear Z query', bearZQuery);
+
+                    needUpdate = true;
+                  }
+
+                  if(row['z Bull'] && (Number(financialDataResult.rows[0]['bull_z']) !== Number(row['z Bull']))){
+                    bullZQuery = `bull_z = ${cleanCurrency(row['z Bull'])},`;
+                    console.log('Bull Z query', bullZQuery);
+
+                    needUpdate = true;
+                  }
+
+                  if(row['z Very Bull'] && (Number(financialDataResult.rows[0]['very_bull_z']) !== Number(row['z Very Bull']))){
+                    veryBullZQuery = `very_bull_z = ${cleanCurrency(row['z Very Bull'])},`;
+                    console.log('Very Bull Z query', veryBullZQuery);
+
+                    needUpdate = true;
+                  }
+
+                  if(row['Risk adj. DPS (z)'] && (Number(financialDataResult.rows[0]['risk_adj_dps_z']) !== Number(row['Risk adj. DPS (z)']))){
+                    riskAdjDpsZQuery = `risk_adj_dps_z = ${cleanCurrency(row['Risk adj. DPS (z)'])},`;
+                    console.log('Risk Adj DPS Z query', riskAdjDpsZQuery);
+
+                    needUpdate = true;
+                  }
+
+                  if(needUpdate){
+                  const updateQuery = `UPDATE financial_data SET ${dpsZQuery} ${veryBearZQuery} ${bearZQuery} ${bearZQuery} ${veryBullZQuery} ${riskAdjDpsZQuery} updated_by = $1 WHERE equity_ticker = $2 AND year = $3`;
+
+                  const updateResponse = await sql.query(updateQuery, [loggedUser.id, row['Equity Ticker'], row['Year']]);
+
+                  console.log('update response:', updateQuery);
+
+                   const insertQuery = `INSERT INTO financial_data_history (
+                    year, 
+                    company, 
+                    equity_ticker, 
+                    dps_z, 
+                    very_bear_z, 
+                    bear_z, 
+                    bull_z, 
+                    very_bull_z, 
+                    risk_adj_dps_z, 
+                    updated_by) VALUES (
+                    $1, 
+                    $2, 
+                    $3, 
+                    $4, 
+                    $5, 
+                    $6, 
+                    $7, 
+                    $8, 
+                    $9, 
+                    $10);`;
+
+                  await sql.query(insertQuery, [
+                    financialDataResult.rows[0]['year'], 
+                    financialDataResult.rows[0]['company'], 
+                    financialDataResult.rows[0]['equity_ticker'], 
+                    cleanCurrency(financialDataResult.rows[0]['dps_z']), 
+                    cleanCurrency(financialDataResult.rows[0]['very_bear_z']),
+                    cleanCurrency(financialDataResult.rows[0]['bear_z']),
+                    cleanCurrency(financialDataResult.rows[0]['bull_z']),
+                    cleanCurrency(financialDataResult.rows[0]['very_bull_z']),
+                    cleanCurrency(financialDataResult.rows[0]['risk_adj_dps_z']),
+                    loggedUser.id]
+                  );
+                }else{
+                  console.log("Nothing to update");
+                }
+
+                }else{
+                  console.log("Share price and current price z are the same, no need to update");
+                }
                 
               }else{
                 console.log(`Data for ${row['Company']} in ${row['Year']} does not exist, inserting`);
