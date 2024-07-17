@@ -78,7 +78,7 @@ export async function GET(req) {
         //save the scraped data to events table
         const companyResponse = await getCompanyByName({'name' : site});
         if(companyResponse){
-            scrapedData.forEach(async event => {
+            const eventsPromises = scrapedData.forEach(async event => {
                 event.friendly_name  = `${companyResponse.data.equity_ticker} - ${event.description}`;
                 //check if event already exists by date and description
                 const eventResponse = await getEventByDateAndDescription(companyResponse.data.id, event.date, event.friendly_name);
@@ -95,13 +95,16 @@ export async function GET(req) {
                     }
 
                     //save the event
-                    await createEvent(event, false);
+                    return await createEvent(event, false);
                     
                 }else{
                     console.log(companyResponse);
                     console.log(`${companyResponse.data.id} ${event.description} already exists in the database.`);
                 }
             });
+
+            //Wait for all createE  vent promises to complete
+            await Promise.all(eventsPromises);
         }
 
       if (scrapedData.error) {
