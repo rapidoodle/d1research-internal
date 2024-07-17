@@ -60,7 +60,7 @@ export default function OverviewFinancials({zPrev, zFirst, zSecond, zThird, zFou
                         </tr>
                         <tr>
                         <td colSpan={5} className='px-0 second-title'>
-                            <div className='bg-gray'>Cf Statement</div>
+                            <div className='bg-gray'>CF Statement</div>
                         </td>
                         </tr>
                         <tr>
@@ -104,11 +104,11 @@ export default function OverviewFinancials({zPrev, zFirst, zSecond, zThird, zFou
                         </td>
                         </tr>
                         <tr>
-                        <td>Net Cash (incl. Div)</td>
-                        <td>{formatNumber(zFirst?.total_capital_return)}</td>
-                        <td>{formatNumber(zSecond?.total_capital_return)}</td>
-                        <td>{formatNumber(zThird?.total_capital_return)}</td>
-                        <td>{formatNumber(zFourth?.total_capital_return)}</td>
+                        <td>Net Cash / (Debt)</td>
+                        <td>{formatNumber(zFirst?.net_debt)}</td>
+                        <td>{formatNumber(zSecond?.net_debt)}</td>
+                        <td>{formatNumber(zThird?.net_debt)}</td>
+                        <td>{formatNumber(zFourth?.net_debt)}</td>
                         </tr>
                     </tbody>
                 </table>

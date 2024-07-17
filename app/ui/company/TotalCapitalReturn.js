@@ -30,7 +30,7 @@ export default function TotalCapitalReturn({zPrev, zFirst, zSecond, zThird, zFou
                     <thead>
                         <tr>
                             <th></th>
-                            <th>{`FY${zPrev.year_2digit}`}</th>
+                            <th>{`FY${zPrev.year_2digit}`}e</th>
                             <th>{`FY${zFirst.year_2digit}`}</th>
                             <th>{`FY${zSecond.year_2digit}`}</th>
                             <th>{`FY${zThird.year_2digit}`}</th>
@@ -38,39 +38,39 @@ export default function TotalCapitalReturn({zPrev, zFirst, zSecond, zThird, zFou
                     </thead>
                     <tbody>
                         <tr>
-                        <td>Dividend</td>
-                        <td>{formatNumber(zPrev?.dividend)}</td>
-                        <td>{formatNumber(zFirst?.dividend)}</td>
-                        <td>{formatNumber(zSecond?.dividend)}</td>
-                        <td>{formatNumber(zThird?.dividend)}</td>
+                            <td>Dividend</td>
+                            <td>{formatNumber(zPrev?.dividend)}</td>
+                            <td>{formatNumber(zFirst?.dividend)}</td>
+                            <td>{formatNumber(zSecond?.dividend)}</td>
+                            <td>{formatNumber(zThird?.dividend)}</td>
                         </tr>
                         <tr>
-                        <td>Share Buyback</td>
-                        <td>{formatNumber(zPrev?.share_buyback)}</td>
-                        <td>{formatNumber(zFirst?.share_buyback)}</td>
-                        <td>{formatNumber(zSecond?.share_buyback)}</td>
-                        <td>{formatNumber(zThird?.share_buyback)}</td>
+                            <td>Share Buyback</td>
+                            <td>{formatNumber(zPrev?.share_buyback)}</td>
+                            <td>{formatNumber(zFirst?.share_buyback)}</td>
+                            <td>{formatNumber(zSecond?.share_buyback)}</td>
+                            <td>{formatNumber(zThird?.share_buyback)}</td>
                         </tr>
                         <tr>
-                        <td className="font-medium">Total Cap Return</td>
-                        <td className="font-medium">{formatNumber(zPrev?.total_capital_return)}</td>
-                        <td className="font-medium">{formatNumber(zFirst?.total_capital_return)}</td>
-                        <td className="font-medium">{formatNumber(zSecond?.total_capital_return)}</td>
-                        <td className="font-medium">{formatNumber(zThird?.total_capital_return)}</td>
+                            <td className="font-medium">Total Cap Return</td>
+                            <td className="font-medium">{formatNumber(zPrev?.total_capital_return)}</td>
+                            <td className="font-medium">{formatNumber(zFirst?.total_capital_return)}</td>
+                            <td className="font-medium">{formatNumber(zSecond?.total_capital_return)}</td>
+                            <td className="font-medium">{formatNumber(zThird?.total_capital_return)}</td>
                         </tr>
                         <tr>
-                        <td>Net inc year before</td>
-                        <td>{formatNumber(zPrev?.net_income)}</td>
-                        <td>{formatNumber(zFirst?.net_income)}</td>
-                        <td>{formatNumber(zSecond?.net_income)}</td>
-                        <td>{formatNumber(zThird?.net_income)}</td>
+                            <td>Net inc year before</td>
+                            <td>{formatNumber(zPrev?.net_income)}</td>
+                            <td>{formatNumber(zFirst?.net_income)}</td>
+                            <td>{formatNumber(zSecond?.net_income)}</td>
+                            <td>{formatNumber(zThird?.net_income)}</td>
                         </tr>
                         <tr>
-                        <td className="font-medium">Capital payout (%)</td>
-                        <td className="font-medium">{formatNumber(zPrev?.capital_payout_percent, true)}</td>
-                        <td className="font-medium">{formatNumber(zFirst?.capital_payout_percent, true)}</td>
-                        <td className="font-medium">{formatNumber(zSecond?.capital_payout_percent, true)}</td>
-                        <td className="font-medium">{formatNumber(zThird?.capital_payout_percent, true)}</td>
+                            <td className="font-medium">Capital payout (%)</td>
+                            <td className="font-medium">{formatNumber(zPrev?.capital_payout_percent, true)}</td>
+                            <td className="font-medium">{formatNumber(zFirst?.capital_payout_percent, true)}</td>
+                            <td className="font-medium">{formatNumber(zSecond?.capital_payout_percent, true)}</td>
+                            <td className="font-medium">{formatNumber(zThird?.capital_payout_percent, true)}</td>
                         </tr>
                     </tbody>
                 </table>

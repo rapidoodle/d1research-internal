@@ -71,8 +71,6 @@ export async function uploadFinancialData (req, res) {
                   //if the company already exists, update the data
                   // await sql`UPDATE financial_data SET`
 
-                  //if share price or current price z is different, update the record and insert previous record to keep history
-
                   if((Number(financialDataResult.rows[0]['share_price'] !== Number(row['Share price'])) || 
                       Number(financialDataResult.rows[0]['current_price_z']) !== Number(row['Current Price z']))){
 

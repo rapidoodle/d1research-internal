@@ -108,7 +108,7 @@ export default function CompanyOverview({session}) {
           if (data[0]) {
 
             const yearDigit = data[0].year.toString().slice(-1);
-            const year2Digit = `${data[0].year.toString().slice(2)}${data[0].year > new Date().getFullYear() ? 'e' : ''}`;
+            const year2Digit = `${data[0].year.toString().slice(2)}${data[0].year >= new Date().getFullYear() ? 'e' : ''}`;
             data[0].year_digit = yearDigit;
             data[0].year_2digit = year2Digit;
 
@@ -117,7 +117,7 @@ export default function CompanyOverview({session}) {
           }
           if (data[1]) {
             const yearDigit = data[1].year.toString().slice(-1);
-            const year2Digit = `${data[1].year.toString().slice(2)}${data[1].year > new Date().getFullYear() ? 'e' : ''}`;
+            const year2Digit = `${data[1].year.toString().slice(2)}${data[1].year >= new Date().getFullYear() ? 'e' : ''}`;
             data[1].year_digit = yearDigit;
             data[1].year_2digit = year2Digit;
 
@@ -126,7 +126,7 @@ export default function CompanyOverview({session}) {
           }
           if (data[2]) {
             const yearDigit = data[2].year.toString().slice(-1);
-            const year2Digit = `${data[2].year.toString().slice(2)}${data[2].year > new Date().getFullYear() ? 'e' : ''}`;
+            const year2Digit = `${data[2].year.toString().slice(2)}${data[2].year >= new Date().getFullYear() ? 'e' : ''}`;
             data[2].year_digit = yearDigit;
             data[2].year_2digit = year2Digit;
 
@@ -134,7 +134,7 @@ export default function CompanyOverview({session}) {
           }
           if (data[3]) {
             const yearDigit = data[3].year.toString().slice(-1);
-            const year2Digit = `${data[3].year.toString().slice(2)}${data[3].year > new Date().getFullYear() ? 'e' : ''}`;
+            const year2Digit = `${data[3].year.toString().slice(2)}${data[3].year >= new Date().getFullYear() ? 'e' : ''}`;
             data[3].year_digit = yearDigit;
             data[3].year_2digit = year2Digit;
 
@@ -142,7 +142,7 @@ export default function CompanyOverview({session}) {
           }
           if (data[4]) {
             const yearDigit = data[4].year.toString().slice(-1);
-            const year2Digit = `${data[4].year.toString().slice(2)}${data[3].year > new Date().getFullYear() ? 'e' : ''}`;
+            const year2Digit = `${data[4].year.toString().slice(2)}${data[3].year >= new Date().getFullYear() ? 'e' : ''}`;
             data[4].year_digit = yearDigit;
             data[4].year_2digit = year2Digit;
 

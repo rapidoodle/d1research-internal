@@ -11,7 +11,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 export async function createClinkedEvent(reqData) {
     try {
       
-  const loggedInUser = await getLoggedUser(authOptions);
+      const loggedInUser = await getLoggedUser(authOptions);
   // Retrieve the access token
       const accessToken = await getAccessToken();
       
@@ -21,8 +21,8 @@ export async function createClinkedEvent(reqData) {
         "allDay" : true,
         "color" : "#2E9DFF",
         "endDate" : formatClinkedDate(moment(reqData.startDate).add(1, 'days')),
-        'description' : reqData.c_description,
-        "assignees" : ['rperez@d1research.com'],
+        'description' : reqData.description,
+        "assignees" : ['contact@d1research.com'],
         "location" : reqData.location,
         "sharing" : "MEMBERS",
         "startDate" : formatClinkedDate(reqData.startDate),
