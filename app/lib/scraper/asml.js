@@ -3,30 +3,30 @@ import moment from 'moment';
 import parse from 'node-html-parser';
 
 export async function scrapeAsmlEvents() {
-
     try {
-        // Fetch the HTML content of the webpage
-        const { data } = await axios.get(url);
-        const root = parse(data);
-        const url = 'https://tools.eurolandir.com/tools/fincalendar2/?companycode=nl-asml&lang=en-GB';
+        const response = await fetch('https://tools.eurolandir.com/tools/FinCalendar2/Home/UpcomingEvents?companyCode=nl-asml&eventTypeId=&lang=en-gb&selectedYear=&CurrentPage=1&RowPerPage=5&SortOrder=ASC');
 
-        // Extract the next event
-        const nextEventSection = root.querySelector('section.next-event');
-        const dateText = nextEventSection.querySelector('div.date-time')?.innerText.trim();
-        const eventName = nextEventSection.querySelector('div.event-name')?.innerText.trim();
+        const data = await response.json();
+        
+        const events = [];
 
-        // Parse date
-        const date = moment(dateText, 'DD-MMM-YY');
+        const currentDate = moment().format('YYYY-MM-DD');
 
-        const nextEvent = [{
-            date: date.isValid() ? date.format('YYYY-MM-DD') : 'Invalid Date',
-            description: eventName || 'No event name available',
-            url: url
-        }];
+        data.events.forEach((item) => {
+            const formattedDate = new Date(item.startDate);
+            const date          = moment(formattedDate, 'YYYY-MM-DD').startOf('day');
+            const cDate         = moment(currentDate, 'YYYY-MM-DD').startOf('day');
+            const description   = item.title;
 
-        return nextEvent;
+            if (date.isValid() && (date.isAfter(currentDate) || date.isSame(currentDate))) {
+                events.push({ date: date.format('YYYY-MM-DD'), description: description, url : 'https://tools.eurolandir.com/tools/fincalendar2/?companycode=nl-asml&lang=en-GB' });
+            }
+        });
+
+        return events;
+
     } catch (error) {
-        console.error('Error scraping the webpage:', error);
-        return null;
+      console.error('Error scraping SAP events:', error);
+      return [];
     }
 }

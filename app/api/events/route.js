@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createEvent, getEvents, setEventStatus, updateEvent } from '@/app/lib/events';
+import { createEvent, getEventByEquityTicker, getEvents, setEventStatus, updateEvent } from '@/app/lib/events';
 
 
 export const routeSegmentConfig = {
