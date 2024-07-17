@@ -84,7 +84,6 @@ export async function GET(req) {
         const companyResponse = await getCompanyByName({'name' : site});
         if(companyResponse && scrapedData.length > 0){
 
-            console.log('fuxk', scrapedData, Array.isArray(scrapedData))
             const eventsPromises = scrapedData?.map(async event => {
                 event.friendly_name  = `${companyResponse.data.equity_ticker} - ${event.description}`;
                 //check if event already exists by date and description
