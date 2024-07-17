@@ -98,7 +98,7 @@ import { unstable_noStore as noStore } from 'next/cache';
 
 
      const response =  await sql.query(query, [description, friendlyName]);
-     console.log(query, response);
+     console.log('Event created successfully', response);
 
       // return NextResponse.json([{ message: 'Event created successfully' }]);
       return NextResponse.json(response);
