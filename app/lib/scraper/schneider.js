@@ -15,8 +15,7 @@ export async function scrapeSchneiderEvents() {
   
       root.querySelectorAll('.table tbody tr').forEach(element => {
         const dateText = element.querySelector('.row-date').innerText.trim();
-        const descriptionElement = element.querySelector('.link-text');
-        const description = descriptionElement ? descriptionElement.innerText.trim() : element.querySelector('td.se2-text-normal').innerText.trim();
+        const description = element.querySelectorAll('td')[1].innerText.trim();
   
         // Parse date
         const date = moment(dateText, 'MMMM D, YYYY');

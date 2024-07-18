@@ -68,7 +68,7 @@ export async function GET(req) {
             case 'iberdrola':
                 scrapedData = await scrapeIberdrolaEvents();
                 break;
-            case 'deutsche telekom':
+            case 'deutsche-telekom':
                 scrapedData = await scrapeDeutscheTelekomEvents();
                 break;
             default:

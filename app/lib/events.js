@@ -77,8 +77,7 @@ import { unstable_noStore as noStore } from 'next/cache';
           sharing, 
           start_date, 
           friendly_name, 
-          tags,
-          updated_by
+          tags
         ) VALUES (
           ${recurrence}, 
           '${company}', 
@@ -91,8 +90,7 @@ import { unstable_noStore as noStore } from 'next/cache';
           '${sharing}', 
           '${startDate}', 
           $2, 
-          '${tags}',
-          '${loggedInUser.id}'
+          '${tags}'
         );
       `;
 
