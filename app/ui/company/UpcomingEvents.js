@@ -1,3 +1,4 @@
+import { displayDate } from "@/app/lib/utils";
 import moment from "moment";
 import { useEffect, useState } from "react";
 
@@ -38,15 +39,15 @@ export default function UpcomingEvents( { allData } ) {
                     <thead>
                         <tr>
                         <th width="140px">Date</th>
-                        <th>Confirmed and expected events</th>
+                        <th className="text-left">Confirmed and expected events</th>
                         </tr>
                     </thead>
                     <tbody>
 
                     { events.length > 0 && events?.map((event, index) => (
                         <tr key={index}>
-                            <td>{moment(new Date(event.start_date)).format('YYYY-MM-DD')}</td>
-                            <td>{event.friendly_name}</td>
+                            <td>{displayDate(event.start_date)}</td>
+                            <td className="text-left">{event.friendly_name}</td>
                         </tr>
                     ))
                     }

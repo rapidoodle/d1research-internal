@@ -18,11 +18,11 @@ export default function ShareCapital({zPrev, zFirst, zSecond, zThird, zFourth}) 
                     </thead>
                     <tbody>
                         <tr>
-                        <td className="font-medium">Shares in issue</td>
-                        <td className="font-medium">{formatNumber(zPrev?.share_in_issue)}</td>
-                        <td className="font-medium">{formatNumber(zFirst?.share_in_issue)}</td>
-                        <td className="font-medium">{formatNumber(zSecond?.share_in_issue)}</td>
-                        <td className="font-medium">{formatNumber(zThird?.share_in_issue)}</td>
+                        <td>Shares in issue</td>
+                        <td>{formatNumber(zPrev?.share_in_issue)}</td>
+                        <td>{formatNumber(zFirst?.share_in_issue)}</td>
+                        <td>{formatNumber(zSecond?.share_in_issue)}</td>
+                        <td>{formatNumber(zThird?.share_in_issue)}</td>
                         </tr>
                         <tr>
                         <td>Treasury shares</td>
@@ -32,14 +32,14 @@ export default function ShareCapital({zPrev, zFirst, zSecond, zThird, zFourth}) 
                         <td>{formatNumber(zFourth?.treasury_shares)}</td>
                         </tr>
                         <tr>
-                        <td className="font-medium">Shares outstanding</td>
-                        <td className="font-medium">{formatNumber(zPrev?.shares_outstanding)}</td>
-                        <td className="font-medium">{formatNumber(zFirst?.shares_outstanding)}</td>
-                        <td className="font-medium">{formatNumber(zSecond?.shares_outstanding)}</td>
-                        <td className="font-medium">{formatNumber(zThird?.shares_outstanding)}</td>
+                        <td>Shares outstanding</td>
+                        <td>{formatNumber(zPrev?.shares_outstanding)}</td>
+                        <td>{formatNumber(zFirst?.shares_outstanding)}</td>
+                        <td>{formatNumber(zSecond?.shares_outstanding)}</td>
+                        <td>{formatNumber(zThird?.shares_outstanding)}</td>
                         </tr>
                         <tr>
-                        <td>Av. Weigh. Sh. cap</td>
+                        <td>Avg. weighted shares</td>
                         <td>{formatNumber(zPrev?.av_weighted_share_cap)}</td>
                         <td>{formatNumber(zFirst?.av_weighted_share_cap)}</td>
                         <td>{formatNumber(zSecond?.av_weighted_share_cap)}</td>

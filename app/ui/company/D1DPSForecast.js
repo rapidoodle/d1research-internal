@@ -38,10 +38,10 @@ export default function D1DPSForecast({zFirst, zSecond, zThird, zFourth}) {
               </tr>
               <tr>
                 <td className="bg-cream font-medium">Difference %</td>
-                <td>{formatNumber(zFirst?.difference)}</td>
-                <td>{formatNumber(zSecond?.difference)}</td>
-                <td>{formatNumber(zThird?.difference)}</td>
-                <td>{formatNumber(zFourth?.difference)}</td>
+                <td className="bg-cream">{formatNumber(zFirst?.discount_premium_percent, true)}</td>
+                <td className="bg-cream">{formatNumber(zSecond?.discount_premium_percent, true)}</td>
+                <td className="bg-cream">{formatNumber(zThird?.discount_premium_percent, true)}</td>
+                <td className="bg-cream">{formatNumber(zFourth?.discount_premium_percent, true)}</td>
               </tr>
             </tbody>
           </table>

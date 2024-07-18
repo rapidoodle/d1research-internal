@@ -62,22 +62,22 @@ export const financialDataColumns = [  { name: 'Year', selector: row => row.year
   },
   {
     name: 'Z4',
-    selector: row => row.z1,
+    selector: row => formatNumber(row.z1),
     sortable: true,
   },
   {
     name: 'Z5',
-    selector: row => row.z2,
+    selector: row => formatNumber(row.z2),
     sortable: true,
   },
   {
     name: 'Z6',
-    selector: row => row.z3,
+    selector: row => formatNumber(row.z3),
     sortable: true,
   },
   {
     name: 'Z7',
-    selector: row => row.z4,
+    selector: row => formatNumber(row.z4),
     sortable: true,
   }];
 
@@ -89,19 +89,19 @@ export const financialDataColumns = [  { name: 'Year', selector: row => row.year
   },
   {
     name: 'Z5',
-    cell: row => coloredNumber(row.z6, false, true),
+    cell: row => formatNumber(row.z6, false, true),
     selector: row => row.z6,
     sortable: true,
   },
   {
     name: 'Z6',
-    cell: row => coloredNumber(row.z7, false, true),
+    cell: row => formatNumber(row.z7, false, true),
     selector: row => row.z7,
     sortable: true,
   },
   {
     name: 'Z7',
-    cell: row => coloredNumber(row.z8, false, true),
+    cell: row => formatNumber(row.z8, false, true),
     selector: row => row.z8,
     sortable: true,
   }];

@@ -5,14 +5,11 @@ import { useState } from "react";
 export default function TotalCapitalReturn({zPrev, zFirst, zSecond, zThird, zFourth}) {
     const [showChart, setShowChart] = useState(false);
 
-
     const chartData = [
         { "Dividend" : [zPrev?.dividend, zFirst?.dividend, zSecond?.dividend, zThird?.dividend] },
         { "Share Buyback" : [zPrev?.share_buyback, zFirst?.share_buyback, zSecond?.share_buyback, zThird?.share_buyback] }
     ];
 
-    console.log('chartData', chartData);
-    console.log('xAxis', [`FY${zPrev.year_2digit}`, `FY${zFirst.year_2digit}`, `FY${zThird.year_2digit}`, `FY${zFourth.year_2digit}`]);
     return (<>
         <div className="card total-cap-return flex-fill">
             <div className='d-flex align-items-center'>
@@ -52,11 +49,11 @@ export default function TotalCapitalReturn({zPrev, zFirst, zSecond, zThird, zFou
                             <td>{formatNumber(zThird?.share_buyback)}</td>
                         </tr>
                         <tr>
-                            <td className="font-medium">Total Cap Return</td>
-                            <td className="font-medium">{formatNumber(zPrev?.total_capital_return)}</td>
-                            <td className="font-medium">{formatNumber(zFirst?.total_capital_return)}</td>
-                            <td className="font-medium">{formatNumber(zSecond?.total_capital_return)}</td>
-                            <td className="font-medium">{formatNumber(zThird?.total_capital_return)}</td>
+                            <td>Total Cap Return</td>
+                            <td>{formatNumber(zPrev?.total_capital_return)}</td>
+                            <td>{formatNumber(zFirst?.total_capital_return)}</td>
+                            <td>{formatNumber(zSecond?.total_capital_return)}</td>
+                            <td>{formatNumber(zThird?.total_capital_return)}</td>
                         </tr>
                         <tr>
                             <td>Net inc year before</td>
@@ -66,11 +63,11 @@ export default function TotalCapitalReturn({zPrev, zFirst, zSecond, zThird, zFou
                             <td>{formatNumber(zThird?.net_income)}</td>
                         </tr>
                         <tr>
-                            <td className="font-medium">Capital payout (%)</td>
-                            <td className="font-medium">{formatNumber(zPrev?.capital_payout_percent, true)}</td>
-                            <td className="font-medium">{formatNumber(zFirst?.capital_payout_percent, true)}</td>
-                            <td className="font-medium">{formatNumber(zSecond?.capital_payout_percent, true)}</td>
-                            <td className="font-medium">{formatNumber(zThird?.capital_payout_percent, true)}</td>
+                            <td>Capital payout (%)</td>
+                            <td>{formatNumber(zPrev?.capital_payout_percent)}</td>
+                            <td>{formatNumber(zFirst?.capital_payout_percent)}</td>
+                            <td>{formatNumber(zSecond?.capital_payout_percent)}</td>
+                            <td>{formatNumber(zThird?.capital_payout_percent)}</td>
                         </tr>
                     </tbody>
                 </table>

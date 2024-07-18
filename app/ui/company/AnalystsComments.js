@@ -121,7 +121,7 @@ export default function AnalystsComments({companyID, session}) {
         <>
         <div className='card flex-fill'>
             <div className='d-flex align-items-center'>
-                <h4 className='flex-grow-1 mb-0'>Analysts comments</h4>
+                <h4 className='flex-grow-1 mb-0'>D1 analysts comments</h4>
                 { session && (session.user.access_level === 'Admin' || session.user.access_level === 'Analyst') && 
                     <a className='page-link me-2' onClick={handleShow}>New</a>
                 }

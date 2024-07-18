@@ -19,7 +19,7 @@ export default function OverviewFinancials({zPrev, zFirst, zSecond, zThird, zFou
                     <tbody>
                         <tr>
                         <td colSpan={5} className='px-0 second-title'>
-                            <div className='bg-gray'>Profit & Loss</div>
+                            <div className='bg-gray font-medium'>Profit & Loss (€m)</div>
                         </td>
                         </tr>
                         <tr>
@@ -60,15 +60,15 @@ export default function OverviewFinancials({zPrev, zFirst, zSecond, zThird, zFou
                         </tr>
                         <tr>
                         <td colSpan={5} className='px-0 second-title'>
-                            <div className='bg-gray'>CF Statement</div>
+                            <div className='bg-gray font-medium'>CF Statement (€m)</div>
                         </td>
                         </tr>
                         <tr>
-                        <td className="font-medium">op CF</td>
-                        <td className="font-medium">{formatNumber(zFirst?.op_cash_flow)}</td>
-                        <td className="font-medium">{formatNumber(zSecond?.op_cash_flow)}</td>
-                        <td className="font-medium">{formatNumber(zThird?.op_cash_flow)}</td>
-                        <td className="font-medium">{formatNumber(zFourth?.op_cash_flow)}</td>
+                        <td>op CF</td>
+                        <td>{formatNumber(zFirst?.op_cash_flow)}</td>
+                        <td>{formatNumber(zSecond?.op_cash_flow)}</td>
+                        <td>{formatNumber(zThird?.op_cash_flow)}</td>
+                        <td>{formatNumber(zFourth?.op_cash_flow)}</td>
                         </tr>
                         <tr className='highlight'>
                         <td>Investments</td>
@@ -78,11 +78,11 @@ export default function OverviewFinancials({zPrev, zFirst, zSecond, zThird, zFou
                         <td>{formatNumber(zFourth?.capex)}</td>
                         </tr>
                         <tr>
-                        <td className="font-medium">FCF</td>
-                        <td className="font-medium">{formatNumber(zFirst?.free_cash_flow)}</td>
-                        <td className="font-medium">{formatNumber(zSecond?.free_cash_flow)}</td>
-                        <td className="font-medium">{formatNumber(zThird?.free_cash_flow)}</td>
-                        <td className="font-medium">{formatNumber(zFourth?.free_cash_flow)}</td>
+                        <td>FCF</td>
+                        <td>{formatNumber(zFirst?.free_cash_flow)}</td>
+                        <td>{formatNumber(zSecond?.free_cash_flow)}</td>
+                        <td>{formatNumber(zThird?.free_cash_flow)}</td>
+                        <td>{formatNumber(zFourth?.free_cash_flow)}</td>
                         </tr>
                         <tr className='highlight'>
                         <td>Div</td>
@@ -100,7 +100,7 @@ export default function OverviewFinancials({zPrev, zFirst, zSecond, zThird, zFou
                         </tr>
                         <tr>
                         <td colSpan={5} className='px-0 second-title'>
-                            <div className='bg-gray'>B/S</div>
+                            <div className='bg-gray font-medium'>B/S (€m)</div>
                         </td>
                         </tr>
                         <tr>

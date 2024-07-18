@@ -112,7 +112,7 @@ table tr td.second-title div{
 }
 
 .semi-card{
-    background-color: #F7F1E3;
+    background-color: #F7F1E3!important;
     border: 1px solid #2F5651;
     border-radius: 8px;
     padding: 0.5rem;
@@ -178,7 +178,7 @@ table thead tr th{
 
 p.company-link{
     margin-bottom: 0;
-    color:cornflowerblue;
+    color:#1D322B;
     cursor: pointer;
 }
 table tr td.font-medium{
@@ -211,4 +211,28 @@ table tr td.font-medium{
 .company-page table thead th{
     background-color: #f7f1e3 !important;
     border-bottom: none !important;
+    color: #2F5651;
+    text-align: center;
+}
+/*make the td center except the first td*/
+.company-page table tbody td{
+    text-align: center;
+}
+.company-page table tbody td:first-child, .company-page table thead th:first-child{
+    text-align: left!important;
+    min-width: 210px!important;
+    max-width: 210px!important;
+    width: 210px!important;
+}
+
+
+.company-page table tbody td{
+    text-align: center;
+}
+.text-left{
+    text-align: left!important;
+}
+
+.company-page table tbody td, .company-page table thead th{
+    font-size: 14px;
 }

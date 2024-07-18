@@ -1,4 +1,4 @@
-import { formatCompanyData } from "@/app/lib/utils";
+import { formatNumber } from "@/app/lib/utils";
 
 export default function RiskScenarios({zFirst, zSecond, zThird, zFourth}) {
     return (<>
@@ -18,53 +18,53 @@ export default function RiskScenarios({zFirst, zSecond, zThird, zFourth}) {
                     </thead>
                     <tbody>
                         <tr>
-                        <td>V Bear (10%)</td>
-                        <td>{formatCompanyData(zFirst?.z_very_bear)}</td>
-                        <td>{formatCompanyData(zSecond?.z_very_bear)}</td>
-                        <td>{formatCompanyData(zThird?.z_very_bear)}</td>
-                        <td>{formatCompanyData(zFourth?.z_very_bear)}</td>
+                            <td>V Bear (10%)</td>
+                            <td>{formatNumber(zFirst?.very_bear_z)}</td>
+                            <td>{formatNumber(zSecond?.very_bear_z)}</td>
+                            <td>{formatNumber(zThird?.very_bear_z)}</td>
+                            <td>{formatNumber(zFourth?.very_bear_z)}</td>
                         </tr>
                         <tr>
-                        <td>Bear (20%)</td>
-                        <td>{formatCompanyData(zFirst?.z_bear)}</td>
-                        <td>{formatCompanyData(zSecond?.z_bear)}</td>
-                        <td>{formatCompanyData(zThird?.z_bear)}</td>
-                        <td>{formatCompanyData(zFourth?.z_bear)}</td>
+                            <td>Bear (20%)</td>
+                            <td>{formatNumber(zFirst?.bear_z)}</td>
+                            <td>{formatNumber(zSecond?.bear_z)}</td>
+                            <td>{formatNumber(zThird?.bear_z)}</td>
+                            <td>{formatNumber(zFourth?.bear_z)}</td>
                         </tr>
                         <tr>
-                            <td className="font-medium">Central (40%)</td>
-                        <td>{formatCompanyData(zFirst?.dps_z)}</td>
-                        <td>{formatCompanyData(zSecond?.dps_z)}</td>
-                        <td>{formatCompanyData(zThird?.dps_z)}</td>
-                        <td>{formatCompanyData(zFourth?.dps_z)}</td>
+                            <td>Central (40%)</td>
+                            <td>{formatNumber(zFirst?.dps_z)}</td>
+                            <td>{formatNumber(zSecond?.dps_z)}</td>
+                            <td>{formatNumber(zThird?.dps_z)}</td>
+                            <td>{formatNumber(zFourth?.dps_z)}</td>
                         </tr>
                         <tr>
-                        <td>Bull (20%)</td>
-                        <td>{formatCompanyData(zFirst?.z_bull)}</td>
-                        <td>{formatCompanyData(zSecond?.z_bull)}</td>
-                        <td>{formatCompanyData(zThird?.z_bull)}</td>
-                        <td>{formatCompanyData(zFourth?.z_bull)}</td>
+                            <td>Bull (20%)</td>
+                            <td>{formatNumber(zFirst?.bull_z)}</td>
+                            <td>{formatNumber(zSecond?.bull_z)}</td>
+                            <td>{formatNumber(zThird?.bull_z)}</td>
+                            <td>{formatNumber(zFourth?.bull_z)}</td>
                         </tr>
                         <tr>
-                        <td>V Bull (10%)</td>
-                        <td>{formatCompanyData(zFirst?.z_very_bull)}</td>
-                        <td>{formatCompanyData(zSecond?.z_very_bull)}</td>
-                        <td>{formatCompanyData(zThird?.z_very_bull)}</td>
-                        <td>{formatCompanyData(zFourth?.z_very_bull)}</td>
+                            <td>V Bull (10%)</td>
+                            <td>{formatNumber(zFirst?.z_very_bull)}</td>
+                            <td>{formatNumber(zSecond?.z_very_bull)}</td>
+                            <td>{formatNumber(zThird?.z_very_bull)}</td>
+                            <td>{formatNumber(zFourth?.z_very_bull)}</td>
                         </tr>
                         <tr>
-                        <td className="font-medium">Risk adj. DPS</td>
-                        <td className="font-medium">{formatCompanyData(zFirst?.risk_adj_dps_z)}</td>
-                        <td className="font-medium">{formatCompanyData(zSecond?.risk_adj_dps_z)}</td>
-                        <td className="font-medium">{formatCompanyData(zThird?.risk_adj_dps_z)}</td>
-                        <td className="font-medium">{formatCompanyData(zFourth?.risk_adj_dps_z)}</td>
+                            <td>Risk adj. DPS</td>
+                            <td>{formatNumber(zFirst?.risk_adj_dps_z)}</td>
+                            <td>{formatNumber(zSecond?.risk_adj_dps_z)}</td>
+                            <td>{formatNumber(zThird?.risk_adj_dps_z)}</td>
+                            <td>{formatNumber(zFourth?.risk_adj_dps_z)}</td>
                         </tr>
                         <tr className='highlight'>
-                        <td>Difference to Central</td>
-                        <td>-</td>
-                        <td>-3%</td>
-                        <td>-5%</td>
-                        <td>-8%</td>
+                            <td>Difference to Central</td>
+                            <td>-</td>
+                            <td>-3%</td>
+                            <td>-5%</td>
+                            <td>-8%</td>
                         </tr>
                     </tbody>
                 </table>

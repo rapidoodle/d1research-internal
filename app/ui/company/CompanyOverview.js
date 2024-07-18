@@ -180,7 +180,7 @@ export default function CompanyOverview({session}) {
             </div>
             <div className="mt-4 mt-sm-0 col-12 col-sm-6">
               <div className='d-flex flex-column flex-md-row'>
-                <div className='semi-card mb-3 d-flex align-items-center'><b>Company Name:</b> 
+                <div className='semi-card mb-3 d-flex align-items-center'><span className='font-medium'>Company Name:</span> 
 
                 {!showCompanies ? <p className='company-link ms-2' onClick={ () => setShowCompanies(true) }> {zFirst?.company}</p> : 
                   ( <div className='w-100 px-2'>
@@ -201,11 +201,11 @@ export default function CompanyOverview({session}) {
                   }
 
                 </div>
-                <div className='semi-card mb-3 ms-md-3'><b>DIV Ticker:</b> {zFirst?.div_ticker}</div>
+                <div className='semi-card mb-3 ms-md-3'><span className='font-medium'>DIV Ticker:</span> {zFirst?.div_ticker}</div>
               </div>
               <div className='d-flex flex-column flex-md-row'>
-                <div className='semi-card mb-md-0 mb-3'><b>Ticker:</b> {zFirst?.equity_ticker}</div>
-                <div className='semi-card mb-md-0 mb-3 ms-md-3'><b>Dividend Index:</b> -</div>
+                <div className='semi-card mb-md-0 mb-3'><span className='font-medium'>STO Ticker:</span> {zFirst?.equity_ticker}</div>
+                <div className='semi-card mb-md-0 mb-3 ms-md-3'><span className='font-medium'>DIV Index:</span> -</div>
               </div>
             </div>
           </div>
@@ -303,7 +303,10 @@ export default function CompanyOverview({session}) {
           </div>
         </div>
         <div className='footer'>
+          <div className='d-flex justify-content-between'>
           <p className='text-bold'>Disclaimer</p>
+          <p className='text-bold'>contact@d1research.com</p>
+          </div>
           <p className='mb-0'>The information contained in this presentation is confidential. D1 Research GmbH shall not be liable to any recipient for any inaccuracies or omissions and have no liability in respect of any loss or damage suffered by any recipient in connection with any information provided.</p>
         </div>
       </div>

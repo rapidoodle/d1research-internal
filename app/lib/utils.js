@@ -95,31 +95,46 @@ export const cleanCompanyName = (word) => {
 }
 
 //function to make number to 2 decimal places
-export const formatNumber = (number, isPercent) => {
+export const formatNumber = (number, colored = false) => {
   //check if number or string is passed
+
   if(!number){
     return "-" ;
   }else{
 
     if(number === 'NaN'){
+
       return;
     }
 
     const num = Number(number);
-    var finalNumber = Number.isInteger(num) ? num : num.toFixed(2);
-    
-    if(isPercent){
-      return commafy(finalNumber)+ '%';
+    var finalNumber = number;
+
+
+    // if finalNumber is more than 3 digits, add comma
+    if(num <= 999){
+      finalNumber = num.toFixed(2);
     }
 
     //if negative number, remove negative sign and put in parenthesis
     if(finalNumber < 0){
       finalNumber = finalNumber.toString().replace('-', '');
-      return '('+ commafy(finalNumber) + ')';
+      finalNumber = '('+ commafy(finalNumber) + ')';
+
+      if(colored){
+        return <span class="text-danger">{finalNumber}</span>;
+      }
+
+      return finalNumber;
     }
 
     finalNumber = commafy(finalNumber);
 
+    if(colored){
+      //if finalNumber has (), make the text red. green if positive
+      return <span class="text-success">{finalNumber}</span>;
+      
+    }
     return finalNumber;
   }
 }
@@ -135,32 +150,6 @@ export const commafy = ( num ) => {
   return str.join('.');
 }
 
-export const coloredNumber = (number, isPercent = false, isColored = false) => {
-  //check if number or string is passed
-  if(!number){
-    return "-" ;
-  }else{
-
-    if(number === 'NaN'){
-      return;
-    }
-
-    const num = Number(number);
-    const finalNumber = Number.isInteger(num) ? num : num.toFixed(2);
-    
-    if(isPercent){
-      return finalNumber+ '%';
-    }
-
-    if(isColored){
-      return finalNumber > 0 ? 
-      <div class="positive-number">{finalNumber}</div> :
-      <div class="negative-number">{finalNumber}</div> ;
-    }
-  
-    return finalNumber;
-  }
-}
 
 export const formatCompanyData = ( data, isPercent = false, isComma = true ) => {
   if(!data || data === 'NaN'){
@@ -214,4 +203,9 @@ export const getStartAndEndDate = (dateInput, offset = '+01:00') => {
     startDate: startDate.format('DD MMMM YYYY hh:mm A'),
     endDate: endDate.format('DD MMMM YYYY hh:mm A')
   };
+}
+
+//display date in format 12-Jun-24
+export const displayDate = (date) => {
+  return moment(date).format('DD-MMM-YY');
 }

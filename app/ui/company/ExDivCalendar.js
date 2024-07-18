@@ -17,9 +17,11 @@ export default function ExDivCalendar({allData}) {
         </thead>
         <tbody>
         {allData.map((data, index) => {
+            const currentYear = new Date().getFullYear();
+            const yearLabel = data.year > currentYear ? `${data.year}e` : data.year;
             return (
                 <tr key={index}>
-                <td>{data.year}</td>
+                <td>{yearLabel}</td>
                 <td>{formatNumber(data.ex_date_q1)}</td>
                 <td>{formatNumber(data.ex_date_q2)}</td>
                 <td>{formatNumber(data.ex_date_q3)}</td>
