@@ -1,8 +1,13 @@
 import { getCompanyByName } from "@/app/lib/companies";
 import { createEvent, getEventByDateAndDescription } from "@/app/lib/events";
+import { scrapeAdidasEvents } from "@/app/lib/scraper/adidas";
+import { scrapeAirLiquideEvents } from "@/app/lib/scraper/air-liquide";
+import { scrapeAirbusEvents } from "@/app/lib/scraper/airbus";
+import { scrapeArcelorMittalEvents } from "@/app/lib/scraper/arcelormittal";
 import { scrapeAsmlEvents } from "@/app/lib/scraper/asml";
 import { scrapeBASFEvents } from "@/app/lib/scraper/basf";
 import { scrapeBMWEvents } from "@/app/lib/scraper/bmw";
+import { scrapeBouyguesEvents } from "@/app/lib/scraper/bouygues";
 import { scrapeDeutscheTelekomEvents } from "@/app/lib/scraper/deutsche-telekom";
 import { scrapeDHLEvents } from "@/app/lib/scraper/dhl";
 import { scrapeEnelEvents } from "@/app/lib/scraper/enel";
@@ -71,17 +76,27 @@ export async function GET(req) {
             case 'deutsche-telekom':
                 scrapedData = await scrapeDeutscheTelekomEvents();
                 break;
+            case 'adidas':
+                scrapedData = await scrapeAdidasEvents();
+                break;
+            case 'air-liquide':
+                scrapedData = await scrapeAirLiquideEvents();
+                break;
+            case 'airbus':
+                scrapedData = await scrapeAirbusEvents();
+                break;
+            case 'arcelormittal':
+                scrapedData = await scrapeArcelorMittalEvents();
+                break;
+            case 'bouygues':
+                scrapedData = await scrapeBouyguesEvents();
+                break;
             default:
                 throw new Error(`Unknown site: ${site}`);
         }
-
-        // Ensure scrapedData is an array
-        if (!Array.isArray(scrapedData)) {
-            scrapedData = [];
-        }
-
-        //save the scraped data to events table
-        const companyResponse = await getCompanyByName({'name' : site});
+        
+        const company = site.replace('-', ' ');
+        const companyResponse = await getCompanyByName({'name' : company});
         if(companyResponse && scrapedData.length > 0){
 
             const eventsPromises = scrapedData?.map(async event => {
@@ -93,8 +108,8 @@ export async function GET(req) {
                     event.company_id    = companyResponse.data.id;
                     event.name          = companyResponse.data.name;
                     event.tags          = companyResponse.data.tags;
-                    event.description   = `<a target="_blank" href="${event.url}">Click here to view more details</a>`;
-                    event.c_description   = `<a target="_blank" href="${event.url}">Click here to view more details</a>`;
+                    event.description   = `<a target="_blank" href="${event.url}">Click here for more details</a>`;
+                    event.c_description   = `<a target="_blank" href="${event.url}">Click here fore more details</a>`;
                     
                     if(event.endDate){
                         event.end_date = event.endDate;

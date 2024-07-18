@@ -5,7 +5,7 @@ import { parse } from 'node-html-parser';
 export async function scrapeIberdrolaEvents() {
     try {
       // Fetch the HTML content of the webpage
-      const { data } = await axios.get('https://www.iberdrola.com/shareholders-investors/shareholders/shareholders-investors-calendar');
+      const { data } = await fetch('https://www.iberdrola.com/shareholders-investors/shareholders/shareholders-investors-calendar');
       
       // Parse the HTML
       const root = parse(data);

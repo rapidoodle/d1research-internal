@@ -1,6 +1,4 @@
-import axios from 'axios';
 import moment from 'moment';
-import parse from 'node-html-parser';
 
 export async function scrapeAsmlEvents() {
     try {
