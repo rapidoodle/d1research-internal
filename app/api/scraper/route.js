@@ -109,7 +109,7 @@ export async function GET(req) {
                     event.name          = companyResponse.data.name;
                     event.tags          = companyResponse.data.tags;
                     event.description   = `<a target="_blank" href="${event.url}">Click here for more details</a>`;
-                    event.c_description   = `<a target="_blank" href="${event.url}">Click here fore more details</a>`;
+                    event.c_description   = `<a target="_blank" href="${event.url}">Click here for more details</a>`;
                     
                     if(event.endDate){
                         event.end_date = event.endDate;
