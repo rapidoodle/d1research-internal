@@ -1,7 +1,6 @@
 import { sql } from "@vercel/postgres";
 import { getLoggedUser } from "./users";
 import { authOptions } from "@/auth";
-import { cleanComment, cleanedString } from "./utils";
 import { NextResponse } from "next/server";
 import moment from "moment";
 import { createClinkedEvent } from "./clinked/events";
@@ -9,8 +8,6 @@ import { unstable_noStore as noStore } from 'next/cache';
 
 
   export async function createEvent(req, isForm = false) {
-
-    const loggedInUser = await getLoggedUser(authOptions);
 
     if (req.method !== 'POST' && isForm) {
       return { error: 'Method not allowed' };
