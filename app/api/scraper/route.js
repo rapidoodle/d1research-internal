@@ -15,7 +15,11 @@ import { scrapeDassaultEvents } from "@/app/lib/scraper/dassault";
 import { scrapeDeutscheTelekomEvents } from "@/app/lib/scraper/deutsche-telekom";
 import { scrapeDHLEvents } from "@/app/lib/scraper/dhl";
 import { scrapeEnelEvents } from "@/app/lib/scraper/enel";
+import { scrapeEngieEvents } from "@/app/lib/scraper/engie";
 import { scrapeEniEvents } from "@/app/lib/scraper/eni";
+import { scrapeEssilorLuxotticaEvents } from "@/app/lib/scraper/essilorluxotica";
+import { scrapeFerrariEvents } from "@/app/lib/scraper/ferrari";
+import { scrapeHermesEvents } from "@/app/lib/scraper/hermes";
 import { scrapeIberdrolaEvents } from "@/app/lib/scraper/iberdrola";
 import { scrapeKeringEvents } from "@/app/lib/scraper/kering";
 import { scrapeMercedesEvents } from "@/app/lib/scraper/mercedes";
@@ -109,6 +113,18 @@ export async function GET(req) {
             case 'dassault':
                 scrapedData = await scrapeDassaultEvents();
                 break;
+            case 'engie':
+                scrapedData = await scrapeEngieEvents();
+                break;
+            case 'essilorluxotica':
+                scrapedData = await scrapeEssilorLuxotticaEvents();
+                break;
+            case 'ferrari':
+                scrapedData = await scrapeFerrariEvents();
+                break;
+            case 'hermes':
+                scrapedData = await scrapeHermesEvents();
+                break;
             default:
                 throw new Error(`Unknown site: ${site}`);
         }
@@ -134,7 +150,7 @@ export async function GET(req) {
                     }
 
                     //save the event
-                    // return await createEvent(event, false);
+                    return await createEvent(event, false);
                     
                 }else{
                     console.log(`${companyResponse.data.equity_ticker} ${event.description} already exists in the database.`);
