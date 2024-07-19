@@ -1,4 +1,4 @@
-import { formatNumber } from "@/app/lib/utils";
+import { formatNumber, formatWholeNumber } from "@/app/lib/utils";
 
 export default function RiskScenarios({zFirst, zSecond, zThird, zFourth}) {
     return (<>
@@ -61,10 +61,10 @@ export default function RiskScenarios({zFirst, zSecond, zThird, zFourth}) {
                         </tr>
                         <tr className='highlight'>
                             <td className="bg-cream">Difference to Central</td>
-                            <td className="bg-cream">-</td>
-                            <td className="bg-cream">{formatNumber(3, true)}</td>
-                            <td className="bg-cream">{formatNumber(-5, true)}</td>
-                            <td className="bg-cream">{formatNumber(-8, true)}</td>
+                            <td className="bg-cream">{formatWholeNumber(1)}</td>
+                            <td className="bg-cream">{formatWholeNumber(3)}</td>
+                            <td className="bg-cream">{formatWholeNumber(-5)}</td>
+                            <td className="bg-cream">{formatWholeNumber(-8)}</td>
                         </tr>
                     </tbody>
                 </table>

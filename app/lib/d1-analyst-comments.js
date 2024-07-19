@@ -77,7 +77,6 @@ export async function getACByID (req) {
 export async function deleteAC (companyID) {
   try {
     const query = `DELETE FROM analysts_comments WHERE id = '${companyID}'`;
-    console.log(query);
     const result = await sql.query(query);
 
     return { data: result.rows };

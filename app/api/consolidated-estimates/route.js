@@ -17,7 +17,6 @@ export async function GET(req) {
 
     try {
         const cEResponse = await getConsolidatedEstimates();
-        console.log(cEResponse);
         if (cEResponse.error) {
             return NextResponse.json({ message: cEResponse.error }, { status: 500 });
         }

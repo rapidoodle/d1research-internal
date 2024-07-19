@@ -57,7 +57,6 @@ const authOptions = {
               refresh_token: clinkAuthResponse.refresh_token,
             }
 
-            console.log('LOGIN RESPONSE: ', response);
             return response;
           } else {
             throw new Error('Invalid password');

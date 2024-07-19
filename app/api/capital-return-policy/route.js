@@ -66,7 +66,6 @@ export async function DELETE(req) {
     const companyID = searchParams.get('comment_id') || '';
 
     try {
-        console.log('DELETE THIS:', companyID);
         const data = await deleteCRP(companyID);
         if (data.error) {
             return NextResponse.json({ message: data.error }, { status: 500 });

@@ -1,4 +1,4 @@
-import { formatNumber } from "@/app/lib/utils";
+import { formatNumber, formatWholeNumber } from "@/app/lib/utils";
 
 export default function D1DPSForecast({zFirst, zSecond, zThird, zFourth}) {
   zFirst.difference = ((zFirst.current_price_z / zFirst.dps_z - 1) * - 1) * 100;
@@ -38,10 +38,10 @@ export default function D1DPSForecast({zFirst, zSecond, zThird, zFourth}) {
               </tr>
               <tr>
                 <td className="bg-cream font-medium">Difference %</td>
-                <td className="bg-cream">{formatNumber(zFirst?.discount_premium_percent, true)}</td>
-                <td className="bg-cream">{formatNumber(zSecond?.discount_premium_percent, true)}</td>
-                <td className="bg-cream">{formatNumber(zThird?.discount_premium_percent, true)}</td>
-                <td className="bg-cream">{formatNumber(zFourth?.discount_premium_percent, true)}</td>
+                <td className="bg-cream">{formatWholeNumber(zFirst?.discount_premium_percent, true)}</td>
+                <td className="bg-cream">{formatWholeNumber(zSecond?.discount_premium_percent, true)}</td>
+                <td className="bg-cream">{formatWholeNumber(zThird?.discount_premium_percent, true)}</td>
+                <td className="bg-cream">{formatWholeNumber(zFourth?.discount_premium_percent, true)}</td>
               </tr>
             </tbody>
           </table>

@@ -98,6 +98,25 @@ export const formatPercentage = (value) => {
   //remove decimal places and round of
   return Math.round(value);
 }
+
+export const formatWholeNumber = (value) => {
+  
+  const num = Math.round(Number(value));
+
+  //if the number is less than 0, put in parenthesis, remove negative sign and make text red
+  if(num < 0){
+    return <span class="text-danger">({Math.abs(num)})</span>;
+  }
+
+  //if number is more than 0, make text green
+  return <span class="text-success">{num}</span>;
+
+}
+
+export const roundNumber = (value) => {
+  return Math.round(value);
+}
+
 //function to make number to 2 decimal places
 export const formatNumber = (number, colored = false) => {
   //check if number or string is passed
@@ -125,22 +144,13 @@ export const formatNumber = (number, colored = false) => {
       //round of
       finalNumber = Math.abs(finalNumber);
       finalNumber = finalNumber.toString().replace('-', '');
-      finalNumber = '('+ commafy(finalNumber) + ')';
-
-      if(colored){
-        return <span class="text-danger">{finalNumber}</span>;
-      }
+      finalNumber = '('+ commafy(Math.round(finalNumber)) + ')';
 
       return finalNumber;
     }
 
     finalNumber = commafy(finalNumber);
 
-    if(colored){
-      //if finalNumber has (), make the text red. green if positive
-      return <span class="text-success">{finalNumber}</span>;
-      
-    }
     return finalNumber;
   }
 }
@@ -214,4 +224,12 @@ export const getStartAndEndDate = (dateInput, offset = '+01:00') => {
 //display date in format 12-Jun-24
 export const displayDate = (date) => {
   return moment(date).format('DD-MMM-YY');
+}
+
+export const getPercentage = (value, total) => {
+  value = value || 0;
+  total = total || 1;
+  const percent = (Number(value) / Number(total)) * 100;
+
+  return Math.round(percent);
 }

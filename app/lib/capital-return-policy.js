@@ -77,7 +77,6 @@ export async function getCRPByID (req) {
 export async function deleteCRP (companyID) {
   try {
     const query = `DELETE FROM capital_return_policy WHERE id = '${companyID}'`;
-    console.log(query);
     const result = await sql.query(query);
 
     return { data: result.rows };

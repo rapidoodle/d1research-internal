@@ -6,9 +6,22 @@ const ApexLineChartComponent = ({xaxisData, seriesData}) => {
     chart: {
       type: 'line',
       height: 250,
+      toolbar: {
+        show: false // Disable the toolbar
+      }
     },
     xaxis: {
       categories: xaxisData,
+    },
+    yaxis: {
+      labels: {
+        formatter: function (val) {
+          return `${val}%`;
+        }
+      },
+      style: {
+        colors: ['#F7F1E3'], // Set text color for the y-axis labels
+      }
     },
     stroke: {
       curve: 'smooth',

@@ -96,7 +96,6 @@ import { unstable_noStore as noStore } from 'next/cache';
 
 
      const response =  await sql.query(query, [description, friendlyName]);
-     console.log('Event created successfully', response);
 
       // return NextResponse.json([{ message: 'Event created successfully' }]);
       return NextResponse.json(response);
@@ -128,8 +127,6 @@ export async function updateEvent(req) {
     `;
 
     const response = await sql.query(query, [description, friendlyName, location, startDate, tags, company.value, id]);
-
-    console.log(response);
 
     return NextResponse.json(response);
 

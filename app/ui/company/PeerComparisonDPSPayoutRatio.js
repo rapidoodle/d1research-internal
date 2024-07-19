@@ -1,5 +1,5 @@
 import ApexLineChartComponent from "@/app/components/ApexLineChartComponent";
-import { formatNumber, formatPercentage } from "@/app/lib/utils";
+import { formatNumber, formatPercentage, formatWholeNumber } from "@/app/lib/utils";
 import { useEffect, useState } from "react";
 
 export default function PeerComparisonDPSPayoutRatio({zPrev, zFirst, zSecond, zThird, zFourth}) {
@@ -30,8 +30,8 @@ export default function PeerComparisonDPSPayoutRatio({zPrev, zFirst, zSecond, zT
 
             const chartSeries = responses.map(companyData => {
                 return {
-                name: companyData[0].equity_ticker,
-                data: companyData.map(item => item.dps_payout_ratio)
+                    name: companyData[0].equity_ticker,
+                    data: companyData.map(item => Math.round(item.dps_payout_ratio))
                 };
             });
 
@@ -88,7 +88,7 @@ export default function PeerComparisonDPSPayoutRatio({zPrev, zFirst, zSecond, zT
             </> :
 
             <ApexLineChartComponent
-                xaxisData={[`FY${zFirst.year_2digit}`, `FY${zSecond.year_2digit}`, `FY${zThird.year_2digit}`, `FY${zFourth.year_2digit}`]}
+                xaxisData={[`FY${zPrev.year_2digit}`, `FY${zFirst.year_2digit}`, `FY${zSecond.year_2digit}`, `FY${zThird.year_2digit}`]}
                 seriesData={chartSeries}
             />
             }

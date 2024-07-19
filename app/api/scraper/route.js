@@ -8,6 +8,10 @@ import { scrapeAsmlEvents } from "@/app/lib/scraper/asml";
 import { scrapeBASFEvents } from "@/app/lib/scraper/basf";
 import { scrapeBMWEvents } from "@/app/lib/scraper/bmw";
 import { scrapeBouyguesEvents } from "@/app/lib/scraper/bouygues";
+import { scrapeCapgeminiEvents } from "@/app/lib/scraper/capgemini";
+import { scrapeCarrefourEvents } from "@/app/lib/scraper/carrefour";
+import { scrapeDanoneEvents } from "@/app/lib/scraper/danone";
+import { scrapeDassaultEvents } from "@/app/lib/scraper/dassault";
 import { scrapeDeutscheTelekomEvents } from "@/app/lib/scraper/deutsche-telekom";
 import { scrapeDHLEvents } from "@/app/lib/scraper/dhl";
 import { scrapeEnelEvents } from "@/app/lib/scraper/enel";
@@ -93,6 +97,18 @@ export async function GET(req) {
             case 'bouygues':
                 scrapedData = await scrapeBouyguesEvents();
                 break;
+            case 'capgemini':
+                scrapedData = await scrapeCapgeminiEvents();
+                break;
+            case 'carrefour':
+                scrapedData = await scrapeCarrefourEvents();
+                break;
+            case 'danone':
+                scrapedData = await scrapeDanoneEvents();
+                break;
+            case 'dassault':
+                scrapedData = await scrapeDassaultEvents();
+                break;
             default:
                 throw new Error(`Unknown site: ${site}`);
         }
@@ -118,7 +134,7 @@ export async function GET(req) {
                     }
 
                     //save the event
-                    return await createEvent(event, false);
+                    // return await createEvent(event, false);
                     
                 }else{
                     console.log(`${companyResponse.data.equity_ticker} ${event.description} already exists in the database.`);

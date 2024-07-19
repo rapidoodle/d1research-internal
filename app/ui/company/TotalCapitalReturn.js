@@ -1,13 +1,24 @@
 import ApexStackedBarChart from "@/app/components/ApexBarChartComponent";
-import { formatCompanyData, formatNumber } from "@/app/lib/utils";
+import { formatCompanyData, formatNumber, formatWholeNumber, getPercentage } from "@/app/lib/utils";
 import { useState } from "react";
 
 export default function TotalCapitalReturn({zPrev, zFirst, zSecond, zThird, zFourth}) {
     const [showChart, setShowChart] = useState(false);
 
+    const PrevPer = zPrev?.dividend / zPrev?.net_income * 100;
+    const FirstPer = zFirst?.dividend / zFirst?.net_income * 100;
+    const SecPer = zSecond?.dividend / zSecond?.net_income * 100;
+    const ThirdPer = zThird?.dividend / zThird?.net_income * 100;
+
     const chartData = [
-        { "Dividend" : [zPrev?.dividend, zFirst?.dividend, zSecond?.dividend, zThird?.dividend] },
-        { "Share Buyback" : [zPrev?.share_buyback, zFirst?.share_buyback, zSecond?.share_buyback, zThird?.share_buyback] }
+        { "Dividend" : [getPercentage(zPrev.dividend, zPrev.net_income), 
+            getPercentage(zFirst.dividend, zFirst.net_income), 
+            getPercentage(zSecond.dividend, zSecond.net_income),
+            getPercentage(zThird.dividend, zThird.net_income)] },
+        { "Share Buyback" : [getPercentage(zPrev.share_buyback, zPrev.net_income), 
+            getPercentage(zFirst.share_buyback, zFirst.net_income), 
+            getPercentage(zSecond.share_buyback, zSecond.net_income),
+            getPercentage(zThird.share_buyback, zThird.net_income)] }
     ];
 
     return (<>
@@ -64,10 +75,10 @@ export default function TotalCapitalReturn({zPrev, zFirst, zSecond, zThird, zFou
                         </tr>
                         <tr>
                             <td>Capital payout (%)</td>
-                            <td>{formatNumber(zPrev?.capital_payout_percent)}</td>
-                            <td>{formatNumber(zFirst?.capital_payout_percent)}</td>
-                            <td>{formatNumber(zSecond?.capital_payout_percent)}</td>
-                            <td>{formatNumber(zThird?.capital_payout_percent)}</td>
+                            <td>{formatWholeNumber(zPrev?.capital_payout_percent)}</td>
+                            <td>{formatWholeNumber(zFirst?.capital_payout_percent)}</td>
+                            <td>{formatWholeNumber(zSecond?.capital_payout_percent)}</td>
+                            <td>{formatWholeNumber(zThird?.capital_payout_percent)}</td>
                         </tr>
                     </tbody>
                 </table>

@@ -35,7 +35,6 @@ export async function getConsolidatedEstimates() {
           equity_ticker ASC;
         `;
       const result = await sql.query(query);
-      console.log(result.rows);
       return { data: result.rows };
     } catch (error) {
       console.error('Error fetching companies:', error);

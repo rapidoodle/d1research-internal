@@ -12,7 +12,6 @@ export async function DELETE(req) {
         const url = new URL(req.url);
         const pathParts = url.pathname.split('/');
         const eventId = pathParts[4];
-        console.log(pathParts);
         const data = await deleteClinkedEvent(eventId);
         return NextResponse.json(data, { status: 200 });
     } catch (error) {
