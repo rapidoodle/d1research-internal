@@ -1,5 +1,5 @@
 import ApexLineChartComponent from "@/app/components/ApexLineChartComponent";
-import { formatNumber } from "@/app/lib/utils";
+import { formatNumber, formatPercentage } from "@/app/lib/utils";
 import { useEffect, useState } from "react";
 
 export default function PeerComparisonDPSPayoutRatio({zPrev, zFirst, zSecond, zThird, zFourth}) {
@@ -31,7 +31,7 @@ export default function PeerComparisonDPSPayoutRatio({zPrev, zFirst, zSecond, zT
             const chartSeries = responses.map(companyData => {
                 return {
                 name: companyData[0].equity_ticker,
-                data: companyData.map(item => item.dps_z)
+                data: companyData.map(item => item.dps_payout_ratio)
                 };
             });
 
@@ -45,7 +45,7 @@ export default function PeerComparisonDPSPayoutRatio({zPrev, zFirst, zSecond, zT
     return (<>
         <div className="card peer-comparison flex-fill">
             <div className='d-flex align-items-center'>
-                <h4 className='flex-grow-1 mb-0'>Peer comparison DPS payout ratio (%)</h4>
+                <h5 className='flex-grow-1 mb-0'>Peer comparison DPS payout ratio (%)</h5>
                 <a className='page-link me-2' onClick={() => setShowChart(!showChart)}>View {showChart ? 'table' : 'chart'}</a>
             </div>
             <hr />
@@ -69,10 +69,10 @@ export default function PeerComparisonDPSPayoutRatio({zPrev, zFirst, zSecond, zT
                                 <tr key={index}>
                                     <td>{peer[0].equity_ticker
                                     }</td>
-                                    <td>{formatNumber(peer[4].dps_z)}</td>
-                                    <td>{formatNumber(peer[3].dps_z)}</td>
-                                    <td>{formatNumber(peer[2].dps_z)}</td>
-                                    <td>{formatNumber(peer[1].dps_z)}</td>
+                                    <td>{formatPercentage(peer[0].dps_payout_ratio)}</td>
+                                    <td>{formatPercentage(peer[3].dps_payout_ratio)}</td>
+                                    <td>{formatPercentage(peer[2].dps_payout_ratio)}</td>
+                                    <td>{formatPercentage(peer[1].dps_payout_ratio)}</td>
                                 </tr>
                             );
 

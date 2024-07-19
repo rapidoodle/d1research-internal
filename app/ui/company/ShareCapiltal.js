@@ -3,7 +3,7 @@ import { formatNumber } from "@/app/lib/utils";
 export default function ShareCapital({zPrev, zFirst, zSecond, zThird, zFourth}) {
     return (<>
         <div className="card share-capital flex-fill">
-            <h4>Share capital</h4>
+            <h5>Share capital</h5>
             <hr />
             <div className="table-responsive">
                 <table className="table table-responsive">

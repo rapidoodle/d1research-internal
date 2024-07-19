@@ -3,7 +3,7 @@ import { formatNumber } from "@/app/lib/utils";
 export default function RiskScenarios({zFirst, zSecond, zThird, zFourth}) {
     return (<>
         <div className="card flex-fill">
-            <h4>Risk scenarios</h4>
+            <h5>Risk scenarios</h5>
             <hr />
             <div className="table-responsive">
                 <table className="table table-responsive">
@@ -60,11 +60,11 @@ export default function RiskScenarios({zFirst, zSecond, zThird, zFourth}) {
                             <td>{formatNumber(zFourth?.risk_adj_dps_z)}</td>
                         </tr>
                         <tr className='highlight'>
-                            <td>Difference to Central</td>
-                            <td>-</td>
-                            <td>-3%</td>
-                            <td>-5%</td>
-                            <td>-8%</td>
+                            <td className="bg-cream">Difference to Central</td>
+                            <td className="bg-cream">-</td>
+                            <td className="bg-cream">{formatNumber(3, true)}</td>
+                            <td className="bg-cream">{formatNumber(-5, true)}</td>
+                            <td className="bg-cream">{formatNumber(-8, true)}</td>
                         </tr>
                     </tbody>
                 </table>

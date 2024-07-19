@@ -13,7 +13,7 @@ export default function TotalCapitalReturn({zPrev, zFirst, zSecond, zThird, zFou
     return (<>
         <div className="card total-cap-return flex-fill">
             <div className='d-flex align-items-center'>
-                <h4 className='flex-grow-1 mb-0'>Total capital return</h4>
+                <h5 className='flex-grow-1 mb-0'>Total capital return</h5>
                 <a className='page-link me-2' onClick={() => setShowChart(!showChart)}>View {showChart ? 'table' : 'chart'}</a>
             </div>
             <hr />

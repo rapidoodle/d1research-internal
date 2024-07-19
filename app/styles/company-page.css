@@ -52,8 +52,8 @@ hr{
 margin-top:1rem!important;
 margin-bottom:1rem!important;
 }
-h4{
-margin-bottom: 0;
+h5{
+    margin-bottom: 0;
 }
 
 .financial-overview table thead th {
@@ -230,6 +230,7 @@ table tr td.font-medium{
 
 .company-page table tbody td{
     text-align: center;
+    width: 127px;
 }
 .text-left{
     text-align: left!important;

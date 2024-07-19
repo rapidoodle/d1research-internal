@@ -8,7 +8,7 @@ export default function D1DPSForecast({zFirst, zSecond, zThird, zFourth}) {
   //percentrage format
     return (
     <div className="card dps-forecast flex-fill">
-        <h4>D1 DPS forecast</h4>
+        <h5>D1 DPS forecast</h5>
         <hr />
         <div className="table-responsive">
           <table className='table table-responsive'>

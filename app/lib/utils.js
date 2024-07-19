@@ -93,7 +93,11 @@ export const cleanCurrency = (value) => {
 export const cleanCompanyName = (word) => {
   return word.toLowerCase().replace(/\s/g, '_');
 }
+export const formatPercentage = (value) => {
 
+  //remove decimal places and round of
+  return Math.round(value);
+}
 //function to make number to 2 decimal places
 export const formatNumber = (number, colored = false) => {
   //check if number or string is passed
@@ -118,6 +122,8 @@ export const formatNumber = (number, colored = false) => {
 
     //if negative number, remove negative sign and put in parenthesis
     if(finalNumber < 0){
+      //round of
+      finalNumber = Math.abs(finalNumber);
       finalNumber = finalNumber.toString().replace('-', '');
       finalNumber = '('+ commafy(finalNumber) + ')';
 

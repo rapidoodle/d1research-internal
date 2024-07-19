@@ -22,6 +22,8 @@ import { scrapeTotalEvents } from "@/app/lib/scraper/total";
 import { scrapeVolkswagenEvents } from "@/app/lib/scraper/volkswagen";
 import { NextResponse } from "next/server";
 
+export const maxDuration = 300;
+
 export async function GET(req) {
     //check if GET
     if(req.method !== 'GET') return NextResponse.methodNotAllowed();

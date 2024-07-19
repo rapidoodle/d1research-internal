@@ -122,7 +122,7 @@ export default function CapitalReturnPolicy({companyID, session}) {
         <>
         <div className='card flex-fill'>
             <div className='d-flex align-items-center'>
-                <h4 className='flex-grow-1 mb-0'>Capital return policy</h4>
+                <h5 className='flex-grow-1 mb-0'>Capital return policy</h5>
                 { session && (session.user.access_level === 'Admin' || session.user.access_level === 'Analyst') && 
                     <a className='page-link me-2' onClick={handleShow}>New</a>
                 }

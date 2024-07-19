@@ -34,7 +34,7 @@ export default function CompanyOverview({session}) {
   const [companyID, setCompanyID] = useState('');
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [companiesOptions, setCompaniesOptions] = useState([]);
-  const [showCompanies, setShowCompanies] = useState(false);
+  const [showCompanies, setShowCompanies] = useState(true);
 
   useEffect(() => {
     const fetchCompanies = async () => {
@@ -163,52 +163,63 @@ export default function CompanyOverview({session}) {
 
   const handleSelectCompany = (selectedOption) => {
     setSelectedCompany(selectedOption);
-    setShowCompanies(false);
+    // setShowCompanies(false);
   }
 
   if(!loading && selectedCompany){
     return (<>
       <div className="company-page p-2 p-md-4">
-        <div className="row mb-md-3">
-            <div className="col-12 col-sm-6 d-flex align-items-center justify-content-md-start justify-content-center mt-4 mt-md-0">
-              <Image
+        <div className="row">
+            <div className="col-12 col-sm-12 mt-4 mt-md-0">
+
+              {/* <Image
                 src="https://d1researchstorage.s3.amazonaws.com/company-logo-rectangle.webp"
                 alt="Company Logo"
                 width={185}
                 height={100}
-              />
-            </div>
-            <div className="mt-4 mt-sm-0 col-12 col-sm-6">
-              <div className='d-flex flex-column flex-md-row'>
-                <div className='semi-card mb-3 d-flex align-items-center'><span className='font-medium'>Company Name:</span> 
+              /> */}
+              <div className='row'>
+                <div className='col-6'>
+                  <div className='row'>
+                    <div className='col-12 col-sm-6'>
+                      {!showCompanies ? <p className='company-link ms-2' onClick={ () => setShowCompanies(true) }> {zFirst?.company}</p> : 
+                        ( <div className='w-100 px-2'>
+                          <Select
+                              className="basic-single w-100"
+                              classNamePrefix="select"
+                              isClearable={false}
+                              defaultValue={companiesOptions[0]}
+                              filterOption={filterOption}
+                              isSearchable={true}
+                              onChange={handleSelectCompany}
+                              value={selectedCompany}
+                              name="companies"
+                              options={companiesOptions}
+                          />
+                          {/* <sub className='company-link cursor-pointer float-end my-2' onClick={ () => setShowCompanies(false) }>Close</sub> */}
+                          </div>)
+                        }
+                    </div>
+                    <div className='col-12 col-sm-6 mt-3 mt-sm-0'>
+                  <div className='semi-card mb-md-0'><span className='font-medium'>STO Ticker:</span> {zFirst?.equity_ticker}</div>
+                      </div>
+                  </div>
 
-                {!showCompanies ? <p className='company-link ms-2' onClick={ () => setShowCompanies(true) }> {zFirst?.company}</p> : 
-                  ( <div className='w-100 px-2'>
-                    <Select
-                        className="basic-single w-100"
-                        classNamePrefix="select"
-                        isClearable={false}
-                        defaultValue={companiesOptions[0]}
-                        filterOption={filterOption}
-                        isSearchable={true}
-                        onChange={handleSelectCompany}
-                        value={selectedCompany}
-                        name="companies"
-                        options={companiesOptions}
-                    />
-                    <sub className='company-link cursor-pointer float-end my-2' onClick={ () => setShowCompanies(false) }>Close</sub>
-                    </div>)
-                  }
 
                 </div>
-                <div className='semi-card mb-3 ms-md-3'><span className='font-medium'>DIV Ticker:</span> {zFirst?.div_ticker}</div>
-              </div>
-              <div className='d-flex flex-column flex-md-row'>
-                <div className='semi-card mb-md-0 mb-3'><span className='font-medium'>STO Ticker:</span> {zFirst?.equity_ticker}</div>
-                <div className='semi-card mb-md-0 mb-3 ms-md-3'><span className='font-medium'>DIV Index:</span> -</div>
+                <div className='col-6'>
+                  <div className='row'>
+                    <div className='col-12 col-sm-6'>
+                      <div className='semi-card'><span className='font-medium'>DIV Ticker:</span> {zFirst?.div_ticker}</div>
+                    </div>
+                    <div className='col-12 col-sm-6 mt-3 mt-sm-0'>
+                    <div className='semi-card mb-md-0'><span className='font-medium'>DIV Index:</span> {`${zFirst?.index1}${zFirst?.index2 ? `, ${zFirst?.index2}` : ''}${zFirst?.index3 ? `, ${zFirst?.index3}` : ''}${zFirst?.index4 ? `, ${zFirst?.index4}` : ''}`}</div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+        </div>
         {/* ROW 1 */}
         <div className="row mb-4 mt-2 d-flex">
           <div className='col-md-6 d-flex mb-4 mb-md-0'>
@@ -282,7 +293,7 @@ export default function CompanyOverview({session}) {
         </div>
         
         {/* ROW 5 */}
-        <div className="row mb-4 d-flex">
+        <div className="row d-flex">
           <div className='col-md-6 d-flex mb-4 mb-md-0'>
             <TotalCapitalReturn 
               zPrev={zPrev}
@@ -302,13 +313,13 @@ export default function CompanyOverview({session}) {
             />
           </div>
         </div>
-        <div className='footer'>
+        {/* <div className='footer'>
           <div className='d-flex justify-content-between'>
           <p className='text-bold'>Disclaimer</p>
           <p className='text-bold'>contact@d1research.com</p>
           </div>
           <p className='mb-0'>The information contained in this presentation is confidential. D1 Research GmbH shall not be liable to any recipient for any inaccuracies or omissions and have no liability in respect of any loss or damage suffered by any recipient in connection with any information provided.</p>
-        </div>
+        </div> */}
       </div>
       </>
     );

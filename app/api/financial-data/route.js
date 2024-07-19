@@ -41,7 +41,7 @@ export async function GET(req) {
     }
   }else{
     try {
-      const data = await getFinancialDataByCompanyTicker(equityTicker, type === 'peer' ? 'dps_z, year, company, equity_ticker' : '*');
+      const data = await getFinancialDataByCompanyTicker(equityTicker, type === 'peer' ? 'dps_payout_ratio, year, company, equity_ticker' : '*');
       console.log(data);
 
       if (data.error) {

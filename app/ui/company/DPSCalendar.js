@@ -3,7 +3,7 @@ import { formatNumber } from "@/app/lib/utils";
 export default function DPSCalendar({allData}) {
     return (<>
         <div className="card flex-fill">
-            <h4>DPS calendar</h4>
+            <h5>DPS calendar</h5>
             <hr />
             <div className="table-responsive">
                 <table className="table table-responsive">

@@ -3,7 +3,7 @@ import { formatNumber } from "@/app/lib/utils";
 export default function ExDivCalendar({allData}) {
     return (<>
     <div className="card ex-div-calendar flex-fill">
-        <h4>Ex-div calendar</h4>
+        <h5>Ex-div calendar</h5>
         <hr />
         <table className="table table-responsive">
         <thead>

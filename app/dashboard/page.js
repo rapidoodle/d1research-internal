@@ -11,7 +11,7 @@ export default function Page(searchParams) {
   const currentPage = Number(searchParams.searchParams?.page) || 1;
 
   return (
-    <div className="container-fluid mt-5">ss
+    <div className="container-fluid mt-5">
       <CsvUploader />
       <div className='bg-light p-3'>
         <div className='mb-3'>
