@@ -5,8 +5,10 @@ export async function scrapeAdidasEvents() {
   try {
     // Fetch the HTML content of the webpage
     const url = 'https://www.adidas-group.com/en/investors/financial-calendar';
-    const response = await fetch(url);
-    const data = await response.text();
+    const data = await fetch(url).then((res) => res.text()).catch((error) => {
+      console.error('Error fetching Adidas events:', error);
+      return '';
+    });
 
     // // Parse the HTML
     const root = parse(data);
@@ -41,8 +43,6 @@ export async function scrapeAdidasEvents() {
             startDate = moment(`${startDateText} ${endYear}`, 'MMM D YYYY').startOf('day');
             endDate = moment(endDateText, 'MMM D YYYY').startOf('day');
             event.endDate = endDate.format('YYYY-MM-DD');
-
-            console.log(endDate)
           } else {
             startDate = moment(dateText, 'MMM D, YYYY').startOf('day');
             endDate = startDate;

@@ -183,7 +183,7 @@ export default function CompanyOverview({session}) {
                   <div className='row'>
                     <div className='col-12 col-sm-6'>
                       {!showCompanies ? <p className='company-link ms-2' onClick={ () => setShowCompanies(true) }> {zFirst?.company}</p> : 
-                        ( <div className='w-100 px-2'>
+                        ( <div className='w-100'>
                           <Select
                               className="basic-single w-100"
                               classNamePrefix="select"
