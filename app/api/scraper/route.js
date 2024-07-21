@@ -153,7 +153,7 @@ export async function GET(req) {
                     return await createEvent(event, false);
                     
                 }else{
-                    console.log(`${companyResponse.data.equity_ticker} ${event.description} already exists in the database.`);
+                    console.log(`${companyResponse.data.equity_ticker} ${event.description} (${event.date}) already exists in the database.`);
                 }
             });
 
@@ -165,7 +165,9 @@ export async function GET(req) {
       if (scrapedData.error) {
         return NextResponse.json({ message: data.error }, { status: 500 });
       }
+
       return NextResponse.json(scrapedData);
+
     } catch (error) {
       console.error('Error scraping data:', error);
       return NextResponse.json({ message: `${error}` }, { status: 500 });

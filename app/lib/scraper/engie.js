@@ -16,20 +16,23 @@ export async function scrapeEngieEvents() {
       eventItems.forEach((item) => {
         const dateElement = item.querySelector('.schedule-date time');
         const descriptionElement = item.querySelector('.schedule-text p');
-        //   const description = descriptionElement.text.trim();
   
         // if (dateElement && descriptionElement) {
-        if(dateElement){
+        if(dateElement && descriptionElement){
+            const description = descriptionElement.text.trim();
             const dateText = new Date(dateElement?.getAttribute('datetime'));
             const date = moment(dateText).format('YYYY-MM-DD');
             const formattedDate = moment(date.replace(/-/g, '-')).format('YYYY-MM-DD');
             const finalDate = moment(formattedDate, 'YYYY-MM-DD');
 
             if(finalDate.isValid() && (finalDate.isAfter(moment()) || finalDate.isSame(moment()))){
-                events.push({ date: date, description: descriptionElement, url: url });
+                events.push({ date: date, description: description, url: url });
             }
         }
+        
       });
+
+      console.log(events);
 
       return events;
     } catch (error) {
