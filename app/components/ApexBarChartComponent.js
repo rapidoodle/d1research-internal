@@ -33,6 +33,9 @@ const ApexStackedBarChart = ({chartData, xAxisData}) => {
       }
     },
     dataLabels: {
+      formatter: function (val) {
+        return `${val}%`;
+      },
       enabled: true,
       style: {
         colors: ['#F7F1E3', '#2F5651'] // Set text color for data labels

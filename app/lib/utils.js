@@ -116,6 +116,20 @@ export const formatWholeNumber = (value) => {
   return num;
 }
 
+export const roundUpNumber = (value) => {
+  
+//round number add comma and space
+  var num = Math.round(Number(value));
+  num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+  //if number is less than 0, put in parenthesis, remove negative sign and make text red
+  if(Number(num) < 0){
+    return (Math.abs(num));
+  }
+
+  return num;
+}
+
 export const roundNumber = (value) => {
   return Math.round(value);
 }

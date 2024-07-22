@@ -1,4 +1,4 @@
-import { formatNumber } from "@/app/lib/utils";
+import { formatNumber, roundUpNumber } from "@/app/lib/utils";
 
 export default function ShareCapital({zPrev, zFirst, zSecond, zThird, zFourth}) {
     return (<>
@@ -19,10 +19,10 @@ export default function ShareCapital({zPrev, zFirst, zSecond, zThird, zFourth}) 
                     <tbody>
                         <tr>
                         <td>Shares in issue</td>
-                        <td>{formatNumber(zPrev?.share_in_issue)}</td>
-                        <td>{formatNumber(zFirst?.share_in_issue)}</td>
-                        <td>{formatNumber(zSecond?.share_in_issue)}</td>
-                        <td>{formatNumber(zThird?.share_in_issue)}</td>
+                        <td>{roundUpNumber(zPrev?.share_in_issue)}</td>
+                        <td>{roundUpNumber(zFirst?.share_in_issue)}</td>
+                        <td>{roundUpNumber(zSecond?.share_in_issue)}</td>
+                        <td>{roundUpNumber(zThird?.share_in_issue)}</td>
                         </tr>
                         <tr>
                         <td>Treasury shares</td>
@@ -33,17 +33,17 @@ export default function ShareCapital({zPrev, zFirst, zSecond, zThird, zFourth}) 
                         </tr>
                         <tr>
                         <td>Shares outstanding</td>
-                        <td>{formatNumber(zPrev?.shares_outstanding)}</td>
-                        <td>{formatNumber(zFirst?.shares_outstanding)}</td>
-                        <td>{formatNumber(zSecond?.shares_outstanding)}</td>
-                        <td>{formatNumber(zThird?.shares_outstanding)}</td>
+                        <td>{roundUpNumber(zPrev?.shares_outstanding)}</td>
+                        <td>{roundUpNumber(zFirst?.shares_outstanding)}</td>
+                        <td>{roundUpNumber(zSecond?.shares_outstanding)}</td>
+                        <td>{roundUpNumber(zThird?.shares_outstanding)}</td>
                         </tr>
                         <tr>
                         <td>Avg. weighted shares</td>
-                        <td>{formatNumber(zPrev?.av_weighted_share_cap)}</td>
-                        <td>{formatNumber(zFirst?.av_weighted_share_cap)}</td>
-                        <td>{formatNumber(zSecond?.av_weighted_share_cap)}</td>
-                        <td>{formatNumber(zThird?.av_weighted_share_cap)}</td>
+                        <td>{roundUpNumber(zPrev?.av_weighted_share_cap)}</td>
+                        <td>{roundUpNumber(zFirst?.av_weighted_share_cap)}</td>
+                        <td>{roundUpNumber(zSecond?.av_weighted_share_cap)}</td>
+                        <td>{roundUpNumber(zThird?.av_weighted_share_cap)}</td>
                         </tr>
                     </tbody>
                 </table>

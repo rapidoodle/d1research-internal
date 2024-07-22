@@ -44,13 +44,13 @@ color: #1D322B;
 }
 
 .financial-overview th, td, .analyst-comments ul > li {
-padding: 8px;
-color: #2F5651!important;
-margin-bottom: 0;
+    padding: 8px;
+    color: #2F5651!important;
+    margin-bottom: 0;
 }
 hr{
-margin-top:1rem!important;
-margin-bottom:1rem!important;
+    margin-top:1rem!important;
+    margin-bottom:1rem!important;
 }
 h5{
     margin-bottom: 0;
@@ -71,10 +71,31 @@ table thead th:last-child {
 border-top-right-radius: 10px;
 border-bottom-right-radius: 10px;
 }
+
 /*add padding left to all the td in left side of the table
 and padding right to all the td in right side of the table*/
 table tbody tr td:first-child,  table thead tr th:first-child {
-    padding-left: 2rem;
+    padding-left: 1.5rem;
+}
+
+table tbody tr.highlight td:first-child {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+table tbody tr.highlight td:last-child{
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+/* table tbody tr.highlight{
+    filter: alpha(opacity=30);
+    opacity: 0.3;
+    -moz-opacity: 0.3;
+} */
+
+table tbody tr.highlight td > div {
+    opacity: 1!important;
+    position: absolute;
 }
 
 /*add drop shadow to the table*/
@@ -106,8 +127,8 @@ table tr td.second-title div{
     border-radius: 10px!important;
     padding-top:.5rem;
     padding-bottom:.5rem;
-    padding-left: 2rem;
-    color: #2F5651;
+    padding-left: 1.5rem;
+    color: #1D322B;
 }
 
 .semi-card{

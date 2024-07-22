@@ -50,7 +50,7 @@ const createCompany = async (req, isFormData = true) => {
 
 export async function getCompanyByTicker(ticker) {
   try {
-    const query = `SELECT * FROM companies WHERE equity_ticker = '${ticker}'`;
+    const query = `SELECT c.*, f.div_ticker FROM companies c LEFT JOIN financial_data f ON c.equity_ticker = f.equity_ticker WHERE f.equity_ticker = '${ticker}'`;
     const result = await sql.query(query);
     return { data: result };
   } catch (error) {
@@ -78,8 +78,8 @@ export async function getCompanies(req) {
 
   try {
     // Base query
-    let query = `SELECT c.id as company_id, c.equity_ticker, c.unique_url_key as url_key, c.name as company, s.name as sector, c.tags
-    FROM companies c LEFT JOIN sectors s ON c.sector_id = s.id
+    let query = `SELECT DISTINCT c.id as company_id, c.equity_ticker, c.unique_url_key as url_key, c.name as company, s.name as sector, c.tags, f.div_ticker 
+    FROM companies c LEFT JOIN sectors s ON c.sector_id = s.id INNER JOIN financial_data f ON c.equity_ticker = f.equity_ticker
     WHERE c.name ILIKE $1 ORDER BY c.name ASC`;
     
     // Values for the base query

@@ -1,4 +1,4 @@
-import { formatNumber } from "@/app/lib/utils";
+import { formatNumber, roundUpNumber } from "@/app/lib/utils";
 
 export default function OverviewFinancials({zPrev, zFirst, zSecond, zThird, zFourth}) {
     return (<>
@@ -32,10 +32,10 @@ export default function OverviewFinancials({zPrev, zFirst, zSecond, zThird, zFou
                         </tr>
                         <tr>
                         <td>Avg. weighted shares</td>
-                        <td>{formatNumber(zPrev?.av_weighted_share_cap)}</td>
-                        <td>{formatNumber(zFirst?.av_weighted_share_cap)}</td>
-                        <td>{formatNumber(zSecond?.av_weighted_share_cap)}</td>
-                        <td>{formatNumber(zThird?.av_weighted_share_cap)}</td>
+                        <td>{roundUpNumber(zPrev?.av_weighted_share_cap)}</td>
+                        <td>{roundUpNumber(zFirst?.av_weighted_share_cap)}</td>
+                        <td>{roundUpNumber(zSecond?.av_weighted_share_cap)}</td>
+                        <td>{roundUpNumber(zThird?.av_weighted_share_cap)}</td>
                         </tr>
                         <tr>
                         <td>EPS (€)</td>
@@ -53,10 +53,10 @@ export default function OverviewFinancials({zPrev, zFirst, zSecond, zThird, zFou
                         </tr>
                         <tr>
                         <td>Payout %</td>
-                        <td>{formatNumber(zPrev?.dps_payout_ratio)}</td>
-                        <td>{formatNumber(zFirst?.dps_payout_ratio)}</td>
-                        <td>{formatNumber(zSecond?.dps_payout_ratio)}</td>
-                        <td>{formatNumber(zThird?.dps_payout_ratio)}</td>
+                        <td>{roundUpNumber(zPrev?.dps_payout_ratio)}</td>
+                        <td>{roundUpNumber(zFirst?.dps_payout_ratio)}</td>
+                        <td>{roundUpNumber(zSecond?.dps_payout_ratio)}</td>
+                        <td>{roundUpNumber(zThird?.dps_payout_ratio)}</td>
                         </tr>
                         <tr>
                         <td colSpan={5} className='px-0 second-title'>
@@ -70,7 +70,7 @@ export default function OverviewFinancials({zPrev, zFirst, zSecond, zThird, zFou
                         <td>{formatNumber(zThird?.op_cash_flow)}</td>
                         <td>{formatNumber(zFourth?.op_cash_flow)}</td>
                         </tr>
-                        <tr className='highlight'>
+                        <tr>
                         <td>Investments</td>
                         <td>{formatNumber(zFirst?.capex)}</td>
                         <td>{formatNumber(zSecond?.capex)}</td>
@@ -84,14 +84,14 @@ export default function OverviewFinancials({zPrev, zFirst, zSecond, zThird, zFou
                         <td>{formatNumber(zThird?.free_cash_flow)}</td>
                         <td>{formatNumber(zFourth?.free_cash_flow)}</td>
                         </tr>
-                        <tr className='highlight'>
+                        <tr>
                         <td>Div</td>
                         <td>{formatNumber(zFirst?.dividend)}</td>
                         <td>{formatNumber(zSecond?.dividend)}</td>
                         <td>{formatNumber(zThird?.dividend)}</td>
                         <td>{formatNumber(zFourth?.dividend)}</td>
                         </tr>
-                        <tr className='highlight'>
+                        <tr>
                         <td>Share BB</td>
                         <td>{formatNumber(zFirst?.share_buyback)}</td>
                         <td>{formatNumber(zSecond?.share_buyback)}</td>

@@ -33,8 +33,15 @@ export default function CompanyOverview({session}) {
   const [uniqueUrlKey, setUniqueUrlKey] = useState('');
   const [companyID, setCompanyID] = useState('');
   const [selectedCompany, setSelectedCompany] = useState(null);
+  const [selectedSTOTicker, setSelectedSTOTicker] = useState(null);
+  const [selectedDivTicker, setSelectedDivTicker] = useState(null);
+
   const [companiesOptions, setCompaniesOptions] = useState([]);
+  const [stoTickerOptions, setSTOTickerOptions] = useState([]);
+  const [divTickerOptions, setDivTickerOptions] = useState([]);
+
   const [showCompanies, setShowCompanies] = useState(true);
+  const [divIndex, setDivIndex] = useState([]);
 
   useEffect(() => {
     const fetchCompanies = async () => {
@@ -58,6 +65,8 @@ export default function CompanyOverview({session}) {
 
         const data = await response.json();
 
+        console.log(data);
+
         setUniqueUrlKey(urlKey);
         setCompanyID(cID);
 
@@ -67,9 +76,24 @@ export default function CompanyOverview({session}) {
           equity_ticker: company.equity_ticker
         }));
 
+        const formattedOptions2 = data.data.map(company => ({
+          value: company.company_id,
+          label: company.equity_ticker,
+          equity_ticker: company.equity_ticker
+        }));
+
+        const formattedOptions3 = data.data.map(company => ({
+          value: company.company_id,
+          label: company.div_ticker,
+          equity_ticker: company.equity_ticker
+        }));
 
         setCompaniesOptions(formattedOptions);
+        setSTOTickerOptions(formattedOptions2);
+        setDivTickerOptions(formattedOptions3);
         setSelectedCompany(formattedOptions[0]);
+        setSelectedSTOTicker(formattedOptions2[0]);
+        setSelectedDivTicker(formattedOptions3[0]);
 
       } catch (error) {
         console.log('Failed to fetch companies:', error);
@@ -88,8 +112,17 @@ export default function CompanyOverview({session}) {
     );
   };
 
+  const filterOptionDiv = (option, inputValue) => {
+    const { label, data } = option;
+
+    return (
+      label.toLowerCase().includes(inputValue.toLowerCase()) ||
+      data.div_ticker.toLowerCase().includes(inputValue.toLowerCase())
+    );
+  };
+
   useEffect(() => {
-    if (selectedCompany) {
+    if (selectedCompany || selectedSTOTicker || selectedDivTicker) {
       const fetchFinancialData = async () => {
         try {
           setLoading(true);
@@ -99,11 +132,11 @@ export default function CompanyOverview({session}) {
             throw new Error(`Error: ${response.statusText}`);
           }
           const data = await response.json();
+          
           // Set all data in reverse order
           const reverseData = data.reverse();
-          setAllData(reverseData);
 
-          console.log(reverseData);
+          setAllData(reverseData);
 
           if (data[0]) {
 
@@ -149,7 +182,14 @@ export default function CompanyOverview({session}) {
             setZFourth(data[4]);
           }
 
+          
+          setDivIndex([{
+            label : `${zFirst?.index1}${zFirst?.index2 ? `, ${zFirst?.index2}` : ''}${zFirst?.index3 ? `, ${zFirst?.index3}` : ''}${zFirst?.index4 ? `, ${zFirst?.index4}` : ''}`,
+            value : 0
+          }]);
+
           setLoading(false);
+          
 
         } catch (error) {
           console.error('Failed to fetch company data:', error);
@@ -159,11 +199,41 @@ export default function CompanyOverview({session}) {
 
       fetchFinancialData();
     }
-  }, [selectedCompany, router]);
+  }, [selectedCompany, router, selectedDivTicker, selectedSTOTicker]);
 
   const handleSelectCompany = (selectedOption) => {
     setSelectedCompany(selectedOption);
-    // setShowCompanies(false);
+
+    // Get STO and Div Ticker
+    const stoTicker = stoTickerOptions.find(option => option.value === selectedOption.value);
+    const divTicker = divTickerOptions.find(option => option.value === selectedOption.value);
+
+    setSelectedSTOTicker(stoTicker);
+    setSelectedDivTicker(divTicker);
+
+  }
+
+  const handleSelectSTOTicker = (selectedOption) => {
+    setSelectedSTOTicker(selectedOption);
+
+    // Get Company and Div Ticker
+    const company = companiesOptions.find(option => option.value === selectedOption.value);
+    const divTicker = divTickerOptions.find(option => option.value === selectedOption.value);
+
+    setSelectedCompany(company);
+    setSelectedDivTicker(divTicker);
+
+  }
+
+  const handleSelectDivTicker = (selectedOption) => {
+    setSelectedDivTicker(selectedOption);
+
+    // Get Company and STO Ticker
+    const company = companiesOptions.find(option => option.value === selectedOption.value);
+    const stoTicker = stoTickerOptions.find(option => option.value === selectedOption.value);
+
+    setSelectedCompany(company);
+    setSelectedSTOTicker(stoTicker);
   }
 
   if(!loading && selectedCompany){
@@ -171,13 +241,6 @@ export default function CompanyOverview({session}) {
       <div className="company-page p-2 p-md-4">
         <div className="row">
             <div className="col-12 col-sm-12 mt-4 mt-md-0">
-
-              {/* <Image
-                src="https://d1researchstorage.s3.amazonaws.com/company-logo-rectangle.webp"
-                alt="Company Logo"
-                width={185}
-                height={100}
-              /> */}
               <div className='row'>
                 <div className='col-6'>
                   <div className='row'>
@@ -201,8 +264,25 @@ export default function CompanyOverview({session}) {
                         }
                     </div>
                     <div className='col-12 col-sm-6 mt-3 mt-sm-0'>
-                  <div className='semi-card mb-md-0'><span className='font-medium'>STO Ticker:</span> {zFirst?.equity_ticker}</div>
-                      </div>
+                      {/* <div className='semi-card mb-md-0'><span className='font-medium'>STO Ticker:</span> {zFirst?.equity_ticker}</div> */}
+                      {!showCompanies ? <p className='company-link ms-2' onClick={ () => setShowCompanies(true) }> {zFirst?.company}</p> : 
+                        ( <div className='w-100'>
+                          <Select
+                              className="basic-single w-100"
+                              classNamePrefix="select"
+                              isClearable={false}
+                              defaultValue={stoTickerOptions[0]}
+                              filterOption={filterOption}
+                              isSearchable={true}
+                              onChange={handleSelectSTOTicker}
+                              value={selectedSTOTicker}
+                              name="companiesTicker"
+                              options={stoTickerOptions}
+                          />
+                          {/* <sub className='company-link cursor-pointer float-end my-2' onClick={ () => setShowCompanies(false) }>Close</sub> */}
+                          </div>)
+                        }
+                    </div>
                   </div>
 
 
@@ -210,12 +290,39 @@ export default function CompanyOverview({session}) {
                 <div className='col-6'>
                   <div className='row'>
                     <div className='col-12 col-sm-6'>
-                      <div className='semi-card'><span className='font-medium'>DIV Ticker:</span> {zFirst?.div_ticker}</div>
+                      {/* <div className='semi-card'><span className='font-medium'>DIV Ticker:</span> {zFirst?.div_ticker}</div> */}
+                      {!showCompanies ? <p className='company-link ms-2' onClick={ () => setShowCompanies(true) }> {zFirst?.company}</p> : 
+                        ( <div className='w-100'>
+                          <Select
+                              className="basic-single w-100"
+                              classNamePrefix="select"
+                              isClearable={false}
+                              defaultValue={divTickerOptions[0]}
+                              filterOption={filterOptionDiv}
+                              isSearchable={true}
+                              onChange={handleSelectDivTicker}
+                              value={selectedDivTicker}
+                              name="companiesDivTicker"
+                              options={divTickerOptions}
+                          />
+                          {/* <sub className='company-link cursor-pointer float-end my-2' onClick={ () => setShowCompanies(false) }>Close</sub> */}
+                          </div>)
+                        }
                     </div>
                     <div className='col-12 col-sm-6 mt-3 mt-sm-0'>
-                    <div className='semi-card mb-md-0'><span className='font-medium'>DIV Index:</span> {`${zFirst?.index1}${zFirst?.index2 ? `, ${zFirst?.index2}` : ''}${zFirst?.index3 ? `, ${zFirst?.index3}` : ''}${zFirst?.index4 ? `, ${zFirst?.index4}` : ''}`}</div>
+                      {/* <span className='font-medium'>DIV Index:</span>  */}
+                        <Select 
+                          className='basic-single w-100'
+                          classNamePrefix='select'
+                          isClearable={false}
+                          defaultValue={divIndex[0]}
+                          options={divIndex}
+                          isSearchable={false}
+                        />
+
+                    {/* {`${zFirst?.index1}${zFirst?.index2 ? `, ${zFirst?.index2}` : ''}${zFirst?.index3 ? `, ${zFirst?.index3}` : ''}${zFirst?.index4 ? `, ${zFirst?.index4}` : ''}`} */}
                     </div>
-                  </div>
+                    </div>
                 </div>
               </div>
             </div>

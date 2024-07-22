@@ -45,6 +45,8 @@ export default function UpcomingEvents( { allData } ) {
                     <tbody>
 
                     { events.length > 0 && events?.map((event, index) => (
+                        //check if event.start_date is in the future
+                        moment().isBefore(event.start_date) &&
                         <tr key={index}>
                             <td>{displayDate(event.start_date)}</td>
                             <td className="text-left">{event.friendly_name}</td>

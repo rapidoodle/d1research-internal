@@ -140,7 +140,7 @@ export default function AnalystsComments({companyID, session}) {
                         ) : (
                             someComments.map((comment, index) => (
                                 <div
-                                    className={`d-flex align-items-center justify-content-between ${index !== someComments.length - 1 ? 'border-bottom' : ''}`}
+                                    className={`d-flex align-items-center justify-content-between ${index !== someComments.length - 1 ? 'border-bottom mb-3' : ''}`}
                                     key={index}
                                 >
                                     <div>

@@ -401,22 +401,26 @@ export async function uploadPriceFileData (req, res) {
         for (const row of records) {
           try {
 
-            //check financial_data table for company name and year and insert if not present
-            const financialDataQuery = `SELECT id FROM financial_data WHERE year = $1 AND equity_ticker = $2`;
-            const financialDataResult = await sql.query(financialDataQuery, [row['Year'], row['Equity Ticker']]);
+            if(row['Year'] && row['Equity Ticker']){
+              //check financial_data table for company name and year and insert if not present
+              const financialDataQuery = `SELECT id FROM financial_data WHERE year = $1 AND equity_ticker = $2`;
+              const financialDataResult = await sql.query(financialDataQuery, [row['Year'], row['Equity Ticker']]);
 
-            const newCurrentPrice = isNaN(row['Dividend Current Price Z'])  ? 'n/a' : row['Dividend Current Price Z'];
-            const newSharePrice = isNaN(row['Equity share price']) ? 'n/a' : row['Equity share price'];
+              const newCurrentPrice = isNaN(row['Dividend futures price'])  ? 'n/a' : row['Dividend futures price'];
+              const newSharePrice = isNaN(row['Equity share price']) ? 'n/a' : row['Equity share price'];
 
-            if (financialDataResult.rows.length > 0) {
-              console.log(`Data for ${row['Equity Ticker']} in ${row['Year']} exists, update share price to ${newSharePrice} and current price z to ${newCurrentPrice}`);
-              //if the company already exists, update the data
-              const updateQuery = `UPDATE financial_data SET current_price_z = $1, share_price = $2, updated_by = $3 WHERE equity_ticker = $4 AND year = $5`;
-              const updateResponse = await sql.query(updateQuery, [newCurrentPrice, newSharePrice, loggedUser.id, row['Equity Ticker'], row['Year']]);
+              if (financialDataResult.rows.length > 0) {
+                console.log(`Data for ${row['Equity Ticker']} in ${row['Year']} exists, update share price to ${newSharePrice} and current price z to ${newCurrentPrice}`);
+                //if the company already exists, update the data
+                const updateQuery = `UPDATE financial_data SET current_price_z = $1, share_price = $2, updated_by = $3 WHERE equity_ticker = $4 AND year = $5`;
+                const updateResponse = await sql.query(updateQuery, [newCurrentPrice, newSharePrice, loggedUser.id, row['Equity Ticker'], row['Year']]);
 
-              console.log('Company updated', row['Equity Ticker'], row['Year']);
+                console.log('Company updated', row['Equity Ticker'], row['Year']);
+              }else{
+                console.log(`Data for ${row['Equity Ticker']} in ${row['Year']} does not exist, ignore!`);
+              }
             }else{
-              console.log(`Data for ${row['Equity Ticker']} in ${row['Year']} does not exist, ignore!`);
+              console.log('Year or Equity Ticker is missing, ignore');
             }
 
           } catch (dbError) {

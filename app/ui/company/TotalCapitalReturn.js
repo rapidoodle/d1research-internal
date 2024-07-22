@@ -1,5 +1,5 @@
 import ApexStackedBarChart from "@/app/components/ApexBarChartComponent";
-import { formatCompanyData, formatNumber, formatWholeNumber, getPercentage } from "@/app/lib/utils";
+import { formatCompanyData, formatNumber, formatWholeNumber, getPercentage, roundUpNumber } from "@/app/lib/utils";
 import { useState } from "react";
 
 export default function TotalCapitalReturn({zPrev, zFirst, zSecond, zThird, zFourth}) {
@@ -75,10 +75,10 @@ export default function TotalCapitalReturn({zPrev, zFirst, zSecond, zThird, zFou
                         </tr>
                         <tr>
                             <td>Capital payout (%)</td>
-                            <td>{formatWholeNumber(zPrev?.capital_payout_percent)}</td>
-                            <td>{formatWholeNumber(zFirst?.capital_payout_percent)}</td>
-                            <td>{formatWholeNumber(zSecond?.capital_payout_percent)}</td>
-                            <td>{formatWholeNumber(zThird?.capital_payout_percent)}</td>
+                            <td>{roundUpNumber(zPrev?.capital_payout_percent)}</td>
+                            <td>{roundUpNumber(zFirst?.capital_payout_percent)}</td>
+                            <td>{roundUpNumber(zSecond?.capital_payout_percent)}</td>
+                            <td>{roundUpNumber(zThird?.capital_payout_percent)}</td>
                         </tr>
                     </tbody>
                 </table>
