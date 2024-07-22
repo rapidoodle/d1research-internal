@@ -18,26 +18,26 @@ export default function D1DPSForecast({zFirst, zSecond, zThird, zFourth}) {
                 <th>{`Z${zFirst.year_digit}`}</th>
                 <th>{`Z${zSecond.year_digit}`}</th>
                 <th>{`Z${zThird.year_digit}`}</th>
-                <th>{`Z${zFourth.year_digit}`}</th>
+                <th>{`Z${zFourth.year_digit}`}</th> 
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td className="font-medium">DPS forecast</td>
+                <td>DPS forecast</td>
                 <td>{formatNumber(zFirst?.dps_z)}</td>
                 <td>{formatNumber(zSecond?.dps_z)}</td>
                 <td>{formatNumber(zThird?.dps_z)}</td>
                 <td>{formatNumber(zFourth?.dps_z)}</td>
               </tr>
               <tr>
-                <td className="font-medium">Current Price</td>
+                <td>Current Price</td>
                 <td>{formatNumber(zFirst?.current_price_z)}</td>
                 <td>{formatNumber(zSecond?.current_price_z)}</td>
                 <td>{formatNumber(zThird?.current_price_z)}</td>
                 <td>{formatNumber(zFourth?.current_price_z)}</td>
               </tr>
               <tr>
-                <td className="bg-cream font-medium">Difference %</td>
+                <td className="bg-cream">Difference %</td>
                 <td className="bg-cream">{formatWholeNumber(zFirst?.discount_premium_percent, true)}</td>
                 <td className="bg-cream">{formatWholeNumber(zSecond?.discount_premium_percent, true)}</td>
                 <td className="bg-cream">{formatWholeNumber(zThird?.discount_premium_percent, true)}</td>

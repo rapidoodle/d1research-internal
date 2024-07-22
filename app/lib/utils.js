@@ -109,8 +109,11 @@ export const formatWholeNumber = (value) => {
   }
 
   //if number is more than 0, make text green
-  return <span class="text-success">{num}</span>;
+  if(num > 0){
+    return <span class="text-success">{num}</span>;
+  }
 
+  return num;
 }
 
 export const roundNumber = (value) => {
@@ -134,9 +137,13 @@ export const formatNumber = (number, colored = false) => {
     var finalNumber = number;
 
 
-    // if finalNumber is more than 3 digits, add comma
+    // if finalNumber is more than 3 digits, add comma but no
     if(num <= 999){
       finalNumber = num.toFixed(2);
+    }
+
+    if(num >= 1000){
+      finalNumber = Math.round(num);
     }
 
     //if negative number, remove negative sign and put in parenthesis

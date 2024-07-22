@@ -18,6 +18,7 @@ import { scrapeEnelEvents } from "@/app/lib/scraper/enel";
 import { scrapeEngieEvents } from "@/app/lib/scraper/engie";
 import { scrapeEniEvents } from "@/app/lib/scraper/eni";
 import { scrapeEssilorLuxotticaEvents } from "@/app/lib/scraper/essilorluxotica";
+import { scrapeEurofinsEvents } from "@/app/lib/scraper/eurofins";
 import { scrapeFerrariEvents } from "@/app/lib/scraper/ferrari";
 import { scrapeHermesEvents } from "@/app/lib/scraper/hermes";
 import { scrapeIberdrolaEvents } from "@/app/lib/scraper/iberdrola";
@@ -124,6 +125,9 @@ export async function GET(req) {
                 break;
             case 'hermes':
                 scrapedData = await scrapeHermesEvents();
+                break;
+            case 'eurofins':
+                scrapedData = await scrapeEurofinsEvents();
                 break;
             default:
                 throw new Error(`Unknown site: ${site}`);
