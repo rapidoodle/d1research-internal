@@ -174,7 +174,7 @@ export async function uploadFinancialData (req, res) {
                 cleanField(row['Total Capital Return']),
                 cleanField(row['Net Debt']),
                 cleanField(row['Share in issue']),
-                cleanField(row['Treasury shares']),
+                cleanField(row['Treasury shares ']),
                 cleanField(row['Shares outstanding']),
                 cleanField(row['Capital Payout (%)']),
                 cleanField(row['DPSQ1']),
