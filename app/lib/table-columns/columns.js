@@ -131,6 +131,34 @@ import moment from "moment";
     sortable: true,
   }];
 
+
+  export const dpsForecastColumns2 = [{
+    name: 'Ticker',
+    selector: 'equity_ticker',
+    sortable: true,
+  },
+  {
+    name: 'Z4',
+    selector: 'z4',
+    sortable: true,
+  },
+  {
+    name: 'Z5',
+    selector: 'z5',
+    sortable: true,
+  },
+  {
+    name: 'Z6',
+    selector: 'z6',
+    sortable: true,
+  },
+  {
+    name: 'Z7',
+    selector: 'z7',
+    sortable: true,
+  }];
+
+
   export const annualizedDiscountColumns = [{
     name: 'Ticker',
     selector: row => row.equity_ticker,

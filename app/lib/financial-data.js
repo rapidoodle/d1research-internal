@@ -67,8 +67,6 @@ export async function uploadFinancialData (req, res) {
               
               //get logged in user id
               if (financialDataResult.rows.length > 0) {
-                  console.log(`Data for ${row['Company']} in ${row['Year']} already exists`);
-                  //if the company already exists, update the data
                   // await sql`UPDATE financial_data SET`
 
                 if((Number(financialDataResult.rows[0]['dps_z']) !== cleanCurrency(row['DPS z']) && row['DPS z']) || 
@@ -129,11 +127,11 @@ export async function uploadFinancialData (req, res) {
                   }
 
                   if(needUpdate){
-                  const updateQuery = `UPDATE financial_data SET ${dpsZQuery} ${veryBearZQuery} ${bearZQuery} ${veryBullZQuery} ${riskAdjDpsZQuery} updated_by = $1 WHERE equity_ticker = $2 AND year = $3`;
+                    const updateQuery = `UPDATE financial_data SET ${dpsZQuery} ${veryBearZQuery} ${bearZQuery} ${bullZQuery} ${veryBullZQuery} ${riskAdjDpsZQuery} updated_by = $1 WHERE equity_ticker = $2 AND year = $3`;
 
-                  const updateResponse = await sql.query(updateQuery, [loggedUser.id, row['Equity Ticker'], row['Year']]);
+                    const updateResponse = await sql.query(updateQuery, [loggedUser.id, row['Equity Ticker'], row['Year']]);
 
-                  console.log('update response:', updateResponse);
+                    console.log('update response:', updateResponse);
 
                    const insertQuery = `INSERT INTO financial_data_history (
                     year, 
