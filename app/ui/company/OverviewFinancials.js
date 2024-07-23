@@ -6,7 +6,7 @@ export default function OverviewFinancials({zPrev, zFirst, zSecond, zThird, zFou
             <h5>Overview financials</h5>
             <hr />
             <div className="table-responsive">
-                <table className="table table-responsive">
+                <table className="table table-responsive aligned-table">
                     <thead>
                         <tr>
                             <th></th>

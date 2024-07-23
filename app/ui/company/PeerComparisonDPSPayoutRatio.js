@@ -46,7 +46,7 @@ export default function PeerComparisonDPSPayoutRatio({zPrev, zFirst, zSecond, zT
         <div className="card peer-comparison flex-fill">
             <div className='d-flex align-items-center'>
                 <h5 className='flex-grow-1 mb-0'>Peer comparison DPS payout ratio (%)</h5>
-                <a className='page-link me-2' onClick={() => setShowChart(!showChart)}>View {showChart ? 'table' : 'chart'}</a>
+                { peersDPS.length > 0 && <a className='page-link me-2' onClick={() => setShowChart(!showChart)}>View {showChart ? 'table' : 'chart'}</a> }
             </div>
             <hr />
             {!showChart ? 
@@ -86,7 +86,6 @@ export default function PeerComparisonDPSPayoutRatio({zPrev, zFirst, zSecond, zT
                 </table>
             </div>
             </> :
-
             <ApexLineChartComponent
                 xaxisData={[`FY${zPrev.year_2digit}`, `FY${zFirst.year_2digit}`, `FY${zSecond.year_2digit}`, `FY${zThird.year_2digit}`]}
                 seriesData={chartSeries}

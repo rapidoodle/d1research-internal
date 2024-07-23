@@ -36,7 +36,7 @@ const SideNavLink =({pathname, faIcon, path, label, uniqueKeyType}) => {
             'active': pathname === `${newPath}`,
             },
         )}>
-            <FontAwesomeIcon icon={faIcon} /> {label}
+            {label}
         </Link>
     );
 };

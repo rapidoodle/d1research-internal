@@ -28,23 +28,25 @@ const SideNav = () => {
   return (
     <div className="d-flex flex-column vh-100-mobile p-3 border-right">
       {/* <Link href="/">MyApp</Link> */}
-      <h6 className="py-3 sidebar-heading d-flex justify-content-between align-items-center mb-1 text-muted">
-        <span>D1RESEARCH</span>
+      <h6 className="py-3 sidebar-heading d-flex justify-content-start align-items-center mb-1 text-muted">
+        <Link href="/" className={clsx('nav-link', { 'active': pathname === '/' })}>
+          <span>D1RESEARCH</span>
+
+          </Link>
       </h6>
       <ul className="nav nav-pills flex-column mb-auto">
         <li className="nav-item">
           <Link href="/" className={clsx('nav-link', { 'active': pathname === '/' })}>
-            <FontAwesomeIcon icon={faFileExcel} /> Master file
+             Master file
           </Link>
         </li>
         <li className='nav-item'>
           <button 
-            className="nav-link btn btn-link d-flex align-items-center w-100"
+            className="nav-link btn btn-link d-flex align-items-center justify-content-between w-100"
             onClick={toggleMaster}
             aria-expanded={!masterCollapsed}
           >
-            <FontAwesomeIcon icon={faChartColumn} /> 
-              <span className='ms-1'>Financial Overview</span> 
+              <span>Financial Overview</span> 
               <span className='ms-auto'><FontAwesomeIcon icon={masterCollapsed ? faChevronRight : faChevronDown} /></span>
           </button>
           <div className={clsx('collapse', { 'show': !masterCollapsed })}>
@@ -83,8 +85,7 @@ const SideNav = () => {
             onClick={toggleEvents}
             aria-expanded={!eventsCollapsed}
           >
-            <FontAwesomeIcon icon={faCalendarAlt} /> 
-              <span className='ms-1'>Events</span> 
+              <span>Events</span> 
               <span className='ms-auto'><FontAwesomeIcon icon={eventsCollapsed ? faChevronRight : faChevronDown} /></span>
           </button>
           <div className={clsx('collapse', { 'show': !eventsCollapsed })}>
@@ -113,8 +114,7 @@ const SideNav = () => {
             onClick={toggleSettings}
             aria-expanded={!settingsCollapsed}
           >
-            <FontAwesomeIcon icon={faCogs} /> 
-              <span className='ms-1'>Settings</span> 
+              <span>Settings</span> 
               <span className='ms-auto'><FontAwesomeIcon icon={settingsCollapsed ? faChevronRight : faChevronDown} /></span>
           </button>
           <div className={clsx('collapse', { 'show': !settingsCollapsed })}>

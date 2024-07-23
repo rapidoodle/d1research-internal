@@ -129,11 +129,11 @@ export async function uploadFinancialData (req, res) {
                   }
 
                   if(needUpdate){
-                  const updateQuery = `UPDATE financial_data SET ${dpsZQuery} ${veryBearZQuery} ${bearZQuery} ${bearZQuery} ${veryBullZQuery} ${riskAdjDpsZQuery} updated_by = $1 WHERE equity_ticker = $2 AND year = $3`;
+                  const updateQuery = `UPDATE financial_data SET ${dpsZQuery} ${veryBearZQuery} ${bearZQuery} ${veryBullZQuery} ${riskAdjDpsZQuery} updated_by = $1 WHERE equity_ticker = $2 AND year = $3`;
 
                   const updateResponse = await sql.query(updateQuery, [loggedUser.id, row['Equity Ticker'], row['Year']]);
 
-                  console.log('update response:', updateQuery);
+                  console.log('update response:', updateResponse);
 
                    const insertQuery = `INSERT INTO financial_data_history (
                     year, 
@@ -178,7 +178,12 @@ export async function uploadFinancialData (req, res) {
                 }
                 
               }else{
+
+                if(row['Year'] && row['Company'] && row['Equity Ticker']){
+                
+
                 console.log(`Data for ${row['Company']} in ${row['Year']} does not exist, inserting`);
+
                 await sql`
                 INSERT INTO financial_data (
                   year, company, sector, equity_ticker, share_price, div_ticker, p_and_l_fx,
@@ -239,6 +244,7 @@ export async function uploadFinancialData (req, res) {
                   ${row['Peer4']}, 
                   ${loggedUser.id}
                 );`;
+                
 
                 //check sectors table for sector name and insert if not present
               const sector = row['Sector'];
@@ -336,7 +342,11 @@ export async function uploadFinancialData (req, res) {
                 console.log(`${index3} already exists`);
               }
             }
+            }else{
+              console.log('Year, Company or Equity Ticker is missing, ignore since this might be a price file');
+            
             }
+          }
             } catch (dbError) {
               console.error('Error inserting data', dbError);
             }
@@ -463,7 +473,7 @@ export async function getFinancialData(req) {
     const offset = (currentPage - 1) * pageSize;
     const query = `
       SELECT * FROM financial_data
-      WHERE company ILIKE $1
+      WHERE company ILIKE $1 OR equity_ticker ILIKE $1
       ORDER BY company ASC
       LIMIT $2 OFFSET $3
     `;

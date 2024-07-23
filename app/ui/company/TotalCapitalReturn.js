@@ -5,11 +5,6 @@ import { useState } from "react";
 export default function TotalCapitalReturn({zPrev, zFirst, zSecond, zThird, zFourth}) {
     const [showChart, setShowChart] = useState(false);
 
-    const PrevPer = zPrev?.dividend / zPrev?.net_income * 100;
-    const FirstPer = zFirst?.dividend / zFirst?.net_income * 100;
-    const SecPer = zSecond?.dividend / zSecond?.net_income * 100;
-    const ThirdPer = zThird?.dividend / zThird?.net_income * 100;
-
     const chartData = [
         { "Dividend" : [getPercentage(zPrev.dividend, zPrev.net_income), 
             getPercentage(zFirst.dividend, zFirst.net_income), 
@@ -19,7 +14,7 @@ export default function TotalCapitalReturn({zPrev, zFirst, zSecond, zThird, zFou
             getPercentage(zFirst.share_buyback, zFirst.net_income), 
             getPercentage(zSecond.share_buyback, zSecond.net_income),
             getPercentage(zThird.share_buyback, zThird.net_income)] }
-    ];
+        ];
 
     return (<>
         <div className="card total-cap-return flex-fill">
@@ -34,11 +29,11 @@ export default function TotalCapitalReturn({zPrev, zFirst, zSecond, zThird, zFou
                     chartData={chartData}
                 /> : 
             <div className="table-responsive">
-                <table className="table table-responsive">
+                <table className="table table-responsive aligned-table">
                     <thead>
                         <tr>
                             <th></th>
-                            <th>{`FY${zPrev.year_2digit}`}e</th>
+                            <th>{`FY${zPrev.year_2digit}`}</th>
                             <th>{`FY${zFirst.year_2digit}`}</th>
                             <th>{`FY${zSecond.year_2digit}`}</th>
                             <th>{`FY${zThird.year_2digit}`}</th>

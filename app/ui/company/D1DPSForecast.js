@@ -11,7 +11,7 @@ export default function D1DPSForecast({zFirst, zSecond, zThird, zFourth}) {
         <h5>D1 DPS forecast</h5>
         <hr />
         <div className="table-responsive">
-          <table className='table table-responsive'>
+          <table className='table table-responsive aligned-table'>
             <thead>
               <tr>
                 <th></th>

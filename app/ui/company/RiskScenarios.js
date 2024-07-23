@@ -6,7 +6,7 @@ export default function RiskScenarios({zFirst, zSecond, zThird, zFourth}) {
             <h5>Risk scenarios</h5>
             <hr />
             <div className="table-responsive">
-                <table className="table table-responsive">
+                <table className="table table-responsive aligned-table">
                     <thead>
                         <tr>
                             <th></th>
