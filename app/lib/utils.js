@@ -114,13 +114,30 @@ export const calculatePercent = (value, total) => {
   return Math.round(percent * 100) + '%';
 }
 
+export const calculatePercentageColored = (value, total) => {
+  //calculate percentage
+  const percent = (Number(value) / Number(total)) - 1;
+  if(percent > 0){
+    return <span class="text-success">{Math.round(percent * 100) + '%'}</span>;
+  }
+  if(percent < 0){
+    //if negative, remove negative sign and put in parenthesis
+    return <span class="text-danger">({Math.abs(Math.round(percent * 100)) + '%'})</span>;
+  }
+
+  return '-';
+
+}
+
+
+
 export const cleanCompanyName = (word) => {
   return word.toLowerCase().replace(/\s/g, '_');
 }
 export const formatPercentage = (value) => {
 
   //remove decimal places and round of
-  return Math.round(value);
+  return Math.round(Number(value));
 }
 
 export const formatWholeNumber = (value) => {
@@ -142,6 +159,15 @@ export const formatWholeNumber = (value) => {
 
 export const roundUpNumber = (value) => {
   
+  if(value === 'n/a'){
+    return '-';
+  }
+  
+  if(isNaN(value)){
+    //remove comma 
+    value = Number(value.replace(/,/g, ''));
+  }
+
 //round number add comma and space
   var num = Math.round(Number(value));
   num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -162,18 +188,12 @@ export const roundNumber = (value) => {
 export const formatNumber = (number, colored = false) => {
   //check if number or string is passed
 
-  if(!number){
+  if(!number || number === 'n/a' || number === 'NaN'){
     return "-" ;
   }else{
 
-    if(number === 'NaN'){
-
-      return;
-    }
-
     const num = Number(number);
     var finalNumber = number;
-
 
     // if finalNumber is more than 3 digits, add comma but no
     if(num <= 999){
@@ -272,6 +292,8 @@ export const displayDate = (date) => {
 }
 
 export const getPercentage = (value, total) => {
+  value = Number(value.replace(/,/g, ''));
+  total = Number(total.replace(/,/g, ''));
   value = value || 0;
   total = total || 1;
   const percent = (Number(value) / Number(total)) * 100;

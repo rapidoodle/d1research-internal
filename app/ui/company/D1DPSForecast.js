@@ -1,4 +1,4 @@
-import { formatNumber, formatWholeNumber } from "@/app/lib/utils";
+import { calculatePercent, calculatePercentageColored, formatNumber, formatWholeNumber } from "@/app/lib/utils";
 
 export default function D1DPSForecast({zFirst, zSecond, zThird, zFourth}) {
   zFirst.difference = ((zFirst.current_price_z / zFirst.dps_z - 1) * - 1) * 100;
@@ -37,11 +37,11 @@ export default function D1DPSForecast({zFirst, zSecond, zThird, zFourth}) {
                 <td>{formatNumber(zFourth?.current_price_z)}</td>
               </tr>
               <tr>
-                <td className="bg-cream">Difference %</td>
-                <td className="bg-cream">{formatWholeNumber(zFirst?.discount_premium_percent, true)}</td>
-                <td className="bg-cream">{formatWholeNumber(zSecond?.discount_premium_percent, true)}</td>
-                <td className="bg-cream">{formatWholeNumber(zThird?.discount_premium_percent, true)}</td>
-                <td className="bg-cream">{formatWholeNumber(zFourth?.discount_premium_percent, true)}</td>
+                <td className="bg-cream">Discount %</td>
+                <td className="bg-cream">{calculatePercent(zFirst?.current_price_z, zFirst?.dps_z)}</td>
+                <td className="bg-cream">{calculatePercent(zSecond?.current_price_z, zSecond?.dps_z)}</td>
+                <td className="bg-cream">{calculatePercent(zThird?.current_price_z, zThird?.dps_z)}</td>
+                <td className="bg-cream">{calculatePercent(zFourth?.current_price_z, zFourth?.dps_z)}</td>
               </tr>
             </tbody>
           </table>

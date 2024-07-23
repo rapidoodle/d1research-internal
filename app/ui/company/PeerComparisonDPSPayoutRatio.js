@@ -15,28 +15,36 @@ export default function PeerComparisonDPSPayoutRatio({zPrev, zFirst, zSecond, zT
 
             for (let i = 1; i <= 4; i++) {
                 const peer = zFirst[`peer_${i}`];
-                if (peer) {
+                if (peer && peer !== 'n/a') {
                     peers.push(peer);
                 }
             }
-            const responses = await Promise.all(peers.map(async (peer) => {
-                const query = `/api/financial-data?equity_ticker=${peer}&type=peer`;
-                const data = await fetch(query);
-                return await data.json();
-            }));
-        
-            // Update state with all responses at once
-            setPeersDPS(responses);
 
-            const chartSeries = responses.map(companyData => {
-                return {
-                    name: companyData[0].equity_ticker,
-                    data: companyData.map(item => Math.round(item.dps_payout_ratio))
-                };
-            });
+                const responses = await Promise.all(peers.map(async (peer) => {
 
-            setChartSeries(chartSeries);
+                    if(peer !== 'n/a'){
+                        const query = `/api/financial-data?equity_ticker=${peer}&type=peer`;
+                        const data = await fetch(query);
+                        return await data.json();
+                    }else{
+                        return [];
+                    }
+
+                }));
             
+                // Update state with all responses at once
+                setPeersDPS(responses);
+
+                const chartSeries = responses.map(companyData => {
+                    if(companyData[0].equity_ticker){
+                        return {
+                            name: companyData[0].equity_ticker,
+                            data: companyData.map(item => Math.round(Number(item.dps_payout_ratio.replace('%', ''))))
+                        };
+                    }
+                });
+
+                setChartSeries(chartSeries);
         }
 
         fetchPeerDPS();
@@ -69,10 +77,10 @@ export default function PeerComparisonDPSPayoutRatio({zPrev, zFirst, zSecond, zT
                                 <tr key={index}>
                                     <td>{peer[0].equity_ticker
                                     }</td>
-                                    <td>{formatPercentage(peer[0].dps_payout_ratio)}</td>
-                                    <td>{formatPercentage(peer[3].dps_payout_ratio)}</td>
-                                    <td>{formatPercentage(peer[2].dps_payout_ratio)}</td>
-                                    <td>{formatPercentage(peer[1].dps_payout_ratio)}</td>
+                                    <td>{peer[0].dps_payout_ratio}</td>
+                                    <td>{peer[3].dps_payout_ratio}</td>
+                                    <td>{peer[2].dps_payout_ratio}</td>
+                                    <td>{peer[1].dps_payout_ratio}</td>
                                 </tr>
                             );
 

@@ -61,10 +61,10 @@ export default function RiskScenarios({zFirst, zSecond, zThird, zFourth}) {
                         </tr>
                         <tr className='highlight'>
                             <td className="bg-cream">Difference to Central</td>
-                            <td className="bg-cream">{formatWholeNumber(1)}</td>
-                            <td className="bg-cream">{formatWholeNumber(3)}</td>
-                            <td className="bg-cream">{formatWholeNumber(-5)}</td>
-                            <td className="bg-cream">{formatWholeNumber(-8)}</td>
+                            <td className="bg-cream">{zFirst?.difference_to_central_percentage}</td>
+                            <td className="bg-cream">{zSecond?.difference_to_central_percentage}</td>
+                            <td className="bg-cream">{zThird?.difference_to_central_percentage}</td>
+                            <td className="bg-cream">{zFourth?.difference_to_central_percentage}</td>
                         </tr>
                     </tbody>
                 </table>

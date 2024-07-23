@@ -18,11 +18,11 @@ export default function ShareCapital({zPrev, zFirst, zSecond, zThird, zFourth}) 
                     </thead>
                     <tbody>
                         <tr>
-                        <td>Shares in issue</td>
-                        <td>{roundUpNumber(zPrev?.share_in_issue)}</td>
-                        <td>{roundUpNumber(zFirst?.share_in_issue)}</td>
-                        <td>{roundUpNumber(zSecond?.share_in_issue)}</td>
-                        <td>{roundUpNumber(zThird?.share_in_issue)}</td>
+                            <td>Shares in issue</td>
+                            <td>{zPrev?.share_in_issue}</td>
+                            <td>{zFirst?.share_in_issue}</td>
+                            <td>{zSecond?.share_in_issue}</td>
+                            <td>{zThird?.share_in_issue}</td>
                         </tr>
                         <tr>
                         <td>Treasury shares</td>

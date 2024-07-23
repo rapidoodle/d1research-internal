@@ -33,7 +33,7 @@ export default function TotalCapitalReturn({zPrev, zFirst, zSecond, zThird, zFou
                     <thead>
                         <tr>
                             <th></th>
-                            <th>{`FY${zPrev.year_2digit}`}</th>
+                            <th>{`FY${zPrev.year_2digit}`}e</th>
                             <th>{`FY${zFirst.year_2digit}`}</th>
                             <th>{`FY${zSecond.year_2digit}`}</th>
                             <th>{`FY${zThird.year_2digit}`}</th>
@@ -70,10 +70,10 @@ export default function TotalCapitalReturn({zPrev, zFirst, zSecond, zThird, zFou
                         </tr>
                         <tr>
                             <td>Capital payout (%)</td>
-                            <td>{roundUpNumber(zPrev?.capital_payout_percent)}</td>
-                            <td>{roundUpNumber(zFirst?.capital_payout_percent)}</td>
-                            <td>{roundUpNumber(zSecond?.capital_payout_percent)}</td>
-                            <td>{roundUpNumber(zThird?.capital_payout_percent)}</td>
+                            <td>{zPrev?.capital_payout_percent}</td>
+                            <td>{zFirst?.capital_payout_percent}</td>
+                            <td>{zSecond?.capital_payout_percent}</td>
+                            <td>{zThird?.capital_payout_percent}</td>
                         </tr>
                     </tbody>
                 </table>

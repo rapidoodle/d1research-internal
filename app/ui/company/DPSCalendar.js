@@ -20,7 +20,24 @@ export default function DPSCalendar({allData}) {
                     <tbody>
                         {/* iterate all data, and display */}
                         {allData.map((data, index) => {
+
+                            //calculate dps sum, check if dps is n/a
+                            if(data.dps_q1 === 'n/a' || data.dps_q1 === 'NaN'){
+                                data.dps_q1 = 0;
+                            }
+                            if(data.dps_q2 === 'n/a' || data.dps_q2 === 'NaN'){
+                                data.dps_q2 = 0;
+                            }
+                            if(data.dps_q3 === 'n/a' || data.dps_q3 === 'NaN'){
+                                data.dps_q3 = 0;
+                            }
+                            if(data.dps_q4 === 'n/a' || data.dps_q4 === 'NaN'){
+                                data.dps_q4 = 0;
+                            }
+
+
                         const dpsTotal = data.dps_q1 + data.dps_q2 + data.dps_q3 + data.dps_q4;
+
                         const currentYear = new Date().getFullYear();
                         const yearLabel = data.year > currentYear ? `${data.year}e` : data.year;
                         return (

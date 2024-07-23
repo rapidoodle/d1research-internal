@@ -75,6 +75,7 @@ import moment from "moment";
     { name: 'z Bull', selector: row => row.bull_z, sortable: true },
     { name: 'z Very Bull', selector: row => row.very_bull_z, sortable: true },
     { name: 'Risk Adj. DPS (z)', selector: row => row.risk_adj_dps_z, sortable: true },
+    { name: 'Difference to Central (%)', selector: row => row.difference_to_central_percentage, sortable: true },
     { name: 'Net Income', selector: row => row.net_income, sortable: true },
     { name: 'Av. Weighted Share Cap', selector: row => row.av_weighted_share_cap, sortable: true },
     { name: 'EPS', selector: row => row.eps, sortable: true },

@@ -53,10 +53,10 @@ export default function OverviewFinancials({zPrev, zFirst, zSecond, zThird, zFou
                         </tr>
                         <tr>
                         <td>Payout %</td>
-                        <td>{roundUpNumber(zPrev?.dps_payout_ratio)}</td>
-                        <td>{roundUpNumber(zFirst?.dps_payout_ratio)}</td>
-                        <td>{roundUpNumber(zSecond?.dps_payout_ratio)}</td>
-                        <td>{roundUpNumber(zThird?.dps_payout_ratio)}</td>
+                        <td>{zPrev?.dps_payout_ratio}</td>
+                        <td>{zFirst?.dps_payout_ratio}</td>
+                        <td>{zSecond?.dps_payout_ratio}</td>
+                        <td>{zThird?.dps_payout_ratio}</td>
                         </tr>
                         <tr>
                         <td colSpan={5} className='px-0 second-title'>
