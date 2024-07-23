@@ -328,8 +328,8 @@ export default function CompanyOverview({session}) {
             </div>
         </div>
         {/* ROW 1 */}
-        <div className="row mb-4 mt-2 d-flex">
-          <div className='col-md-6 d-flex mb-4 mb-md-0'>
+        <div className="row mt-2 d-flex">
+          <div className='col-md-6 d-flex mb-4'>
             <D1DPSForecast 
               zFirst={zFirst}
               zSecond={zSecond}
@@ -337,17 +337,13 @@ export default function CompanyOverview({session}) {
               zFourth={zFourth}
              />
           </div>
-          <div className='col-md-6 d-flex'>
+          <div className='col-md-6 d-flex mb-4'>
             <CapitalReturnPolicy  
               companyID={selectedCompany?.value}
               session={session}
             />
           </div>
-        </div>
-
-        {/* ROW 2 */}
-        <div className="row mb-4 d-flex">
-          <div className='col-md-6 d-flex mb-4 mb-md-0'>
+          <div className='col-md-6 d-flex mb-4'>
             <RiskScenarios
               zFirst={zFirst}
               zSecond={zSecond}
@@ -355,16 +351,12 @@ export default function CompanyOverview({session}) {
               zFourth={zFourth} 
             />
           </div>
-          <div className='col-md-6 d-flex'>
+          <div className='col-md-6 d-flex mb-4'>
             <AnalystsComments 
               companyID={selectedCompany?.value}
               session={session} />
           </div>
-        </div>
-        
-        {/* ROW 3 */}
-        <div className="row mb-4 d-flex">
-          <div className='col-md-6 d-flex mb-4 mb-md-0'>
+          <div className='col-md-6 d-flex mb-4'>
             <OverviewFinancials
               zPrev={zPrev}
               zFirst={zFirst}
@@ -373,7 +365,7 @@ export default function CompanyOverview({session}) {
               zFourth={zFourth}
             />
           </div>
-          <div className='col-md-6 d-flex flex-column'>
+          <div className='col-md-6 d-flex mb-4 flex-column'>
             <UpcomingEvents 
               allData={allData} 
             />
@@ -381,11 +373,7 @@ export default function CompanyOverview({session}) {
             <DPSCalendar 
               allData={allData} />
           </div>
-        </div>
-        
-        {/* ROW 4 */}
-        <div className="row mb-4 d-flex">
-          <div className='col-md-6 d-flex mb-4 mb-md-0'>
+          <div className='col-md-6 d-flex mb-4'>
             <ShareCapital 
               zPrev={zPrev}
               zFirst={zFirst}
@@ -394,14 +382,10 @@ export default function CompanyOverview({session}) {
               zFourth={zFourth}
             />
           </div>
-          <div className='col-md-6 d-flex'>
+          <div className='col-md-6 d-flex mb-4'>
             <ExDivCalendar allData={allData} />
           </div>
-        </div>
-        
-        {/* ROW 5 */}
-        <div className="row d-flex">
-          <div className='col-md-6 d-flex mb-4 mb-md-0'>
+          <div className='col-md-6 d-flex'>
             <TotalCapitalReturn 
               zPrev={zPrev}
               zFirst={zFirst}

@@ -8,7 +8,7 @@ const CustomTableComponent = ({ columns, data }) => {
   };
 
   return (
-    <div className="table-responsive clinked-table-container">
+    <div className="table-responsive">
       <table className="table table-striped table-hover w-100">
         <thead>
           <tr>
