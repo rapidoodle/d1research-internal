@@ -38,7 +38,7 @@ export default function UpcomingEvents( { allData } ) {
                 <table className="table table-responsive table-fixed-header">
                     <thead>
                         <tr>
-                        <th width="140px">Date</th>
+                        <th width="120px">Date</th>
                         <th className="text-left">Confirmed and expected events</th>
                         </tr>
                     </thead>

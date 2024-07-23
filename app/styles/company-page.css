@@ -250,15 +250,31 @@ table tr td.font-medium{
     text-align: left!important;
 }
 
-
-.company-page table tbody td{
-    text-align: center;
-    width: 127px;
-}
 .text-left{
     text-align: left!important;
 }
 
 .company-page table tbody td, .company-page table thead th{
     font-size: 14px;
+}
+
+.div-index-container{
+    -webkit-box-align: center;
+    align-items: center;
+    cursor: default;
+    display: flex;
+    flex-wrap: wrap;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    min-height: 38px;
+    position: relative;
+    transition: all 100ms ease 0s;
+    background-color: rgb(255, 255, 255);
+    border-color: rgb(204, 204, 204);
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 1px;
+    box-sizing: border-box;
+    outline: 0px !important;
+    padding-left: 0.5rem;
 }
