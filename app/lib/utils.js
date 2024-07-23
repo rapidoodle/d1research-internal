@@ -84,10 +84,34 @@ export const formatClinkedDate = (isoDateString) => {
 
 
 export const cleanCurrency = (value) => {
-  if (typeof value === 'string') {
-    return parseFloat(value.replace(/,/g, ''));
+  if(!value){
+    return 'n/a';
+  }
+
+  return value;
+}
+
+export const cleanField = (value) => {
+  if (value === null || value === undefined || value === '') {
+    return 'n/a';
   }
   return value;
+}
+
+export const cleanDate = (date) => {
+//return null if date is null
+  if(!date){
+    return null;
+  }
+
+  //return date in format 12-Jun-24
+  return moment(date).format('DD-MMM-YY');
+}
+export const calculatePercent = (value, total) => {
+  //calculate percentage
+  const percent = (Number(value) / Number(total)) - 1;
+
+  return Math.round(percent * 100) + '%';
 }
 
 export const cleanCompanyName = (word) => {

@@ -3,7 +3,7 @@ import { parse } from 'csv-parse';
 import { readFile, writeFile } from 'fs/promises';
 import { NextRequest, NextResponse } from 'next/server';
 import { join } from 'path';
-import { cleanCurrency } from './utils';
+import { calculatePercent, cleanDate, cleanField } from './utils';
 import aws from 'aws-sdk';
 import { uploadFile } from './aws/upload';
 import { randomUUID } from 'crypto';
@@ -64,129 +64,217 @@ export async function uploadFinancialData (req, res) {
                 WHERE company = $1 AND year = $2 AND equity_ticker = $3
               `;
               const financialDataResult = await sql.query(financialDataQuery, [row['Company'], row['Year'], row['Equity Ticker']]);
-              
+
               //get logged in user id
               if (financialDataResult.rows.length > 0) {
-                  // await sql`UPDATE financial_data SET`
 
-                if((Number(financialDataResult.rows[0]['dps_z']) !== cleanCurrency(row['DPS z']) && row['DPS z']) || 
-                  (Number(financialDataResult.rows[0]['very_bear_z']) !== cleanCurrency(row['z Very Bear'] && row['z Very Bear'])) || 
-                  (Number(financialDataResult.rows[0]['bear_z']) !== cleanCurrency(row['z Bear']) && row['z Bear']) || 
-                  (Number(financialDataResult.rows[0]['bull_z']) !== cleanCurrency(row['z Bull']) && row['z Bull']) || 
-                  (Number(financialDataResult.rows[0]['very_bull_z']) !== cleanCurrency(row['z Very Bull']) && row['z Very Bull']) || 
-                  (Number(financialDataResult.rows[0]['risk_adj_dps_z']) !== cleanCurrency(row['Risk adj. DPS (z)']) && row['Risk adj. DPS (z)'])){
+                //the company already exists, update all the data
+                console.log(`Data for ${row['Company']} in ${row['Year']} exists, update`);
+                const updateAllQuery = `
+                UPDATE financial_data
+                SET
+                  year = $1,
+                  company = $2,
+                  sector = $3,
+                  equity_ticker = $4,
+                  share_price = $5,
+                  div_ticker = $6,
+                  p_and_l_fx = $7,
+                  div_future_fx = $8,
+                  index1 = $9,
+                  index2 = $10,
+                  index3 = $11,
+                  dps_z = $12,
+                  current_price_z = $13,
+                  discount_premium_percent = $14,
+                  annual_return_percent = $15,
+                  very_bear_z = $16,
+                  bear_z = $17,
+                  bull_z = $18,
+                  very_bull_z = $19,
+                  risk_adj_dps_z = $20,
+                  difference_to_central_percentage = $21,
+                  net_income = $22,
+                  av_weighted_share_cap = $23,
+                  eps = $24,
+                  dps_fy = $25,
+                  dps_payout_ratio = $26,
+                  op_cash_flow = $27,
+                  capex = $28,
+                  free_cash_flow = $29,
+                  dividend = $30,
+                  share_buyback = $31,
+                  total_capital_return = $32,
+                  net_debt = $33,
+                  share_in_issue = $34,
+                  treasury_shares = $35,
+                  shares_outstanding = $36,
+                  capital_payout_percent = $37,
+                  dps_q1 = $38,
+                  dps_q2 = $39,
+                  dps_q3 = $40,
+                  dps_q4 = $41,
+                  ex_date_q1 = $42,
+                  ex_date_q2 = $43,
+                  ex_date_q3 = $44,
+                  ex_date_q4 = $45,
+                  peer_1 = $46,
+                  peer_2 = $47,
+                  peer_3 = $48,
+                  peer_4 = $49,
+                  updated_by = $50
+                WHERE
+                  equity_ticker = $51 AND
+                  year = $52;
+              `;
 
-                  var dpsZQuery = '';
-                  var veryBearZQuery = '';
-                  var bearZQuery = '';
-                  var bullZQuery = '';
-                  var veryBullZQuery = '';
-                  var riskAdjDpsZQuery = '';
-                  let needUpdate = false;
-                  
-                  if(row['DPS z'] && (Number(financialDataResult.rows[0]['dps_z']) !== Number(row['DPS z']))){
-                    dpsZQuery = `dps_z = ${cleanCurrency(row['DPS z'])},`;
-                    console.log('DPS Z query', dpsZQuery);
+              //if row['DPS z] and row['Current Price z'] is not empty set discountPremiumPercent to (row['Current Price z'] / row['DPS z']) - 1
+              var discountPremiumPercent = null;
+              if(row['DPS z'] && row['Current Price z']){
+                discountPremiumPercent = calculatePercent(row['Current Price z'], row['DPS z']);
+                console.log('Discount premium percent is', discountPremiumPercent, row['Equity Ticker'], row['Year']);
+              }else{
+                discountPremiumPercent = 'n/a';
 
-                    needUpdate = true;
-                  }
+                console.log('Discount premium percent is n/a for', row['Equity Ticker'], row['Year']);
+              }
+              
+              const values = [
+                cleanField(row['Year']),
+                cleanField(row['Company']),
+                cleanField(row['Sector']),
+                cleanField(row['Equity Ticker']),
+                cleanField(row['Share price']),
+                cleanField(row['Div Ticker']),
+                cleanField(row['P&L FX']),
+                cleanField(row['Div Future FX']),
+                cleanField(row['Index1']),
+                cleanField(row['Index2']),
+                cleanField(row['Index3']),
+                cleanField(row['DPS z']),
+                cleanField(row['Current Price z']),
+                cleanField(discountPremiumPercent),
+                cleanField(row['Annual return (%)']),
+                cleanField(row['z Very Bear']),
+                cleanField(row['z Bear']),
+                cleanField(row['z Bull']),
+                cleanField(row['z Very Bull']),
+                cleanField(row['Risk adj. DPS (z)']),
+                cleanField(row['Difference to Central (%)']),
+                cleanField(row['Net Income']),
+                cleanField(row['Av. Weighted Share Cap']),
+                cleanField(row['EPS']),
+                cleanField(row['DPS (FY)']),
+                cleanField(row['DPS payout ratio']),
+                cleanField(row['Op Cash Flow']),
+                cleanField(row['Capex']),
+                cleanField(row['Free Cash Flow']),
+                cleanField(row['Dividend']),
+                cleanField(row['Share Buyback']),
+                cleanField(row['Total Capital Return']),
+                cleanField(row['Net Debt']),
+                cleanField(row['Share in issue']),
+                cleanField(row['Treasury shares']),
+                cleanField(row['Shares outstanding']),
+                cleanField(row['Capital Payout (%)']),
+                cleanField(row['DPSQ1']),
+                cleanField(row['DPSQ2']),
+                cleanField(row['DPSQ3']),
+                cleanField(row['DPSQ4']),
+                cleanDate(row['Ex Date Q1']),
+                cleanDate(row['Ex Date Q2']),
+                cleanDate(row['Ex Date Q3']),
+                cleanDate(row['Ex Date Q4']),
+                cleanField(row['Peer1']),
+                cleanField(row['Peer2']),
+                cleanField(row['Peer3']),
+                cleanField(row['Peer4']),
+                cleanField(loggedUser.id),
+                cleanField(row['Equity Ticker']),
+                cleanField(row['Year'])
+              ];
 
-                  if(row['z Very Bear'] && (Number(financialDataResult.rows[0]['very_bear_z']) !== Number(row['z Very Bear']))){
-                    veryBearZQuery = `very_bear_z = ${cleanCurrency(row['z Very Bear'])},`;
-                    console.log('Very Bear Z query', veryBearZQuery);
-
-                    needUpdate = true;
-                  }
-
-                  if(row['z Bear'] && (Number(financialDataResult.rows[0]['bear_z']) !== Number(row['z Bear']))){
-                    bearZQuery = `bear_z = ${cleanCurrency(row['z Bear'])},`;
-                    console.log('Bear Z query', bearZQuery);
-
-                    needUpdate = true;
-                  }
-
-                  if(row['z Bull'] && (Number(financialDataResult.rows[0]['bull_z']) !== Number(row['z Bull']))){
-                    bullZQuery = `bull_z = ${cleanCurrency(row['z Bull'])},`;
-                    console.log('Bull Z query', bullZQuery);
-
-                    needUpdate = true;
-                  }
-
-                  if(row['z Very Bull'] && (Number(financialDataResult.rows[0]['very_bull_z']) !== Number(row['z Very Bull']))){
-                    veryBullZQuery = `very_bull_z = ${cleanCurrency(row['z Very Bull'])},`;
-                    console.log('Very Bull Z query', veryBullZQuery);
-
-                    needUpdate = true;
-                  }
-
-                  if(row['Risk adj. DPS (z)'] && (Number(financialDataResult.rows[0]['risk_adj_dps_z']) !== Number(row['Risk adj. DPS (z)']))){
-                    riskAdjDpsZQuery = `risk_adj_dps_z = ${cleanCurrency(row['Risk adj. DPS (z)'])},`;
-                    console.log('Risk Adj DPS Z query', riskAdjDpsZQuery);
-
-                    needUpdate = true;
-                  }
-
-                  if(needUpdate){
-                    const updateQuery = `UPDATE financial_data SET ${dpsZQuery} ${veryBearZQuery} ${bearZQuery} ${bullZQuery} ${veryBullZQuery} ${riskAdjDpsZQuery} updated_by = $1 WHERE equity_ticker = $2 AND year = $3`;
-
-                    const updateResponse = await sql.query(updateQuery, [loggedUser.id, row['Equity Ticker'], row['Year']]);
-
-                    console.log('update response:', updateResponse);
-
-                   const insertQuery = `INSERT INTO financial_data_history (
-                    year, 
-                    company, 
-                    equity_ticker, 
-                    dps_z, 
-                    very_bear_z, 
-                    bear_z, 
-                    bull_z, 
-                    very_bull_z, 
-                    risk_adj_dps_z, 
-                    updated_by) VALUES (
-                    $1, 
-                    $2, 
-                    $3, 
-                    $4, 
-                    $5, 
-                    $6, 
-                    $7, 
-                    $8, 
-                    $9, 
-                    $10);`;
-
-                  await sql.query(insertQuery, [
-                    financialDataResult.rows[0]['year'], 
-                    financialDataResult.rows[0]['company'], 
-                    financialDataResult.rows[0]['equity_ticker'], 
-                    cleanCurrency(financialDataResult.rows[0]['dps_z']), 
-                    cleanCurrency(financialDataResult.rows[0]['very_bear_z']),
-                    cleanCurrency(financialDataResult.rows[0]['bear_z']),
-                    cleanCurrency(financialDataResult.rows[0]['bull_z']),
-                    cleanCurrency(financialDataResult.rows[0]['very_bull_z']),
-                    cleanCurrency(financialDataResult.rows[0]['risk_adj_dps_z']),
-                    loggedUser.id]
-                  );
-                }else{
-                  console.log("Nothing to update");
+                try {
+                  const result = await sql.query(updateAllQuery, values);
+                  console.log('Update successful:', result);
+                } catch (err) {
+                  console.error('Error executing query:', err.stack);
                 }
 
+                //if any of this changed, update the historical data
+                if((Number(financialDataResult.rows[0]['dps_z']) !== cleanField(row['DPS z']) && row['DPS z']) || 
+                  (Number(financialDataResult.rows[0]['very_bear_z']) !== cleanField(row['z Very Bear'] && row['z Very Bear'])) || 
+                  (Number(financialDataResult.rows[0]['bear_z']) !== cleanField(row['z Bear']) && row['z Bear']) || 
+                  (Number(financialDataResult.rows[0]['bull_z']) !== cleanField(row['z Bull']) && row['z Bull']) || 
+                  (Number(financialDataResult.rows[0]['very_bull_z']) !== cleanField(row['z Very Bull']) && row['z Very Bull']) || 
+                  (Number(financialDataResult.rows[0]['risk_adj_dps_z']) !== cleanField(row['Risk adj. DPS (z)']) && row['Risk adj. DPS (z)'])){
+
+                  console.log('Some estimates changed, update historical data');
+
+                  try {
+                    const insertQuery = `INSERT INTO financial_data_history (
+                     year, 
+                     company, 
+                     equity_ticker, 
+                     dps_z, 
+                     very_bear_z, 
+                     bear_z, 
+                     bull_z, 
+                     very_bull_z, 
+                     risk_adj_dps_z, 
+                     updated_by) VALUES (
+                     $1, 
+                     $2, 
+                     $3, 
+                     $4, 
+                     $5, 
+                     $6, 
+                     $7, 
+                     $8, 
+                     $9, 
+                     $10);`;
+ 
+                   await sql.query(insertQuery, [
+                     financialDataResult.rows[0]['year'], 
+                     financialDataResult.rows[0]['company'], 
+                     financialDataResult.rows[0]['equity_ticker'], 
+                     cleanField(financialDataResult.rows[0]['dps_z']), 
+                     cleanField(financialDataResult.rows[0]['very_bear_z']),
+                     cleanField(financialDataResult.rows[0]['bear_z']),
+                     cleanField(financialDataResult.rows[0]['bull_z']),
+                     cleanField(financialDataResult.rows[0]['very_bull_z']),
+                     cleanField(financialDataResult.rows[0]['risk_adj_dps_z']),
+                     loggedUser.id]
+                   );
+                  } catch (error) {
+                    throw new Error('Error inserting historical data');
+                  }
+
                 }else{
-                  console.log("Share price and current price z are the same, no need to update");
+                  console.log("Nothing to save in historical data!");
                 }
                 
               }else{
 
                 if(row['Year'] && row['Company'] && row['Equity Ticker']){
-                
 
-                console.log(`Data for ${row['Company']} in ${row['Year']} does not exist, inserting`);
+                console.log(`Data for ${row['Company']} in ${row['Year']} does not exist, inserting...`);
+
+                //if row['DPS z] and row['Current Price z'] is not empty set discountPremiumPercent to (row['Current Price z'] / row['DPS z']) - 1
+                var discountPremiumPercent = null;
+                if(row['DPS z'] && row['Current Price z']){
+                  discountPremiumPercent = (cleanField(row['Current Price z']) / cleanField(row['DPS z'])) - 1;
+                  console.log('Discount premium percent is', discountPremiumPercent, row['Equity Ticker'], row['Year']);
+                }else{
+                  discountPremiumPercent = 'n/a';
+                  console.log('Discount premium percent is n/a for', row['Equity Ticker'], row['Year']);
+                }
 
                 await sql`
                 INSERT INTO financial_data (
                   year, company, sector, equity_ticker, share_price, div_ticker, p_and_l_fx,
                   div_future_fx, index1, index2, index3, dps_z, current_price_z, discount_premium_percent,
-                  annual_return_percent, very_bear_z, bear_z, bull_z, very_bull_z, risk_adj_dps_z, net_income,
+                  annual_return_percent, very_bear_z, bear_z, bull_z, very_bull_z, risk_adj_dps_z, difference_to_central_percentage, net_income,
                   av_weighted_share_cap, eps, dps_fy, dps_payout_ratio, op_cash_flow, capex, free_cash_flow,
                   dividend, share_buyback, total_capital_return, net_debt, share_in_issue, treasury_shares,
                   shares_outstanding, capital_payout_percent, dps_q1, dps_q2, dps_q3, dps_q4, ex_date_q1,
@@ -196,50 +284,51 @@ export async function uploadFinancialData (req, res) {
                   ${row['Company']}, 
                   ${row['Sector']}, 
                   ${row['Equity Ticker']}, 
-                  ${cleanCurrency(row['Share price'])}, 
-                  ${row['Div Ticker']}, 
-                  ${row['P&L FX']}, 
-                  ${row['Div Future FX']},
-                  ${row['Index1']}, 
-                  ${row['Index2']}, 
-                  ${row['Index3']}, 
-                  ${cleanCurrency(row['DPS z'])}, 
-                  ${cleanCurrency(row['Current Price z'])}, 
-                  ${cleanCurrency(row['Discount/ Premium (%)'])},
-                  ${cleanCurrency(row['Annual return (%)'])}, 
-                  ${cleanCurrency(row['z Very Bear'])}, 
-                  ${cleanCurrency(row['z Bear'])}, 
-                  ${cleanCurrency(row['z Bull'])}, 
-                  ${cleanCurrency(row['z Very Bull'])}, 
-                  ${cleanCurrency(row['Risk adj. DPS (z)'])}, 
-                  ${cleanCurrency(row['Net Income'])},
-                  ${cleanCurrency(row['Av. Weighted Share Cap'])}, 
-                  ${cleanCurrency(row['EPS'])}, 
-                  ${cleanCurrency(row['DPS (FY)'])}, 
-                  ${cleanCurrency(row['DPS payout ratio'])}, 
-                  ${cleanCurrency(row['Op Cash Flow'])}, 
-                  ${cleanCurrency(row['Capex'])}, 
-                  ${cleanCurrency(row['Free Cash Flow'])},
-                  ${cleanCurrency(row['Dividend'])}, 
-                  ${cleanCurrency(row['Share Buyback'])}, 
-                  ${cleanCurrency(row['Total Capital Return'])}, 
-                  ${cleanCurrency(row['Net Debt'])}, 
-                  ${cleanCurrency(row['Share in issue'])}, 
-                  ${cleanCurrency(row['Treasury shares'])},
-                  ${cleanCurrency(row['Shares outstanding'])}, 
-                  ${cleanCurrency(row['Capital Payout (%)'])}, 
-                  ${cleanCurrency(row['DPSQ1'])}, 
-                  ${cleanCurrency(row['DPSQ2'])}, 
-                  ${cleanCurrency(row['DPSQ3'])}, 
-                  ${cleanCurrency(row['DPSQ4'])}, 
-                  ${row['Ex Date Q1'] ? `'${row['Ex Date Q1']}'` : null}, 
-                  ${row['Ex Date Q2'] ? `'${row['Ex Date Q2']}'` : null}, 
-                  ${row['Ex Date Q3'] ? `'${row['Ex Date Q3']}'` : null}, 
-                  ${row['Ex Date Q4'] ? `'${row['Ex Date Q4']}'` : null},
-                  ${row['Peer1']}, 
-                  ${row['Peer2']}, 
-                  ${row['Peer3']}, 
-                  ${row['Peer4']}, 
+                  ${cleanField(row['Share price'])}, 
+                  ${cleanField(row['Div Ticker'])}, 
+                  ${cleanField(row['P&L FX'])}, 
+                  ${cleanField(row['Div Future FX'])},
+                  ${cleanField(row['Index1'])}, 
+                  ${cleanField(row['Index2'])}, 
+                  ${cleanField(row['Index3'])}, 
+                  ${cleanField(row['DPS z'])}, 
+                  ${cleanField(row['Current Price z'])}, 
+                  ${cleanField(discountPremiumPercent)},
+                  ${cleanField(row['Annual return (%)'])}, 
+                  ${cleanField(row['z Very Bear'])}, 
+                  ${cleanField(row['z Bear'])}, 
+                  ${cleanField(row['z Bull'])}, 
+                  ${cleanField(row['z Very Bull'])}, 
+                  ${cleanField(row['Risk adj. DPS (z)'])}, 
+                  ${cleanField(row['Difference to Central (%)'])}, 
+                  ${cleanField(row['Net Income'])},
+                  ${cleanField(row['Av. Weighted Share Cap'])}, 
+                  ${cleanField(row['EPS'])}, 
+                  ${cleanField(row['DPS (FY)'])}, 
+                  ${cleanField(row['DPS payout ratio'])}, 
+                  ${cleanField(row['Op Cash Flow'])}, 
+                  ${cleanField(row['Capex'])}, 
+                  ${cleanField(row['Free Cash Flow'])},
+                  ${cleanField(row['Dividend'])}, 
+                  ${cleanField(row['Share Buyback'])}, 
+                  ${cleanField(row['Total Capital Return'])}, 
+                  ${cleanField(row['Net Debt'])}, 
+                  ${cleanField(row['Share in issue'])}, 
+                  ${cleanField(row['Treasury shares'])},
+                  ${cleanField(row['Shares outstanding'])}, 
+                  ${cleanField(row['Capital Payout (%)'])}, 
+                  ${cleanField(row['DPSQ1'])}, 
+                  ${cleanField(row['DPSQ2'])}, 
+                  ${cleanField(row['DPSQ3'])}, 
+                  ${cleanField(row['DPSQ4'])}, 
+                  ${cleanDate(row['Ex Date Q1'])}, 
+                  ${cleanDate(row['Ex Date Q2'])}, 
+                  ${cleanDate(row['Ex Date Q3'])}, 
+                  ${cleanDate(row['Ex Date Q4'])},
+                  ${cleanField(row['Peer1'])}, 
+                  ${cleanField(row['Peer2'])}, 
+                  ${cleanField(row['Peer3'])}, 
+                  ${cleanField(row['Peer4'])}, 
                   ${loggedUser.id}
                 );`;
                 
@@ -307,7 +396,7 @@ export async function uploadFinancialData (req, res) {
 
             //check if Index1 is present in tags table and insert if not present
             const index1 = row['Index1'];
-            if(index1){
+            if(index1 && index1 !== 0){
               const index1TickerRes = await getTagByName({ name: index1 });
               if(index1TickerRes.data.length === 0){
                 let index1TagResponse = await createTag({ name: index1, updated_by: loggedUser.id }, false);
@@ -319,7 +408,7 @@ export async function uploadFinancialData (req, res) {
 
             //check if Index2 is present in tags table and insert if not present
             const index2 = row['Index2'];
-            if(index2){
+            if(index2 && index2 !== 0){
               const index2TickerRes = await getTagByName({ name: index2 });
               if(index2TickerRes.data.length === 0){
                 let index2TagResponse = await createTag({ name: index2, updated_by: loggedUser.id }, false);
@@ -331,7 +420,7 @@ export async function uploadFinancialData (req, res) {
 
             //check if Index3 is present in tags table and insert if not present
             const index3 = row['Index3'];
-            if(index3){
+            if(index3 && index3 !== 0){
               const index3TickerRes = await getTagByName({ name: index3 });
               if(index3TickerRes.data.length === 0){
                 let index3TagResponse = await createTag({ name: index3, updated_by: loggedUser.id }, false);
@@ -342,7 +431,6 @@ export async function uploadFinancialData (req, res) {
             }
             }else{
               console.log('Year, Company or Equity Ticker is missing, ignore since this might be a price file');
-            
             }
           }
             } catch (dbError) {
@@ -361,8 +449,6 @@ export async function uploadFinancialData (req, res) {
 
     return NextResponse.json({ message: 'File processed and data inserted successfully'});
 };
-
-
 
 export async function uploadPriceFileData (req, res) {
   const data       = await req.formData();

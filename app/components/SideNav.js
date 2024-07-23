@@ -46,7 +46,7 @@ const SideNav = () => {
             onClick={toggleMaster}
             aria-expanded={!masterCollapsed}
           >
-              <span>Financial Overview</span> 
+              <span>Data</span> 
               <span className='ms-auto'><FontAwesomeIcon icon={masterCollapsed ? faChevronRight : faChevronDown} /></span>
           </button>
           <div className={clsx('collapse', { 'show': !masterCollapsed })}>
