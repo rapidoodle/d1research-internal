@@ -113,22 +113,22 @@ import moment from "moment";
   },
   {
     name: 'Z4',
-    selector: row => formatNumber(row.z1),
+    selector: row => formatSelectorNumber(row.z1),
     sortable: true,
   },
   {
     name: 'Z5',
-    selector: row => formatNumber(row.z2),
+    selector: row => formatSelectorNumber(row.z2),
     sortable: true,
   },
   {
     name: 'Z6',
-    selector: row => formatNumber(row.z3),
+    selector: row => formatSelectorNumber(row.z3),
     sortable: true,
   },
   {
     name: 'Z7',
-    selector: row => formatNumber(row.z4),
+    selector: row => formatSelectorNumber(row.z4),
     sortable: true,
   }];
 
