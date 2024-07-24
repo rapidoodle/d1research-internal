@@ -124,3 +124,7 @@ table > thead > th {
 .page-spinner-logo{
   animation: blink 1.5s linear infinite; /* Blinking effect */
 }
+
+body{
+  overflow: hidden!important;
+}
