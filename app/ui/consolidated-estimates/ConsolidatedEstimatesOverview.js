@@ -46,7 +46,7 @@ export default function ConsolidatedEstimatesOverview({session}) {
         <div className='main-container'>
             <div className='row'>
                 <div className='col-12'>
-                  <div className='table-responsive d-flex justify-content-center' id='dps-table-container'>
+                  <div className='table-responsive'>
                     <CustomTableComponent key={'dps-table'} columns={dpsForecastColumns2} data={allData} />
                   </div>
                 </div>

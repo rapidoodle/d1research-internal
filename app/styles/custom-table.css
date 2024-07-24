@@ -15,7 +15,7 @@ table thead tr th:last-child{
     border-bottom-right-radius: 0!important;
 }
 
-div.clinked-table-container{
-    width: 400px;
+div#dps-table-container{
+    width: 100%;
     height: 1000px;
 }
