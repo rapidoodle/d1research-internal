@@ -278,3 +278,6 @@ table tr td.font-medium{
     outline: 0px !important;
     padding-left: 0.5rem;
 }
+.div-index-container:hover{
+    border-color: #2F5651;
+}

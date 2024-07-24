@@ -1,11 +1,8 @@
 import React from 'react';
 import '@/app/styles/custom-table.css';
+import { formatNumber } from '../lib/utils';
 
 const CustomTableComponent = ({ columns, data }) => {
-  // Function to format numbers
-  const formatNumber = (num) => {
-    return num !== null ? num.toFixed(2) : 'N/A';
-  };
 
   return (
     <div className="table-responsive">

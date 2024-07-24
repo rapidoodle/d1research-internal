@@ -300,3 +300,24 @@ export const getPercentage = (value, total) => {
 
   return Math.round(percent);
 }
+
+export const setSymbol = (currency) => {
+
+  if(currency === 'USD'){
+    return '$';
+  }
+
+  if(currency === 'GBP'){
+    return '£';
+  }
+
+  if(currency === 'EUR'){
+    return '€';
+  }
+
+  if(currency === 'CHF'){
+    return 'CHF';
+  }
+
+  return;
+}

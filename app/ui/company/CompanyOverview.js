@@ -19,6 +19,8 @@ import PeerComparisonDPSPayoutRatio from './PeerComparisonDPSPayoutRatio';
 import Select from 'react-select'
 import AnalystsComments from './AnalystsComments';
 import PageSpinner from '@/app/components/PageSpinner';
+import { customSelectStyle } from '@/app/lib/custom-styles/custom-styles';
+import { setSymbol } from '@/app/lib/utils';
 
 export default function CompanyOverview({session}) {
   const pathname = usePathname();
@@ -39,6 +41,8 @@ export default function CompanyOverview({session}) {
   const [companiesOptions, setCompaniesOptions] = useState([]);
   const [stoTickerOptions, setSTOTickerOptions] = useState([]);
   const [divTickerOptions, setDivTickerOptions] = useState([]);
+  const [dpsSymbol, setDPSSymbol] = useState('X');
+  const [generalSymbol, setGeneralSymbol] = useState('X');
 
   const [showCompanies, setShowCompanies] = useState(true);
   const [divIndex, setDivIndex] = useState([]);
@@ -146,6 +150,9 @@ export default function CompanyOverview({session}) {
             data[0].year_2digit = year2Digit;
 
             setZPrev(data[0]);
+
+            setDPSSymbol(setSymbol(data[0].div_future_fx));
+            setGeneralSymbol(setSymbol(data[0].p_and_l_fx));
 
           }
           if (data[1]) {
@@ -257,6 +264,7 @@ export default function CompanyOverview({session}) {
                               onChange={handleSelectCompany}
                               value={selectedCompany}
                               name="companies"
+                              styles={customSelectStyle}
                               options={companiesOptions}
                           />
                           {/* <sub className='company-link cursor-pointer float-end my-2' onClick={ () => setShowCompanies(false) }>Close</sub> */}
@@ -277,6 +285,7 @@ export default function CompanyOverview({session}) {
                               onChange={handleSelectSTOTicker}
                               value={selectedSTOTicker}
                               name="companiesTicker"
+                              styles={customSelectStyle}
                               options={stoTickerOptions}
                           />
                           {/* <sub className='company-link cursor-pointer float-end my-2' onClick={ () => setShowCompanies(false) }>Close</sub> */}
@@ -303,6 +312,7 @@ export default function CompanyOverview({session}) {
                               onChange={handleSelectDivTicker}
                               value={selectedDivTicker}
                               name="companiesDivTicker"
+                              styles={customSelectStyle}
                               options={divTickerOptions}
                           />
                           {/* <sub className='company-link cursor-pointer float-end my-2' onClick={ () => setShowCompanies(false) }>Close</sub> */}
@@ -358,6 +368,8 @@ export default function CompanyOverview({session}) {
               zSecond={zSecond}
               zThird={zThird}
               zFourth={zFourth}
+              generalSymbol={generalSymbol}
+              dpsSymbol={dpsSymbol}
             />
           </div>
           <div className='col-md-6 d-flex mb-4 flex-column'>

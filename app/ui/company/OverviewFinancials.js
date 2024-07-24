@@ -1,6 +1,6 @@
 import { formatNumber, roundUpNumber } from "@/app/lib/utils";
 
-export default function OverviewFinancials({zPrev, zFirst, zSecond, zThird, zFourth}) {
+export default function OverviewFinancials({zPrev, zFirst, zSecond, zThird, zFourth, generalSymbol, dpsSymbol}) {
     return (<>
         < div className="card flex-fill">
             <h5>Overview financials</h5>
@@ -19,7 +19,7 @@ export default function OverviewFinancials({zPrev, zFirst, zSecond, zThird, zFou
                     <tbody>
                         <tr>
                         <td colSpan={5} className='px-0 second-title'>
-                            <div className='bg-gray font-medium'>Profit & Loss (€m)</div>
+                            <div className='bg-gray font-medium'>Profit & Loss ({generalSymbol}m)</div>
                         </td>
                         </tr>
                         <tr>
@@ -38,14 +38,14 @@ export default function OverviewFinancials({zPrev, zFirst, zSecond, zThird, zFou
                         <td>{roundUpNumber(zThird?.av_weighted_share_cap)}</td>
                         </tr>
                         <tr>
-                        <td>EPS (€)</td>
+                        <td>EPS ({generalSymbol})</td>
                         <td>{formatNumber(zPrev?.eps)}</td>
                         <td>{formatNumber(zFirst?.eps)}</td>
                         <td>{formatNumber(zSecond?.eps)}</td>
                         <td>{formatNumber(zThird?.eps)}</td>
                         </tr>
                         <tr>
-                        <td>DPS (€)</td>
+                        <td>DPS ({dpsSymbol})</td>
                         <td>{formatNumber(zPrev?.dps_fy)}</td>
                         <td>{formatNumber(zFirst?.dps_fy)}</td>
                         <td>{formatNumber(zSecond?.dps_fy)}</td>
@@ -60,7 +60,7 @@ export default function OverviewFinancials({zPrev, zFirst, zSecond, zThird, zFou
                         </tr>
                         <tr>
                         <td colSpan={5} className='px-0 second-title'>
-                            <div className='bg-gray font-medium'>CF Statement (€m)</div>
+                            <div className='bg-gray font-medium'>CF Statement ({generalSymbol}m)</div>
                         </td>
                         </tr>
                         <tr>
@@ -100,7 +100,7 @@ export default function OverviewFinancials({zPrev, zFirst, zSecond, zThird, zFou
                         </tr>
                         <tr>
                         <td colSpan={5} className='px-0 second-title'>
-                            <div className='bg-gray font-medium'>B/S (€m)</div>
+                            <div className='bg-gray font-medium'>B/S ({generalSymbol}m)</div>
                         </td>
                         </tr>
                         <tr>
