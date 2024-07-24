@@ -1,5 +1,5 @@
 import formatDate from "@/app/utils";
-import { coloredNumber, formatHeatmap, formatNumber } from "../utils";
+import { coloredNumber, customSortFunction, formatHeatmap, formatNumber, formatSelectorNumber } from "../utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import moment from "moment";
@@ -160,33 +160,34 @@ import moment from "moment";
   }];
 
 
-  export const annualizedDiscountColumns = [{
-    name: 'Ticker',
-    selector: row => row.equity_ticker,
-    sortable: true,
-    
-  },
-  {
-    name: 'Z5',
-    cell: row => formatHeatmap(row.z6),
-    selector: row => row.z6,
-    sortable: true,
-    alignment : 'center'
-  },
-  {
-    name: 'Z6',
-    cell: row => formatHeatmap(row.z7),
-    selector: row => row.z7,
-    sortable: true,
-    alignment : 'center'
-  },
-  {
-    name: 'Z7',
-    cell: row => formatHeatmap(row.z8),
-    selector: row => row.z8,
-    sortable: true,
-    alignment : 'center'
-  }];
+  export const annualizedDiscountColumns = [
+    {
+      name: 'Ticker',
+      selector: row => row.equity_ticker,
+      sortable: true,
+    },
+    {
+      name: 'Z5',
+      cell: row => formatHeatmap(row.z6),
+      selector: row => formatSelectorNumber(row.z6.replace(/%/g, '')),
+      sortable: true,
+      sortFunction: (rowA, rowB) => customSortFunction(rowA, rowB, 'z6'),
+    },
+    {
+      name: 'Z6',
+      cell: row => formatHeatmap(row.z7),
+      selector: row => formatSelectorNumber(row.z7.replace(/%/g, '')),
+      sortable: true,
+      sortFunction: (rowA, rowB) => customSortFunction(rowA, rowB, 'z7'),
+    },
+    {
+      name: 'Z7',
+      cell: row => formatHeatmap(row.z8),
+      selector: row => formatSelectorNumber(row.z8.replace(/%/g, '')),
+      sortable: true,
+      sortFunction: (rowA, rowB) => customSortFunction(rowA, rowB, 'z8'),
+    },
+  ];
 
   export const pendingEventsColumns = (handleReview, hanldeApprove, handleIgnore) => [
     {

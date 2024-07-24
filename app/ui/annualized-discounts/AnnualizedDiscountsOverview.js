@@ -27,8 +27,6 @@ export default function AnnualiazedDiscountsOverview({session}) {
           setAllData(data);
           setLoading(false);
 
-          console.log(data);
-
         } catch (error) {
           console.error('Failed to fetch company data:', error);
           setLoading(false);
@@ -42,6 +40,7 @@ export default function AnnualiazedDiscountsOverview({session}) {
     return (<>
 
       <div className="p-2 p-md-4 estimates-container">
+        {/* {JSON.stringify(allData)} */}
         <div className='main-container'>
             <div className='row'>
                 <div className='col-12'>

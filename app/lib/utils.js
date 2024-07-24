@@ -230,16 +230,31 @@ export const formatHeatmap = (value) => {
 
   //if value is less than 0, put in parenthesis, remove negative sign and add badge in red
   if(Number(value) < 0){
-    return <span className="badge bg-danger px-3 py-1">{Math.abs(Number(value))}%</span>;
+    return <span className="badge bg-success px-3 py-1">-{Math.abs(Number(value))}%</span>;
   }
 
   //if value is more than 0, add badge in green
   if(Number(value) > 0){
-    return <span className="badge bg-success px-3 py-1">{Math.abs(Number(value))}%</span>;
+    return <span className="badge bg-danger px-3 py-1">{Math.abs(Number(value))}%</span>;
   }
 
-
   return value;
+}
+
+export const customSortFunction = (rowA, rowB, key) => {
+  const a = formatSelectorNumber(rowA[key].replace(/%/g, ''));
+  const b = formatSelectorNumber(rowB[key].replace(/%/g, ''));
+  if (isNaN(a) && isNaN(b)) return 0;
+  if (isNaN(a)) return 1;
+  if (isNaN(b)) return -1;
+  return a - b;
+};
+
+export const formatSelectorNumber = (value) => {
+  if (value === 'n/a' || value === 'NaN' || value === '') {
+    return NaN;
+  }
+  return parseFloat(value);
 }
 
 

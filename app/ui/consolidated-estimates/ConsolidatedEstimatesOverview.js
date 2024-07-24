@@ -27,8 +27,6 @@ export default function ConsolidatedEstimatesOverview({session}) {
           setAllData(data);
           setLoading(false);
 
-          console.log(data);
-
         } catch (error) {
           console.error('Failed to fetch company data:', error);
           setLoading(false);
