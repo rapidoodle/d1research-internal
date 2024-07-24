@@ -6,16 +6,20 @@ table thead tr th{
     background-color: #F7F1E3 !important;
     font-weight: bold;
 }
-table thead tr th:first-child{
+table#custom-table thead tr th:first-child{
     border-top-left-radius: 5px!important;
     border-bottom-left-radius: 0!important;
 }
-table thead tr th:last-child{
+table#custom-table thead tr th:last-child{
     border-top-right-radius: 5px!important;
     border-bottom-right-radius: 0!important;
 }
 
 div#dps-table-container{
     width: 100%;
+    height: 1000px;
+}
+div.estimates-container{
+    width: 410px;
     height: 1000px;
 }

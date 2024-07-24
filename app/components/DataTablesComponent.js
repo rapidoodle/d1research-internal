@@ -23,7 +23,7 @@ export default function DataTableComponent({columns, data, key, loading}) {
             striped
             keyField={key}
 			fixedHeader
-    customStyles={customStyles}
+    		customStyles={customStyles}
 			data={data}
 			progressPending={loading} 
 			progressComponent={<PageSpinner />}

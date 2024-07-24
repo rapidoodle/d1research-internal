@@ -220,6 +220,29 @@ export const formatNumber = (number, colored = false) => {
   }
 }
 
+export const formatHeatmap = (value) => {
+  if(value === 'n/a' || value === 'NaN'){
+    return '-';
+  }
+
+  //remove percentage sign
+  value = value.replace('%', '');
+
+  //if value is less than 0, put in parenthesis, remove negative sign and add badge in red
+  if(Number(value) < 0){
+    return <span className="badge bg-danger px-3 py-1">{Math.abs(Number(value))}%</span>;
+  }
+
+  //if value is more than 0, add badge in green
+  if(Number(value) > 0){
+    return <span className="badge bg-success px-3 py-1">{Math.abs(Number(value))}%</span>;
+  }
+
+
+  return value;
+}
+
+
 export const commafy = ( num ) => {
   var str = num.toString().split('.');
   if (str[0].length >= 4) {

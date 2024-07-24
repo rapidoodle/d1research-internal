@@ -1,5 +1,5 @@
 import formatDate from "@/app/utils";
-import { coloredNumber, formatNumber } from "../utils";
+import { coloredNumber, formatHeatmap, formatNumber } from "../utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import moment from "moment";
@@ -168,21 +168,24 @@ import moment from "moment";
   },
   {
     name: 'Z5',
-    cell: row => formatNumber(row.z6, false, true),
+    cell: row => formatHeatmap(row.z6),
     selector: row => row.z6,
     sortable: true,
+    alignment : 'center'
   },
   {
     name: 'Z6',
-    cell: row => formatNumber(row.z7, false, true),
+    cell: row => formatHeatmap(row.z7),
     selector: row => row.z7,
     sortable: true,
+    alignment : 'center'
   },
   {
     name: 'Z7',
-    cell: row => formatNumber(row.z8, false, true),
+    cell: row => formatHeatmap(row.z8),
     selector: row => row.z8,
     sortable: true,
+    alignment : 'center'
   }];
 
   export const pendingEventsColumns = (handleReview, hanldeApprove, handleIgnore) => [

@@ -15,14 +15,31 @@
     border-bottom: none!important;
     min-height: 40px!important;
   }
-  div#consolidated-estimates-container .rdt_TableCell{
+  div.estimates-container .rdt_TableCell:not(:first-child){
     min-width: auto!important;
     text-align: center!important;
+    text-align: center!important;
+    display: flex;
+    align-items: center;
   }
-  div#consolidated-estimates-container .rdt_TableCol{
+  div.estimates-container .rdt_TableCol:not(:first-child){
     min-width: auto!important;
     text-align: center!important;
+    text-align: center!important;
+    display: flex;
+    align-items: center;
   }
+
+  /* div.estimates-container span.badge{
+    width: 50px!important;
+  } */
+  /* div#aconsolidated-estimates-container div.rdt_Table div.rdt_TableHeadRow div.rdt_TableCol:first-child {
+      min-width: 100px;
+  }
+  div#consolidated-estimates-container div.rdt_Table div.rdt_TableRow div.rdt_TableCell:first-child {
+      min-width: 100px;
+  } */
+  
 
   /* first child of div.rdt_Table */
   /* media for tablet and mobile */

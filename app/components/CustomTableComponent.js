@@ -6,7 +6,7 @@ const CustomTableComponent = ({ columns, data }) => {
 
   return (
     <div className="table-responsive">
-      <table className="table table-striped table-hover w-100">
+      <table className="table table-striped table-hover w-100" id='custom-table'>
         <thead>
           <tr>
             {columns.map((col, index) => (
