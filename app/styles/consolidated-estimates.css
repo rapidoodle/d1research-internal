@@ -15,7 +15,14 @@
     border-bottom: none!important;
     min-height: 40px!important;
   }
-  
+  div#consolidated-estimates-container .rdt_TableCell{
+    min-width: auto!important;
+    text-align: center!important;
+  }
+  div#consolidated-estimates-container .rdt_TableCol{
+    min-width: auto!important;
+    text-align: center!important;
+  }
 
   /* first child of div.rdt_Table */
   /* media for tablet and mobile */
