@@ -258,79 +258,79 @@ export async function uploadFinancialData (req, res) {
 
                 if(row['Year'] && row['Company'] && row['Equity Ticker']){
 
-                console.log(`Data for ${row['Company']} in ${row['Year']} does not exist, inserting...`);
+                  console.log(`Data for ${row['Company']} in ${row['Year']} does not exist, inserting...`);
 
-                //if row['DPS z] and row['Current Price z'] is not empty set discountPremiumPercent to (row['Current Price z'] / row['DPS z']) - 1
-                var discountPremiumPercent = null;
-                if(row['DPS z'] && row['Current Price z']){
-                  discountPremiumPercent = (cleanField(row['Current Price z']) / cleanField(row['DPS z'])) - 1;
-                  console.log('Discount premium percent is', discountPremiumPercent, row['Equity Ticker'], row['Year']);
-                }else{
-                  discountPremiumPercent = 'n/a';
-                  console.log('Discount premium percent is n/a for', row['Equity Ticker'], row['Year']);
-                }
+                  //if row['DPS z] and row['Current Price z'] is not empty set discountPremiumPercent to (row['Current Price z'] / row['DPS z']) - 1
+                  var discountPremiumPercent = null;
+                  if(row['DPS z'] && row['Current Price z']){
+                    discountPremiumPercent = (cleanField(row['Current Price z']) / cleanField(row['DPS z'])) - 1;
+                    console.log('Discount premium percent is', discountPremiumPercent, row['Equity Ticker'], row['Year']);
+                  }else{
+                    discountPremiumPercent = 'n/a';
+                    console.log('Discount premium percent is n/a for', row['Equity Ticker'], row['Year']);
+                  }
 
-                await sql`
-                INSERT INTO financial_data (
-                  year, company, sector, equity_ticker, share_price, div_ticker, p_and_l_fx,
-                  div_future_fx, index1, index2, index3, dps_z, current_price_z, discount_premium_percent,
-                  annual_return_percent, very_bear_z, bear_z, bull_z, very_bull_z, risk_adj_dps_z, difference_to_central_percentage, net_income,
-                  av_weighted_share_cap, eps, dps_fy, dps_payout_ratio, op_cash_flow, capex, free_cash_flow,
-                  dividend, share_buyback, total_capital_return, net_debt, share_in_issue, treasury_shares,
-                  shares_outstanding, capital_payout_percent, dps_q1, dps_q2, dps_q3, dps_q4, ex_date_q1,
-                  ex_date_q2, ex_date_q3, ex_date_q4, peer_1, peer_2, peer_3, peer_4, updated_by
-                ) VALUES (
-                  ${row['Year']}, 
-                  ${row['Company']}, 
-                  ${row['Sector']}, 
-                  ${row['Equity Ticker']}, 
-                  ${cleanField(row['Share price'])}, 
-                  ${cleanField(row['Div Ticker'])}, 
-                  ${cleanField(row['P&L FX'])}, 
-                  ${cleanField(row['Div Future FX'])},
-                  ${cleanField(row['Index1'])}, 
-                  ${cleanField(row['Index2'])}, 
-                  ${cleanField(row['Index3'])}, 
-                  ${cleanField(row['DPS z'])}, 
-                  ${cleanField(row['Current Price z'])}, 
-                  ${cleanField(discountPremiumPercent)},
-                  ${cleanField(row['Annual return (%)'])}, 
-                  ${cleanField(row['z Very Bear'])}, 
-                  ${cleanField(row['z Bear'])}, 
-                  ${cleanField(row['z Bull'])}, 
-                  ${cleanField(row['z Very Bull'])}, 
-                  ${cleanField(row['Risk adj. DPS (z)'])}, 
-                  ${cleanField(row['Difference to Central (%)'])}, 
-                  ${cleanField(row['Net Income'])},
-                  ${cleanField(row['Av. Weighted Share Cap'])}, 
-                  ${cleanField(row['EPS'])}, 
-                  ${cleanField(row['DPS (FY)'])}, 
-                  ${cleanField(row['DPS payout ratio'])}, 
-                  ${cleanField(row['Op Cash Flow'])}, 
-                  ${cleanField(row['Capex'])}, 
-                  ${cleanField(row['Free Cash Flow'])},
-                  ${cleanField(row['Dividend'])}, 
-                  ${cleanField(row['Share Buyback'])}, 
-                  ${cleanField(row['Total Capital Return'])}, 
-                  ${cleanField(row['Net Debt'])}, 
-                  ${cleanField(row['Share in issue'])}, 
-                  ${cleanField(row['Treasury shares'])},
-                  ${cleanField(row['Shares outstanding'])}, 
-                  ${cleanField(row['Capital Payout (%)'])}, 
-                  ${cleanField(row['DPSQ1'])}, 
-                  ${cleanField(row['DPSQ2'])}, 
-                  ${cleanField(row['DPSQ3'])}, 
-                  ${cleanField(row['DPSQ4'])}, 
-                  ${cleanDate(row['Ex Date Q1'])}, 
-                  ${cleanDate(row['Ex Date Q2'])}, 
-                  ${cleanDate(row['Ex Date Q3'])}, 
-                  ${cleanDate(row['Ex Date Q4'])},
-                  ${cleanField(row['Peer1'])}, 
-                  ${cleanField(row['Peer2'])}, 
-                  ${cleanField(row['Peer3'])}, 
-                  ${cleanField(row['Peer4'])}, 
-                  ${loggedUser.id}
-                );`;
+                  await sql`
+                  INSERT INTO financial_data (
+                    year, company, sector, equity_ticker, share_price, div_ticker, p_and_l_fx,
+                    div_future_fx, index1, index2, index3, dps_z, current_price_z, discount_premium_percent,
+                    annual_return_percent, very_bear_z, bear_z, bull_z, very_bull_z, risk_adj_dps_z, difference_to_central_percentage, net_income,
+                    av_weighted_share_cap, eps, dps_fy, dps_payout_ratio, op_cash_flow, capex, free_cash_flow,
+                    dividend, share_buyback, total_capital_return, net_debt, share_in_issue, treasury_shares,
+                    shares_outstanding, capital_payout_percent, dps_q1, dps_q2, dps_q3, dps_q4, ex_date_q1,
+                    ex_date_q2, ex_date_q3, ex_date_q4, peer_1, peer_2, peer_3, peer_4, updated_by
+                  ) VALUES (
+                    ${row['Year']}, 
+                    ${row['Company']}, 
+                    ${row['Sector']}, 
+                    ${row['Equity Ticker']}, 
+                    ${cleanField(row['Share price'])}, 
+                    ${cleanField(row['Div Ticker'])}, 
+                    ${cleanField(row['P&L FX'])}, 
+                    ${cleanField(row['Div Future FX'])},
+                    ${cleanField(row['Index1'])}, 
+                    ${cleanField(row['Index2'])}, 
+                    ${cleanField(row['Index3'])}, 
+                    ${cleanField(row['DPS z'])}, 
+                    ${cleanField(row['Current Price z'])}, 
+                    ${cleanField(discountPremiumPercent)},
+                    ${cleanField(row['Annual return (%)'])}, 
+                    ${cleanField(row['z Very Bear'])}, 
+                    ${cleanField(row['z Bear'])}, 
+                    ${cleanField(row['z Bull'])}, 
+                    ${cleanField(row['z Very Bull'])}, 
+                    ${cleanField(row['Risk adj. DPS (z)'])}, 
+                    ${cleanField(row['Difference to Central (%)'])}, 
+                    ${cleanField(row['Net Income'])},
+                    ${cleanField(row['Av. Weighted Share Cap'])}, 
+                    ${cleanField(row['EPS'])}, 
+                    ${cleanField(row['DPS (FY)'])}, 
+                    ${cleanField(row['DPS payout ratio'])}, 
+                    ${cleanField(row['Op Cash Flow'])}, 
+                    ${cleanField(row['Capex'])}, 
+                    ${cleanField(row['Free Cash Flow'])},
+                    ${cleanField(row['Dividend'])}, 
+                    ${cleanField(row['Share Buyback'])}, 
+                    ${cleanField(row['Total Capital Return'])}, 
+                    ${cleanField(row['Net Debt'])}, 
+                    ${cleanField(row['Share in issue'])}, 
+                    ${cleanField(row['Treasury shares'])},
+                    ${cleanField(row['Shares outstanding'])}, 
+                    ${cleanField(row['Capital Payout (%)'])}, 
+                    ${cleanField(row['DPSQ1'])}, 
+                    ${cleanField(row['DPSQ2'])}, 
+                    ${cleanField(row['DPSQ3'])}, 
+                    ${cleanField(row['DPSQ4'])}, 
+                    ${cleanDate(row['Ex Date Q1'])}, 
+                    ${cleanDate(row['Ex Date Q2'])}, 
+                    ${cleanDate(row['Ex Date Q3'])}, 
+                    ${cleanDate(row['Ex Date Q4'])},
+                    ${cleanField(row['Peer1'])}, 
+                    ${cleanField(row['Peer2'])}, 
+                    ${cleanField(row['Peer3'])}, 
+                    ${cleanField(row['Peer4'])}, 
+                    ${loggedUser.id}
+                  );`;
                 
 
                 //check sectors table for sector name and insert if not present
@@ -363,8 +363,12 @@ export async function uploadFinancialData (req, res) {
               const companyResult = await getCompanyByTicker(row['Equity Ticker']);
                 console.log('Company result', companyResult.data.rowCount);
               if (companyResult.data.rowCount === 0) {
-                const createCompanyResponse = await createCompany({ name: company, equity_ticker: row['Equity Ticker'],  sector_id: sectorId, tags: tags, template: false, member_permission: 1, updated_by: loggedUser.id }, false); 
-                console.log('New company inserted', createCompanyResponse);
+                try {
+                  const createCompanyResponse = await createCompany({ name: row['Company'], equity_ticker: row['Equity Ticker'],  sector_id: sectorId, tags: tags, template: false, member_permission: 1, updated_by: loggedUser.id }, false); 
+                  console.log('New company inserted', createCompanyResponse);
+                } catch (error) {
+                  console.error('Error inserting company', error);
+                }
               }else{
                 console.log('Company already exists', companyResult.data);
               }

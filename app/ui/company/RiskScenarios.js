@@ -47,10 +47,10 @@ export default function RiskScenarios({zFirst, zSecond, zThird, zFourth}) {
                         </tr>
                         <tr>
                             <td>V Bull (10%)</td>
-                            <td>{formatNumber(zFirst?.z_very_bull)}</td>
-                            <td>{formatNumber(zSecond?.z_very_bull)}</td>
-                            <td>{formatNumber(zThird?.z_very_bull)}</td>
-                            <td>{formatNumber(zFourth?.z_very_bull)}</td>
+                            <td>{formatNumber(zFirst?.very_bull_z)}</td>
+                            <td>{formatNumber(zSecond?.very_bull_z)}</td>
+                            <td>{formatNumber(zThird?.very_bull_z)}</td>
+                            <td>{formatNumber(zFourth?.very_bull_z)}</td>
                         </tr>
                         <tr>
                             <td>Risk adj. DPS</td>

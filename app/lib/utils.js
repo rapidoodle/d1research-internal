@@ -326,7 +326,12 @@ export const getStartAndEndDate = (dateInput, offset = '+01:00') => {
 
 //display date in format 12-Jun-24
 export const displayDate = (date) => {
-  return moment(date).format('DD-MMM-YY');
+  date = moment(date);
+
+  if(!date.isValid()){
+    return 'n/a';
+  }
+  return  moment(date).format('DD-MMM-YY');
 }
 
 export const getPercentage = (value, total) => {
