@@ -187,7 +187,7 @@ export async function getEventByEquityTicker(equityTicker) {
   try {
 
     //query to select events based on equity ticker from companies table
-    const query = `SELECT e.start_date, e.friendly_name FROM events e LEFT JOIN companies c  ON c.id = e.company_id WHERE c.equity_ticker = $1 AND e.status = 1 ORDER BY e.start_date DESC`;
+    const query = `SELECT e.start_date, e.friendly_name, e.source_url FROM events e LEFT JOIN companies c  ON c.id = e.company_id WHERE c.equity_ticker = $1 AND e.status = 1 ORDER BY e.start_date ASC`;
     const result = await sql.query(query, [equityTicker]);
 
     return { data: result.rows };

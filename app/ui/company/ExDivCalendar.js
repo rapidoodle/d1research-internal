@@ -1,4 +1,4 @@
-import { displayDate, formatNumber } from "@/app/lib/utils";
+import { displayDate, displayExDivDate, formatNumber } from "@/app/lib/utils";
 
 export default function ExDivCalendar({allData}) {
     return (<>
@@ -22,10 +22,10 @@ export default function ExDivCalendar({allData}) {
             return (
                 <tr key={index}>
                 <td>{yearLabel}</td>
-                <td>{displayDate(data.ex_date_q1)}</td>
-                <td>{displayDate(data.ex_date_q2)}</td>
-                <td>{displayDate(data.ex_date_q3)}</td>
-                <td>{displayDate(data.ex_date_q4)}</td>
+                <td>{displayExDivDate(data.ex_date_q1)}</td>
+                <td>{displayExDivDate(data.ex_date_q2)}</td>
+                <td>{displayExDivDate(data.ex_date_q3)}</td>
+                <td>{displayExDivDate(data.ex_date_q4)}</td>
                 </tr>
             );
             })}

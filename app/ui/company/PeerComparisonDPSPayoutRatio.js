@@ -35,16 +35,26 @@ export default function PeerComparisonDPSPayoutRatio({zPrev, zFirst, zSecond, zT
                 // Update state with all responses at once
                 setPeersDPS(responses);
 
-                const chartSeries = responses.map(companyData => {
+                const chartSeriesData = responses.map((companyData)=> {
+                    console.log(companyData, index);
                     if(companyData[0].equity_ticker){
                         return {
                             name: companyData[0].equity_ticker,
-                            data: companyData.map(item => Math.round(Number(item.dps_payout_ratio.replace('%', ''))))
-                        };
+                            data: companyData.map((item, i) => {
+                                if(i === 0){
+                                    Math.round(Number(item.dps_payout_ratio.replace('%', '')))
+                                }
+                            }
+                        )};
                     }
                 });
 
-                setChartSeries(chartSeries);
+                chartSeriesData.push({
+                    name: zPrev.equity_ticker,
+                    data: [zPrev.dps_payout_ratio, zFirst.dps_payout_ratio, zSecond.dps_payout_ratio, zThird.dps_payout_ratio]
+                });
+
+                setChartSeries(chartSeriesData);
         }
 
         fetchPeerDPS();
@@ -54,7 +64,8 @@ export default function PeerComparisonDPSPayoutRatio({zPrev, zFirst, zSecond, zT
         <div className="card peer-comparison flex-fill">
             <div className='d-flex align-items-center'>
                 <h5 className='flex-grow-1 mb-0'>Peer comparison DPS payout ratio (%)</h5>
-                { peersDPS.length > 0 && <a className='page-link me-2' onClick={() => setShowChart(!showChart)}>View {showChart ? 'table' : 'chart'}</a> }
+                {/* { peersDPS.length > 0 && <a className='page-link me-2' onClick={() => setShowChart(!showChart)}>View {showChart ? 'table' : 'chart'}</a> } */}
+                <a className='page-link me-2' onClick={() => setShowChart(!showChart)}>View {showChart ? 'table' : 'chart'}</a> 
             </div>
             <hr />
             {!showChart ? 
@@ -71,6 +82,13 @@ export default function PeerComparisonDPSPayoutRatio({zPrev, zFirst, zSecond, zT
                         </tr>
                     </thead>
                     <tbody>
+                        <tr className="tr-bold">
+                            <td>{zPrev.equity_ticker}</td>
+                            <td>{zPrev.dps_payout_ratio}</td>
+                            <td>{zFirst.dps_payout_ratio}</td>
+                            <td>{zSecond.dps_payout_ratio}</td>
+                            <td>{zThird.dps_payout_ratio}</td>
+                        </tr>
                         {peersDPS.map((peer, index) => {
                             //reverse peers to show the latest year first
                             return (
@@ -85,11 +103,11 @@ export default function PeerComparisonDPSPayoutRatio({zPrev, zFirst, zSecond, zT
                             );
 
                         })}
-                        {!peersDPS.length &&
+                        {/* {!peersDPS.length &&
                         <tr>
                             <td colSpan={5} align="center" className="pt-4">No records found</td>
                         </tr>
-                        }
+                        } */}
                     </tbody>
                 </table>
             </div>

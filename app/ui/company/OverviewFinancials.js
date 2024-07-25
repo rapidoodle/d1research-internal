@@ -24,10 +24,10 @@ export default function OverviewFinancials({zPrev, zFirst, zSecond, zThird, zFou
                         </tr>
                         <tr>
                         <td>Net income</td>
-                        <td>{formatNumber(zPrev?.net_income)}</td>
-                        <td>{formatNumber(zFirst?.net_income)}</td>
-                        <td>{formatNumber(zSecond?.net_income)}</td>
-                        <td>{formatNumber(zThird?.net_income)}</td>
+                        <td>{roundUpNumber(zPrev?.net_income)}</td>
+                        <td>{roundUpNumber(zFirst?.net_income)}</td>
+                        <td>{roundUpNumber(zSecond?.net_income)}</td>
+                        <td>{roundUpNumber(zThird?.net_income)}</td>
                         
                         </tr>
                         <tr>
@@ -72,31 +72,31 @@ export default function OverviewFinancials({zPrev, zFirst, zSecond, zThird, zFou
                         </tr>
                         <tr>
                         <td>Investments</td>
-                        <td>{formatNumber(zPrev?.capex)}</td>
-                        <td>{formatNumber(zFirst?.capex)}</td>
-                        <td>{formatNumber(zSecond?.capex)}</td>
-                        <td>{formatNumber(zThird?.capex)}</td>
+                        <td>{roundUpNumber(zPrev?.capex)}</td>
+                        <td>{roundUpNumber(zFirst?.capex)}</td>
+                        <td>{roundUpNumber(zSecond?.capex)}</td>
+                        <td>{roundUpNumber(zThird?.capex)}</td>
                         </tr>
                         <tr>
                         <td>FCF</td>
-                        <td>{formatNumber(zPrev?.free_cash_flow)}</td>
-                        <td>{formatNumber(zFirst?.free_cash_flow)}</td>
-                        <td>{formatNumber(zSecond?.free_cash_flow)}</td>
-                        <td>{formatNumber(zThird?.free_cash_flow)}</td>
+                        <td>{roundUpNumber(zPrev?.free_cash_flow)}</td>
+                        <td>{roundUpNumber(zFirst?.free_cash_flow)}</td>
+                        <td>{roundUpNumber(zSecond?.free_cash_flow)}</td>
+                        <td>{roundUpNumber(zThird?.free_cash_flow)}</td>
                         </tr>
                         <tr>
                         <td>Div</td>
-                        <td>{formatNumber(zPrev?.dividend)}</td>
-                        <td>{formatNumber(zFirst?.dividend)}</td>
-                        <td>{formatNumber(zSecond?.dividend)}</td>
-                        <td>{formatNumber(zThird?.dividend)}</td>
+                        <td>{roundUpNumber(zPrev?.dividend)}</td>
+                        <td>{roundUpNumber(zFirst?.dividend)}</td>
+                        <td>{roundUpNumber(zSecond?.dividend)}</td>
+                        <td>{roundUpNumber(zThird?.dividend)}</td>
                         </tr>
                         <tr>
                         <td>Share BB</td>
-                        <td>{formatNumber(zPrev?.share_buyback)}</td>
-                        <td>{formatNumber(zFirst?.share_buyback)}</td>
-                        <td>{formatNumber(zSecond?.share_buyback)}</td>
-                        <td>{formatNumber(zThird?.share_buyback)}</td>
+                        <td>{roundUpNumber(zPrev?.share_buyback)}</td>
+                        <td>{roundUpNumber(zFirst?.share_buyback)}</td>
+                        <td>{roundUpNumber(zSecond?.share_buyback)}</td>
+                        <td>{roundUpNumber(zThird?.share_buyback)}</td>
                         </tr>
                         <tr>
                         <td colSpan={5} className='px-0 second-title'>
@@ -105,10 +105,10 @@ export default function OverviewFinancials({zPrev, zFirst, zSecond, zThird, zFou
                         </tr>
                         <tr>
                         <td>Net Cash / (Debt)</td>
-                        <td>{formatNumber(zPrev?.net_debt)}</td>
-                        <td>{formatNumber(zFirst?.net_debt)}</td>
-                        <td>{formatNumber(zSecond?.net_debt)}</td>
-                        <td>{formatNumber(zThird?.net_debt)}</td>
+                        <td>{roundUpNumber(zPrev?.net_debt)}</td>
+                        <td>{roundUpNumber(zFirst?.net_debt)}</td>
+                        <td>{roundUpNumber(zSecond?.net_debt)}</td>
+                        <td>{roundUpNumber(zThird?.net_debt)}</td>
                         </tr>
                     </tbody>
                 </table>

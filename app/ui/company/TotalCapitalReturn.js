@@ -42,31 +42,31 @@ export default function TotalCapitalReturn({zPrev, zFirst, zSecond, zThird, zFou
                     <tbody>
                         <tr>
                             <td>Dividend</td>
-                            <td>{formatNumber(zPrev?.dividend)}</td>
-                            <td>{formatNumber(zFirst?.dividend)}</td>
-                            <td>{formatNumber(zSecond?.dividend)}</td>
-                            <td>{formatNumber(zThird?.dividend)}</td>
+                            <td>{roundUpNumber(zPrev?.dividend)}</td>
+                            <td>{roundUpNumber(zFirst?.dividend)}</td>
+                            <td>{roundUpNumber(zSecond?.dividend)}</td>
+                            <td>{roundUpNumber(zThird?.dividend)}</td>
                         </tr>
                         <tr>
                             <td>Share Buyback</td>
-                            <td>{formatNumber(zPrev?.share_buyback)}</td>
-                            <td>{formatNumber(zFirst?.share_buyback)}</td>
-                            <td>{formatNumber(zSecond?.share_buyback)}</td>
-                            <td>{formatNumber(zThird?.share_buyback)}</td>
+                            <td>{roundUpNumber(zPrev?.share_buyback)}</td>
+                            <td>{roundUpNumber(zFirst?.share_buyback)}</td>
+                            <td>{roundUpNumber(zSecond?.share_buyback)}</td>
+                            <td>{roundUpNumber(zThird?.share_buyback)}</td>
                         </tr>
                         <tr>
                             <td>Total Cap Return</td>
-                            <td>{formatNumber(zPrev?.total_capital_return)}</td>
-                            <td>{formatNumber(zFirst?.total_capital_return)}</td>
-                            <td>{formatNumber(zSecond?.total_capital_return)}</td>
-                            <td>{formatNumber(zThird?.total_capital_return)}</td>
+                            <td>{roundUpNumber(zPrev?.total_capital_return)}</td>
+                            <td>{roundUpNumber(zFirst?.total_capital_return)}</td>
+                            <td>{roundUpNumber(zSecond?.total_capital_return)}</td>
+                            <td>{roundUpNumber(zThird?.total_capital_return)}</td>
                         </tr>
                         <tr>
                             <td>Net inc year before</td>
-                            <td>{formatNumber(zPrev?.net_income)}</td>
-                            <td>{formatNumber(zFirst?.net_income)}</td>
-                            <td>{formatNumber(zSecond?.net_income)}</td>
-                            <td>{formatNumber(zThird?.net_income)}</td>
+                            <td>{roundUpNumber(zPrev?.net_income)}</td>
+                            <td>{roundUpNumber(zFirst?.net_income)}</td>
+                            <td>{roundUpNumber(zSecond?.net_income)}</td>
+                            <td>{roundUpNumber(zThird?.net_income)}</td>
                         </tr>
                         <tr>
                             <td>Capital payout (%)</td>

@@ -154,11 +154,13 @@ table tr td.second-title div{
 .ac-comment-container{
   max-height: 280px;
   overflow-y: scroll;
+  font-size: 13px!important;
 }
 
 .crp-comment-container{
   max-height: 170px;
   overflow-y: scroll;
+  font-size: 13px!important;
 }
 
 .font-12{
@@ -280,4 +282,8 @@ table tr td.font-medium{
 }
 .div-index-container:hover{
     border-color: #2F5651;
+}
+
+table tr.tr-bold td{
+    font-weight: 500;
 }

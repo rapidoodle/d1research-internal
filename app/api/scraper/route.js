@@ -185,7 +185,7 @@ export async function GET(req) {
                     }
 
                     //save the event
-                    // return await createEvent(event, false);
+                    return await createEvent(event, false);
                     
                 }else{
                     console.log(`${companyResponse.data.equity_ticker} ${event.description} (${event.date}) already exists in the database.`);

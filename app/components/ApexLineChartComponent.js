@@ -26,6 +26,7 @@ const ApexLineChartComponent = ({xaxisData, seriesData}) => {
     stroke: {
       curve: 'smooth',
     },
+    colors: ['#2F5651', '#FF7F50', '#87CEEB', '#DAA520', '#FF6347'], // Set the color for the first line
   });
 
   return (

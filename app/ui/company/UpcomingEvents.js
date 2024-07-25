@@ -49,7 +49,7 @@ export default function UpcomingEvents( { allData } ) {
                         moment().isBefore(event.start_date) &&
                         <tr key={index}>
                             <td>{displayDate(event.start_date)}</td>
-                            <td className="text-left">{event.friendly_name}</td>
+                            <td className="text-left"><a href={event.source_url} target="_blank" className="d1-text-link">{event.friendly_name}</a></td>
                         </tr>
                     ))
                     }

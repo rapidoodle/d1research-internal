@@ -1,4 +1,4 @@
-import { calculatePercent, calculatePercentageColored, formatNumber, formatWholeNumber } from "@/app/lib/utils";
+import { calculatePercent, calculatePercentageColored, format2Decimal, formatNumber, formatWholeNumber } from "@/app/lib/utils";
 
 export default function D1DPSForecast({zFirst, zSecond, zThird, zFourth}) {
   zFirst.difference = ((zFirst.current_price_z / zFirst.dps_z - 1) * - 1) * 100;
@@ -24,17 +24,17 @@ export default function D1DPSForecast({zFirst, zSecond, zThird, zFourth}) {
             <tbody>
               <tr>
                 <td>DPS forecast</td>
-                <td>{formatNumber(zFirst?.dps_z)}</td>
-                <td>{formatNumber(zSecond?.dps_z)}</td>
-                <td>{formatNumber(zThird?.dps_z)}</td>
-                <td>{formatNumber(zFourth?.dps_z)}</td>
+                <td>{format2Decimal(zFirst?.dps_z)}</td>
+                <td>{format2Decimal(zSecond?.dps_z)}</td>
+                <td>{format2Decimal(zThird?.dps_z)}</td>
+                <td>{format2Decimal(zFourth?.dps_z)}</td>
               </tr>
               <tr>
                 <td>Current Price</td>
-                <td>{formatNumber(zFirst?.current_price_z)}</td>
-                <td>{formatNumber(zSecond?.current_price_z)}</td>
-                <td>{formatNumber(zThird?.current_price_z)}</td>
-                <td>{formatNumber(zFourth?.current_price_z)}</td>
+                <td>{format2Decimal(zFirst?.current_price_z)}</td>
+                <td>{format2Decimal(zSecond?.current_price_z)}</td>
+                <td>{format2Decimal(zThird?.current_price_z)}</td>
+                <td>{format2Decimal(zFourth?.current_price_z)}</td>
               </tr>
               <tr>
                 <td className="bg-cream">Discount %</td>

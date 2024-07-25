@@ -128,3 +128,12 @@ table > thead > th {
 body{
   overflow-x: hidden!important;
 }
+
+.d1-text-link{
+  color: #1e322c;
+  text-decoration: none;
+}
+.d1-text-link:hover{
+  color: #2F5651;
+  text-decoration: underline;
+}

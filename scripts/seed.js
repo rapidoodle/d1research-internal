@@ -1,3 +1,4 @@
+const { copy } = require('@vercel/blob');
 const { db } = require('@vercel/postgres');
 const bcrypt = require('bcryptjs');
 
@@ -150,8 +151,57 @@ async function seedCompanies(client) {
     }
 }
 
+// async function backupEventsTable(client) {
+//   try {
+//       await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+
+//       // Drop the backup table if it exists
+//       await client.sql`DROP TABLE IF EXISTS events_backup`;
+
+//       // Create the backup table with the same structure as the original table
+//       await client.sql`CREATE TABLE events_backup AS TABLE events WITH NO DATA`;
+
+//       // Insert all data from the original table into the backup table
+//       await client.sql`INSERT INTO events_backup SELECT * FROM events`;
+
+//       console.log('Backed up "events" table to "events_backup"');
+//   } catch (error) {
+//       console.error('Error backing up events table:', error);
+//       throw error;
+//   }
+// }
+
+// async function updateSourceUrl(client) {
+//   try {
+//     // Fetch all events with a description
+//     const { rows: events } = await client.query('SELECT id, description FROM events WHERE description IS NOT NULL');
+
+//     // Regex to extract URL from description
+//     const urlRegex = /href="([^"]*)"/;
+
+//     for (const event of events) {
+//       const match = event.description.match(urlRegex);
+//       const sourceUrl = match ? match[1] : null;
+
+//       // Update the source_url field
+//       if (sourceUrl) {
+//         await client.query(
+//           'UPDATE events SET source_url = $1 WHERE id = $2',
+//           [sourceUrl, event.id]
+//         );
+//       }
+//     }
+
+//     console.log('Updated source_url for all events');
+//   } catch (error) {
+//     console.error('Error updating source_url:', error);
+//     throw error;
+//   }
+// }
+
 async function seedEvents(client) {
     try {
+      
       await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
       // Drop the table if it exists
       await client.sql`DROP TABLE IF EXISTS events`;
@@ -170,6 +220,7 @@ async function seedEvents(client) {
         sharing VARCHAR(50),
         start_date TIMESTAMP WITH TIME ZONE,
         friendly_name VARCHAR(255),
+        source_url VARCHAR(255),
         tags TEXT,
         clinked_id VARCHAR(255),
         status INT DEFAULT 0,
@@ -426,7 +477,7 @@ async function seedCapitalReturnPolicy(client) {
 async function main() {
   const client = await db.connect();
 
-  await seedFinancialDataHistory(client);
+  // await seedFinancialDataHistory(client);
   // await seedFinancialData(client);
   // await seedKeyTable(client);
   // await seedCompanies(client);

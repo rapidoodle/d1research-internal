@@ -107,11 +107,25 @@ export const cleanDate = (date) => {
   //return date in format 12-Jun-24
   return moment(date).format('DD-MMM-YY');
 }
+
 export const calculatePercent = (value, total) => {
   //calculate percentage
-  const percent = (Number(value) / Number(total)) - 1;
+  const percent = (Number(total) / Number(value)) - 1;
 
+  if(percent === 0){
+    return '-';
+  }
+  
   return Math.round(percent * 100) + '%';
+}
+
+export const fomatDisplay = (value) => {
+
+  if(value === 'n/a' || value === 'NaN' || value === null || value === undefined || value === '' || value === 'null' || value === 'undefined' || !value){
+    return '-';
+  }
+
+  return value;
 }
 
 export const calculatePercentageColored = (value, total) => {
@@ -159,26 +173,38 @@ export const formatWholeNumber = (value) => {
 
 export const roundUpNumber = (value) => {
   
-  if(value === 'n/a'){
+  if(value === 'n/a' || 
+    value === 'NaN' || 
+    value === null ||
+    value === undefined || 
+    value === '' || 
+    value === 'null' || 
+    value === 'undefined' || 
+    !value || 
+    value === 0 ||
+    value === '0' || 
+    value === '0.00' ||
+    value === '0.00'){
     return '-';
   }
   
   if(isNaN(value)){
-    //remove comma 
     value = Number(value.replace(/,/g, ''));
   }
 
-//round number add comma and space
+  //round number add comma and space
   var num = Math.round(Number(value));
-  num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
   //if number is less than 0, put in parenthesis, remove negative sign and make text red
-  if(Number(num) < 0){
-    return (Math.abs(num));
+  if(Number(num) < 0 && Number(num) > -999){
+    return `(${Math.abs(num)})`;
+  }
+
+  if(Number(num) < 0 && Number(num) < -999){
+    return `(${num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",").replace('-', '')})`;
   }
 
   //if number is more than 999, add comma and space
-  
   if(Number(num) > 999){
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
@@ -225,6 +251,31 @@ export const formatNumber = (number, colored = false) => {
 
     return finalNumber;
   }
+}
+
+export const format2Decimal = (value) => {
+  if(value === 'n/a' || 
+    value === 'NaN' || 
+    value === null ||
+    value === undefined || 
+    value === '' || 
+    value === 'null' || 
+    value === 'undefined' || 
+    !value || 
+    value === 0 ||
+    value === '0' || 
+    value === '0.00' ||
+    value === '0.00'){
+    return '-';
+  }
+
+  //if negative number, remove negative sign and put in parenthesis
+
+  if(Number(value) < 0){
+    return `(${Math.abs(Number(value).toFixed(2))})` ;
+  }
+
+  return Number(value).toFixed(2);
 }
 
 export const formatHeatmap = (value) => {
@@ -339,6 +390,16 @@ export const displayDate = (date) => {
     return 'n/a';
   }
   return  moment(date).format('DD-MMM-YY');
+}
+
+
+export const displayExDivDate = (date) => {
+  date = moment(date);
+
+  if(!date.isValid()){
+    return '-';
+  }
+  return  moment(date).format('DD-MMM');
 }
 
 export const getPercentage = (value, total) => {
