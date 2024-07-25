@@ -105,10 +105,10 @@ export default function OverviewFinancials({zPrev, zFirst, zSecond, zThird, zFou
                         </tr>
                         <tr>
                         <td>Net Cash / (Debt)</td>
+                        <td>{formatNumber(zPrev?.net_debt)}</td>
                         <td>{formatNumber(zFirst?.net_debt)}</td>
                         <td>{formatNumber(zSecond?.net_debt)}</td>
                         <td>{formatNumber(zThird?.net_debt)}</td>
-                        <td>{formatNumber(zFourth?.net_debt)}</td>
                         </tr>
                     </tbody>
                 </table>

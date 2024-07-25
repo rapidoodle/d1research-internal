@@ -177,6 +177,13 @@ export const roundUpNumber = (value) => {
     return (Math.abs(num));
   }
 
+  //if number is more than 999, add comma and space
+  
+  if(Number(num) > 999){
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+
   return num;
 }
 
