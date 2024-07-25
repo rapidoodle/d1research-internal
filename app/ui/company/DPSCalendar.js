@@ -36,7 +36,7 @@ export default function DPSCalendar({allData}) {
                             }
 
 
-                        const dpsTotal = data.dps_q1 + data.dps_q2 + data.dps_q3 + data.dps_q4;
+                        const dpsTotal = Number(data.dps_q1) + Number(data.dps_q2) + Number(data.dps_q3) + Number(data.dps_q4);
 
                         const currentYear = new Date().getFullYear();
                         const yearLabel = data.year > currentYear ? `${data.year}e` : data.year;

@@ -65,38 +65,38 @@ export default function OverviewFinancials({zPrev, zFirst, zSecond, zThird, zFou
                         </tr>
                         <tr>
                         <td>op CF</td>
+                        <td>{formatNumber(zPrev?.op_cash_flow)}</td>
                         <td>{formatNumber(zFirst?.op_cash_flow)}</td>
                         <td>{formatNumber(zSecond?.op_cash_flow)}</td>
                         <td>{formatNumber(zThird?.op_cash_flow)}</td>
-                        <td>{formatNumber(zFourth?.op_cash_flow)}</td>
                         </tr>
                         <tr>
                         <td>Investments</td>
+                        <td>{formatNumber(zPrev?.capex)}</td>
                         <td>{formatNumber(zFirst?.capex)}</td>
                         <td>{formatNumber(zSecond?.capex)}</td>
                         <td>{formatNumber(zThird?.capex)}</td>
-                        <td>{formatNumber(zFourth?.capex)}</td>
                         </tr>
                         <tr>
                         <td>FCF</td>
+                        <td>{formatNumber(zPrev?.free_cash_flow)}</td>
                         <td>{formatNumber(zFirst?.free_cash_flow)}</td>
                         <td>{formatNumber(zSecond?.free_cash_flow)}</td>
                         <td>{formatNumber(zThird?.free_cash_flow)}</td>
-                        <td>{formatNumber(zFourth?.free_cash_flow)}</td>
                         </tr>
                         <tr>
                         <td>Div</td>
+                        <td>{formatNumber(zPrev?.dividend)}</td>
                         <td>{formatNumber(zFirst?.dividend)}</td>
                         <td>{formatNumber(zSecond?.dividend)}</td>
                         <td>{formatNumber(zThird?.dividend)}</td>
-                        <td>{formatNumber(zFourth?.dividend)}</td>
                         </tr>
                         <tr>
                         <td>Share BB</td>
+                        <td>{formatNumber(zPrev?.share_buyback)}</td>
                         <td>{formatNumber(zFirst?.share_buyback)}</td>
                         <td>{formatNumber(zSecond?.share_buyback)}</td>
                         <td>{formatNumber(zThird?.share_buyback)}</td>
-                        <td>{formatNumber(zFourth?.share_buyback)}</td>
                         </tr>
                         <tr>
                         <td colSpan={5} className='px-0 second-title'>

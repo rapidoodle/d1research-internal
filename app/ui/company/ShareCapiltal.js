@@ -27,9 +27,9 @@ export default function ShareCapital({zPrev, zFirst, zSecond, zThird, zFourth}) 
                         <tr>
                         <td>Treasury shares</td>
                         <td>{formatNumber(zPrev?.treasury_shares)}</td>
+                        <td>{formatNumber(zFirst?.treasury_shares)}</td>
                         <td>{formatNumber(zSecond?.treasury_shares)}</td>
                         <td>{formatNumber(zThird?.treasury_shares)}</td>
-                        <td>{formatNumber(zFourth?.treasury_shares)}</td>
                         </tr>
                         <tr>
                         <td>Shares outstanding</td>
