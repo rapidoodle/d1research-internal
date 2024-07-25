@@ -22,6 +22,8 @@ import { scrapeEurofinsEvents } from "@/app/lib/scraper/eurofins";
 import { scrapeFerrariEvents } from "@/app/lib/scraper/ferrari";
 import { scrapeHermesEvents } from "@/app/lib/scraper/hermes";
 import { scrapeIberdrolaEvents } from "@/app/lib/scraper/iberdrola";
+import { scrapeInditexEvents } from "@/app/lib/scraper/inditex";
+import { scrapeInfineonEvents } from "@/app/lib/scraper/infineon";
 import { scrapeKeringEvents } from "@/app/lib/scraper/kering";
 import { scrapeMercedesEvents } from "@/app/lib/scraper/mercedes";
 import { scrapeSAPEvents } from "@/app/lib/scraper/sap";
@@ -30,6 +32,12 @@ import { scrapeStellantisEvents } from "@/app/lib/scraper/stellantis";
 import { scrapeTotalEvents } from "@/app/lib/scraper/total";
 import { scrapeVolkswagenEvents } from "@/app/lib/scraper/volkswagen";
 import { NextResponse } from "next/server";
+import { scrapeLegrandEvents } from "./legrand";
+import { scrapeLorealEvents } from "@/app/lib/scraper/loreal";
+import { scrapeMichelinEvents } from "@/app/lib/scraper/michelin";
+import { scrapeNokiaEvents } from "@/app/lib/scraper/nokia";
+import { scrapeOrangeEvents } from "@/app/lib/scraper/orange";
+import { scrapeRenaultEvents } from "./renault";
 
 export const maxDuration = 300;
 
@@ -129,14 +137,37 @@ export async function GET(req) {
             case 'eurofins':
                 scrapedData = await scrapeEurofinsEvents();
                 break;
+            case 'inditex':
+                scrapedData = await scrapeInditexEvents();
+                break;
+            case 'infeneon':
+                scrapedData = await scrapeInfineonEvents();
+                break;
+            case 'legrand':
+                scrapedData = await scrapeLegrandEvents();
+                break;
+            case 'loreal':
+                scrapedData = await scrapeLorealEvents();
+                break;
+            case 'michelin':
+                scrapedData = await scrapeMichelinEvents();
+                break;
+            case 'nokia':
+                scrapedData = await scrapeNokiaEvents();
+                break;
+            case 'orange':
+                scrapedData = await scrapeOrangeEvents();
+                break;
+            case 'renault':
+                scrapedData = await scrapeRenaultEvents();
+                break;
             default:
                 throw new Error(`Unknown site: ${site}`);
         }
         
         const company = site.replace('-', ' ');
-        const companyResponse = await getCompanyByName({'name' : company});
-        if(companyResponse && scrapedData.length > 0){
-
+        const companyResponse = await getCompanyByName({'name' : 'michelin'});
+        if(companyResponse?.data && scrapedData.length > 0){
             const eventsPromises = scrapedData?.map(async event => {
                 event.friendly_name  = `${companyResponse.data.equity_ticker} - ${event.description}`;
                 //check if event already exists by date and description
@@ -154,7 +185,7 @@ export async function GET(req) {
                     }
 
                     //save the event
-                    return await createEvent(event, false);
+                    // return await createEvent(event, false);
                     
                 }else{
                     console.log(`${companyResponse.data.equity_ticker} ${event.description} (${event.date}) already exists in the database.`);
@@ -163,7 +194,8 @@ export async function GET(req) {
 
             await Promise.all(eventsPromises);
         }else{
-            console.log(`Company ${site} not found in the database.`);
+            console.error(`Company ${site} not found in the database or scraped data is empty.`);
+            // throw new Error(`Company ${site} not found in the database.`);
         }
 
       if (scrapedData.error) {

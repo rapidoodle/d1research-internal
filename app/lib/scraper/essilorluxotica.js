@@ -27,7 +27,7 @@ export async function scrapeEssilorLuxotticaEvents() {
         const date = moment(dateText, 'DD MMM YYYY').format('YYYY-MM-DD');
         const description = descriptionElement.innerText.trim();
 
-        events.push({ date, description, url: 'https://www.essilorluxottica.com/en/investors/financial-calendar/' });
+        events.push({ date, description, url: url });
       }
     });
 
