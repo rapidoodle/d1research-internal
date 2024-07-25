@@ -1,4 +1,4 @@
-import { fomatDisplay, format2Decimal, formatNumber, formatWholeNumber } from "@/app/lib/utils";
+import { fomatDisplay, format2Decimal, formatColoredPercentDisplay, formatNumber, formatWholeNumber } from "@/app/lib/utils";
 
 export default function RiskScenarios({zFirst, zSecond, zThird, zFourth}) {
     return (<>
@@ -31,7 +31,7 @@ export default function RiskScenarios({zFirst, zSecond, zThird, zFourth}) {
                             <td>{format2Decimal(zThird?.bear_z)}</td>
                             <td>{format2Decimal(zFourth?.bear_z)}</td>
                         </tr>
-                        <tr>
+                        <tr className="bold-row">
                             <td>Central (40%)</td>
                             <td>{format2Decimal(zFirst?.dps_z)}</td>
                             <td>{format2Decimal(zSecond?.dps_z)}</td>
@@ -52,7 +52,7 @@ export default function RiskScenarios({zFirst, zSecond, zThird, zFourth}) {
                             <td>{format2Decimal(zThird?.very_bull_z)}</td>
                             <td>{format2Decimal(zFourth?.very_bull_z)}</td>
                         </tr>
-                        <tr>
+                        <tr className="bold-row">
                             <td>Risk adj. DPS</td>
                             <td>{format2Decimal(zFirst?.risk_adj_dps_z)}</td>
                             <td>{format2Decimal(zSecond?.risk_adj_dps_z)}</td>
@@ -61,10 +61,10 @@ export default function RiskScenarios({zFirst, zSecond, zThird, zFourth}) {
                         </tr>
                         <tr className='highlight'>
                             <td className="bg-cream">Difference to Central</td>
-                            <td className="bg-cream">{fomatDisplay(zFirst?.difference_to_central_percentage)}</td>
-                            <td className="bg-cream">{fomatDisplay(zSecond?.difference_to_central_percentage)}</td>
-                            <td className="bg-cream">{fomatDisplay(zThird?.difference_to_central_percentage)}</td>
-                            <td className="bg-cream">{fomatDisplay(zFourth?.difference_to_central_percentage)}</td>
+                            <td className="bg-cream">{formatColoredPercentDisplay(zFirst?.difference_to_central_percentage)}</td>
+                            <td className="bg-cream">{formatColoredPercentDisplay(zSecond?.difference_to_central_percentage)}</td>
+                            <td className="bg-cream">{formatColoredPercentDisplay(zThird?.difference_to_central_percentage)}</td>
+                            <td className="bg-cream">{formatColoredPercentDisplay(zFourth?.difference_to_central_percentage)}</td>
                         </tr>
                     </tbody>
                 </table>

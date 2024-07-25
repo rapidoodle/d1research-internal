@@ -39,7 +39,7 @@ export default function ConsolidatedEstimatesOverview({session}) {
   if(!loading){
     return (<>
 
-      <div className="p-2 p-md-4 estimates-container">
+      <div className="estimates-container">
         <div className='main-container'>
             <div className='row'>
                 <div className='col-12'>
@@ -48,11 +48,6 @@ export default function ConsolidatedEstimatesOverview({session}) {
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div className='footer mt-4'>
-          <p className='text-bold f-12 mb-0 font-medium'>Disclaimer</p>
-          <p className='mb-0 f-12'>The information contained in this presentation is confidential. D1 Research GmbH shall not be liable to any recipient for any inaccuracies or omissions and have no liability in respect of any loss or damage suffered by any recipient in connection with any information provided.</p>
         </div>
       </div>
 

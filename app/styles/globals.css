@@ -97,6 +97,9 @@ table > thead > th {
 .f-13{
   font-size: 13px!important;
 }
+.f-14{
+  font-size: 14px!important;
+}
 .d1-link{
   text-decoration: none!important;
   color: #2F5651!important;
@@ -136,4 +139,24 @@ body{
 .d1-text-link:hover{
   color: #2F5651;
   text-decoration: underline;
+}
+
+.discount-positive, .discount-negative{
+  border-radius: 5px;
+  height: 28px;
+  width: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.discount-positive{
+  background-color: #28a745;
+  color: #f8f9fa;
+}
+
+.discount-negative{
+  background-color: #dc3545;
+  color: #f8f9fa;
 }

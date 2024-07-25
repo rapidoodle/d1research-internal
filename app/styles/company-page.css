@@ -63,6 +63,11 @@ h5{
 tr.highlight > td{
     color: #EA2F2F;
 }
+
+tr.bold-row > td{
+    font-weight: 500;
+}
+
 table thead th:first-child {
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;

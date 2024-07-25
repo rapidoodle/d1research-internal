@@ -36,7 +36,6 @@ export default function PeerComparisonDPSPayoutRatio({zPrev, zFirst, zSecond, zT
                 setPeersDPS(responses);
 
                 const chartSeriesData = responses.map((companyData)=> {
-                    console.log(companyData, index);
                     if(companyData[0].equity_ticker){
                         return {
                             name: companyData[0].equity_ticker,

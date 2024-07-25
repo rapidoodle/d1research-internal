@@ -1,5 +1,5 @@
 import formatDate from "@/app/utils";
-import { coloredNumber, customSortFunction, formatHeatmap, formatNumber, formatSelectorNumber } from "../utils";
+import { coloredNumber, customSortFunction, format2Decimal, formatHeatmap, formatNumber, formatSelectorNumber } from "../utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import moment from "moment";
@@ -113,21 +113,25 @@ import moment from "moment";
   },
   {
     name: 'Z4',
+    cell: row => format2Decimal(row.z1),
     selector: row => formatSelectorNumber(row.z1),
     sortable: true,
   },
   {
     name: 'Z5',
+    cell: row => format2Decimal(row.z2),
     selector: row => formatSelectorNumber(row.z2),
     sortable: true,
   },
   {
     name: 'Z6',
+    cell: row => format2Decimal(row.z3),
     selector: row => formatSelectorNumber(row.z3),
     sortable: true,
   },
   {
     name: 'Z7',
+    cell: row => format2Decimal(row.z4),
     selector: row => formatSelectorNumber(row.z4),
     sortable: true,
   }];

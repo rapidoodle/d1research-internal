@@ -108,12 +108,18 @@ export const cleanDate = (date) => {
   return moment(date).format('DD-MMM-YY');
 }
 
-export const calculatePercent = (value, total) => {
+export const calculatePercent = (value, total, colored = false) => {
   //calculate percentage
   const percent = (Number(total) / Number(value)) - 1;
 
-  if(percent === 0){
-    return '-';
+  if(colored){
+    if(percent > 0){
+      return <span class="text-success">{Math.round(percent * 100) + '%'}</span>;
+    }
+    if(percent < 0){
+      //if negative, remove negative sign and put in parenthesis
+      return <span class="text-danger">({Math.abs(Math.round(percent * 100)) + '%'})</span>;
+    }
   }
   
   return Math.round(percent * 100) + '%';
@@ -128,6 +134,26 @@ export const fomatDisplay = (value) => {
   return value;
 }
 
+export const formatColoredPercentDisplay = (value) => {
+
+  if(value === 'n/a' || value === 'NaN' || value === null || value === undefined || value === '' || value === 'null' || value === 'undefined' || !value){
+    return '-';
+  }
+
+  if(value !== '0%'){
+    value = value.replace('%', '');
+  }
+
+  if(Number(value) > 0){
+    return <span class="text-success">{value + '%'}</span>;
+  }
+
+  if(Number(value) < 0){
+    return <span class="text-danger">({Math.abs(value) + '%'})</span>;
+  }
+
+  return value;
+}
 export const calculatePercentageColored = (value, total) => {
   //calculate percentage
   const percent = (Number(value) / Number(total)) - 1;
@@ -287,13 +313,13 @@ export const formatHeatmap = (value) => {
   value = value.replace('%', '');
 
   //if value is less than 0, put in parenthesis, remove negative sign and add badge in red
-  if(Number(value) < 0){
-    return <span className="badge bg-success px-3 py-1">-{Math.abs(Number(value))}%</span>;
+  if(Number(value) > 0){
+    return <span className="discount-positive">-{Math.abs(Number(value))}%</span>;
   }
 
   //if value is more than 0, add badge in green
-  if(Number(value) > 0){
-    return <span className="badge bg-danger px-3 py-1">{Math.abs(Number(value))}%</span>;
+  if(Number(value) < 0){
+    return <span className="discount-negative">{Math.abs(Number(value))}%</span>;
   }
 
   return value;

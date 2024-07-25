@@ -37,11 +37,11 @@ export default function D1DPSForecast({zFirst, zSecond, zThird, zFourth}) {
                 <td>{format2Decimal(zFourth?.current_price_z)}</td>
               </tr>
               <tr>
-                <td className="bg-cream">Discount %</td>
-                <td className="bg-cream">{calculatePercent(zFirst?.current_price_z, zFirst?.dps_z)}</td>
-                <td className="bg-cream">{calculatePercent(zSecond?.current_price_z, zSecond?.dps_z)}</td>
-                <td className="bg-cream">{calculatePercent(zThird?.current_price_z, zThird?.dps_z)}</td>
-                <td className="bg-cream">{calculatePercent(zFourth?.current_price_z, zFourth?.dps_z)}</td>
+                <td className="bg-cream">Premium/Discount %</td>
+                <td className="bg-cream">{calculatePercent(zFirst?.current_price_z, zFirst?.dps_z, true)}</td>
+                <td className="bg-cream">{calculatePercent(zSecond?.current_price_z, zSecond?.dps_z, true)}</td>
+                <td className="bg-cream">{calculatePercent(zThird?.current_price_z, zThird?.dps_z, true)}</td>
+                <td className="bg-cream">{calculatePercent(zFourth?.current_price_z, zFourth?.dps_z, true)}</td>
               </tr>
             </tbody>
           </table>
