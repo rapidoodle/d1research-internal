@@ -322,7 +322,7 @@ export const formatHeatmap = (value) => {
     return <span className="discount-negative">{Math.abs(Number(value))}%</span>;
   }
 
-  return value;
+  return value + '%';
 }
 
 export const customSortFunction = (rowA, rowB, key) => {
