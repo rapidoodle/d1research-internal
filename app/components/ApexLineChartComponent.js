@@ -12,19 +12,37 @@ const ApexLineChartComponent = ({xaxisData, seriesData}) => {
     },
     xaxis: {
       categories: xaxisData,
+      style : {
+        fontFamily: '__Montserrat_08efcb, __Montserrat_Fallback_08efcb'
+      },
+      labels:{
+        style: {
+          fontFamily: '__Montserrat_08efcb, __Montserrat_Fallback_08efcb',
+        }
+      }
     },
     yaxis: {
       labels: {
         formatter: function (val) {
           return `${val}%`;
+        },
+        style: {
+          fontFamily: '__Montserrat_08efcb, __Montserrat_Fallback_08efcb',
         }
       },
-      style: {
-        colors: ['#F7F1E3'], // Set text color for the y-axis labels
-      }
     },
     stroke: {
       curve: 'smooth',
+    },
+    legend: {
+      position: 'bottom',
+      horizontalAlign: 'center',
+      fontFamily: '__Montserrat_08efcb, __Montserrat_Fallback_08efcb',
+    },
+    tooltip: {
+      style : {
+        fontFamily: '__Montserrat_08efcb, __Montserrat_Fallback_08efcb'
+      },
     },
     colors: ['#2F5651', '#FF7F50', '#87CEEB', '#DAA520', '#FF6347'], // Set the color for the first line
   });

@@ -180,6 +180,7 @@ export const formatPercentage = (value) => {
   return Math.round(Number(value));
 }
 
+
 export const formatWholeNumber = (value) => {
   
   const num = Math.round(Number(value));

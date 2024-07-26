@@ -7,6 +7,9 @@ export default function PeerComparisonDPSPayoutRatio({zPrev, zFirst, zSecond, zT
     const [peersDPS, setPeersDPS] = useState([]);
     const [chartSeries, setChartSeries] = useState([]);
     const [showChart, setShowChart] = useState(false);
+    const formatChartNumber = (value) => {
+        return formatWholeNumber(value);
+    }
 
     useEffect(() => {
 
@@ -36,23 +39,20 @@ export default function PeerComparisonDPSPayoutRatio({zPrev, zFirst, zSecond, zT
                 setPeersDPS(responses);
 
                 const chartSeriesData = responses.map((companyData)=> {
-                    if(companyData[0].equity_ticker){
-                        return {
-                            name: companyData[0].equity_ticker,
-                            data: companyData.map((item, i) => {
-                                if(i === 0){
-                                    Math.round(Number(item.dps_payout_ratio.replace('%', '')))
-                                }
-                            }
-                        )};
-                    }
+                    console.log(companyData);
+                    return {
+                        name: companyData[0].equity_ticker,
+                        data: companyData.map((item, i) => {
+                            return Math.round(Number(item.dps_payout_ratio.replace('%', '')))
+                        }
+                    )};
                 });
 
                 chartSeriesData.push({
                     name: zPrev.equity_ticker,
-                    data: [zPrev.dps_payout_ratio, zFirst.dps_payout_ratio, zSecond.dps_payout_ratio, zThird.dps_payout_ratio]
-                });
-
+                    data: [zPrev.dps_payout_ratio, zFirst.dps_payout_ratio, zSecond.dps_payout_ratio, zThird.dps_payout_ratio, zFourth.dps_payout_ratio]
+                });  
+                
                 setChartSeries(chartSeriesData);
         }
 
@@ -111,8 +111,9 @@ export default function PeerComparisonDPSPayoutRatio({zPrev, zFirst, zSecond, zT
                 </table>
             </div>
             </> :
+            // <>{JSON.stringify(chartSeries)}</>
             <ApexLineChartComponent
-                xaxisData={[`FY${zPrev.year_2digit}`, `FY${zFirst.year_2digit}`, `FY${zSecond.year_2digit}`, `FY${zThird.year_2digit}`]}
+                xaxisData={[`FY${zPrev.year_2digit}`, `FY${zFirst.year_2digit}`, `FY${zSecond.year_2digit}`, `FY${zThird.year_2digit}`, `FY${zFourth.year_2digit}`]}
                 seriesData={chartSeries}
             />
             }

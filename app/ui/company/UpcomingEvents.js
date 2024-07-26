@@ -7,7 +7,6 @@ export default function UpcomingEvents( { allData } ) {
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState (false);
 
-
     useEffect(() => {
         const fetchEvents = async () => {
             setLoading(true);
@@ -20,10 +19,8 @@ export default function UpcomingEvents( { allData } ) {
             );
             
             const data = await response.json();
-            console.log(data);
             setEvents(data.data);
             setLoading(false);
-
             return data;
         }
         

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Chart from 'react-apexcharts';
+import { Montserrat } from 'next/font/google';
 
+const montserrat = Montserrat({ subsets: ["latin"], weight: ['100', '300', '400', '500', '700', '900']});
 const ApexStackedBarChart = ({chartData, xAxisData}) => {
 
   const chartSeries = chartData.map(seriesData => ({
@@ -26,10 +28,14 @@ const ApexStackedBarChart = ({chartData, xAxisData}) => {
       labels: {
         formatter: function (val) {
           return `${val}%`;
+        },
+        style: {
+          fontFamily: '__Montserrat_08efcb, __Montserrat_Fallback_08efcb',
         }
       },
       style: {
         colors: ['#F7F1E3'], // Set text color for the y-axis labels
+        fontFamily: '__Montserrat_08efcb, __Montserrat_Fallback_08efcb',
       }
     },
     dataLabels: {
@@ -38,12 +44,18 @@ const ApexStackedBarChart = ({chartData, xAxisData}) => {
       },
       enabled: true,
       style: {
-        colors: ['#F7F1E3', '#2F5651'] // Set text color for data labels
+        colors: ['#F7F1E3', '#2F5651'], // Set text color for data labels
+        fontFamily: '__Montserrat_08efcb, __Montserrat_Fallback_08efcb',
       },
     },
     xaxis: {
       categories: xAxisData,
-      color: '#000'
+      labels: {
+        style: {
+          fontFamily: '__Montserrat_08efcb, __Montserrat_Fallback_08efcb',
+          color: '#000',
+        }
+      }
     },
     colors: [ '#2F5651', '#F7F1E3'], // Add custom colors here
     stroke: {
@@ -56,7 +68,10 @@ const ApexStackedBarChart = ({chartData, xAxisData}) => {
         formatter: function (val) {
           return `${val.toLocaleString()}%`;
         }
-      }
+      },
+      style : {
+        fontFamily: '__Montserrat_08efcb, __Montserrat_Fallback_08efcb'
+      },
     },
     fill: {
       opacity: 1
@@ -64,14 +79,16 @@ const ApexStackedBarChart = ({chartData, xAxisData}) => {
     legend: {
       position: 'bottom',
       horizontalAlign: 'center',
+      fontFamily: '__Montserrat_08efcb, __Montserrat_Fallback_08efcb',
       offsetY: 10
-    }
+    },
   });
 
   return (
     <div>
       <Chart 
-        options={chartOptions} 
+        options={chartOptions}  
+        className={montserrat.className}
         series={chartSeries} 
         type="bar" 
         height={225} 

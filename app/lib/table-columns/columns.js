@@ -3,7 +3,6 @@ import { coloredNumber, customSortFunction, format2Decimal, formatHeatmap, forma
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import moment from "moment";
-import { useMemo, useState } from "react";
 
 // export const financialDataColumns = [  { name: 'Year', selector: row => row.year, sortable: true },
 //     { name: 'Company', selector: row => row.company, sortable: true },
@@ -106,6 +105,36 @@ import { useMemo, useState } from "react";
     { name: 'Peer 3', selector: row => row.peer_3, sortable: true },
     { name: 'Peer 4', selector: row => row.peer_4, sortable: true }]
 
+  export const dpsForecastColumns = [{
+    name: 'Ticker',
+    selector: row => row.equity_ticker,
+    sortable: true,
+    cell: row => <a href={`https://insider.d1research.com/groups/distribution/notes/annualized_discount/view/activity?ticker=${row.equity_ticker}`} className='d1-link' target='_blank'>{row.equity_ticker}</a>
+  },
+  {
+    name: 'Z4',
+    cell: row => format2Decimal(row.z1),
+    selector: row => formatSelectorNumber(row.z1),
+    sortable: true,
+  },
+  {
+    name: 'Z5',
+    cell: row => format2Decimal(row.z2),
+    selector: row => formatSelectorNumber(row.z2),
+    sortable: true,
+  },
+  {
+    name: 'Z6',
+    cell: row => format2Decimal(row.z3),
+    selector: row => formatSelectorNumber(row.z3),
+    sortable: true,
+  },
+  {
+    name: 'Z7',
+    cell: row => format2Decimal(row.z4),
+    selector: row => formatSelectorNumber(row.z4),
+    sortable: true,
+  }];
 
 
   export const dpsForecastColumns2 = [{
