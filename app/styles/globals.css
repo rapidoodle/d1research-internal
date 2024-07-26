@@ -143,7 +143,7 @@ body{
 
 .discount-positive, .discount-negative{
   border-radius: 5px;
-  height: 28px;
+  height: 24px;
   width: 60px;
   display: flex;
   align-items: center;

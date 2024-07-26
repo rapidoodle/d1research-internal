@@ -166,7 +166,7 @@ export async function GET(req) {
         }
         
         const company = site.replace('-', ' ');
-        const companyResponse = await getCompanyByName({'name' : 'michelin'});
+        const companyResponse = await getCompanyByName({'name' : company});
         if(companyResponse?.data && scrapedData.length > 0){
             const eventsPromises = scrapedData?.map(async event => {
                 event.friendly_name  = `${companyResponse.data.equity_ticker} - ${event.description}`;
