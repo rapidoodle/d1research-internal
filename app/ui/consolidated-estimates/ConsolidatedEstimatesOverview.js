@@ -4,8 +4,9 @@ import React, { useEffect, useState } from 'react';
 import '@/app/styles/company-page.css';
 import { useRouter } from 'next/navigation'
 import DataTableComponent from '@/app/components/DataTablesComponent';
-import { annualizedDiscountColumns, dpsForecastColumns } from '@/app/lib/table-columns/columns';
+import { annualizedDiscountColumns, dpsForecastColumns, dpsForecastColumns2 } from '@/app/lib/table-columns/columns';
 import PageSpinner from '@/app/components/PageSpinner';
+import CustomTableComponent from '@/app/components/CustomTableComponent';
 
 export default function ConsolidatedEstimatesOverview({session}) {
   const router = useRouter();
@@ -44,7 +45,8 @@ export default function ConsolidatedEstimatesOverview({session}) {
             <div className='row'>
                 <div className='col-12'>
                     <div className='table-responsive'>
-                      <DataTableComponent key={'dps-table'} columns={dpsForecastColumns} data={allData} />
+                      {/* <DataTableComponent key={'dps-table'} columns={dpsForecastColumns} data={allData} /> */}
+                      <CustomTableComponent key={'dps-table'} columns={dpsForecastColumns2} data={allData} />
                     </div>
                 </div>
             </div>

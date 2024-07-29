@@ -85,7 +85,7 @@ export const formatClinkedDate = (isoDateString) => {
 
 export const cleanCurrency = (value) => {
   if(!value){
-    return 'n/a';
+    return '-';
   }
 
   return value;
@@ -143,7 +143,18 @@ export const calculatePercent = (value, total, colored = false) => {
 
 export const fomatDisplay = (value) => {
 
-  if(value === 'n/a' || value === 'NaN' || value === null || value === undefined || value === '' || value === 'null' || value === 'undefined' || !value){
+  if(value === 'n/a' || 
+    value === 'NaN' || 
+    value === '-' || 
+    value === NaN || 
+    value === '#N/A' || 
+    value === '#DIV/0!' || 
+    value === null ||
+    value === undefined || 
+    value === '' || 
+    value === 'null' || 
+    value === 'undefined' || 
+    !value){
     return '-';
   }
 
@@ -152,7 +163,18 @@ export const fomatDisplay = (value) => {
 
 export const formatColoredPercentDisplay = (value) => {
 
-  if(value === 'n/a' || value === 'NaN' || value === null || value === undefined || value === '' || value === 'null' || value === 'undefined' || !value){
+  if(value === 'n/a' || 
+    value === 'NaN' || 
+    value === '-' || 
+    value === NaN || 
+    value === '#N/A' || 
+    value === '#DIV/0!' || 
+    value === null ||
+    value === undefined || 
+    value === '' || 
+    value === 'null' || 
+    value === 'undefined' || 
+    !value){
     return '-';
   }
 
@@ -170,6 +192,7 @@ export const formatColoredPercentDisplay = (value) => {
 
   return value;
 }
+
 export const calculatePercentageColored = (value, total) => {
   //calculate percentage
   const percent = (Number(value) / Number(total)) - 1;
@@ -234,6 +257,11 @@ export const roundUpNumber = (value) => {
     value === '0.00'){
     return '-';
   }
+
+  //if the value is in (NUMBER) format, return as is
+  if(value.includes('(') && value.includes(')')){
+    return value;
+  }
   
   if(isNaN(value)){
     value = Number(value.replace(/,/g, ''));
@@ -255,7 +283,6 @@ export const roundUpNumber = (value) => {
   if(Number(num) > 999){
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
-
 
   return num;
 }
@@ -346,8 +373,6 @@ export const formatHeatmap = (value) => {
     value === 'null' || 
     value === 'undefined' || 
     !value || 
-    value === 0 ||
-    value === '0' || 
     value === '0.00' ||
     value === '0.00'){
     return '-';

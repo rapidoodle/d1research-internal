@@ -191,7 +191,7 @@ export default function CompanyOverview({session}) {
 
           
           setDivIndex([{
-            label : `${zFirst?.index1} ${(zFirst?.index2 && zFirst.index2 !== 'n/a') ? `, ${zFirst?.index2}` : ''}${(zFirst?.index3 && zFirst.index3 !== 'n/a') ? `, ${zFirst?.index3}` : ''}${(zFirst?.index4 && zFirst.index4 !== 'n/a')? `, ${zFirst?.index4}` : ''}`,
+            label : `${zFirst?.index1} ${(zFirst?.index2 && zFirst.index2 !== 'n/a' && zFirst.index2 !== '-') ? `, ${zFirst?.index2}` : ''}${(zFirst?.index3 && zFirst.index3 !== 'n/a' && zFirst.index3 !== '-') ? `, ${zFirst?.index3}` : ''}${(zFirst?.index4 && zFirst.index4 !== 'n/a' && zFirst.index4 !== '-')? `, ${zFirst?.index4}` : ''}`,
             value : 0
           }]);
 

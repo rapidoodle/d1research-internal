@@ -6,6 +6,10 @@ table thead tr th{
     background-color: #F7F1E3 !important;
     font-weight: bold;
 }
+table tbody tr td:not(:first-child), table thead tr th:not(:first-child){
+    text-align: center!important;
+}
+
 table#custom-table thead tr th:first-child{
     border-top-left-radius: 5px!important;
     border-bottom-left-radius: 0!important;
@@ -22,4 +26,18 @@ div#dps-table-container{
 div.estimates-container{
     width: 410px;
     height: 1000px;
+}
+
+select.ticker-select{
+    padding-left: 0.3rem;
+    line-height: 1.5;
+    color: var(--bs-body-color);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: var(--bs-body-bg);
+    background-clip: padding-box;
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    border-radius: 4px;
 }
