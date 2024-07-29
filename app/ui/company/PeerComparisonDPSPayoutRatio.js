@@ -40,12 +40,15 @@ export default function PeerComparisonDPSPayoutRatio({zPrev, zFirst, zSecond, zT
 
                 const chartSeriesData = responses.map((companyData)=> {
                     console.log(companyData);
-                    return {
-                        name: companyData[0].equity_ticker,
-                        data: companyData.map((item, i) => {
-                            return Math.round(Number(item.dps_payout_ratio.replace('%', '')))
-                        }
-                    )};
+                    if(companyData){
+                        return {
+                            name: companyData[0]?.equity_ticker,
+                            data: companyData.map((item, i) => {
+                                return Math.round(Number(item.dps_payout_ratio.replace('%', '')))
+                            }
+                        )};
+                    }
+
                 });
 
                 chartSeriesData.push({
@@ -92,12 +95,12 @@ export default function PeerComparisonDPSPayoutRatio({zPrev, zFirst, zSecond, zT
                             //reverse peers to show the latest year first
                             return (
                                 <tr key={index}>
-                                    <td>{peer[0].equity_ticker
+                                    <td>{peer[0]?.equity_ticker
                                     }</td>
-                                    <td>{peer[0].dps_payout_ratio}</td>
-                                    <td>{peer[3].dps_payout_ratio}</td>
-                                    <td>{peer[2].dps_payout_ratio}</td>
-                                    <td>{peer[1].dps_payout_ratio}</td>
+                                    <td>{peer[0]?.dps_payout_ratio}</td>
+                                    <td>{peer[3]?.dps_payout_ratio}</td>
+                                    <td>{peer[2]?.dps_payout_ratio}</td>
+                                    <td>{peer[1]?.dps_payout_ratio}</td>
                                 </tr>
                             );
 

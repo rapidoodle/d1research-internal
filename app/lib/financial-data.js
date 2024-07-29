@@ -3,7 +3,7 @@ import { parse } from 'csv-parse';
 import { readFile, writeFile } from 'fs/promises';
 import { NextRequest, NextResponse } from 'next/server';
 import { join } from 'path';
-import { calculatePercent, cleanDate, cleanField } from './utils';
+import { calculatePercent, cleanDate, cleanField, format2Decimal, roundUpNumber } from './utils';
 import aws from 'aws-sdk';
 import { uploadFile } from './aws/upload';
 import { randomUUID } from 'crypto';
@@ -64,7 +64,7 @@ export async function uploadFinancialData (req, res) {
                 WHERE company = $1 AND year = $2 AND equity_ticker = $3
               `;
               const financialDataResult = await sql.query(financialDataQuery, [row['Company'], row['Year'], row['Equity Ticker']]);
-
+              console.log('Financial data result', financialDataResult.rows);
               //get logged in user id
               if (financialDataResult.rows.length > 0) {
 
@@ -128,59 +128,58 @@ export async function uploadFinancialData (req, res) {
                   year = $52;
               `;
 
-              //if row['DPS z] and row['Current Price z'] is not empty set discountPremiumPercent to (row['Current Price z'] / row['DPS z']) - 1
-              var discountPremiumPercent = null;
-              if(row['DPS z'] && row['Current Price z']){
-                discountPremiumPercent = calculatePercent(row['Current Price z'], row['DPS z']);
-                console.log('Discount premium percent is', discountPremiumPercent, row['Equity Ticker'], row['Year']);
-              }else{
-                discountPremiumPercent = 'n/a';
-
-                console.log('Discount premium percent is n/a for', row['Equity Ticker'], row['Year']);
-              }
+                //if row['DPS z] and row['Current Price z'] is not empty set discountPremiumPercent to (row['Current Price z'] / row['DPS z']) - 1
+                var discountPremiumPercent = null;
+                if(row['DPS z'] && row['Current Price z']){
+                  discountPremiumPercent = calculatePercent(format2Decimal(row['Current Price z']), format2Decimal(row['DPS z']));
+                  console.log('Discount premium percent is', discountPremiumPercent, row['Equity Ticker'], row['Year']);
+                }else{
+                  discountPremiumPercent = '-';
+                  console.log('Discount premium percent is n/a for', row['Equity Ticker'], row['Year']);
+                }
               
               const values = [
                 cleanField(row['Year']),
                 cleanField(row['Company']),
                 cleanField(row['Sector']),
                 cleanField(row['Equity Ticker']),
-                cleanField(row['Share price']),
+                format2Decimal(row['Share price']),
                 cleanField(row['Div Ticker']),
                 cleanField(row['P&L FX']),
                 cleanField(row['Div Future FX']),
                 cleanField(row['Index1']),
                 cleanField(row['Index2']),
                 cleanField(row['Index3']),
-                cleanField(row['DPS z']),
-                cleanField(row['Current Price z']),
+                format2Decimal(row['DPS z']),
+                format2Decimal(row['Current Price z']),
                 cleanField(discountPremiumPercent),
                 cleanField(row['Annual return (%)']),
-                cleanField(row['z Very Bear']),
-                cleanField(row['z Bear']),
-                cleanField(row['z Bull']),
-                cleanField(row['z Very Bull']),
-                cleanField(row['Risk adj. DPS (z)']),
+                format2Decimal(row['z Very Bear']),
+                format2Decimal(row['z Bear']),
+                format2Decimal(row['z Bull']),
+                format2Decimal(row['z Very Bull']),
+                format2Decimal(row['Risk adj. DPS (z)']),
                 cleanField(row['Difference to Central (%)']),
-                cleanField(row['Net Income']),
-                cleanField(row['Av. Weighted Share Cap']),
-                cleanField(row['EPS']),
-                cleanField(row['DPS (FY)']),
+                roundUpNumber(row['Net Income']),
+                roundUpNumber(row['Av. Weighted Share Cap']),
+                format2Decimal(row['EPS']),
+                format2Decimal(row['DPS (FY)']),
                 cleanField(row['DPS payout ratio']),
-                cleanField(row['Op Cash Flow']),
-                cleanField(row['Capex']),
-                cleanField(row['Free Cash Flow']),
-                cleanField(row['Dividend']),
-                cleanField(row['Share Buyback']),
-                cleanField(row['Total Capital Return']),
-                cleanField(row['Net Debt']),
-                cleanField(row['Share in issue']),
-                cleanField(row['Treasury shares ']),
+                roundUpNumber(row['Op Cash Flow']),
+                roundUpNumber(row['Capex']),
+                roundUpNumber(row['Free Cash Flow']),
+                roundUpNumber(row['Dividend']),
+                roundUpNumber(row['Share Buyback']),
+                roundUpNumber(row['Total Capital Return']),
+                roundUpNumber(row['Net Debt']),
+                roundUpNumber(row['Share in issue']),
+                roundUpNumber(row['Treasury shares ']),
                 cleanField(row['Shares outstanding']),
                 cleanField(row['Capital Payout (%)']),
-                cleanField(row['DPSQ1']),
-                cleanField(row['DPSQ2']),
-                cleanField(row['DPSQ3']),
-                cleanField(row['DPSQ4']),
+                format2Decimal(row['DPSQ1']),
+                format2Decimal(row['DPSQ2']),
+                format2Decimal(row['DPSQ3']),
+                format2Decimal(row['DPSQ4']),
                 cleanDate(row['Ex Date Q1']),
                 cleanDate(row['Ex Date Q2']),
                 cleanDate(row['Ex Date Q3']),
@@ -202,12 +201,12 @@ export async function uploadFinancialData (req, res) {
                 }
 
                 //if any of this changed, update the historical data
-                if((Number(financialDataResult.rows[0]['dps_z']) !== cleanField(row['DPS z']) && row['DPS z']) || 
-                  (Number(financialDataResult.rows[0]['very_bear_z']) !== cleanField(row['z Very Bear'] && row['z Very Bear'])) || 
-                  (Number(financialDataResult.rows[0]['bear_z']) !== cleanField(row['z Bear']) && row['z Bear']) || 
-                  (Number(financialDataResult.rows[0]['bull_z']) !== cleanField(row['z Bull']) && row['z Bull']) || 
-                  (Number(financialDataResult.rows[0]['very_bull_z']) !== cleanField(row['z Very Bull']) && row['z Very Bull']) || 
-                  (Number(financialDataResult.rows[0]['risk_adj_dps_z']) !== cleanField(row['Risk adj. DPS (z)']) && row['Risk adj. DPS (z)'])){
+                if((Number(financialDataResult.rows[0]['dps_z']) !== format2Decimal(row['DPS z']) && row['DPS z']) || 
+                  (Number(financialDataResult.rows[0]['very_bear_z']) !== format2Decimal(row['z Very Bear'] && row['z Very Bear'])) || 
+                  (Number(financialDataResult.rows[0]['bear_z']) !== format2Decimal(row['z Bear']) && row['z Bear']) || 
+                  (Number(financialDataResult.rows[0]['bull_z']) !== format2Decimal(row['z Bull']) && row['z Bull']) || 
+                  (Number(financialDataResult.rows[0]['very_bull_z']) !== format2Decimal(row['z Very Bull']) && row['z Very Bull']) || 
+                  (Number(financialDataResult.rows[0]['risk_adj_dps_z']) !== format2Decimal(row['Risk adj. DPS (z)']) && row['Risk adj. DPS (z)'])){
 
                   console.log('Some estimates changed, update historical data');
 
@@ -238,12 +237,12 @@ export async function uploadFinancialData (req, res) {
                      financialDataResult.rows[0]['year'], 
                      financialDataResult.rows[0]['company'], 
                      financialDataResult.rows[0]['equity_ticker'], 
-                     cleanField(financialDataResult.rows[0]['dps_z']), 
-                     cleanField(financialDataResult.rows[0]['very_bear_z']),
-                     cleanField(financialDataResult.rows[0]['bear_z']),
-                     cleanField(financialDataResult.rows[0]['bull_z']),
-                     cleanField(financialDataResult.rows[0]['very_bull_z']),
-                     cleanField(financialDataResult.rows[0]['risk_adj_dps_z']),
+                     format2Decimal(financialDataResult.rows[0]['dps_z']), 
+                     format2Decimal(financialDataResult.rows[0]['very_bear_z']),
+                     format2Decimal(financialDataResult.rows[0]['bear_z']),
+                     format2Decimal(financialDataResult.rows[0]['bull_z']),
+                     format2Decimal(financialDataResult.rows[0]['very_bull_z']),
+                     format2Decimal(financialDataResult.rows[0]['risk_adj_dps_z']),
                      loggedUser.id]
                    );
                   } catch (error) {
@@ -255,7 +254,6 @@ export async function uploadFinancialData (req, res) {
                 }
                 
               }else{
-
                 if(row['Year'] && row['Company'] && row['Equity Ticker']){
 
                   console.log(`Data for ${row['Company']} in ${row['Year']} does not exist, inserting...`);
@@ -263,10 +261,10 @@ export async function uploadFinancialData (req, res) {
                   //if row['DPS z] and row['Current Price z'] is not empty set discountPremiumPercent to (row['Current Price z'] / row['DPS z']) - 1
                   var discountPremiumPercent = null;
                   if(row['DPS z'] && row['Current Price z']){
-                    discountPremiumPercent = (cleanField(row['Current Price z']) / cleanField(row['DPS z'])) - 1;
+                    discountPremiumPercent = (format2Decimal(row['Current Price z']) / format2Decimal(row['DPS z'])) - 1;
                     console.log('Discount premium percent is', discountPremiumPercent, row['Equity Ticker'], row['Year']);
                   }else{
-                    discountPremiumPercent = 'n/a';
+                    discountPremiumPercent = '-';
                     console.log('Discount premium percent is n/a for', row['Equity Ticker'], row['Year']);
                   }
 
@@ -284,43 +282,43 @@ export async function uploadFinancialData (req, res) {
                     ${row['Company']}, 
                     ${row['Sector']}, 
                     ${row['Equity Ticker']}, 
-                    ${cleanField(row['Share price'])}, 
+                    ${format2Decimal(row['Share price'])}, 
                     ${cleanField(row['Div Ticker'])}, 
                     ${cleanField(row['P&L FX'])}, 
                     ${cleanField(row['Div Future FX'])},
                     ${cleanField(row['Index1'])}, 
                     ${cleanField(row['Index2'])}, 
                     ${cleanField(row['Index3'])}, 
-                    ${cleanField(row['DPS z'])}, 
-                    ${cleanField(row['Current Price z'])}, 
+                    ${format2Decimal(row['DPS z'])}, 
+                    ${format2Decimal(row['Current Price z'])}, 
                     ${cleanField(discountPremiumPercent)},
                     ${cleanField(row['Annual return (%)'])}, 
-                    ${cleanField(row['z Very Bear'])}, 
-                    ${cleanField(row['z Bear'])}, 
-                    ${cleanField(row['z Bull'])}, 
-                    ${cleanField(row['z Very Bull'])}, 
-                    ${cleanField(row['Risk adj. DPS (z)'])}, 
+                    ${roundUpNumber(row['z Very Bear'])}, 
+                    ${roundUpNumber(row['z Bear'])}, 
+                    ${roundUpNumber(row['z Bull'])}, 
+                    ${roundUpNumber(row['z Very Bull'])}, 
+                    ${roundUpNumber(row['Risk adj. DPS (z)'])}, 
                     ${cleanField(row['Difference to Central (%)'])}, 
                     ${cleanField(row['Net Income'])},
                     ${cleanField(row['Av. Weighted Share Cap'])}, 
                     ${cleanField(row['EPS'])}, 
                     ${cleanField(row['DPS (FY)'])}, 
                     ${cleanField(row['DPS payout ratio'])}, 
-                    ${cleanField(row['Op Cash Flow'])}, 
-                    ${cleanField(row['Capex'])}, 
-                    ${cleanField(row['Free Cash Flow'])},
-                    ${cleanField(row['Dividend'])}, 
-                    ${cleanField(row['Share Buyback'])}, 
-                    ${cleanField(row['Total Capital Return'])}, 
-                    ${cleanField(row['Net Debt'])}, 
-                    ${cleanField(row['Share in issue'])}, 
-                    ${cleanField(row['Treasury shares'])},
+                    ${roundUpNumber(row['Op Cash Flow'])}, 
+                    ${roundUpNumber(row['Capex'])}, 
+                    ${roundUpNumber(row['Free Cash Flow'])},
+                    ${roundUpNumber(row['Dividend'])}, 
+                    ${roundUpNumber(row['Share Buyback'])}, 
+                    ${roundUpNumber(row['Total Capital Return'])}, 
+                    ${roundUpNumber(row['Net Debt'])}, 
+                    ${roundUpNumber(row['Share in issue'])}, 
+                    ${roundUpNumber(row['Treasury shares'])},
                     ${cleanField(row['Shares outstanding'])}, 
                     ${cleanField(row['Capital Payout (%)'])}, 
-                    ${cleanField(row['DPSQ1'])}, 
-                    ${cleanField(row['DPSQ2'])}, 
-                    ${cleanField(row['DPSQ3'])}, 
-                    ${cleanField(row['DPSQ4'])}, 
+                    ${format2Decimal(row['DPSQ1'])}, 
+                    ${format2Decimal(row['DPSQ2'])}, 
+                    ${cleaformat2DecimalnField(row['DPSQ3'])}, 
+                    ${format2Decimal(row['DPSQ4'])}, 
                     ${cleanDate(row['Ex Date Q1'])}, 
                     ${cleanDate(row['Ex Date Q2'])}, 
                     ${cleanDate(row['Ex Date Q3'])}, 
@@ -387,7 +385,7 @@ export async function uploadFinancialData (req, res) {
             }
 
             // check if Div Ticker is present in tags table and insert if not present
-            const divTicker = row['Div Ticker'];
+            const divTicker = cleanField(row['Div Ticker']);
             if(divTicker){
               const divTickerRes = await getTagByName({ name: divTicker });
               if(divTickerRes.data.length === 0){
@@ -399,7 +397,7 @@ export async function uploadFinancialData (req, res) {
             }
 
             //check if Index1 is present in tags table and insert if not present
-            const index1 = row['Index1'];
+            const index1 = cleanField(row['Index1']);
             if(index1 && index1 !== 0){
               const index1TickerRes = await getTagByName({ name: index1 });
               if(index1TickerRes.data.length === 0){
@@ -411,7 +409,7 @@ export async function uploadFinancialData (req, res) {
             }
 
             //check if Index2 is present in tags table and insert if not present
-            const index2 = row['Index2'];
+            const index2 = cleanField(row['Index2']);
             if(index2 && index2 !== 0){
               const index2TickerRes = await getTagByName({ name: index2 });
               if(index2TickerRes.data.length === 0){
@@ -423,7 +421,7 @@ export async function uploadFinancialData (req, res) {
             }
 
             //check if Index3 is present in tags table and insert if not present
-            const index3 = row['Index3'];
+            const index3 = cleanField(row['Index3']);
             if(index3 && index3 !== 0){
               const index3TickerRes = await getTagByName({ name: index3 });
               if(index3TickerRes.data.length === 0){

@@ -92,8 +92,19 @@ export const cleanCurrency = (value) => {
 }
 
 export const cleanField = (value) => {
-  if (value === null || value === undefined || value === '') {
-    return 'n/a';
+  if(value === 'n/a' || 
+    value === 'NaN' || 
+    value === '-' || 
+    value === NaN || 
+    value === '#N/A' || 
+    value === '#DIV/0!' || 
+    value === null ||
+    value === undefined || 
+    value === '' || 
+    value === 'null' || 
+    value === 'undefined' || 
+    !value){
+    return '-';
   }
   return value;
 }
@@ -207,8 +218,10 @@ export const roundUpNumber = (value) => {
   
   if(value === 'n/a' || 
     value === 'NaN' || 
+    value === '-' || 
     value === NaN || 
     value === '#N/A' || 
+    value === '#DIV/0!' || 
     value === null ||
     value === undefined || 
     value === '' || 
@@ -290,8 +303,10 @@ export const formatNumber = (number, colored = false) => {
 export const format2Decimal = (value) => {
   if(value === 'n/a' || 
     value === 'NaN' || 
+    value === '-' || 
     value === NaN || 
     value === '#N/A' || 
+    value === '#DIV/0!' || 
     value === null ||
     value === undefined || 
     value === '' || 
@@ -331,6 +346,8 @@ export const formatHeatmap = (value) => {
     value === 'null' || 
     value === 'undefined' || 
     !value || 
+    value === 0 ||
+    value === '0' || 
     value === '0.00' ||
     value === '0.00'){
     return '-';
