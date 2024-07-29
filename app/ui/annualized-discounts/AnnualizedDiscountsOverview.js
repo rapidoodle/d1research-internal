@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import DataTableComponent from '@/app/components/DataTablesComponent';
 import { annualizedDiscountColumns, dpsForecastColumns } from '@/app/lib/table-columns/columns';
 import PageSpinner from '@/app/components/PageSpinner';
+import { calculatePercent, getPercentage } from '@/app/lib/utils';
 
 export default function AnnualiazedDiscountsOverview({session}) {
   const router = useRouter();
@@ -17,15 +18,33 @@ export default function AnnualiazedDiscountsOverview({session}) {
       const fetchFinancialData = async () => {
         try {
           setLoading(true);
-          const response = await fetch(`/api/consolidated-estimates/`);
+          const response = await fetch(`/api/annualized-discounts/`);
           const data = await response.json();
+          
           if (!response.ok) {
             router.push("/settings/companies");
             throw new Error(`Error: ${response.statusText}`);
           }
           // Set all data in reverse order
-          setAllData(data);
           setLoading(false);
+
+          const relevantYears = [2025, 2026, 2027];
+
+          const groupedData = data.reduce((acc, item) => {
+            if (!acc[item.equity_ticker]) {
+              acc[item.equity_ticker] = { equity_ticker: item.equity_ticker };
+            }
+            if (relevantYears.includes(item.year)) {
+              const yearKey = `z${item.year - 2020}`;
+              acc[item.equity_ticker][yearKey] = calculatePercent(item.current_price_z, item.dps_z);
+            }
+            return acc;
+          }, {});
+          
+          const newData = Object.values(groupedData);
+          
+          setAllData(newData);
+          console.log(newData);
 
         } catch (error) {
           console.error('Failed to fetch company data:', error);

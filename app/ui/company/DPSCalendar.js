@@ -6,7 +6,7 @@ export default function DPSCalendar({allData}) {
             <h5>DPS calendar</h5>
             <hr />
             <div className="table-responsive">
-                <table className="table table-responsive">
+                <table className="table table-responsive year-table">
                     <thead>
                         <tr>
                             <th>Year</th>
@@ -43,8 +43,7 @@ export default function DPSCalendar({allData}) {
                         return (
                             <tr key={index}>
                                 {/* if year is greater than this year, add e  */}
-                                <td>{yearLabel}</td>
-
+                            <td style={{width: 100}}>{yearLabel}</td>
                                 <td>{formatNumber(data.dps_q1)}</td>
                                 <td>{formatNumber(data.dps_q2)}</td>
                                 <td>{formatNumber(data.dps_q3)}</td>

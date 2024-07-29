@@ -49,48 +49,6 @@ const CompaniesTable = ({query, currentPage, companyAdded}) => {
   return (
     <div>
       <DataTableComponent columns={companiesTableColumns} data={companies} />
-      {/* <div className='table-responsive'>
-        <table className="table table-hovered table-condensed table-striped">
-            <thead>
-              <tr>
-                  <th>Company</th>
-                  <th>Sector</th>
-                  <th>Tags</th>
-                  <th></th>
-              </tr>
-            </thead>
-            <tbody>
-            {companies.map((row) => (
-                <tr key={row.id}>
-                  <td>{row.company}</td>
-                  <td>{row.sector}</td>
-                  <td>{row.tags.split(',').map((tag, index) => 
-                    <span className='badge me-1 badge-tag' key={index}>
-                      { tag }
-                    </span>)}
-                  </td>
-                  <td>
-                    <a href={`${row.iframe}`} target='_blank'>{row.iframe}</a>
-                    </td>
-                  <td align='right'>
-                    <button className='btn btn-success btn-sm'>
-                      <span><FontAwesomeIcon icon={faEdit} /> Edit</span>
-                    </button>
-                    <a target='_blank' className='btn ms-2 btn-success btn-sm' href={`/companies/${row.company_id}/${row.url_key}`}>
-                      <span><FontAwesomeIcon icon={faEye}/> View page</span>
-                    </a>
-                  </td>
-                </tr>
-            ))}
-            {companies.length === 0 && (
-              <><tr>
-                <td colSpan={44} align='center'>No available data</td>
-                </tr></>
-            )}
-            </tbody>
-        </table>
-      </div>
-      <Pagination page={page} totalPages={totalPages} setPage={setPage} /> */}
     </div>
   );
 }else{

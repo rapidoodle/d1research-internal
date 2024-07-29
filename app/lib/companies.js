@@ -115,7 +115,7 @@ export async function getCompanies(req) {
 
 export async function getCompanyByName(req){
   try {
-    const query = `SELECT * FROM companies WHERE LOWER(name) LIKE $1`;
+    const query = `SELECT * FROM companies WHERE LOWER(name) ILIKE $1`;
     const result = await sql.query(query, [req.name]);
     return { data: result.rows[0] };
 

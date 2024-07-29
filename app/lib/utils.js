@@ -121,6 +121,11 @@ export const calculatePercent = (value, total, colored = false) => {
       return <span class="text-danger">({Math.abs(Math.round(percent * 100)) + '%'})</span>;
     }
   }
+  //if infinity, return -
+
+  if(percent === Infinity){
+    return '-';
+  }
   
   return Math.round(percent * 100) + '%';
 }
@@ -202,6 +207,8 @@ export const roundUpNumber = (value) => {
   
   if(value === 'n/a' || 
     value === 'NaN' || 
+    value === NaN || 
+    value === '#N/A' || 
     value === null ||
     value === undefined || 
     value === '' || 
@@ -283,6 +290,8 @@ export const formatNumber = (number, colored = false) => {
 export const format2Decimal = (value) => {
   if(value === 'n/a' || 
     value === 'NaN' || 
+    value === NaN || 
+    value === '#N/A' || 
     value === null ||
     value === undefined || 
     value === '' || 
@@ -306,21 +315,35 @@ export const format2Decimal = (value) => {
 }
 
 export const formatHeatmap = (value) => {
-  if(value === 'n/a' || value === 'NaN'){
+
+  //remove percentage sign
+  value = value?.replace('%', '');
+
+  if(value === 'n/a' || 
+    value === '-' || 
+    value === 'NaN' || 
+    value === NaN || 
+    value === '#N/A' || 
+    value === null ||
+    value === undefined || 
+    value === Infinity || 
+    value === '' || 
+    value === 'null' || 
+    value === 'undefined' || 
+    !value || 
+    value === '0.00' ||
+    value === '0.00'){
     return '-';
   }
 
-  //remove percentage sign
-  value = value.replace('%', '');
-
   //if value is less than 0, put in parenthesis, remove negative sign and add badge in red
   if(Number(value) > 0){
-    return <span className="discount-positive">-{Math.abs(Number(value))}%</span>;
+    return <span className="discount-positive">{Math.abs(Number(value))}%</span>;
   }
 
   //if value is more than 0, add badge in green
   if(Number(value) < 0){
-    return <span className="discount-negative">{Math.abs(Number(value))}%</span>;
+    return <span className="discount-negative">-{Math.abs(Number(value))}%</span>;
   }
 
   return value + '%';
@@ -336,7 +359,21 @@ export const customSortFunction = (rowA, rowB, key) => {
 };
 
 export const formatSelectorNumber = (value) => {
-  if (value === 'n/a' || value === 'NaN' || value === '') {
+  if(value === 'n/a' || 
+    value === 'NaN' || 
+    value === NaN || 
+    value === '#N/A' || 
+    value === null ||
+    value === undefined || 
+    value === '' || 
+    value === 'null' || 
+    value === 'undefined' || 
+    value === '-' || 
+    !value || 
+    value === 0 ||
+    value === '0' || 
+    value === '0.00' ||
+    value === '0.00'){
     return NaN;
   }
   return parseFloat(value);

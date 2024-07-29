@@ -1,6 +1,4 @@
 import { NextResponse } from 'next/server';
-import { getAllCompanies } from '@/app/lib/companies';
-import { getFinancialDataByCompanyTicker } from '@/app/lib/financial-data';
 import { getConsolidatedEstimates } from '@/app/lib/consolidated-estimates';
 
 
@@ -21,7 +19,7 @@ export async function GET(req) {
             return NextResponse.json({ message: cEResponse.error }, { status: 500 });
         }
 
-    return NextResponse.json(cEResponse.data, { status: 200 });
+        return NextResponse.json(cEResponse.data, { status: 200 });
     } catch (error) {
 
     console.error('Error fetching consolidated estimates:', error);

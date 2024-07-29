@@ -172,24 +172,24 @@ import moment from "moment";
     },
     {
       name: 'Z5',
+      cell: row => formatHeatmap(row.z5),
+      selector: row => formatSelectorNumber(row.z5.replace(/%/g, '')),
+      sortable: true,
+      sortFunction: (rowA, rowB) => customSortFunction(rowA, rowB, 'z5'),
+    },
+    {
+      name: 'Z6',
       cell: row => formatHeatmap(row.z6),
       selector: row => formatSelectorNumber(row.z6.replace(/%/g, '')),
       sortable: true,
       sortFunction: (rowA, rowB) => customSortFunction(rowA, rowB, 'z6'),
     },
     {
-      name: 'Z6',
+      name: 'Z7',
       cell: row => formatHeatmap(row.z7),
       selector: row => formatSelectorNumber(row.z7.replace(/%/g, '')),
       sortable: true,
       sortFunction: (rowA, rowB) => customSortFunction(rowA, rowB, 'z7'),
-    },
-    {
-      name: 'Z7',
-      cell: row => formatHeatmap(row.z8),
-      selector: row => formatSelectorNumber(row.z8.replace(/%/g, '')),
-      sortable: true,
-      sortFunction: (rowA, rowB) => customSortFunction(rowA, rowB, 'z8'),
     },
   ];
 
