@@ -118,10 +118,26 @@ const PendingEventsTable = ({query, currentPage, eventAdded}) => {
         handleChangeStatus(event, 2);
       }
     })
+   }
 
+   const handleDelete = (event) => {
+    Swal.fire({
+      title: 'Delete event?',
+      text: "Are you sure you want to delete this event?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Ignore'
+    }).then(async (result) => {
+      console.log(result);
+      if (result.isConfirmed) {
+        handleDeleteEvent(event);
+      }
+    })
    }
  
-   const pendingEventsColumnsWithActions = pendingEventsColumns(handleReview, handleApprove, handleIgnore);
+   const pendingEventsColumnsWithActions = pendingEventsColumns(handleReview, handleApprove, handleIgnore, handleDelete);
 
    const handleChangeStatus = async(event, status) => {
     try {
@@ -168,6 +184,38 @@ const PendingEventsTable = ({query, currentPage, eventAdded}) => {
       )
     }
    }
+
+   const handleDeleteEvent = async(event) => {
+      try {
+        setLoading(true);
+        const response = await fetch(`/api/events/`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ id: event.id, action: 'delete'})
+        });
+
+        if (response.ok) {
+          setLoading(false);
+
+          Swal.fire(
+            'Deleted!',
+            'Event has been deleted.',
+            'success'
+          )
+        }
+        fetchEvents();
+
+      } catch (error) {
+        Swal.fire(
+          'Error!',
+          'Error deleting event. Please contact support.',
+          'error'
+        )
+      }
+    }
+
 
   if(!loading){
   return (

@@ -215,7 +215,7 @@ import moment from "moment";
     sortable: true,
   }];
 
-  export const pendingEventsColumns = (handleReview, hanldeApprove, handleIgnore) => [
+  export const pendingEventsColumns = (handleReview, hanldeApprove, handleIgnore, handleDelete) => [
     {
       name: 'Company',
       selector: row => row.company,
@@ -256,7 +256,8 @@ import moment from "moment";
         <div className="d-flex">
           <a href="#" onClick={ () => handleReview(row) }>Review</a>
           <a href="#" className="ms-1 text-success" onClick={ () => hanldeApprove(row) }>Approve</a>
-          <a href="#" className="ms-1 text-danger" onClick={ () => handleIgnore(row) }>Ignore</a>
+          <a href="#" className="ms-1 text-warning" onClick={ () => handleIgnore(row) }>Ignore</a>
+          <a href="#" className="ms-1 text-danger" onClick={ () => handleDelete(row) }>Delete</a>
         </div>
       ),
       ignoreRowClick: true,

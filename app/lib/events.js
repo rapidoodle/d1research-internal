@@ -200,6 +200,23 @@ export async function getEventByEquityTicker(equityTicker) {
   }
 }
 
+export async function deleteEvent(id) {
+
+  console.log('DELETE this event:', id);
+  try {
+    const query = `
+      DELETE FROM events
+      WHERE id = $1
+    `;
+    const response = await sql.query(query, [id]);
+    return NextResponse.json(response);
+  } catch (error) {
+    console.error('Error deleting event:', error);
+    return { error: 'Error deleting event' };
+  }
+}
+
+
 
 export async function getEvents(req) {
 

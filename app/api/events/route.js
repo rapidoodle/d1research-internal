@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createEvent, getEventByEquityTicker, getEvents, setEventStatus, updateEvent } from '@/app/lib/events';
+import { createEvent, deleteEvent, getEventByEquityTicker, getEvents, setEventStatus, updateEvent } from '@/app/lib/events';
 
 
 export const routeSegmentConfig = {
@@ -73,4 +73,21 @@ export async function PATCH(req) {
 
     return NextResponse.json(data);
 
+}
+
+export async function DELETE(req) {
+    if (req.method !== 'DELETE') {
+        return NextResponse.json({ message: 'Method not allowed' }, { status: 405 });
+    }
+
+    const request = await req.json();
+
+    console.log(request);
+    const data = await deleteEvent(request.id);
+
+    if (data.error) {
+        return NextResponse.json({ message: data.error }, { status: 500 });
+    }
+
+    return NextResponse.json(data);
 }
