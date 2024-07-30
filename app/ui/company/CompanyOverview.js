@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 import '@/app/styles/company-page.css';
-import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { validate } from 'uuid';
 import { useRouter } from 'next/navigation'

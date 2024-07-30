@@ -3,6 +3,7 @@ import '@/app/styles/custom-table.css';
 import { cleanField, format2Decimal } from '../lib/utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSort, faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons';
+import Select from 'react-select'
 
 const CustomTableComponent = ({ columns, data, inputFormat, fixedHeader }) => {
   const [filteredData, setFilteredData] = useState(data);
@@ -68,11 +69,12 @@ const isValidValue = (value) => {
   };
 
   return (
+    <div className='custom-table-container'>
       <table className="table table-striped table-hover w-100" id='custom-table'>
         <thead className={fixedHeader && 'sticky-top'}>
           <tr>
             {columns.map((col, index) => (
-              <th key={index}>
+              <th key={index} className='cursor-pointer'>
                 {index !== 0 && <span onClick={() => onSort(col.selector)}>{col.name}</span>}
                 {col.selector === 'equity_ticker' && (
                   <select value={selectedTicker} onChange={handleTickerChange} className='ticker-select'>
@@ -104,6 +106,7 @@ const isValidValue = (value) => {
           ))}
         </tbody>
       </table>
+    </div>
   );
 };
 

@@ -42,20 +42,14 @@ export default function ConsolidatedEstimatesOverview({session}) {
     return (<>
 
       <div>
-        <div className='main-container'>
-            <div className='row'>
-                <div className='col-12'>
-                    <div className='table-responsive'>
-                      {/* <DataTableComponent key={'dps-table'} columns={dpsForecastColumns} data={allData} /> */}
-                      <CustomTableComponent 
-                        key={'dps-table'} 
-                        columns={dpsForecastColumns2} 
-                        data={allData}
-                        fixedHeader={true}
-                        inputFormat={format2Decimal}  />
-                    </div>
-                </div>
-            </div>
+        <div className='table-responsive'>
+          {/* <DataTableComponent key={'dps-table'} columns={dpsForecastColumns} data={allData} /> */}
+          <CustomTableComponent 
+            key={'dps-table'} 
+            columns={dpsForecastColumns2} 
+            data={allData}
+            fixedHeader={true}
+            inputFormat={format2Decimal}  />
         </div>
       </div>
 
