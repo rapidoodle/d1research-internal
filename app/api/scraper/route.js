@@ -32,12 +32,21 @@ import { scrapeStellantisEvents } from "@/app/lib/scraper/stellantis";
 import { scrapeTotalEvents } from "@/app/lib/scraper/total";
 import { scrapeVolkswagenEvents } from "@/app/lib/scraper/volkswagen";
 import { NextResponse } from "next/server";
-import { scrapeLegrandEvents } from "./legrand";
+import { scrapeLegrandEvents } from "../../lib/scraper/legrand";
 import { scrapeLorealEvents } from "@/app/lib/scraper/loreal";
 import { scrapeMichelinEvents } from "@/app/lib/scraper/michelin";
 import { scrapeNokiaEvents } from "@/app/lib/scraper/nokia";
 import { scrapeOrangeEvents } from "@/app/lib/scraper/orange";
-import { scrapeRenaultEvents } from "./renault";
+import { scrapeRenaultEvents } from "../../lib/scraper/renault";
+import { scrapeSafranEvents } from "@/app/lib/scraper/safran";
+import { scrapeShellEvents } from "@/app/lib/scraper/shell";
+import { scrapeSaintGobainEvents } from "@/app/lib/scraper/saint-gobain";
+import { scrapeTeleperformanceEvents } from "@/app/lib/scraper/teleperformance";
+import { scrapeVeoliaEvents } from "@/app/lib/scraper/veolia";
+import { scrapeVinciEvents } from "@/app/lib/scraper/vinci";
+import { scrapeLVMHEvents } from "@/app/lib/scraper/lvmh";
+import { scrapeLufthansaEvents } from "@/app/lib/scraper/lufthansa";
+import { scrapeAholdEvents } from "@/app/lib/scraper/ahold";
 
 export const maxDuration = 300;
 
@@ -160,6 +169,33 @@ export async function GET(req) {
                 break;
             case 'renault':
                 scrapedData = await scrapeRenaultEvents();
+                break;
+            case 'safran':
+                scrapedData = await scrapeSafranEvents();
+                break;
+            case 'shell':
+                scrapedData = await scrapeShellEvents();
+                break;
+            case 'st-gobain':
+                scrapedData = await scrapeSaintGobainEvents();
+                break;
+            case 'teleperformance':
+                scrapedData = await scrapeTeleperformanceEvents();
+                break;
+            case 'veolia':
+                scrapedData = await scrapeVeoliaEvents();
+                break;
+            case 'vinci':
+                scrapedData = await scrapeVinciEvents();
+                break;
+            case 'lvmh':
+                scrapedData = await scrapeLVMHEvents();
+                break;
+            case 'lufthansa':
+                scrapedData = await scrapeLufthansaEvents();
+                break;
+            case 'ahold':
+                scrapedData = await scrapeAholdEvents();
                 break;
             default:
                 throw new Error(`Unknown site: ${site}`);

@@ -51,6 +51,7 @@ export default function ConsolidatedEstimatesOverview({session}) {
                         key={'dps-table'} 
                         columns={dpsForecastColumns2} 
                         data={allData}
+                        fixedHeader={true}
                         inputFormat={format2Decimal}  />
                     </div>
                 </div>

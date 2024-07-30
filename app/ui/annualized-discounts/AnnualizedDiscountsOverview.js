@@ -74,6 +74,7 @@ export default function AnnualiazedDiscountsOverview({session}) {
                       columns={annualizedDiscountColumns2} 
                       data={allData} 
                       inputFormat={formatHeatmap}
+                      fixedHeader={true}
                     />
                   </div>
                 </div>

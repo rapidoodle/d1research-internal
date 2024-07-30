@@ -4,7 +4,7 @@ import { cleanField, format2Decimal } from '../lib/utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSort, faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons';
 
-const CustomTableComponent = ({ columns, data, inputFormat }) => {
+const CustomTableComponent = ({ columns, data, inputFormat, fixedHeader }) => {
   const [filteredData, setFilteredData] = useState(data);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [selectedTicker, setSelectedTicker] = useState('');
@@ -68,9 +68,8 @@ const isValidValue = (value) => {
   };
 
   return (
-    <div className="table-responsive">
       <table className="table table-striped table-hover w-100" id='custom-table'>
-        <thead>
+        <thead className={fixedHeader && 'sticky-top'}>
           <tr>
             {columns.map((col, index) => (
               <th key={index}>
@@ -85,7 +84,7 @@ const isValidValue = (value) => {
                 )}
                 
                 <FontAwesomeIcon 
-                  className='ms-1 cursor-pointer'
+                  className={`ms-1 cursor-pointer f-13 ${sortConfig.key === col.selector ? 'text-success' : 'text-secondary'}`}
                   onClick={() => onSort(col.selector)} 
                   icon={sortConfig.key === col.selector ? sortConfig.direction === 'asc' ? faSortUp : faSortDown : faSort} />
               </th>
@@ -105,7 +104,6 @@ const isValidValue = (value) => {
           ))}
         </tbody>
       </table>
-    </div>
   );
 };
 

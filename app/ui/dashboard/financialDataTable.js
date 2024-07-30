@@ -7,7 +7,7 @@ const FinancialDataTable = ({ query, currentPage, fileUploaded }) => {
   const [financialData, setFinancialData] = useState([]);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(currentPage);
-  const [pageSize] = useState(1000); // You can make this adjustable if needed
+  const [pageSize] = useState(100); // You can make this adjustable if needed
   const [totalRecords, setTotalRecords] = useState(0);
   const [loading, setLoading] = useState(true);
 
