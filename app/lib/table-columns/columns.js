@@ -144,22 +144,22 @@ import moment from "moment";
   },
   {
     name: 'Z4',
-    selector: 'z4',
+    selector: 'z1',
     sortable: true,
   },
   {
     name: 'Z5',
-    selector: 'z5',
+    selector: 'z2',
     sortable: true,
   },
   {
     name: 'Z6',
-    selector: 'z6',
+    selector: 'z3',
     sortable: true,
   },
   {
     name: 'Z7',
-    selector: 'z7',
+    selector: 'z4',
     sortable: true,
   }];
 
@@ -192,6 +192,28 @@ import moment from "moment";
       sortFunction: (rowA, rowB) => customSortFunction(rowA, rowB, 'z7'),
     },
   ];
+
+
+  export const annualizedDiscountColumns2 = [{
+    name: 'Ticker',
+    selector: 'equity_ticker',
+    sortable: true,
+  },
+  {
+    name: 'Z5',
+    selector: 'z5',
+    sortable: true,
+  },
+  {
+    name: 'Z6',
+    selector: 'z6',
+    sortable: true,
+  },
+  {
+    name: 'Z7',
+    selector: 'z7',
+    sortable: true,
+  }];
 
   export const pendingEventsColumns = (handleReview, hanldeApprove, handleIgnore) => [
     {

@@ -7,6 +7,7 @@ import DataTableComponent from '@/app/components/DataTablesComponent';
 import { annualizedDiscountColumns, dpsForecastColumns, dpsForecastColumns2 } from '@/app/lib/table-columns/columns';
 import PageSpinner from '@/app/components/PageSpinner';
 import CustomTableComponent from '@/app/components/CustomTableComponent';
+import { format2Decimal } from '@/app/lib/utils';
 
 export default function ConsolidatedEstimatesOverview({session}) {
   const router = useRouter();
@@ -40,13 +41,17 @@ export default function ConsolidatedEstimatesOverview({session}) {
   if(!loading){
     return (<>
 
-      <div className="estimates-container">
+      <div>
         <div className='main-container'>
             <div className='row'>
                 <div className='col-12'>
                     <div className='table-responsive'>
                       {/* <DataTableComponent key={'dps-table'} columns={dpsForecastColumns} data={allData} /> */}
-                      <CustomTableComponent key={'dps-table'} columns={dpsForecastColumns2} data={allData} />
+                      <CustomTableComponent 
+                        key={'dps-table'} 
+                        columns={dpsForecastColumns2} 
+                        data={allData}
+                        inputFormat={format2Decimal}  />
                     </div>
                 </div>
             </div>

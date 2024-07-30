@@ -19,6 +19,10 @@ table#custom-table thead tr th:last-child{
     border-bottom-right-radius: 0!important;
 }
 
+table#custom-table tbody tr td:not(:first-child) span{
+    display: flex;
+}
+
 div#dps-table-container{
     width: 100%;
     height: 1000px;

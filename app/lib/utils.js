@@ -380,12 +380,16 @@ export const formatHeatmap = (value) => {
 
   //if value is less than 0, put in parenthesis, remove negative sign and add badge in red
   if(Number(value) > 0){
-    return <span className="discount-positive">{Math.abs(Number(value))}%</span>;
+    return <div className="d-flex justify-content-center align-items-center">
+              <span className="discount-positive">{Math.abs(Number(value))}%</span>
+           </div>;
   }
 
   //if value is more than 0, add badge in green
   if(Number(value) < 0){
-    return <span className="discount-negative">-{Math.abs(Number(value))}%</span>;
+    return <div className="d-flex justify-content-center align-items-center">
+              <span className="discount-negative">-{Math.abs(Number(value))}%</span>
+           </div>;
   }
 
   return value + '%';

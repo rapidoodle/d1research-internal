@@ -4,9 +4,10 @@ import React, { useEffect, useState } from 'react';
 import '@/app/styles/company-page.css';
 import { useRouter } from 'next/navigation'
 import DataTableComponent from '@/app/components/DataTablesComponent';
-import { annualizedDiscountColumns, dpsForecastColumns } from '@/app/lib/table-columns/columns';
+import { annualizedDiscountColumns, annualizedDiscountColumns2, dpsForecastColumns } from '@/app/lib/table-columns/columns';
 import PageSpinner from '@/app/components/PageSpinner';
-import { calculatePercent, getPercentage } from '@/app/lib/utils';
+import { calculatePercent, formatHeatmap, getPercentage } from '@/app/lib/utils';
+import CustomTableComponent from '@/app/components/CustomTableComponent';
 
 export default function AnnualiazedDiscountsOverview({session}) {
   const router = useRouter();
@@ -58,13 +59,23 @@ export default function AnnualiazedDiscountsOverview({session}) {
   if(!loading){
     return (<>
 
-      <div className="estimates-container">
+      <div>
         {/* {JSON.stringify(allData)} */}
         <div className='main-container'>
             <div className='row'>
                 <div className='col-12'>
                   <div className='table-responsive'>
-                    <DataTableComponent key={'ad-table'} columns={annualizedDiscountColumns} data={allData} />
+                    {/* <DataTableComponent 
+                      key={'ad-table'} 
+                      columns={annualizedDiscountColumns} 
+                      data={allData} 
+                    /> */}
+                    <CustomTableComponent 
+                      key={'ad-table'} 
+                      columns={annualizedDiscountColumns2} 
+                      data={allData} 
+                      inputFormat={formatHeatmap}
+                    />
                   </div>
                 </div>
             </div>
