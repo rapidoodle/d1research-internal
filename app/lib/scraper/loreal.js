@@ -36,7 +36,7 @@ export async function scrapeLorealEvents() {
         }
 
         if (moment(startDate).isSameOrAfter(currentDate)) {
-          const event = { date: startDate, description: title, url: 'https://www.loreal.com/en/investors/financial-calendar/' };
+          const event = { date: startDate, description: title, url: 'https://www.loreal-finance.com/eng/calendar' };
           if (endDate) {
             event.endDate = endDate;
           }
