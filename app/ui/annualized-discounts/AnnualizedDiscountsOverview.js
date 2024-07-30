@@ -45,7 +45,6 @@ export default function AnnualiazedDiscountsOverview({session}) {
           const newData = Object.values(groupedData);
           
           setAllData(newData);
-          console.log(newData);
 
         } catch (error) {
           console.error('Failed to fetch company data:', error);

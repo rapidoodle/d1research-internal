@@ -17,48 +17,49 @@ const CustomTableComponent = ({ columns, data, inputFormat }) => {
     }
   }, [selectedTicker, data]);
 
-  const onSort = (key) => {
-    let direction = 'asc';
-    if (sortConfig.key === key && sortConfig.direction === 'asc') {
-      direction = 'desc';
-    }
-    setSortConfig({ key, direction });
-  
-    const sortedArray = [...filteredData].sort((a, b) => {
-      const aValue = getDataValue(a[key]);
-      const bValue = getDataValue(b[key]);
-  
+const onSort = (key) => {
+  let direction = 'asc';
+  if (sortConfig.key === key && sortConfig.direction === 'asc') {
+    direction = 'desc';
+  }
+  setSortConfig({ key, direction });
+
+  const sortedArray = [...filteredData].sort((a, b) => {
+    const aValue = getDataValue(a[key]);
+    const bValue = getDataValue(b[key]);
+
+    if(key !== 'equity_ticker') {
       // Handle NaN and non-string characters
       const aIsValid = isValidValue(aValue);
       const bIsValid = isValidValue(bValue);
-  
+
       if (!aIsValid && !bIsValid) return 0;
       if (!aIsValid) return 1; // Move NaN or invalid to the bottom
       if (!bIsValid) return -1; // Move NaN or invalid to the bottom
-  
-      if (aValue === bValue) return 0;
-      if (direction === 'asc') return aValue > bValue ? 1 : -1;
-      return aValue > bValue ? -1 : 1;
-    });
-  
-    setFilteredData(sortedArray);
-  };
-  
-  const getDataValue = (value) => {
-    if (typeof value === 'string') {
-      if (value.includes('%')) {
-        return parseFloat(value.replace('%', ''));
-      } else if (!isNaN(value)) {
-        return parseFloat(value);
-      }
     }
-    return value;
-  };
-  
-  const isValidValue = (value) => {
-    return value !== null && value !== undefined && !isNaN(value);
-  };
-  
+
+    if (aValue === bValue) return 0;
+    if (direction === 'asc') return aValue > bValue ? 1 : -1;
+    return aValue > bValue ? -1 : 1;
+  });
+
+  setFilteredData(sortedArray);
+};
+
+const getDataValue = (value) => {
+  if (typeof value === 'string') {
+    if (value.includes('%')) {
+      return parseFloat(value.replace('%', ''));
+    } else if (!isNaN(value)) {
+      return parseFloat(value);
+    }
+  }
+  return value;
+};
+
+const isValidValue = (value) => {
+  return value !== null && value !== undefined && !isNaN(value);
+};
 
   const uniqueTickers = [...new Set(data.map(item => item.equity_ticker))];
 
