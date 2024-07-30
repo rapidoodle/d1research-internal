@@ -4,12 +4,12 @@ import React, { useEffect, useState } from 'react';
 import '@/app/styles/company-page.css';
 import { useRouter } from 'next/navigation'
 import DataTableComponent from '@/app/components/DataTablesComponent';
-import { annualizedDiscountColumns, annualizedDiscountColumns2, dpsForecastColumns } from '@/app/lib/table-columns/columns';
+import { annualizedDiscountColumns2 } from '@/app/lib/table-columns/columns';
 import PageSpinner from '@/app/components/PageSpinner';
 import { calculatePercent, formatHeatmap, getPercentage } from '@/app/lib/utils';
 import CustomTableComponent from '@/app/components/CustomTableComponent';
 
-export default function AnnualiazedDiscountsOverview({session}) {
+export default function PremiumDiscountsOverview({session}) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [allData, setAllData] = useState([]);
@@ -19,7 +19,7 @@ export default function AnnualiazedDiscountsOverview({session}) {
       const fetchFinancialData = async () => {
         try {
           setLoading(true);
-          const response = await fetch(`/api/annualized-discounts/`);
+          const response = await fetch(`/api/premium-discounts/`);
           const data = await response.json();
           
           if (!response.ok) {

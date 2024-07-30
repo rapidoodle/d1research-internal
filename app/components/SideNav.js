@@ -72,7 +72,7 @@ const SideNav = () => {
                   pathname={pathname} 
                   label={'Discounts'} 
                   uniqueKeyType={'annualized_discounts_key'}
-                  path={'/financial-overview/annualized-discounts'}
+                  path={'/financial-overview/d1premium-discounts'}
                 />
               </li>
             </ul>
