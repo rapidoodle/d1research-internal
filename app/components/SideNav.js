@@ -37,7 +37,7 @@ const SideNav = () => {
       <ul className="nav nav-pills flex-column mb-auto">
         <li className="nav-item">
           <Link href="/" className={clsx('nav-link', { 'active': pathname === '/' })}>
-             Master file
+            Data
           </Link>
         </li>
         <li className='nav-item'>
@@ -46,7 +46,7 @@ const SideNav = () => {
             onClick={toggleMaster}
             aria-expanded={!masterCollapsed}
           >
-              <span>Data</span> 
+              <span>Product</span> 
               <span className='ms-auto'><FontAwesomeIcon icon={masterCollapsed ? faChevronRight : faChevronDown} /></span>
           </button>
           <div className={clsx('collapse', { 'show': !masterCollapsed })}>
@@ -72,7 +72,7 @@ const SideNav = () => {
                   pathname={pathname} 
                   label={'Discounts'} 
                   uniqueKeyType={'annualized_discounts_key'}
-                  path={'/financial-overview/d1premium-discounts'}
+                  path={'/financial-overview/ -discounts'}
                 />
               </li>
             </ul>

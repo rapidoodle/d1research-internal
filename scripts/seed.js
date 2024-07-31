@@ -6,7 +6,7 @@ async function seedFinancialData(client) {
   try {
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
     // Drop the table if it exists
-    await client.sql`DROP TABLE IF EXISTS financial_data`;
+    // await client.sql`DROP TABLE IF EXISTS financial_data`;
 
     // Create the "users" table if it doesn't exist
     const createTable = await client.sql`
@@ -82,7 +82,7 @@ async function seedFinancialDataHistory(client) {
   try {
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
     // Drop the table if it exists
-    await client.sql`DROP TABLE IF EXISTS financial_data_history`;
+    // await client.sql`DROP TABLE IF EXISTS financial_data_history`;
 
     // Create the "users" table if it doesn't exist
     const createTable = await client.sql`
@@ -119,7 +119,7 @@ async function seedFinancialDataHistory(client) {
 async function seedCompanies(client) {
     try {
       await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
-      await client.sql`DROP TABLE IF EXISTS companies`;
+      // await client.sql`DROP TABLE IF EXISTS companies`;
       // Create the "users" table if it doesn't exist
       const createTable = await client.sql`
       CREATE TABLE companies (
@@ -204,7 +204,7 @@ async function seedEvents(client) {
       
       await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
       // Drop the table if it exists
-      await client.sql`DROP TABLE IF EXISTS events`;
+      // await client.sql`DROP TABLE IF EXISTS events`;
       // Create the "event" table if it doesn't exist
       const createTable = await client.sql`
       CREATE TABLE events (
@@ -245,7 +245,7 @@ async function seedSectors(client) {
     try {
       await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
       // Drop the table if it exists
-      await client.sql`DROP TABLE IF EXISTS sectors`;
+      // await client.sql`DROP TABLE IF EXISTS sectors`;
       // Create the "users" table if it doesn't exist
       const createTable = await client.sql`
       CREATE TABLE sectors (
@@ -272,7 +272,7 @@ async function seedTags(client) {
     try {
       await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
       // Drop the table if it exists
-      await client.sql`DROP TABLE IF EXISTS tags`;
+      // await client.sql`DROP TABLE IF EXISTS tags`;
       // Create the "users" table if it doesn't exist
       const createTable = await client.sql`
       CREATE TABLE tags (
@@ -299,7 +299,7 @@ async function seedKeyTable(client) {
     try {
       await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
       // Drop the table if it exists
-      await client.sql`DROP TABLE IF EXISTS unique_keys`;
+      // await client.sql`DROP TABLE IF EXISTS unique_keys`;
       // Create the "users" table if it doesn't exist
       const createTable = await client.sql`
       CREATE TABLE unique_keys (
@@ -336,7 +336,7 @@ async function seedUsers(client) {
   try {
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
     // Drop the table if it exists
-    await client.sql`DROP TABLE IF EXISTS users`;
+    // await client.sql`DROP TABLE IF EXISTS users`;
     // Create the "users" table if it doesn't exist
     const createTable = await client.sql`
       CREATE TABLE users (
@@ -378,7 +378,7 @@ async function seedUsers(client) {
 async function seedUserAccess(client) {
   try {
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
-    await client.sql`DROP TABLE IF EXISTS user_access`;
+    // await client.sql`DROP TABLE IF EXISTS user_access`;
     const createTable = await client.sql`
       CREATE TABLE user_access (
         id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -414,7 +414,7 @@ async function seedUserAccess(client) {
 async function seedAnalystsComments(client) {
   try {
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
-    await client.sql`DROP TABLE IF EXISTS analysts_comments`;
+    // await client.sql`DROP TABLE IF EXISTS analysts_comments`;
     const createTable = await client.sql`
       CREATE TABLE analysts_comments (
         id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -440,7 +440,7 @@ async function seedAnalystsComments(client) {
 async function seedLatestManagementStatement(client) {
   try {
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
-    await client.sql`DROP TABLE IF EXISTS latest_management_statement`;
+    // await client.sql`DROP TABLE IF EXISTS latest_management_statement`;
   } catch (error) {
     console.error('Error seeding latest_management_statement:', error);
     throw error;
@@ -450,7 +450,7 @@ async function seedLatestManagementStatement(client) {
 async function seedCapitalReturnPolicy(client) {
   try {
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
-    await client.sql`DROP TABLE IF EXISTS capital_return_policy`;
+    // await client.sql`DROP TABLE IF EXISTS capital_return_policy`;
     const createTable = await client.sql`
       CREATE TABLE capital_return_policy (
         id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -474,6 +474,198 @@ async function seedCapitalReturnPolicy(client) {
 }
 
 
+async function seedSensitivitiesTable(client) {
+  try {
+    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+    // await client.sql`DROP TABLE IF EXISTS sensitivities`;
+    const createTable = await client.sql
+      `CREATE TABLE sensitivities (
+          id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+          year VARCHAR(255),
+          company VARCHAR(255),
+          equity_ticker VARCHAR(255),
+          v_bear VARCHAR(255),
+          bear VARCHAR(255),
+          central VARCHAR(255),
+          bull VARCHAR(255),
+          v_bull VARCHAR(255),
+          risk_adj VARCHAR(255),
+          discount_to_central VARCHAR(255),
+          payout_percent_v_bear VARCHAR(255),
+          payout_percent_bear VARCHAR(255),
+          payout_percent_central VARCHAR(255),
+          payout_percent_bull VARCHAR(255),
+          payout_percent_v_bull VARCHAR(255),
+          vbe_sales_m_vbe VARCHAR(255),
+          vbe_sales_v_central_percent_vbe VARCHAR(255),
+          vbe_net_income_m VARCHAR(255),
+          vbe_ni_margin_percent VARCHAR(255),
+          vbe_ni_margin_change_bp VARCHAR(255),
+          vbe_awsc_m VARCHAR(255),
+          vbe_eps VARCHAR(255),
+          vbe_eps_v_central_percent VARCHAR(255),
+          dps_vbe1 VARCHAR(255),
+          dps_vbe2 VARCHAR(255),
+          dps_vbe3 VARCHAR(255),
+          dps_vbe4 VARCHAR(255),
+          dps_vbe5 VARCHAR(255),
+          be_sales_m_be VARCHAR(255),
+          be_sales_v_central_percent_be VARCHAR(255),
+          be_net_income_m VARCHAR(255),
+          be_ni_margin_percent VARCHAR(255),
+          be_ni_margin_change_bp VARCHAR(255),
+          be_awsc_m VARCHAR(255),
+          be_eps VARCHAR(255),
+          be_eps_v_central_percent VARCHAR(255),
+          dps_be1 VARCHAR(255),
+          dps_be2 VARCHAR(255),
+          dps_be3 VARCHAR(255),
+          dps_be4 VARCHAR(255),
+          dps_be5 VARCHAR(255),
+          ce_sales_m_ce VARCHAR(255),
+          ce_sales_v_central_percent VARCHAR(255),
+          ce_net_income_m VARCHAR(255),
+          ce_ni_margin_percent VARCHAR(255),
+          ce_ni_margin_change_bp VARCHAR(255),
+          ce_awsc_m VARCHAR(255),
+          ce_eps VARCHAR(255),
+          ce_eps_v_central_percent VARCHAR(255),
+          dps_ce1 VARCHAR(255),
+          dps_ce2 VARCHAR(255),
+          dps_ce3 VARCHAR(255),
+          dps_ce4 VARCHAR(255),
+          dps_ce5 VARCHAR(255),
+          bu_sales_m_bu VARCHAR(255),
+          bu_sales_v_central_percent VARCHAR(255),
+          bu_net_income_m VARCHAR(255),
+          bu_ni_margin_percent VARCHAR(255),
+          bu_ni_margin_change_bp VARCHAR(255),
+          bu_awsc_m VARCHAR(255),
+          bu_eps VARCHAR(255),
+          bu_eps_v_buntral_percent VARCHAR(255),
+          dps_bu1 VARCHAR(255),
+          dps_bu2 VARCHAR(255),
+          dps_bu3 VARCHAR(255),
+          dps_bu4 VARCHAR(255),
+          dps_bu5 VARCHAR(255),
+          vbu_sales_m_vbu VARCHAR(255),
+          vbu_sales_v_central_percent VARCHAR(255),
+          vbu_net_income_m VARCHAR(255),
+          vbu_ni_margin_percent VARCHAR(255),
+          vbu_ni_margin_change_bp VARCHAR(255),
+          vbu_awsc_m VARCHAR(255),
+          vbu_eps VARCHAR(255),
+          vbu_eps_v_central_percent VARCHAR(255),
+          dps_vbu1 VARCHAR(255),
+          dps_vbu2 VARCHAR(255),
+          dps_vbu3 VARCHAR(255),
+          dps_vbu4 VARCHAR(255),
+          dps_vbu5 VARCHAR(255),
+          sales_24 VARCHAR(255),
+          svc_24 VARCHAR(255),
+          ni_24 VARCHAR(255),
+          nim_24 VARCHAR(255),
+          nimc_24 VARCHAR(255),
+          awsc_24 VARCHAR(255),
+          eps_24 VARCHAR(255),
+          epsvc_24 VARCHAR(255),
+          pay_24_v_be VARCHAR(255),
+          pay_24_be VARCHAR(255),
+          pay_24_c VARCHAR(255),
+          pay_24_bu VARCHAR(255),
+          pay_24_v_bu VARCHAR(255),
+          sales_25 VARCHAR(255),
+          svc_25 VARCHAR(255),
+          ni_25 VARCHAR(255),
+          nim_25 VARCHAR(255),
+          nimc_25 VARCHAR(255),
+          awsc_25 VARCHAR(255),
+          eps_25 VARCHAR(255),
+          epsvc_25 VARCHAR(255),
+          pay_25_v_be VARCHAR(255),
+          pay_25_be VARCHAR(255),
+          pay_25_c VARCHAR(255),
+          pay_25_bu VARCHAR(255),
+          pay_25_v_bu VARCHAR(255),
+          sales_26 VARCHAR(255),
+          svc_26 VARCHAR(255),
+          ni_26 VARCHAR(255),
+          nim_26 VARCHAR(255),
+          nimc_26 VARCHAR(255),
+          awsc_26 VARCHAR(255),
+          eps_26 VARCHAR(255),
+          epsvc_26 VARCHAR(255),
+          pay_26_v_be VARCHAR(255),
+          pay_26_be VARCHAR(255),
+          pay_26_c VARCHAR(255),
+          pay_26_bu VARCHAR(255),
+          pay_26_v_bu VARCHAR(255),
+          vbe_q1 VARCHAR(255),
+          be_q1 VARCHAR(255),
+          bu_q1 VARCHAR(255),
+          vbu_q1 VARCHAR(255),
+          vbe_q2 VARCHAR(255),
+          be_q2 VARCHAR(255),
+          bu_q2 VARCHAR(255),
+          vbu_q2 VARCHAR(255),
+          vbe_q3 VARCHAR(255),
+          be_q3 VARCHAR(255),
+          bu_q3 VARCHAR(255),
+          vbu_q3 VARCHAR(255),
+          vbe_q4 VARCHAR(255),
+          be_q4 VARCHAR(255),
+          bu_q4 VARCHAR(255),
+          vbu_q4 VARCHAR(255),
+          vbe_total VARCHAR(255),
+          be_total VARCHAR(255),
+          bu_total VARCHAR(255),
+          vbu_total VARCHAR(255),
+          very_bear_2020 VARCHAR(255),
+          very_bear_2021 VARCHAR(255),
+          very_bear_2022 VARCHAR(255),
+          very_bear_2023 VARCHAR(255),
+          very_bear_2024 VARCHAR(255),
+          very_bear_2025 VARCHAR(255),
+          very_bear_2026 VARCHAR(255),
+          very_bear_2027 VARCHAR(255),
+          bear_2020 VARCHAR(255),
+          bear_2021 VARCHAR(255),
+          bear_2022 VARCHAR(255),
+          bear_2023 VARCHAR(255),
+          bear_2024 VARCHAR(255),
+          bear_2025 VARCHAR(255),
+          bear_2026 VARCHAR(255),
+          bear_2027 VARCHAR(255),
+          bull_2020 VARCHAR(255),
+          bull_2021 VARCHAR(255),
+          bull_2022 VARCHAR(255),
+          bull_2023 VARCHAR(255),
+          bull_2024 VARCHAR(255),
+          bull_2025 VARCHAR(255),
+          bull_2026 VARCHAR(255),
+          bull_2027 VARCHAR(255),
+          very_bull_2020 VARCHAR(255),
+          very_bull_2021 VARCHAR(255),
+          very_bull_2022 VARCHAR(255),
+          very_bull_2023 VARCHAR(255),
+          very_bull_2024 VARCHAR(255),
+          very_bull_2025 VARCHAR(255),
+          very_bull_2026 VARCHAR(255),
+          very_bull_2027 VARCHAR(255)
+        );`;
+
+      console.log(`Created "sensitivities" table`);
+
+    return {
+      createTable
+    };
+  } catch (error) {
+    console.error('Error seeding sensitivities:', error);
+    throw error;
+  }
+}
+
+
 async function main() {
   const client = await db.connect();
 
@@ -489,6 +681,7 @@ async function main() {
   // await seedAnalystsComments(client);
   // await seedLatestManagementStatement(client);
   // await seedCapitalReturnPolicy(client);
+  // await seedSensitivitiesTable(client);
 
 
   await client.end();

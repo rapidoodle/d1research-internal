@@ -23,40 +23,40 @@ export default function PeerComparisonDPSPayoutRatio({zPrev, zFirst, zSecond, zT
                 }
             }
 
-                const responses = await Promise.all(peers.map(async (peer) => {
+            const responses = await Promise.all(peers.map(async (peer) => {
 
-                    if(peer !== 'n/a'){
-                        const query = `/api/financial-data?equity_ticker=${peer}&type=peer`;
-                        const data = await fetch(query);
-                        return await data.json();
-                    }else{
-                        return [];
-                    }
+                if(peer !== 'n/a'){
+                    const query = `/api/financial-data?equity_ticker=${peer}&type=peer`;
+                    const data = await fetch(query);
+                    return await data.json();
+                }else{
+                    return [];
+                }
 
-                }));
+            }));
             
-                // Update state with all responses at once
-                setPeersDPS(responses);
+            // Update state with all responses at once
+            setPeersDPS(responses);
 
-                const chartSeriesData = responses.map((companyData)=> {
-                    console.log(companyData);
-                    if(companyData){
-                        return {
-                            name: companyData[0]?.equity_ticker,
-                            data: companyData.map((item, i) => {
-                                return Math.round(Number(item.dps_payout_ratio.replace('%', '')))
-                            }
-                        )};
-                    }
+            const chartSeriesData = responses.map((companyData)=> {
+                if(companyData[0]?.equity_ticker){
+                    return {
+                        name: companyData[0]?.equity_ticker,
+                        data: companyData.map((item, i) => {
+                            return Math.round(Number(item.dps_payout_ratio.replace('%', '')))
+                        }
+                    )};
+                }
 
-                });
+            });
 
-                chartSeriesData.push({
-                    name: zPrev.equity_ticker,
-                    data: [zPrev.dps_payout_ratio, zFirst.dps_payout_ratio, zSecond.dps_payout_ratio, zThird.dps_payout_ratio, zFourth.dps_payout_ratio]
-                });  
-                
-                setChartSeries(chartSeriesData);
+            chartSeriesData.push({
+                name: zPrev.equity_ticker,
+                data: [zPrev.dps_payout_ratio, zFirst.dps_payout_ratio, zSecond.dps_payout_ratio, zThird.dps_payout_ratio, zFourth.dps_payout_ratio]
+            });  
+            
+            const cleanedData = chartSeriesData.filter(item => item);
+            setChartSeries(cleanedData);
         }
 
         fetchPeerDPS();
@@ -114,7 +114,6 @@ export default function PeerComparisonDPSPayoutRatio({zPrev, zFirst, zSecond, zT
                 </table>
             </div>
             </> :
-            // <>{JSON.stringify(chartSeries)}</>
             <ApexLineChartComponent
                 xaxisData={[`FY${zPrev.year_2digit}`, `FY${zFirst.year_2digit}`, `FY${zSecond.year_2digit}`, `FY${zThird.year_2digit}`, `FY${zFourth.year_2digit}`]}
                 seriesData={chartSeries}

@@ -2,6 +2,7 @@ import ModalComponent from '@/app/components/ModalComponent';
 import PageSpinner from '@/app/components/PageSpinner';
 import { Editor } from '@tinymce/tinymce-react';
 import { useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
 
 export default function AnalystsComments({companyID, session}) {
     const [showModal, setShowModal] = useState(false);
@@ -94,22 +95,41 @@ export default function AnalystsComments({companyID, session}) {
     }
 
     const handleDelete = (comment) => {
-        alert(comment.id);
-        setLoading(true);
-        try {
-            fetch(`/api/analysts-comments/?comment_id=${comment.id}`, {
-                method: 'DELETE',
-            })
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
-                fetchCRPComments(companyID);
-                setLoading(false);
-            })
-        } catch (error) {
-            console.error(error);
-            setLoading(false);
-        }
+
+        Swal.fire({
+            title: 'Delete event?',
+            text: "Are you sure you want to delete this event?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ignore'
+          }).then(async (result) => {
+            console.log(result);
+            if (result.isConfirmed) {
+                setLoading(true);
+                try {
+                    fetch(`/api/analysts-comments/?comment_id=${comment.id}`, {
+                        method: 'DELETE',
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data);
+                        fetchCRPComments(companyID);
+                        setLoading(false);
+
+                        Swal.fire(
+                            'Deleted!',
+                            'Event has been deleted.',
+                            'success'
+                          )
+                    })
+                } catch (error) {
+                    console.error(error);
+                    setLoading(false);
+                }
+            }
+        })
     }
 
 

@@ -44,65 +44,65 @@ export default function Page(searchParams) {
   return (
     <main>
         <div className="p-3 row">
-          <h5 className="mb-0 col">Master data</h5>
+          <h5 className="mb-4 mb-sm-0 col-12 col-md-6">Master data</h5>
 
-          <div className="ms-auto col d-flex justify-content-end">
+          <div className="ms-auto col-12 col-md-6 d-flex justify-content-end flex-column flex-md-row">
             <div>
               <Search placeholder="Event name" />
             </div>
 
-            <Button size="sm" variant="primary" onClick={handleShow}>
-              <FontAwesomeIcon icon={faUpload} className="me-1" /> Upload new master file
+            <Button  className='mt-2 mt-md-0' size="sm" variant="primary" onClick={handleShow}>
+              <FontAwesomeIcon icon={faUpload} className="me-1" />Master
             </Button>
 
-            <Button className='ms-2' size="sm" variant="primary" onClick={handleShowPrice}>
-              <FontAwesomeIcon icon={faUpload} className="me-1" /> Upload new price file
+            <Button className='ms-md-2 mt-2 mt-md-0' size="sm" variant="primary" onClick={handleShowPrice}>
+              <FontAwesomeIcon icon={faUpload} className="me-1" /> Price
+            </Button>
+
+            <Button className='ms-md-2 mt-2 mt-md-0' size="sm" variant="primary" onClick={handleShowPrice}>
+              <FontAwesomeIcon icon={faUpload} className="me-1" /> Sensitivities
             </Button>
           </div>
         </div>
-      <div className='mt-3'>
-          <FinancialDataTable 
-            query={query} 
-            currentPage={currentPage}
-            fileUploaded={fileUploaded}
-            />
-      </div>
-
-      <ModalComponent
-          show={show}
-          handleClose={handleClose}
-          handleSave={handleSave}
-          loading={loading}
-          size="lg"
-          buttonText='Upload'
-          buttonLoadingText='Processing file. Please wait...'
-          const
-          title="Upload new master file">
-        <CsvUploader 
-          onFileUploaded={handleFileUploaded} 
-          setLoading={setLoading} 
-          isSave={isSave} 
-        />
-      </ModalComponent>
-
-
-
-      <ModalComponent
-          show={showPrice}
-          handleClose={handleClosePrice}
-          handleSave={handleSavePrice}
-          loading={loading}
-          size="lg"
-          buttonText='Upload'
-          buttonLoadingText='Processing file. Please wait...'
-          const
-          title="Upload new price file">
-        <CsvPriceFileUploader 
-          onFileUploaded={handlePriceFileUploaded} 
-          setLoading={setLoading} 
-          isSave={isSavePrice} 
-        />
-      </ModalComponent>
+        <div className='mt-3'>
+            <FinancialDataTable 
+              query={query} 
+              currentPage={currentPage}
+              fileUploaded={fileUploaded}
+              />
+        </div>
+        <ModalComponent
+            show={show}
+            handleClose={handleClose}
+            handleSave={handleSave}
+            loading={loading}
+            size="lg"
+            buttonText='Upload'
+            buttonLoadingText='Processing file. Please wait...'
+            const
+            title="Upload new master file">
+          <CsvUploader 
+            onFileUploaded={handleFileUploaded} 
+            setLoading={setLoading} 
+            isSave={isSave} 
+          />
+        </ModalComponent>
+        <ModalComponent
+            show={showPrice}
+            handleClose={handleClosePrice}
+            handleSave={handleSavePrice}
+            loading={loading}
+            size="lg"
+            buttonText='Upload'
+            buttonLoadingText='Processing file. Please wait...'
+            const
+            title="Upload new price file">
+          <CsvPriceFileUploader 
+            onFileUploaded={handlePriceFileUploaded} 
+            setLoading={setLoading} 
+            isSave={isSavePrice} 
+          />
+        </ModalComponent>
     </main>
   );
 }

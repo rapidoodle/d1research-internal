@@ -3,12 +3,14 @@ import '@/app/styles/custom-table.css';
 import { cleanField, format2Decimal } from '../lib/utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSort, faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons';
-import Select from 'react-select'
+import Select from 'react-select';
+import { customSelectStyle, customTableSelectStyle } from '../lib/custom-styles/custom-styles';
 
 const CustomTableComponent = ({ columns, data, inputFormat, fixedHeader }) => {
   const [filteredData, setFilteredData] = useState(data);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [selectedTicker, setSelectedTicker] = useState('');
+  const [uniqueTickers, setUniqueTickers] = useState([]);
 
   useEffect(() => {
     if (selectedTicker === '') {
@@ -62,11 +64,26 @@ const isValidValue = (value) => {
   return value !== null && value !== undefined && !isNaN(value);
 };
 
-  const uniqueTickers = [...new Set(data.map(item => item.equity_ticker))];
+
+
 
   const handleTickerChange = (event) => {
-    setSelectedTicker(event.target.value);
+    setSelectedTicker(event.value);
   };
+
+  useEffect(() => {
+    const uniqueTickers = [...new Set(data.map(item => item.equity_ticker))];
+    const all = { value: '', label: 'All' };
+    
+    const formattedTickers = uniqueTickers.map(ticker => ({
+      value: ticker,
+      label: ticker
+    }));
+    
+    formattedTickers.unshift(all);
+    
+    setUniqueTickers(formattedTickers);
+  }, [data]);
 
   return (
     <div className='custom-table-container'>
@@ -74,21 +91,32 @@ const isValidValue = (value) => {
         <thead className={fixedHeader && 'sticky-top'}>
           <tr>
             {columns.map((col, index) => (
-              <th key={index} className='cursor-pointer'>
-                {index !== 0 && <span onClick={() => onSort(col.selector)}>{col.name}</span>}
-                {col.selector === 'equity_ticker' && (
-                  <select value={selectedTicker} onChange={handleTickerChange} className='ticker-select'>
-                    <option value=''>All</option>
-                    {uniqueTickers.map((ticker, index) => (
-                      <option key={index} value={ticker}>{ticker}</option>
-                    ))}
-                  </select>
-                )}
-                
-                <FontAwesomeIcon 
-                  className={`ms-1 cursor-pointer f-13 ${sortConfig.key === col.selector ? 'text-success' : 'text-secondary'}`}
-                  onClick={() => onSort(col.selector)} 
-                  icon={sortConfig.key === col.selector ? sortConfig.direction === 'asc' ? faSortUp : faSortDown : faSort} />
+              <th key={index} className={`cursor-pointer ${index === 0 && 'ps-2'}`}>
+                <div className={`d-flex align-items-center ${index !== 0 && 'justify-content-center'}`}>
+                  {index !== 0 && <span onClick={() => onSort(col.selector)}>{col.name}</span>}
+                  {col.selector === 'equity_ticker' && (
+                    <>
+                    {/* <select value={selectedTicker} onChange={handleTickerChange} className='ticker-select'>
+                      <option value=''>All</option>
+                      {uniqueTickers.map((ticker, index) => (
+                        <option key={index} value={ticker}>{ticker}</option>
+                      ))}
+                    </select> */}
+                  {uniqueTickers.length > 1 &&
+                    <Select 
+                      onChange={handleTickerChange}
+                      styles={customTableSelectStyle}
+                      defaultValue={uniqueTickers[0]}
+                      options={uniqueTickers} />
+                  }
+                    </>
+                  )}
+                  
+                  <FontAwesomeIcon 
+                    className={`ms-1 cursor-pointer f-13 ${sortConfig.key === col.selector ? 'text-success' : 'text-secondary'}`}
+                    onClick={() => onSort(col.selector)} 
+                    icon={sortConfig.key === col.selector ? sortConfig.direction === 'asc' ? faSortUp : faSortDown : faSort} />
+                </div>
               </th>
             ))}
 

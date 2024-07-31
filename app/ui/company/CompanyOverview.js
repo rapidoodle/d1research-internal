@@ -68,8 +68,6 @@ export default function CompanyOverview({session}) {
 
         const data = await response.json();
 
-        console.log(data);
-
         setUniqueUrlKey(urlKey);
         setCompanyID(cID);
 
@@ -319,12 +317,9 @@ export default function CompanyOverview({session}) {
                         }
                     </div>
                     <div className='col-12 col-sm-6 mt-3 mt-sm-0'>
-                      {/* <span className='font-medium'>DIV Index:</span>  */}
                         <div className='div-index-container'>
-                        {(zFirst?.index1 && zFirst?.index1 !== 0 ? zFirst?.index1 : '')}{(zFirst?.index2 && zFirst.index2 !== 'n/a' && zFirst.index2 !== 0) ? `, ${zFirst?.index2}` : ''}{(zFirst?.index3 && zFirst.index3 !== 'n/a' && zFirst.index3 !== 0) ? `, ${zFirst?.index3}` : ''}{(zFirst?.index4 && zFirst.index4 !== 'n/a' && zFirst.index4 !== 0)? `, ${zFirst?.index4}` : ''}
+                        {(zFirst?.index1 && zFirst?.index1 !== 0 ? zFirst?.index1 : '')}{(zFirst?.index2 && zFirst.index2 !== '-' && zFirst.index2 !== 0) ? `, ${zFirst?.index2}` : ''}{(zFirst?.index3 && zFirst.index3 !== '-' && zFirst.index3 !== 0) ? `, ${zFirst?.index3}` : ''}{(zFirst?.index4 && zFirst.index4 !== '-' && zFirst.index4 !== 0)? `, ${zFirst?.index4}` : ''}
                         </div>
-
-                    {/* {`${zFirst?.index1}${zFirst?.index2 ? `, ${zFirst?.index2}` : ''}${zFirst?.index3 ? `, ${zFirst?.index3}` : ''}${zFirst?.index4 ? `, ${zFirst?.index4}` : ''}`} */}
                     </div>
                     </div>
                 </div>
