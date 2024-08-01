@@ -267,7 +267,7 @@ export async function GET(req) {
                     }
 
                     //save the event
-                    // return await createEvent(event, false);
+                    return await createEvent(event, false);
                     
                 }else{
                     console.log(`${companyResponse.data.equity_ticker} ${event.description} (${event.date}) already exists in the database.`);
@@ -277,7 +277,7 @@ export async function GET(req) {
             await Promise.all(eventsPromises);
         }else{
             console.error(`Company ${site} not found in the database or scraped data is empty.`);
-            // throw new Error(`Company ${site} not found in the database.`);
+            throw new Error(`Company ${site} not found in the database.`);
         }
 
       if (scrapedData.error) {

@@ -32,7 +32,7 @@ export async function scrapeVinciEvents() {
           events.push({
             date: formattedDate.format('YYYY-MM-DD'),
             description: description,
-            url: eventUrl
+            url: url
           });
         }
 
