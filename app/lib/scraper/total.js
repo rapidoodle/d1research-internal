@@ -20,8 +20,6 @@ export async function scrapeTotalEvents() {
         const dateText = `${day} ${year}`;
         const date = moment(dateText, 'MM/DD YYYY').startOf('day');
 
-        console.log(description)
-  
         if (date.isValid() && (date.isAfter(currentDate) || date.isSame(currentDate))) {
           events.push({ date: date.format('YYYY-MM-DD'), description, url : url });
         }

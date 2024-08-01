@@ -128,7 +128,7 @@ const PendingEventsTable = ({query, currentPage, eventAdded}) => {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Ignore'
+      confirmButtonText: 'Delete'
     }).then(async (result) => {
       console.log(result);
       if (result.isConfirmed) {

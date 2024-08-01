@@ -49,8 +49,3 @@ export async function scrapeAholdEvents() {
     return [];
   }
 }
-
-// Example usage
-scrapeAholdEvents().then(events => {
-  console.log(events);
-});

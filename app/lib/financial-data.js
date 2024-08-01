@@ -122,6 +122,7 @@ export async function uploadFinancialData (req, res) {
                   peer_2 = $47,
                   peer_3 = $48,
                   peer_4 = $49,
+                  updated_at = NOW(),
                   updated_by = $50
                 WHERE
                   equity_ticker = $51 AND

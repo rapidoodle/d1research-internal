@@ -228,12 +228,14 @@ import moment from "moment";
     },
     {
       name: 'Start date',
-      selector: row => formatDate(row.start_date),
+      cell: row => formatDate(row.start_date),
+      selector: row => new Date(row.start_date),
       sortable: true,
     },
     {
       name: 'End date',
-      selector: row => formatDate(row.end_date),
+      cell: row => formatDate(row.end_date),
+      selector: row => new Date(row.end_date),
       sortable: true,
     },
     {

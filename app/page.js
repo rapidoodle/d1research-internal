@@ -51,7 +51,7 @@ export default function Page(searchParams) {
               <Search placeholder="Event name" />
             </div>
 
-            <Button  className='mt-2 mt-md-0' size="sm" variant="primary" onClick={handleShow}>
+            <Button  className='ms-md-2 mt-2 mt-md-0' size="sm" variant="primary" onClick={handleShow}>
               <FontAwesomeIcon icon={faUpload} className="me-1" />Master
             </Button>
 

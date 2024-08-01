@@ -47,6 +47,16 @@ import { scrapeVinciEvents } from "@/app/lib/scraper/vinci";
 import { scrapeLVMHEvents } from "@/app/lib/scraper/lvmh";
 import { scrapeLufthansaEvents } from "@/app/lib/scraper/lufthansa";
 import { scrapeAholdEvents } from "@/app/lib/scraper/ahold";
+import { scrapePorscheEvents } from "@/app/lib/scraper/porsche";
+import { scrapeEdenredEvents } from "@/app/lib/scraper/edenred";
+import { scrapeBnpEvents } from "@/app/lib/scraper/bnp";
+import { scrapeCreditAgricoleEvents } from "@/app/lib/scraper/credit-agricole";
+import { scrapeSocieteGeneraleEvents } from "@/app/lib/scraper/societe-generale";
+import { scrapeIntesaSanpaoloEvents } from "@/app/lib/scraper/intesa";
+import { scrapeUniCreditEvents } from "@/app/lib/scraper/unicredit";
+import { scrapeSantanderEvents } from "@/app/lib/scraper/santander";
+import { scrapeINGEvents } from "@/app/lib/scraper/ing";
+import { scrapeBBVAEvents } from "@/app/lib/scraper/bbva";
 
 export const maxDuration = 300;
 
@@ -197,12 +207,48 @@ export async function GET(req) {
             case 'ahold':
                 scrapedData = await scrapeAholdEvents();
                 break;
+            case 'porsche':
+                scrapedData = await scrapePorscheEvents();
+                break;
+            case 'edenred':
+                scrapedData = await scrapeEdenredEvents();
+                break;
+            case 'bnp':
+                scrapedData = await scrapeBnpEvents();
+                break;
+            case 'credit-agricole':
+                scrapedData = await scrapeCreditAgricoleEvents();
+                break;
+            case 'societe-generale':
+                scrapedData = await scrapeSocieteGeneraleEvents();
+                break;
+            case 'intesa':
+                scrapedData = await scrapeIntesaSanpaoloEvents();
+                break;
+            case 'unicredit':
+                scrapedData = await scrapeUniCreditEvents();
+                break;
+            case 'santander':
+                scrapedData = await scrapeSantanderEvents();
+                break;
+            case 'ing':
+                scrapedData = await scrapeINGEvents();
+                break;
+            case 'bbva':
+                scrapedData = await scrapeBBVAEvents();
+                break;
             default:
                 throw new Error(`Unknown site: ${site}`);
         }
         
         const company = site.replace('-', ' ');
         const companyResponse = await getCompanyByName({'name' : company});
+
+        if(!companyResponse?.data){
+            console.error(`Company ${site} not found in the database.`);
+            // throw new Error(`Company ${site} not found in the database.`);
+        }
+
         if(companyResponse?.data && scrapedData.length > 0){
             const eventsPromises = scrapedData?.map(async event => {
                 event.friendly_name  = `${companyResponse.data.equity_ticker} - ${event.description}`;
@@ -221,7 +267,7 @@ export async function GET(req) {
                     }
 
                     //save the event
-                    return await createEvent(event, false);
+                    // return await createEvent(event, false);
                     
                 }else{
                     console.log(`${companyResponse.data.equity_ticker} ${event.description} (${event.date}) already exists in the database.`);
