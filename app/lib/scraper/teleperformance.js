@@ -1,19 +1,18 @@
 import { parse } from 'node-html-parser';
 import moment from 'moment';
+import axios from 'axios';
 
 export async function scrapeTeleperformanceEvents() {
   try {
     const url = 'https://www.teleperformance.com/en-us/investors/shareholder-information/investor-agenda/';
-    const response = await fetch(url);
-    const data = await response.text();
+    const response = await axios.get(url);
+    const data = response.data;
 
     const root = parse(data);
     const rows = root.querySelectorAll('table.table-style tbody tr');
     const events = [];
     const currentDate = moment();
     
-    console.log(root);
-
     rows.forEach(row => {
       const dateElement = row.querySelector('td:nth-child(1) p');
       const descriptionElement = row.querySelector('td:nth-child(2) p');

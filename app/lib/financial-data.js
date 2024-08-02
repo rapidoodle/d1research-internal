@@ -318,7 +318,7 @@ export async function uploadFinancialData (req, res) {
                     ${cleanField(row['Capital Payout (%)'])}, 
                     ${format2Decimal(row['DPSQ1'])}, 
                     ${format2Decimal(row['DPSQ2'])}, 
-                    ${cleaformat2DecimalnField(row['DPSQ3'])}, 
+                    ${format2Decimal(row['DPSQ3'])}, 
                     ${format2Decimal(row['DPSQ4'])}, 
                     ${cleanDate(row['Ex Date Q1'])}, 
                     ${cleanDate(row['Ex Date Q2'])}, 
@@ -364,12 +364,12 @@ export async function uploadFinancialData (req, res) {
               if (companyResult.data.rowCount === 0) {
                 try {
                   const createCompanyResponse = await createCompany({ name: row['Company'], equity_ticker: row['Equity Ticker'],  sector_id: sectorId, tags: tags, template: false, member_permission: 1, updated_by: loggedUser.id }, false); 
-                  console.log('New company inserted', createCompanyResponse);
+                  console.log('New company inserted', row['Company']);
                 } catch (error) {
                   console.error('Error inserting company', error);
                 }
               }else{
-                console.log('Company already exists', companyResult.data);
+                console.log(`Company ${row['Equity Ticker']} already exists`);
               }
 
               //check if Equity Ticker is present in tags table and insert if not present

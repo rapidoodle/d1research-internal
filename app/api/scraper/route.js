@@ -219,7 +219,7 @@ export async function GET(req) {
             case 'credit-agricole':
                 scrapedData = await scrapeCreditAgricoleEvents();
                 break;
-            case 'societe-generale':
+            case 'socgen':
                 scrapedData = await scrapeSocieteGeneraleEvents();
                 break;
             case 'intesa':

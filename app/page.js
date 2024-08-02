@@ -81,11 +81,11 @@ export default function Page(searchParams) {
           </div>
         </div>
         <div className='mt-3'>
-            {/* <FinancialDataTable 
+            <FinancialDataTable 
               query={query} 
               currentPage={currentPage}
               fileUploaded={fileUploaded}
-              /> */}
+              />
         </div>
 
         <ModalComponent

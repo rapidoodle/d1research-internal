@@ -354,10 +354,10 @@ import moment from "moment";
 
   export const companiesTableColumns = [
     {
-      name: 'ID',
-      selector: row => row.id,
-      sortable: true,
-      omit: true, // omit this column from being displayed
+      name: '#',
+      selector: (row, index) => index + 1,
+      sortable: false,
+      width: '60px',
     },
     {
       name: 'Name',

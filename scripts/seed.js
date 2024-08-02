@@ -664,7 +664,7 @@ async function main() {
   // await seedAnalystsComments(client);
   // await seedLatestManagementStatement(client);
   // await seedCapitalReturnPolicy(client);
-  await seedSensitivitiesTable(client);
+  // await seedSensitivitiesTable(client);
 
 
   await client.end();
