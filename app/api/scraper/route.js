@@ -159,7 +159,7 @@ export async function GET(req) {
             case 'inditex':
                 scrapedData = await scrapeInditexEvents();
                 break;
-            case 'infeneon':
+            case 'infineon':
                 scrapedData = await scrapeInfineonEvents();
                 break;
             case 'legrand':
