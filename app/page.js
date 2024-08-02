@@ -10,16 +10,23 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faUpload } from '@fortawesome/free-solid-svg-icons';
 import ModalComponent from './components/ModalComponent';
 import CsvPriceFileUploader from './ui/dashboard/csvPriceUploadForm';
+import CsvSensitivitiesFileUploader from './ui/dashboard/csvSensitivitiesUploadForm';
 
 export default function Page(searchParams) {
   const query = searchParams.searchParams?.query || '';
   const currentPage = Number(searchParams.searchParams?.page) || 1;
   const [show, setShow] = useState(false);
   const [showPrice, setShowPrice] = useState(false);
+  const [showSensitivies, setShowSensitivities] = useState(false);
+
   const [fileUploaded, setFileUploaded] = useState(false);
   const [priceFileUploaded, setPriceFileUploaded] = useState(false);
+  const [sensitivitiesFileUpload, setSensitivitiesFileUploaded] = useState(false);
+
   const [isSave, setSave] = useState(false);
   const [isSavePrice, setSavePrice] = useState(false);
+  const [isSaveSensitivities, setSaveSensitivities] = useState(false);
+
   const [loading, setLoading] = useState(false);
 
   // Callback to update the state
@@ -33,6 +40,11 @@ export default function Page(searchParams) {
     handleClosePrice();
   };
 
+  const handleSenstivitiesFileUploaded = () => {
+    setSensitivitiesFileUploaded(!priceFileUploaded);
+    handleCloseSensitivities();
+  };
+
   const handleClose = () => setShow(false);
   const handleShow  = ()  => setShow(true);
   const handleSave  = ()  => setSave(true);
@@ -40,6 +52,10 @@ export default function Page(searchParams) {
   const handleClosePrice = () => setShowPrice(false);
   const handleShowPrice  = ()  => setShowPrice(true);
   const handleSavePrice  = ()  => setSavePrice(true);
+
+  const handleCloseSensitivities = () => setShowSensitivities(false);
+  const handleShowSensitivities  = ()  => setShowSensitivities(true);
+  const handleSaveSensitivities  = ()  => setSaveSensitivities(true);
 
   return (
     <main>
@@ -59,18 +75,19 @@ export default function Page(searchParams) {
               <FontAwesomeIcon icon={faUpload} className="me-1" /> Price
             </Button>
 
-            <Button className='ms-md-2 mt-2 mt-md-0' size="sm" variant="primary" onClick={handleShowPrice}>
+            <Button className='ms-md-2 mt-2 mt-md-0' size="sm" variant="primary" onClick={handleShowSensitivities}>
               <FontAwesomeIcon icon={faUpload} className="me-1" /> Sensitivities
             </Button>
           </div>
         </div>
         <div className='mt-3'>
-            <FinancialDataTable 
+            {/* <FinancialDataTable 
               query={query} 
               currentPage={currentPage}
               fileUploaded={fileUploaded}
-              />
+              /> */}
         </div>
+
         <ModalComponent
             show={show}
             handleClose={handleClose}
@@ -87,6 +104,7 @@ export default function Page(searchParams) {
             isSave={isSave} 
           />
         </ModalComponent>
+
         <ModalComponent
             show={showPrice}
             handleClose={handleClosePrice}
@@ -101,6 +119,23 @@ export default function Page(searchParams) {
             onFileUploaded={handlePriceFileUploaded} 
             setLoading={setLoading} 
             isSave={isSavePrice} 
+          />
+        </ModalComponent>
+
+        <ModalComponent
+            show={showSensitivies}
+            handleClose={handleCloseSensitivities}
+            handleSave={handleSaveSensitivities}
+            loading={loading}
+            size="lg"
+            buttonText='Upload'
+            buttonLoadingText='Processing file. Please wait...'
+            const
+            title="Upload sensitivities file">
+          <CsvSensitivitiesFileUploader 
+            onFileUploaded={handleSenstivitiesFileUploaded} 
+            setLoading={setLoading} 
+            isSave={isSaveSensitivities} 
           />
         </ModalComponent>
     </main>

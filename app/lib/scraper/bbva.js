@@ -38,10 +38,3 @@ export async function scrapeBBVAEvents() {
     return [];
   }
 }
-
-// Call the function and log the events
-scrapeBBVAEvents().then(events => {
-  console.log('BBVA Events:', events);
-}).catch(error => {
-  console.error('Error:', error);
-});

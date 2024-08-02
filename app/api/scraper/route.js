@@ -245,11 +245,11 @@ export async function GET(req) {
         const companyResponse = await getCompanyByName({'name' : company});
 
         if(!companyResponse?.data){
-            console.error(`Company ${site} not found in the database.`);
-            // throw new Error(`Company ${site} not found in the database.`);
-        }
-
-        if(companyResponse?.data && scrapedData.length > 0){
+            console.error(`Company ${site} not found in the database or scraped data is empty.`);
+            throw new Error(`Company ${site} not found in the database.`);
+        }else if(scrapedData.length <= 0){
+            console.error(`Company ${site} doesn't have any upcoming events.`);
+        }else{
             const eventsPromises = scrapedData?.map(async event => {
                 event.friendly_name  = `${companyResponse.data.equity_ticker} - ${event.description}`;
                 //check if event already exists by date and description
@@ -275,9 +275,6 @@ export async function GET(req) {
             });
 
             await Promise.all(eventsPromises);
-        }else{
-            console.error(`Company ${site} not found in the database or scraped data is empty.`);
-            throw new Error(`Company ${site} not found in the database.`);
         }
 
       if (scrapedData.error) {

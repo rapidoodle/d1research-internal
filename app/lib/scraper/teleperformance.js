@@ -8,15 +8,18 @@ export async function scrapeTeleperformanceEvents() {
     const data = await response.text();
 
     const root = parse(data);
-    const rows = root.querySelectorAll('table tbody tr');
+    const rows = root.querySelectorAll('table.table-style tbody tr');
     const events = [];
     const currentDate = moment();
-
+    
     console.log(root);
 
     rows.forEach(row => {
       const dateElement = row.querySelector('td:nth-child(1) p');
       const descriptionElement = row.querySelector('td:nth-child(2) p');
+      
+
+      console.log(dateElement, descriptionElement);
 
       if (dateElement && descriptionElement) {
         const dateText = dateElement.text.trim();

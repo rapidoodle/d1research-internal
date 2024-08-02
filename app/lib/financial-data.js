@@ -509,7 +509,7 @@ export async function uploadPriceFileData (req, res) {
               if (financialDataResult.rows.length > 0) {
                 console.log(`Data for ${row['Equity Ticker']} in ${row['Year']} exists, update share price to ${newSharePrice} and current price z to ${newCurrentPrice}`);
                 //if the company already exists, update the data
-                const updateQuery = `UPDATE financial_data SET current_price_z = $1, share_price = $2, updated_by = $3 WHERE equity_ticker = $4 AND year = $5`;
+                const updateQuery = `UPDATE financial_data SET current_price_z = $1, share_price = $2, updated_by = $3, update_at = NOW() WHERE equity_ticker = $4 AND year = $5`;
                 const updateResponse = await sql.query(updateQuery, [newCurrentPrice, newSharePrice, loggedUser.id, row['Equity Ticker'], row['Year']]);
 
                 console.log('Company updated', row['Equity Ticker'], row['Year']);
