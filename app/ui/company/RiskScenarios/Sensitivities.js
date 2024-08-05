@@ -198,7 +198,7 @@ export default function Sensitivities({sensData}) {
                         </thead>
                         <tbody>
                         {sensData.map((line, yIndex) => ( 
-                            <tr>
+                            <tr key={yIndex}>
                                 <td>{line.year}</td>
                                 <td>{format2DecimalSens(line[`${type?.key}_q1`])}</td>
                                 <td>{format2DecimalSens(line[`${type?.key}_q2`])}</td>
