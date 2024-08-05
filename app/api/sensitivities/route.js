@@ -1,4 +1,4 @@
-import { uploadSensitivitiesData } from "@/app/lib/sensitivities";
+import { getSensitivitiesData, getSensitivitiesDataByCompanyTicker, uploadSensitivitiesData } from "@/app/lib/sensitivities";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
@@ -29,8 +29,21 @@ export async function GET(req) {
     const equityTicker = searchParams.get('equity_ticker');
     const type         = searchParams.get('type');
     
+    if(equityTicker) {
+      try {
+        const data = await getSensitivitiesDataByCompanyTicker(equityTicker);
+        
+        if (data.error) {
+          return NextResponse.json({ message: data.error }, { status: 500 });
+        }
+        return NextResponse.json(data);
+      } catch (error) {
+        console.error('Error fetching sensitivities data:', error);
+        return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
+      }
+    }else{
     try {
-        const fileUploadResponse = await uploadSensitivitiesData(req);
+        const fileUploadResponse = await getSensitivitiesData(req);
       
         if (fileUploadResponse.error) {
             return NextResponse.json({ message: fileUploadResponse.error }, { status: 500 });
@@ -42,4 +55,5 @@ export async function GET(req) {
         console.error('Error fetching sensitivities data:', error);
         return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
     }
+  }
 }

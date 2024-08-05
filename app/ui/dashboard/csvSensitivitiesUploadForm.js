@@ -37,7 +37,7 @@ const CsvSensitivitiesFileUploader = ({ onFileUploaded, isSave, setLoading }) =>
           const formData = new FormData();
           formData.append('file', file);
     
-          const res = await fetch('/api/financial-data/sensitivities', {
+          const res = await fetch('/api/sensitivities', {
             method: 'POST',
             body: formData,
           });

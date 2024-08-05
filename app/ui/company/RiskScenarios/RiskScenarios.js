@@ -1,9 +1,48 @@
+import ModalComponent from "@/app/components/ModalComponent";
 import { fomatDisplay, format2Decimal, formatColoredPercentDisplay, formatNumber, formatWholeNumber } from "@/app/lib/utils";
+import { useEffect, useState } from "react";
+import Sensitivities from "./Sensitivities";
 
-export default function RiskScenarios({zFirst, zSecond, zThird, zFourth}) {
+export default function RiskScenarios({zFirst, zSecond, zThird, zFourth, allData}) {
+    const ticker = allData[0].equity_ticker;
+    const companyName = allData[0].company;
+    const [sensData, setSensData] = useState([]);
+    const [loading, setLoading] = useState (false);
+    const [showSens, setShowSens] = useState(false);
+
+    const handleCloseSensitivities = () => setShowSens(false);
+
+    useEffect(() => {
+        const fetchEvents = async () => {
+            setLoading(true);
+            const response = await fetch(`/api/sensitivities?equity_ticker=${ticker}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    }
+                }
+            );
+            
+            const data = await response.json();
+            setSensData(data);
+            setLoading(false);
+
+            console.log('Risk scenarios data:', data);
+            return data;
+        }
+        
+        fetchEvents();
+    }, []);
+
     return (<>
         <div className="card flex-fill">
-            <h5>Risk scenarios</h5>
+            <div className='d-flex align-items-center'>
+                <h5 className='flex-grow-1 mb-0'>Risk scenarios</h5>
+                {/* { peersDPS.length > 0 && <a className='page-link me-2' onClick={() => setShowChart(!showChart)}>View {showChart ? 'table' : 'chart'}</a> } */}
+                {sensData?.length > 0 &&
+                <a className='page-link me-2' onClick={() => setShowSens(!showSens)}>View sensitivities</a> 
+                }
+            </div>
             <hr />
             <div className="table-responsive">
                 <table className="table table-responsive aligned-table">
@@ -70,6 +109,22 @@ export default function RiskScenarios({zFirst, zSecond, zThird, zFourth}) {
                 </table>
             </div>
         </div>
+
+        <ModalComponent
+            show={showSens}
+            handleClose={handleCloseSensitivities}
+            loading={loading}
+            size="xl"
+            bodyColor='#fefcf8'
+            isSavable={false}
+            rightTitle={companyName}
+            title="Sensitivities">
+                <div className="p-3">
+                    <Sensitivities 
+                        sensData={sensData} 
+                        />
+                </div>
+        </ModalComponent>
     </>
     );
 }

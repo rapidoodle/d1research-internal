@@ -11,8 +11,11 @@ const ModalComponent = ({
     size, 
     loading, 
     isPrintable, 
+    isSavable,
     handlePrint,
+    rightTitle,
     buttonText='Save changes', 
+    bodyColor='none',
     buttonLoadingText='' }
   ) => {
   return (
@@ -21,15 +24,22 @@ const ModalComponent = ({
       onHide={handleClose} 
       size={size}
       backdrop={loading ? 'static' : true}>
-      <Modal.Header closeButton={loading ? false : true}>
-        <Modal.Title>{title}</Modal.Title>
+      <Modal.Header closeButton={loading ? false : true}> 
+        <Modal.Title className='w-100'>
+          <div className='d-flex align-items-center justify-content-between'>
+            <div>{title}</div>
+            {rightTitle && <div className='modal-right-title'>{rightTitle}</div>}
+          </div>
+        </Modal.Title>
       </Modal.Header>
-      <Modal.Body>{children}</Modal.Body>
+      <Modal.Body style={{backgroundColor : bodyColor}}>{children}</Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" disabled={loading} onClick={handleClose}>
           Close
         </Button>
-        
+        {isSavable && 
+
+        <div>
         {!isPrintable ? 
         <Button variant="primary" disabled={loading} onClick={handleSave}>
           { loading ? <><ButtonSpinner /> {buttonLoadingText}</> : buttonText }
@@ -38,6 +48,8 @@ const ModalComponent = ({
         <Button variant="primary"  onClick={handlePrint}>
            Print
         </Button>
+        }
+        </div>
         }
       </Modal.Footer>
     </Modal>

@@ -117,7 +117,7 @@ hr{
     border-color: #2F5651;
 }
 .bg-cream{
-    background-color: #F7F1E3!important;
+    background-color: #fefcf8!important;
 }
 table tr td{
   border: none!important;
@@ -297,4 +297,47 @@ table tr.tr-bold td{
 
 table.year-table tr td:first-child{
     max-width: 100px!important;
+}
+
+table.sens-table tr td, table.sens-table tr th, table.timeline-table tr td, table.timeline-table tr th{
+    font-size: 13px;
+    color: #2F5651;
+    border-bottom: none !important;
+}
+
+.bg-light-cream{
+    background-color: #FEFCF8!important;
+}
+
+.bg-payout{
+    background-color: #cdd4d2!important;
+}
+
+table.sens-table tr td:first-child, table.sens-table tr th:first-child{
+   width: 185px;
+}
+
+table.timeline-table tr td:first-child, table.timeline-table tr th:first-child{
+    width: 96px;
+}
+
+table.sens-table tr td:not(:first-child), table.sens-table tr th:not(:first-child), table.timeline-table tr td:not(:first-child), table.timeline-table tr th:not(:first-child){
+    text-align: center;
+}
+
+span.sens-estimate{
+    background-color: #136561;
+    padding: 0.2rem;
+    border-radius: 5px;
+    display: block;
+    color: #fff;
+}
+
+.modal-right-title{
+    font-size: 16px;
+    border: 1px solid #ccc;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-radius: 5px;
+    margin-right: 1rem;
 }

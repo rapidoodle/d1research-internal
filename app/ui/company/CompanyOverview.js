@@ -7,7 +7,7 @@ import { validate } from 'uuid';
 import { useRouter } from 'next/navigation'
 import D1DPSForecast from './D1DPSForecast';
 import CapitalReturnPolicy from './CapitalReturnPolicy';
-import RiskScenarios from './RiskScenarios';
+import RiskScenarios from './RiskScenarios/RiskScenarios';
 import OverviewFinancials from './OverviewFinancials';
 import UpcomingEvents from './UpcomingEvents';
 import DPSCalendar from './DPSCalendar';
@@ -348,6 +348,7 @@ export default function CompanyOverview({session}) {
               zSecond={zSecond}
               zThird={zThird}
               zFourth={zFourth} 
+              allData={allData}
             />
           </div>
           <div className='col-md-6 d-flex mb-4'>

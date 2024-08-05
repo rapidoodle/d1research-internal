@@ -632,6 +632,26 @@ async function seedSensitivitiesTable(client) {
       "2025vbu" VARCHAR(255),
       "2026vbu" VARCHAR(255),
       "2027vbu" VARCHAR(255),
+      "vbe_q1" VARCHAR(255),
+      "be_q1" VARCHAR(255),
+      "bu_q1" VARCHAR(255),
+      "vbu_q1" VARCHAR(255),
+      "vbe_q2" VARCHAR(255),
+      "be_q2" VARCHAR(255),
+      "bu_q2" VARCHAR(255),
+      "vbu_q2" VARCHAR(255),
+      "vbe_q3" VARCHAR(255),
+      "be_q3" VARCHAR(255),
+      "bu_q3" VARCHAR(255),
+      "vbu_q3" VARCHAR(255),
+      "vbe_q4" VARCHAR(255),
+      "be_q4" VARCHAR(255),
+      "bu_q4" VARCHAR(255),
+      "vbu_q4" VARCHAR(255),
+      "vbe_total" VARCHAR(255),
+      "be_total" VARCHAR(255),
+      "bu_total" VARCHAR(255),
+      "vbu_total" VARCHAR(255),
       "updated_by" UUID NOT NULL,
       "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -664,7 +684,7 @@ async function main() {
   // await seedAnalystsComments(client);
   // await seedLatestManagementStatement(client);
   // await seedCapitalReturnPolicy(client);
-  // await seedSensitivitiesTable(client);
+  await seedSensitivitiesTable(client);
 
 
   await client.end();

@@ -14,6 +14,7 @@ const SideNav = () => {
   const [settingsCollapsed, setSettingsCollapsed] = useState(true);
   const [eventsCollapsed, setEventsCollapsed] = useState(true);
   const [masterCollapsed, setMasterCollapsed] = useState(true);
+  const [dataCollapsed, setDataCollapsed] = useState(true);
   
   const toggleSettings = () => {
     setSettingsCollapsed(!settingsCollapsed);
@@ -23,6 +24,9 @@ const SideNav = () => {
   };
   const toggleMaster = () => {
     setMasterCollapsed(!masterCollapsed);
+  };
+  const toggleData = () => {
+    setDataCollapsed(!dataCollapsed);
   };
 
   return (
@@ -35,10 +39,29 @@ const SideNav = () => {
           </Link>
       </h6>
       <ul className="nav nav-pills flex-column mb-auto">
-        <li className="nav-item">
-          <Link href="/" className={clsx('nav-link', { 'active': pathname === '/' })}>
-            Data
-          </Link>
+      <li className='nav-item'>
+          <button 
+            className="nav-link btn btn-link d-flex align-items-center justify-content-between w-100"
+            onClick={toggleData}
+            aria-expanded={!dataCollapsed}
+          >
+              <span>Data</span> 
+              <span className='ms-auto'><FontAwesomeIcon icon={dataCollapsed ? faChevronRight : faChevronDown} /></span>
+          </button>
+          <div className={clsx('collapse', { 'show': !dataCollapsed })}>
+            <ul className="nav flex-column ms-3">
+                <li className="nav-item">
+                  <Link href="/" className={clsx('nav-link', { 'active': pathname === '/' })}>
+                  Master
+                  </Link>
+              </li>
+                <li className="nav-item">
+                  <Link href="/data/sensitivities" className={clsx('nav-link', { 'active': pathname === '/data/sensitivities' })}>
+                  Sensitivities
+                  </Link>
+              </li>
+            </ul>
+          </div>
         </li>
         <li className='nav-item'>
           <button 
@@ -77,7 +100,6 @@ const SideNav = () => {
               </li>
             </ul>
           </div>
-
         </li>
         <li className="nav-item">
           <button 

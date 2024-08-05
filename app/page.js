@@ -74,10 +74,6 @@ export default function Page(searchParams) {
             <Button className='ms-md-2 mt-2 mt-md-0' size="sm" variant="primary" onClick={handleShowPrice}>
               <FontAwesomeIcon icon={faUpload} className="me-1" /> Price
             </Button>
-
-            <Button className='ms-md-2 mt-2 mt-md-0' size="sm" variant="primary" onClick={handleShowSensitivities}>
-              <FontAwesomeIcon icon={faUpload} className="me-1" /> Sensitivities
-            </Button>
           </div>
         </div>
         <div className='mt-3'>

@@ -356,6 +356,59 @@ export const format2Decimal = (value) => {
   return Number(value).toFixed(2);
 }
 
+
+export const format2DecimalSens = (value) => {
+  if(value === 'n/a' || 
+    value === 'NaN' || 
+    value === '-' || 
+    value === NaN || 
+    value === '#N/A' || 
+    value === '#DIV/0!' || 
+    value === null ||
+    value === undefined || 
+    value === '' || 
+    value === 'null' || 
+    value === 'undefined' || 
+    !value || 
+    value === 0 ||
+    value === '0' || 
+    value === '0.00' ||
+    value === '0.00'){
+    return '-';
+  }
+
+  //if negative number, remove negative sign and put in parenthesis
+
+  if(Number(value) < 0){
+    return <span class='sens-estimate'>({Math.abs(Number(value).toFixed(2))})</span> ;
+  }
+
+  return <span class='sens-estimate'>{Number(value).toFixed(2)}</span>;
+}
+
+export const simpleFormat = (value) => {
+  if(value === 'n/a' || 
+    value === 'NaN' || 
+    value === '-' || 
+    value === NaN || 
+    value === '#N/A' || 
+    value === '#DIV/0!' || 
+    value === null ||
+    value === undefined || 
+    value === '' || 
+    value === 'null' || 
+    value === 'undefined' || 
+    !value || 
+    value === 0 ||
+    value === '0' || 
+    value === '0.00' ||
+    value === '0.00'){
+    return '-';
+  }
+
+  return value 
+}
+
 export const formatHeatmap = (value) => {
 
   //remove percentage sign
