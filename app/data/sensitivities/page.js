@@ -61,6 +61,7 @@ export default function Page(searchParams) {
             buttonText='Upload'
             buttonLoadingText='Processing file. Please wait...'
             const
+            isSavable={true}
             title="Upload sensitivities file">
           <CsvSensitivitiesFileUploader 
             onFileUploaded={handleSenstivitiesFileUploaded} 

@@ -89,6 +89,7 @@ export default function Page(searchParams) {
             handleClose={handleClose}
             handleSave={handleSave}
             loading={loading}
+            isSavable={true}
             size="lg"
             buttonText='Upload'
             buttonLoadingText='Processing file. Please wait...'
@@ -107,6 +108,7 @@ export default function Page(searchParams) {
             handleSave={handleSavePrice}
             loading={loading}
             size="lg"
+            isSavable={true}
             buttonText='Upload'
             buttonLoadingText='Processing file. Please wait...'
             const
@@ -115,23 +117,6 @@ export default function Page(searchParams) {
             onFileUploaded={handlePriceFileUploaded} 
             setLoading={setLoading} 
             isSave={isSavePrice} 
-          />
-        </ModalComponent>
-
-        <ModalComponent
-            show={showSensitivies}
-            handleClose={handleCloseSensitivities}
-            handleSave={handleSaveSensitivities}
-            loading={loading}
-            size="lg"
-            buttonText='Upload'
-            buttonLoadingText='Processing file. Please wait...'
-            const
-            title="Upload sensitivities file">
-          <CsvSensitivitiesFileUploader 
-            onFileUploaded={handleSenstivitiesFileUploaded} 
-            setLoading={setLoading} 
-            isSave={isSaveSensitivities} 
           />
         </ModalComponent>
     </main>

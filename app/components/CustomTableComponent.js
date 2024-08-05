@@ -49,22 +49,20 @@ const onSort = (key) => {
   setFilteredData(sortedArray);
 };
 
-const getDataValue = (value) => {
-  if (typeof value === 'string') {
-    if (value.includes('%')) {
-      return parseFloat(value.replace('%', ''));
-    } else if (!isNaN(value)) {
-      return parseFloat(value);
+  const getDataValue = (value) => {
+    if (typeof value === 'string') {
+      if (value.includes('%')) {
+        return parseFloat(value.replace('%', ''));
+      } else if (!isNaN(value)) {
+        return parseFloat(value);
+      }
     }
-  }
-  return value;
-};
+    return value;
+  };
 
-const isValidValue = (value) => {
-  return value !== null && value !== undefined && !isNaN(value);
-};
-
-
+  const isValidValue = (value) => {
+    return value !== null && value !== undefined && !isNaN(value);
+  };
 
 
   const handleTickerChange = (event) => {
