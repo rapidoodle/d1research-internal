@@ -1,8 +1,10 @@
 import ModalComponent from "@/app/components/ModalComponent";
 import { calculatePercent, calculatePercentageColored, format2Decimal, formatNumber, formatRiskSkew, formatWholeNumber } from "@/app/lib/utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Sensitivities from "./RiskScenarios/Sensitivities";
 
 export default function D1DPSRange({zFirst, zSecond, zThird, zFourth, allData}) {
+  const ticker = allData[0].equity_ticker;
   zFirst.difference = ((zFirst.current_price_z / zFirst.dps_z - 1) * - 1) * 100;
   zSecond.difference = (zSecond.current_price_z / zSecond.dps_z - 1) * - 1;
   zThird.difference = (zThird.current_price_z / zThird.dps_z - 1)  * - 1 ;

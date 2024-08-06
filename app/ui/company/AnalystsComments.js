@@ -185,6 +185,7 @@ export default function AnalystsComments({companyID, session}) {
             show={showModal}
             handleClose={handleClose}
             handleSave={handleSave}
+            isSavable={true}
             loading={loading}
             size="lg"
             title="Add new comment"
