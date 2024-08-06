@@ -209,6 +209,7 @@ export default function AnalystsComments({companyID, session}) {
          <ModalComponent
             show={showModalAll}
             handleClose={handleCloseAll}
+            isSavable={true}
             loading={loading}
             isPrintable={true}
             size="lg"

@@ -341,6 +341,7 @@ export default function CompanyOverview({session}) {
                zSecond={zSecond}
                zThird={zThird}
                zFourth={zFourth}
+               allData={allData}
               />
 
             <CapitalReturnPolicy  
@@ -373,12 +374,20 @@ export default function CompanyOverview({session}) {
               allData={allData} />
           </div>
           <div className='col-md-6 d-flex mb-4 flex-column'>
-            <RiskScenarios
+            {/* <RiskScenarios
               zFirst={zFirst}
               zSecond={zSecond}
               zThird={zThird}
               zFourth={zFourth} 
               allData={allData}
+            /> */}
+
+<ShareCapital 
+              zPrev={zPrev}
+              zFirst={zFirst}
+              zSecond={zSecond}
+              zThird={zThird}
+              zFourth={zFourth}
             />
           </div>
           <div className='col-md-6 d-flex mb-4 flex-column'>

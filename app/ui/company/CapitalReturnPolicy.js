@@ -167,6 +167,7 @@ export default function CapitalReturnPolicy({companyID, session}) {
             handleClose={handleClose}
             handleSave={handleSave}
             loading={loading}
+            isSavable={true}
             size="lg"
             title="Add new comment"
         >
@@ -191,6 +192,7 @@ export default function CapitalReturnPolicy({companyID, session}) {
             show={showModalAll}
             handleClose={handleCloseAll}
             loading={loading}
+            isSavable={true}
             isPrintable={true}
             size="lg"
             title="All comments"

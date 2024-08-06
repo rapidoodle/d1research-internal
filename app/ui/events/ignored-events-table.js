@@ -182,6 +182,7 @@ const IgnoredEventsTable = ({query, currentPage, eventAdded}) => {
       size={'lg'} 
       loading={loading}
       handleSave={handleSave}
+      isSavable={true}
       handleClose={handleClose}>
         {selectedEvent &&
           <EditEventForm 
