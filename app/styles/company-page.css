@@ -157,7 +157,7 @@ table tr td.second-title div{
 }
 
 .ac-comment-container{
-  max-height: 280px;
+  max-height: 350px;
   overflow-y: scroll;
   font-size: 14px!important;
   font-weight: 300;

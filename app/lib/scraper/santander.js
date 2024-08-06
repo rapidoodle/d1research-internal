@@ -33,10 +33,10 @@ export async function scrapeSantanderEvents() {
           toDate = moment(toDateText, 'DD MMM YYYY').startOf('day');
         }
 
-        const description = descriptionElement.innerText.trim();
+        const description = descriptionElement.innerText.trim()?.replace(/&#39;/g, "'");
 
         if (fromDate.isSameOrAfter(currentDate)) {
-            const event = {date : fromDate.format('YYYY-MM-DD'), description, url: url};
+            const event = {date : fromDate.format('YYYY-MM-DD'), description : description , url: url};
 
             if(toDate) {
                 event.endDate = toDate.format('YYYY-MM-DD');

@@ -29,7 +29,7 @@ export async function scrapeCreditAgricoleEvents() {
             events.push({
               date,
               description,
-              url,
+              url : 'https://www.credit-agricole.com/en/finance/financial-calendar',
             });
           }
         }

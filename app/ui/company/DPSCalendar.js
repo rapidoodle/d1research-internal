@@ -1,4 +1,4 @@
-import { formatNumber } from "@/app/lib/utils";
+import { formatNumber, simpleFormat } from "@/app/lib/utils";
 
 export default function DPSCalendar({allData}) {
     return (<>
@@ -22,16 +22,20 @@ export default function DPSCalendar({allData}) {
                         {allData.map((data, index) => {
 
                             //calculate dps sum, check if dps is n/a
-                            if(data.dps_q1 === 'n/a' || data.dps_q1 === 'NaN'){
+    
+                            if(simpleFormat(data.dps_q1) === '-'){
                                 data.dps_q1 = 0;
                             }
-                            if(data.dps_q2 === 'n/a' || data.dps_q2 === 'NaN'){
+    
+                            if(simpleFormat(data.dps_q2) === '-'){
                                 data.dps_q2 = 0;
                             }
-                            if(data.dps_q3 === 'n/a' || data.dps_q3 === 'NaN'){
+    
+                            if(simpleFormat(data.dps_q3) === '-'){
                                 data.dps_q3 = 0;
                             }
-                            if(data.dps_q4 === 'n/a' || data.dps_q4 === 'NaN'){
+    
+                            if(simpleFormat(data.dps_q4) === '-'){
                                 data.dps_q4 = 0;
                             }
 

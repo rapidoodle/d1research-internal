@@ -1,3 +1,5 @@
+import { faArrowDownLong, faArrowUpLong } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import moment from "moment";
 import { Badge } from "react-bootstrap";
 
@@ -140,6 +142,32 @@ export const calculatePercent = (value, total, colored = false) => {
   
   return Math.round(percent * 100) + '%';
 }
+
+export const formatRiskSkew = (value) => {
+
+  if(value === 'n/a' || 
+    value === 'NaN' || 
+    value === '-' || 
+    value === NaN || 
+    value === '#N/A' || 
+    value === '#DIV/0!' || 
+    value === null ||
+    value === undefined || 
+    value === '' || 
+    value === 'null' || 
+    value === 'undefined' || 
+    !value){
+    return '-';
+  }
+
+  //if value is less than 0, return red arrow pointing down
+  if(Number(value) < 0){
+    return <FontAwesomeIcon icon={faArrowDownLong} className="text-danger"/>;
+  }
+  
+  return <FontAwesomeIcon icon={faArrowUpLong} className="text-success" />;
+}
+
 
 export const fomatDisplay = (value) => {
 

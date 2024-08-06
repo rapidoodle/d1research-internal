@@ -25,7 +25,7 @@ export default function TotalCapitalReturn({zPrev, zFirst, zSecond, zThird, zFou
             <hr />
             {showChart ? 
                 <ApexStackedBarChart
-                    xAxisData={[`FY${zPrev.year_2digit}`, `FY${zFirst.year_2digit}`, `FY${zThird.year_2digit}`, `FY${zFourth.year_2digit}`]} 
+                    xAxisData={[`FY${zPrev.year_2digit}`, `FY${zFirst.year_2digit}`, `FY${zSecond.year_2digit}`, `FY${zThird.year_2digit}`]} 
                     chartData={chartData}
                 /> : 
             <div className="table-responsive">
@@ -33,7 +33,7 @@ export default function TotalCapitalReturn({zPrev, zFirst, zSecond, zThird, zFou
                     <thead>
                         <tr>
                             <th></th>
-                            <th>{`FY${zPrev.year_2digit}`}e</th>
+                            <th>{`FY${zPrev.year_2digit}`}</th>
                             <th>{`FY${zFirst.year_2digit}`}</th>
                             <th>{`FY${zSecond.year_2digit}`}</th>
                             <th>{`FY${zThird.year_2digit}`}</th>

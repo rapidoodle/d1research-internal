@@ -1,12 +1,12 @@
-table tr td, table tr th {
+table#custom-table tr td, table#custom-table tr th {
     padding: 10px;
     font-size: 12px;
 }
-table thead tr th{
+table#custom-table thead tr th{
     background-color: #F7F1E3 !important;
     font-weight: bold;
 }
-table tbody tr td:not(:first-child), table thead tr th:not(:first-child){
+table#custom-table tbody tr td:not(:first-child), table#custom-table thead tr th:not(:first-child){
     text-align: center!important;
 }
 

@@ -7,9 +7,6 @@ export default function PeerComparisonDPSPayoutRatio({zPrev, zFirst, zSecond, zT
     const [peersDPS, setPeersDPS] = useState([]);
     const [chartSeries, setChartSeries] = useState([]);
     const [showChart, setShowChart] = useState(false);
-    const formatChartNumber = (value) => {
-        return formatWholeNumber(value);
-    }
 
     useEffect(() => {
 
@@ -38,25 +35,34 @@ export default function PeerComparisonDPSPayoutRatio({zPrev, zFirst, zSecond, zT
             // Update state with all responses at once
             setPeersDPS(responses);
 
-            const chartSeriesData = responses.map((companyData)=> {
-                if(companyData[0]?.equity_ticker){
+            const chartSeriesData = responses.map((companyData) => {
+                if (companyData[0]?.equity_ticker) {
+                    // Map the data to convert percentages to numbers and round them
+                    let data = companyData.map((item) => 
+                        Math.round(Number(item.dps_payout_ratio.replace('%', '')))
+                    );
+            
+                    // Remove the 5th item if it exists
+                    if (data.length > 4) {
+                        data.splice(4, 1); // Index 4 corresponds to the 5th item
+                    }
+            
+                    // Return the object with the modified data array
                     return {
                         name: companyData[0]?.equity_ticker,
-                        data: companyData.map((item, i) => {
-                            return Math.round(Number(item.dps_payout_ratio.replace('%', '')))
-                        }
-                    )};
+                        data: data,
+                    };
                 }
-
             });
 
             chartSeriesData.push({
                 name: zPrev.equity_ticker,
-                data: [zPrev.dps_payout_ratio, zFirst.dps_payout_ratio, zSecond.dps_payout_ratio, zThird.dps_payout_ratio, zFourth.dps_payout_ratio]
+                data: [zPrev.dps_payout_ratio, zFirst.dps_payout_ratio, zSecond.dps_payout_ratio, zThird.dps_payout_ratio]
             });  
             
             const cleanedData = chartSeriesData.filter(item => item);
             setChartSeries(cleanedData);
+
         }
 
         fetchPeerDPS();

@@ -20,6 +20,7 @@ import AnalystsComments from './AnalystsComments';
 import PageSpinner from '@/app/components/PageSpinner';
 import { customSelectStyle } from '@/app/lib/custom-styles/custom-styles';
 import { setSymbol } from '@/app/lib/utils';
+import D1DPSRange from './D1DPSRange';
 
 export default function CompanyOverview({session}) {
   const pathname = usePathname();
@@ -328,27 +329,23 @@ export default function CompanyOverview({session}) {
         </div>
         {/* ROW 1 */}
         <div className="row mt-2 d-flex">
-          <div className='col-md-6 d-flex mb-4'>
-            <D1DPSForecast 
+          <div className='col-md-6 mb-4 d-flex flex-column'>
+            {/* <D1DPSForecast 
               zFirst={zFirst}
               zSecond={zSecond}
               zThird={zThird}
               zFourth={zFourth}
-             />
-          </div>
-          <div className='col-md-6 d-flex mb-4'>
+             /> */}
+             <D1DPSRange 
+               zFirst={zFirst}
+               zSecond={zSecond}
+               zThird={zThird}
+               zFourth={zFourth}
+              />
+
             <CapitalReturnPolicy  
               companyID={selectedCompany?.value}
               session={session}
-            />
-          </div>
-          <div className='col-md-6 d-flex mb-4'>
-            <RiskScenarios
-              zFirst={zFirst}
-              zSecond={zSecond}
-              zThird={zThird}
-              zFourth={zFourth} 
-              allData={allData}
             />
           </div>
           <div className='col-md-6 d-flex mb-4'>
@@ -375,7 +372,16 @@ export default function CompanyOverview({session}) {
             <DPSCalendar 
               allData={allData} />
           </div>
-          <div className='col-md-6 d-flex mb-4'>
+          <div className='col-md-6 d-flex mb-4 flex-column'>
+            <RiskScenarios
+              zFirst={zFirst}
+              zSecond={zSecond}
+              zThird={zThird}
+              zFourth={zFourth} 
+              allData={allData}
+            />
+          </div>
+          <div className='col-md-6 d-flex mb-4 flex-column'>
             <ShareCapital 
               zPrev={zPrev}
               zFirst={zFirst}

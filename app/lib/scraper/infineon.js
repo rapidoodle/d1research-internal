@@ -20,7 +20,7 @@ export async function scrapeInfineonEvents() {
       if (moment(date).isSameOrAfter(currentDate)) {
         const event = { date: date, 
                         description: description, 
-                        url: 'https://www.infineon.com/cms/en/services/ajax/search/eventsUpcoming'
+                        url: 'https://www.infineon.com/cms/en/about-infineon/investor/news-and-events/events2/'
                     };
         
         if(event_end_date){
