@@ -50,6 +50,7 @@ export default function CapitalReturnPolicy({companyID, session}) {
             fetchCRPComments(companyID);
             setCommentID(null);
             setLoading(false);
+            setIsEdit(false);
 
 
           } catch (error) {

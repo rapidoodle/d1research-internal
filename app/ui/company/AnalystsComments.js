@@ -34,7 +34,7 @@ export default function AnalystsComments({companyID, session}) {
             { comment: comment, id: commentID} : 
             { comment: comment, company_id: companyID };
       
-        const fetchData = async () => {
+        const saveData = async () => {
           try {
             const response = await fetch(url, {
               method: method,
@@ -49,8 +49,7 @@ export default function AnalystsComments({companyID, session}) {
             fetchCRPComments(companyID);
             setCommentID(null);
             setLoading(false);
-
-
+            setIsEdit(false);
           } catch (error) {
             console.error(error);
           } finally {
@@ -58,7 +57,7 @@ export default function AnalystsComments({companyID, session}) {
           }
         };
       
-        fetchData();
+        saveData();
     };
 
     const fetchCRPComments = async (companyID, showAll = false) => {
@@ -97,13 +96,13 @@ export default function AnalystsComments({companyID, session}) {
     const handleDelete = (comment) => {
 
         Swal.fire({
-            title: 'Delete event?',
-            text: "Are you sure you want to delete this event?",
+            title: 'Delete comment?',
+            text: "Are you sure you want to delete this comment?",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Ignore'
+            confirmButtonText: 'Delete'
           }).then(async (result) => {
             console.log(result);
             if (result.isConfirmed) {
@@ -120,7 +119,7 @@ export default function AnalystsComments({companyID, session}) {
 
                         Swal.fire(
                             'Deleted!',
-                            'Event has been deleted.',
+                            'Comment has been deleted.',
                             'success'
                           )
                     })
