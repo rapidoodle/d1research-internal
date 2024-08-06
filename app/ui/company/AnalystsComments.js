@@ -222,7 +222,7 @@ export default function AnalystsComments({companyID, session}) {
                                 <PageSpinner />
                         ) : (
                             allComments.map((comment, index) => (
-                            <div className='d-flex align-items-center justify-content-between' key={index}>
+                            <div className={`d-flex align-items-center justify-content-between ${index < allComments.length - 1 && 'border-bottom mb-3'}`} key={index}>
                                 <div>
                                     <div dangerouslySetInnerHTML={{ __html: comment.comment }} />
                                 </div>
