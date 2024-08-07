@@ -155,7 +155,7 @@ export async function uploadFinancialData (req, res) {
                 cleanField(row['Annual return (%)']),
                 format2Decimal(row['D1 Lower']),
                 format2Decimal(row['D1 Upper']),
-                format2Decimal(row['Risk distribution']),
+                cleanField(row['Risk distribution']),
                 cleanField(row['Risk skew']),
                 roundUpNumber(row['Net Income']),
                 roundUpNumber(row['Av. Weighted Share Cap']),
@@ -201,7 +201,7 @@ export async function uploadFinancialData (req, res) {
                 if((Number(financialDataResult.rows[0]['d1_central']) !== format2Decimal(row['D1 Central']) && row['D1 Central']) || 
                   (Number(financialDataResult.rows[0]['d1_lower']) !== format2Decimal(row['D1 Lower']) && row['D1 Lower']) || 
                   (Number(financialDataResult.rows[0]['d1_upper']) !== format2Decimal(row['D1 Upper']) && row['D1 Upper']) || 
-                  (Number(financialDataResult.rows[0]['risk_distribution']) !== format2Decimal(row['Risk distribution']) && row['Risk distribution'])){
+                  (Number(financialDataResult.rows[0]['risk_distribution']) !== cleanField(row['Risk distribution']) && cleanField(row['Risk distribution']))){
 
                   console.log('Some estimates changed, update historical data');
 
@@ -284,7 +284,7 @@ export async function uploadFinancialData (req, res) {
                     ${cleanField(row['Annual return (%)'])}, 
                     ${roundUpNumber(row['D1 Lower'])}, 
                     ${roundUpNumber(row['D1 Upper'])}, 
-                    ${roundUpNumber(row['Risk distribution'])}, 
+                    ${cleanField(row['Risk distribution'])}, 
                     ${cleanField(row['Risk skew'])}, 
                     ${cleanField(row['Net Income'])},
                     ${cleanField(row['Av. Weighted Share Cap'])}, 

@@ -174,7 +174,7 @@ table tr td.second-title div{
   font-size: 12px;
 }
 .page-link{
-  font-size: 12px;
+  font-size: 12px!important;
   margin-bottom: 0;
   cursor: pointer;
   color: #2F5651;

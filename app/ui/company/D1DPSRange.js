@@ -96,18 +96,18 @@ export default function D1DPSRange({zFirst, zSecond, zThird, zFourth, allData}) 
                 <td>{format2Decimal(zFourth?.d1_lower)}</td>
               </tr>
               <tr className="highlight">
-                <td className="bg-cream">Rish Skew</td>
-                <td className="bg-cream">{formatRiskSkew(zFirst?.risk_skew)}</td>
-                <td className="bg-cream">{formatRiskSkew(zSecond?.risk_skew)}</td>
-                <td className="bg-cream">{formatRiskSkew(zThird?.risk_skew)}</td>
-                <td className="bg-cream">{formatRiskSkew(zFourth?.risk_skew)}</td>
+                <td className="bg-cream">Risk Skew</td>
+                <td className="bg-cream">{format2Decimal(zFirst?.risk_skew)}</td>
+                <td className="bg-cream">{format2Decimal(zSecond?.risk_skew)}</td>
+                <td className="bg-cream">{format2Decimal(zThird?.risk_skew)}</td>
+                <td className="bg-cream">{format2Decimal(zFourth?.risk_skew)}</td>
               </tr>
               <tr className="highlight">
-                <td className="bg-cream">Rish Distribution</td>
-                <td className="bg-cream">{formatRiskSkew(zFirst?.risk_distribution)}</td>
-                <td className="bg-cream">{formatRiskSkew(zSecond?.risk_distribution)}</td>
-                <td className="bg-cream">{formatRiskSkew(zThird?.risk_distribution)}</td>
-                <td className="bg-cream">{formatRiskSkew(zFourth?.risk_distribution)}</td>
+                <td className="bg-cream">Risk Distribution (%)</td>
+                <td className="bg-cream">{zFirst?.risk_distribution}</td>
+                <td className="bg-cream">{zSecond?.risk_distribution}</td>
+                <td className="bg-cream">{zThird?.risk_distribution}</td>
+                <td className="bg-cream">{zFourth?.risk_distribution}</td>
               </tr>
             </tbody>
           </table>
