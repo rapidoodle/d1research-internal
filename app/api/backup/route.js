@@ -16,9 +16,3 @@ export async function POST(req) {
     return NextResponse.json({ message: 'Backup failed', error: error.message }, { status: 500 });
   }
 }
-
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
