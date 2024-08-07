@@ -37,7 +37,7 @@ export default function PremiumDiscountsOverview({session}) {
             }
             if (relevantYears.includes(item.year)) {
               const yearKey = `z${item.year - 2020}`;
-              acc[item.equity_ticker][yearKey] = calculatePercent(item.current_price_z, item.dps_z);
+              acc[item.equity_ticker][yearKey] = calculatePercent(item.current_price_z, item.d1_central);
             }
             return acc;
           }, {});

@@ -41,15 +41,19 @@ export default function UpcomingEvents( { allData } ) {
                     </thead>
                     <tbody>
 
-                    { events.length > 0 && events?.map((event, index) => (
+                    { events.length > 0 && events?.map((event, index) => 
+                    {
+                        const title = event.friendly_name?.split(' - ')[1];
+
+                    return (
                         //check if event.start_date is in the future
                         moment().isBefore(event.start_date) &&
                         <tr key={index}>
                             <td>{displayDate(event.start_date)}</td>
-                            <td className="text-left"><a href={event.source_url} target="_blank" className="d1-text-link">{event.friendly_name}</a></td>
+                            <td className="text-left"><a href={event.source_url} target="_blank" className="d1-text-link">{title}</a></td>
                         </tr>
-                    ))
-                    }
+                    )}
+                    )}
 
                     {events.length === 0 && <tr><td colSpan="2" align="center" className="pt-3">No upcoming events</td></tr>}
                     </tbody>

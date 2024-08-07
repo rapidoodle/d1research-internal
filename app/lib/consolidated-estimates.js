@@ -8,7 +8,7 @@ export async function getConsolidatedEstimates() {
             company,
             equity_ticker,
             year,
-            dps_z,
+            d1_central,
             annual_return_percent,
             ROW_NUMBER() OVER (PARTITION BY company ORDER BY year DESC) AS rn
           FROM
@@ -17,10 +17,10 @@ export async function getConsolidatedEstimates() {
         SELECT
           company,
           equity_ticker,
-          MAX(CASE WHEN rn = 4 THEN dps_z END) AS z1,
-          MAX(CASE WHEN rn = 3 THEN dps_z END) AS z2,
-          MAX(CASE WHEN rn = 2 THEN dps_z END) AS z3,
-          MAX(CASE WHEN rn = 1 THEN dps_z END) AS z4,
+          MAX(CASE WHEN rn = 4 THEN d1_central END) AS z1,
+          MAX(CASE WHEN rn = 3 THEN d1_central END) AS z2,
+          MAX(CASE WHEN rn = 2 THEN d1_central END) AS z3,
+          MAX(CASE WHEN rn = 1 THEN d1_central END) AS z4,
           MAX(CASE WHEN rn = 4 THEN annual_return_percent END) AS z5,
           MAX(CASE WHEN rn = 3 THEN annual_return_percent END) AS z6,
           MAX(CASE WHEN rn = 2 THEN annual_return_percent END) AS z7,

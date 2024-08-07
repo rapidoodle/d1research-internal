@@ -84,49 +84,47 @@ export async function uploadFinancialData (req, res) {
                   index1 = $9,
                   index2 = $10,
                   index3 = $11,
-                  dps_z = $12,
+                  d1_central = $12,
                   current_price_z = $13,
                   discount_premium_percent = $14,
                   annual_return_percent = $15,
-                  very_bear_z = $16,
-                  bear_z = $17,
-                  bull_z = $18,
-                  very_bull_z = $19,
-                  risk_adj_dps_z = $20,
-                  difference_to_central_percentage = $21,
-                  net_income = $22,
-                  av_weighted_share_cap = $23,
-                  eps = $24,
-                  dps_fy = $25,
-                  dps_payout_ratio = $26,
-                  op_cash_flow = $27,
-                  capex = $28,
-                  free_cash_flow = $29,
-                  dividend = $30,
-                  share_buyback = $31,
-                  total_capital_return = $32,
-                  net_debt = $33,
-                  share_in_issue = $34,
-                  treasury_shares = $35,
-                  shares_outstanding = $36,
-                  capital_payout_percent = $37,
-                  dps_q1 = $38,
-                  dps_q2 = $39,
-                  dps_q3 = $40,
-                  dps_q4 = $41,
-                  ex_date_q1 = $42,
-                  ex_date_q2 = $43,
-                  ex_date_q3 = $44,
-                  ex_date_q4 = $45,
-                  peer_1 = $46,
-                  peer_2 = $47,
-                  peer_3 = $48,
-                  peer_4 = $49,
+                  d1_lower = $16,
+                  d1_upper = $17,
+                  risk_distribution = $18,
+                  risk_skew = $19,
+                  net_income = $20,
+                  av_weighted_share_cap = $21,
+                  eps = $22,
+                  dps_fy = $23,
+                  dps_payout_ratio = $24,
+                  op_cash_flow = $25,
+                  capex = $26,
+                  free_cash_flow = $27,
+                  dividend = $28,
+                  share_buyback = $29,
+                  total_capital_return = $30,
+                  net_debt = $31,
+                  share_in_issue = $32,
+                  treasury_shares = $33,
+                  shares_outstanding = $34,
+                  capital_payout_percent = $35,
+                  dps_q1 = $36,
+                  dps_q2 = $37,
+                  dps_q3 = $38,
+                  dps_q4 = $39,
+                  ex_date_q1 = $40,
+                  ex_date_q2 = $41,
+                  ex_date_q3 = $42,
+                  ex_date_q4 = $43,
+                  peer_1 = $44,
+                  peer_2 = $45,
+                  peer_3 = $46,
+                  peer_4 = $47,
                   updated_at = NOW(),
-                  updated_by = $50
+                  updated_by = $48
                 WHERE
-                  equity_ticker = $51 AND
-                  year = $52;
+                  equity_ticker = $49 AND
+                  year = $50;
               `;
 
                 //if row['DPS z] and row['Current Price z'] is not empty set discountPremiumPercent to (row['Current Price z'] / row['DPS z']) - 1
@@ -151,16 +149,14 @@ export async function uploadFinancialData (req, res) {
                 cleanField(row['Index1']),
                 cleanField(row['Index2']),
                 cleanField(row['Index3']),
-                format2Decimal(row['DPS z']),
+                format2Decimal(row['D1 Central']),
                 format2Decimal(row['Current Price z']),
                 cleanField(discountPremiumPercent),
                 cleanField(row['Annual return (%)']),
-                format2Decimal(row['z Very Bear']),
-                format2Decimal(row['z Bear']),
-                format2Decimal(row['z Bull']),
-                format2Decimal(row['z Very Bull']),
-                format2Decimal(row['Risk adj. DPS (z)']),
-                cleanField(row['Difference to Central (%)']),
+                format2Decimal(row['D1 Lower']),
+                format2Decimal(row['D1 Upper']),
+                format2Decimal(row['Risk distribution']),
+                cleanField(row['Risk skew']),
                 roundUpNumber(row['Net Income']),
                 roundUpNumber(row['Av. Weighted Share Cap']),
                 format2Decimal(row['EPS']),
@@ -202,12 +198,10 @@ export async function uploadFinancialData (req, res) {
                 }
 
                 //if any of this changed, update the historical data
-                if((Number(financialDataResult.rows[0]['dps_z']) !== format2Decimal(row['DPS z']) && row['DPS z']) || 
-                  (Number(financialDataResult.rows[0]['very_bear_z']) !== format2Decimal(row['z Very Bear'] && row['z Very Bear'])) || 
-                  (Number(financialDataResult.rows[0]['bear_z']) !== format2Decimal(row['z Bear']) && row['z Bear']) || 
-                  (Number(financialDataResult.rows[0]['bull_z']) !== format2Decimal(row['z Bull']) && row['z Bull']) || 
-                  (Number(financialDataResult.rows[0]['very_bull_z']) !== format2Decimal(row['z Very Bull']) && row['z Very Bull']) || 
-                  (Number(financialDataResult.rows[0]['risk_adj_dps_z']) !== format2Decimal(row['Risk adj. DPS (z)']) && row['Risk adj. DPS (z)'])){
+                if((Number(financialDataResult.rows[0]['d1_central']) !== format2Decimal(row['D1 Central']) && row['D1 Central']) || 
+                  (Number(financialDataResult.rows[0]['d1_lower']) !== format2Decimal(row['D1 Lower']) && row['D1 Lower']) || 
+                  (Number(financialDataResult.rows[0]['d1_upper']) !== format2Decimal(row['D1 Upper']) && row['D1 Upper']) || 
+                  (Number(financialDataResult.rows[0]['risk_distribution']) !== format2Decimal(row['Risk distribution']) && row['Risk distribution'])){
 
                   console.log('Some estimates changed, update historical data');
 
@@ -216,12 +210,10 @@ export async function uploadFinancialData (req, res) {
                      year, 
                      company, 
                      equity_ticker, 
-                     dps_z, 
-                     very_bear_z, 
-                     bear_z, 
-                     bull_z, 
-                     very_bull_z, 
-                     risk_adj_dps_z, 
+                     d1_central, 
+                     d1_lower, 
+                     d1_upper, 
+                     risk_distribution, 
                      updated_by) VALUES (
                      $1, 
                      $2, 
@@ -230,20 +222,16 @@ export async function uploadFinancialData (req, res) {
                      $5, 
                      $6, 
                      $7, 
-                     $8, 
-                     $9, 
-                     $10);`;
+                     $8);`;
  
                    await sql.query(insertQuery, [
                      financialDataResult.rows[0]['year'], 
                      financialDataResult.rows[0]['company'], 
                      financialDataResult.rows[0]['equity_ticker'], 
-                     format2Decimal(financialDataResult.rows[0]['dps_z']), 
-                     format2Decimal(financialDataResult.rows[0]['very_bear_z']),
-                     format2Decimal(financialDataResult.rows[0]['bear_z']),
-                     format2Decimal(financialDataResult.rows[0]['bull_z']),
-                     format2Decimal(financialDataResult.rows[0]['very_bull_z']),
-                     format2Decimal(financialDataResult.rows[0]['risk_adj_dps_z']),
+                     format2Decimal(financialDataResult.rows[0]['d1_central']), 
+                     format2Decimal(financialDataResult.rows[0]['d1_lower']),
+                     format2Decimal(financialDataResult.rows[0]['d1_upper']),
+                     format2Decimal(financialDataResult.rows[0]['risk_distribution']),
                      loggedUser.id]
                    );
                   } catch (error) {
@@ -272,8 +260,8 @@ export async function uploadFinancialData (req, res) {
                   await sql`
                   INSERT INTO financial_data (
                     year, company, sector, equity_ticker, share_price, div_ticker, p_and_l_fx,
-                    div_future_fx, index1, index2, index3, dps_z, current_price_z, discount_premium_percent,
-                    annual_return_percent, very_bear_z, bear_z, bull_z, very_bull_z, risk_adj_dps_z, difference_to_central_percentage, net_income,
+                    div_future_fx, index1, index2, index3, d1_central, current_price_z, discount_premium_percent,
+                    annual_return_percent, d1_lower, d1_upper, risk_distribution, risk_skew, net_income,
                     av_weighted_share_cap, eps, dps_fy, dps_payout_ratio, op_cash_flow, capex, free_cash_flow,
                     dividend, share_buyback, total_capital_return, net_debt, share_in_issue, treasury_shares,
                     shares_outstanding, capital_payout_percent, dps_q1, dps_q2, dps_q3, dps_q4, ex_date_q1,
@@ -290,16 +278,14 @@ export async function uploadFinancialData (req, res) {
                     ${cleanField(row['Index1'])}, 
                     ${cleanField(row['Index2'])}, 
                     ${cleanField(row['Index3'])}, 
-                    ${format2Decimal(row['DPS z'])}, 
+                    ${format2Decimal(row['D1 Central'])}, 
                     ${format2Decimal(row['Current Price z'])}, 
                     ${cleanField(discountPremiumPercent)},
                     ${cleanField(row['Annual return (%)'])}, 
-                    ${roundUpNumber(row['z Very Bear'])}, 
-                    ${roundUpNumber(row['z Bear'])}, 
-                    ${roundUpNumber(row['z Bull'])}, 
-                    ${roundUpNumber(row['z Very Bull'])}, 
-                    ${roundUpNumber(row['Risk adj. DPS (z)'])}, 
-                    ${cleanField(row['Difference to Central (%)'])}, 
+                    ${roundUpNumber(row['D1 Lower'])}, 
+                    ${roundUpNumber(row['D1 Upper'])}, 
+                    ${roundUpNumber(row['Risk distribution'])}, 
+                    ${cleanField(row['Risk skew'])}, 
                     ${cleanField(row['Net Income'])},
                     ${cleanField(row['Av. Weighted Share Cap'])}, 
                     ${cleanField(row['EPS'])}, 
@@ -399,7 +385,7 @@ export async function uploadFinancialData (req, res) {
 
             //check if Index1 is present in tags table and insert if not present
             const index1 = cleanField(row['Index1']);
-            if(index1 && index1 !== 0){
+            if(index1 && index1 !== 0 && index1 !== '0'){
               const index1TickerRes = await getTagByName({ name: index1 });
               if(index1TickerRes.data.length === 0){
                 let index1TagResponse = await createTag({ name: index1, updated_by: loggedUser.id }, false);
@@ -411,7 +397,7 @@ export async function uploadFinancialData (req, res) {
 
             //check if Index2 is present in tags table and insert if not present
             const index2 = cleanField(row['Index2']);
-            if(index2 && index2 !== 0){
+            if(index2 && index2 !== 0 && index2 !== '0'){
               const index2TickerRes = await getTagByName({ name: index2 });
               if(index2TickerRes.data.length === 0){
                 let index2TagResponse = await createTag({ name: index2, updated_by: loggedUser.id }, false);
@@ -423,7 +409,7 @@ export async function uploadFinancialData (req, res) {
 
             //check if Index3 is present in tags table and insert if not present
             const index3 = cleanField(row['Index3']);
-            if(index3 && index3 !== 0){
+            if(index3 && index3 !== 0 && index1 !== '0'){
               const index3TickerRes = await getTagByName({ name: index3 });
               if(index3TickerRes.data.length === 0){
                 let index3TagResponse = await createTag({ name: index3, updated_by: loggedUser.id }, false);

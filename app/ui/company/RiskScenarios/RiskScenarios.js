@@ -35,7 +35,7 @@ export default function RiskScenarios({zFirst, zSecond, zThird, zFourth, allData
     }, []);
 
     return (<>
-        <div className="card flex-fill">
+        <div className="card flex-fill mb-4">
             <div className='d-flex align-items-center'>
                 <h5 className='flex-grow-1 mb-0'>Risk scenarios</h5>
                 {/* { peersDPS.length > 0 && <a className='page-link me-2' onClick={() => setShowChart(!showChart)}>View {showChart ? 'table' : 'chart'}</a> } */}

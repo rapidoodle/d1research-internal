@@ -57,6 +57,11 @@ import { scrapeUniCreditEvents } from "@/app/lib/scraper/unicredit";
 import { scrapeSantanderEvents } from "@/app/lib/scraper/santander";
 import { scrapeINGEvents } from "@/app/lib/scraper/ing";
 import { scrapeBBVAEvents } from "@/app/lib/scraper/bbva";
+import { scrapeAllianzEvents } from "@/app/lib/scraper/allianz";
+import { scrapeAXAEvents } from "@/app/lib/scraper/axa";
+import { scrapeMunichReEvents } from "@/app/lib/scraper/munich-re";
+import { scrapeSanofiEvents } from "@/app/lib/scraper/sanofi";
+import { scrapeBayerEvents } from "@/app/lib/scraper/bayer";
 
 export const maxDuration = 300;
 
@@ -237,6 +242,21 @@ export async function GET(req) {
             case 'bbva':
                 scrapedData = await scrapeBBVAEvents();
                 break;
+            case 'allianz':
+                scrapedData = await scrapeAllianzEvents();
+                break;
+            case 'axa':
+                scrapedData = await scrapeAXAEvents();
+                break;
+            case 'munich-re':
+                scrapedData = await scrapeMunichReEvents();
+                break;
+            case 'sanofi':
+                scrapedData = await scrapeSanofiEvents();
+                break;
+            case 'bayer':
+                scrapedData = await scrapeBayerEvents();
+                break;
             default:
                 throw new Error(`Unknown site: ${site}`);
         }
@@ -267,7 +287,7 @@ export async function GET(req) {
                     }
 
                     //save the event
-                    return await createEvent(event, false);
+                    // return await createEvent(event, false);
                     
                 }else{
                     console.log(`${companyResponse.data.equity_ticker} ${event.description} (${event.date}) already exists in the database.`);

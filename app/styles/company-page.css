@@ -318,7 +318,7 @@ table.sens-table tr td:first-child, table.sens-table tr th:first-child{
 }
 
 table.timeline-table tr td:first-child, table.timeline-table tr th:first-child{
-    width: 96px;
+    width: 100px;
 }
 
 table.sens-table tr td:not(:first-child), table.sens-table tr th:not(:first-child), table.timeline-table tr td:not(:first-child), table.timeline-table tr th:not(:first-child){

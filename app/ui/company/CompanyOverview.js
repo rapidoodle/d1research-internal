@@ -382,16 +382,7 @@ export default function CompanyOverview({session}) {
               allData={allData}
             /> */}
 
-<ShareCapital 
-              zPrev={zPrev}
-              zFirst={zFirst}
-              zSecond={zSecond}
-              zThird={zThird}
-              zFourth={zFourth}
-            />
-          </div>
-          <div className='col-md-6 d-flex mb-4 flex-column'>
-            <ShareCapital 
+          <ShareCapital 
               zPrev={zPrev}
               zFirst={zFirst}
               zSecond={zSecond}
@@ -402,7 +393,7 @@ export default function CompanyOverview({session}) {
           <div className='col-md-6 d-flex mb-4'>
             <ExDivCalendar allData={allData} />
           </div>
-          <div className='col-md-6 d-flex'>
+          <div className='col-md-6 d-flex mb-4 mb-md-0'>
             <TotalCapitalReturn 
               zPrev={zPrev}
               zFirst={zFirst}
