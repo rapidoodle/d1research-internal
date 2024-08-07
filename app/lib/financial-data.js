@@ -129,8 +129,8 @@ export async function uploadFinancialData (req, res) {
 
                 //if row['DPS z] and row['Current Price z'] is not empty set discountPremiumPercent to (row['Current Price z'] / row['DPS z']) - 1
                 var discountPremiumPercent = null;
-                if(row['DPS z'] && row['Current Price z']){
-                  discountPremiumPercent = calculatePercent(format2Decimal(row['Current Price z']), format2Decimal(row['DPS z']));
+                if(row['D1 Central'] && row['Current Price z']){
+                  discountPremiumPercent = calculatePercent(format2Decimal(row['Current Price z']), format2Decimal(row['D1 Central']));
                   console.log('Discount premium percent is', discountPremiumPercent, row['Equity Ticker'], row['Year']);
                 }else{
                   discountPremiumPercent = '-';
@@ -249,8 +249,8 @@ export async function uploadFinancialData (req, res) {
 
                   //if row['DPS z] and row['Current Price z'] is not empty set discountPremiumPercent to (row['Current Price z'] / row['DPS z']) - 1
                   var discountPremiumPercent = null;
-                  if(row['DPS z'] && row['Current Price z']){
-                    discountPremiumPercent = (format2Decimal(row['Current Price z']) / format2Decimal(row['DPS z'])) - 1;
+                  if(row['D1 Central'] && row['Current Price z']){
+                    discountPremiumPercent = (format2Decimal(row['Current Price z']) / format2Decimal(row['D1 Central'])) - 1;
                     console.log('Discount premium percent is', discountPremiumPercent, row['Equity Ticker'], row['Year']);
                   }else{
                     discountPremiumPercent = '-';

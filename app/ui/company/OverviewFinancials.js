@@ -3,7 +3,7 @@ import { formatNumber, roundUpNumber } from "@/app/lib/utils";
 export default function OverviewFinancials({zPrev, zFirst, zSecond, zThird, zFourth, generalSymbol, dpsSymbol}) {
     return (<>
         < div className="card flex-fill">
-            <h5>Overview financials</h5>
+            <h5 className="mb-0">Overview financials</h5>
             <hr />
             <div className="table-responsive">
                 <table className="table table-responsive aligned-table">

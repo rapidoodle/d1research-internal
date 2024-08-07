@@ -97,7 +97,6 @@ export default function CapitalReturnPolicy({companyID, session}) {
     }
 
     const handleDelete = (comment) => {
-        alert(comment.id);
         setLoading(true);
         try {
             fetch(`/api/capital-return-policy/?comment_id=${comment.id}`, {
