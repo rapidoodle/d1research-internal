@@ -157,14 +157,14 @@ table tr td.second-title div{
 }
 
 .ac-comment-container{
-  max-height: 350px;
+  max-height: 600px;
   overflow-y: scroll;
   font-size: 14px!important;
   font-weight: 300;
 }
 
 .crp-comment-container{
-  max-height: 170px;
+  max-height: 220px;
   overflow-y: scroll;
   font-size: 14px!important;
   font-weight: 300;

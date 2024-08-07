@@ -161,11 +161,15 @@ export const formatRiskSkew = (value) => {
   }
 
   //if value is less than 0, return red arrow pointing down
-  if(Number(value) < 0){
-    return <FontAwesomeIcon icon={faArrowDownLong} className="text-danger"/>;
+  if(Number(value) < 1.00){
+    return <span class="text-danger">{value}</span>;
+  }
+
+  if(Number(value) > 1.00){
+    return <span class="text-success">{value}</span>;
   }
   
-  return <FontAwesomeIcon icon={faArrowUpLong} className="text-success" />;
+  return value;
 }
 
 

@@ -343,16 +343,13 @@ export default function CompanyOverview({session}) {
                zFourth={zFourth}
                allData={allData}
               />
+          </div>
+          <div className='col-md-6 d-flex mb-4'>
 
             <CapitalReturnPolicy  
               companyID={selectedCompany?.value}
               session={session}
             />
-          </div>
-          <div className='col-md-6 d-flex mb-4'>
-            <AnalystsComments 
-              companyID={selectedCompany?.value}
-              session={session} />
           </div>
           <div className='col-md-6 d-flex mb-4'>
             <OverviewFinancials
@@ -366,12 +363,18 @@ export default function CompanyOverview({session}) {
             />
           </div>
           <div className='col-md-6 d-flex mb-4 flex-column'>
+            <AnalystsComments 
+              companyID={selectedCompany?.value}
+              session={session} />
+
+          </div>
+          <div className='col-md-6 d-flex mb-4'>
+            <ExDivCalendar allData={allData} />
+          </div>
+          <div className='col-md-6 d-flex mb-4'>
             <UpcomingEvents 
               allData={allData} 
             />
-
-            <DPSCalendar 
-              allData={allData} />
           </div>
           <div className='col-md-6 d-flex mb-4 flex-column'>
             {/* <RiskScenarios
@@ -391,7 +394,8 @@ export default function CompanyOverview({session}) {
             />
           </div>
           <div className='col-md-6 d-flex mb-4'>
-            <ExDivCalendar allData={allData} />
+            <DPSCalendar 
+              allData={allData} />
           </div>
           <div className='col-md-6 d-flex mb-4 mb-md-0'>
             <TotalCapitalReturn 

@@ -28,7 +28,7 @@ export default function UpcomingEvents( { allData } ) {
     }, []);
 
     return (<>
-        <div className="card flex-fill mb-4" style={{maxHeight: '300px'}}>
+        <div className="card flex-fill">
             <h5>Upcoming events</h5>
             <hr />
             <div className="table-responsive">

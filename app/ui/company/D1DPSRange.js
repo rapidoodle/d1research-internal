@@ -42,9 +42,9 @@ export default function D1DPSRange({zFirst, zSecond, zThird, zFourth, allData}) 
 
   //percentrage format
     return (<>
-    <div className="card dps-forecast flex-fill mb-4">
+    <div className="card dps-forecast flex-fill">
         <div className='d-flex align-items-center'>
-                <h5 className='flex-grow-1 mb-0'>D1 DPS Range</h5>
+                <h5 className='flex-grow-1 mb-0'>D1 DPS range</h5>
                 {/* { peersDPS.length > 0 && <a className='page-link me-2' onClick={() => setShowChart(!showChart)}>View {showChart ? 'table' : 'chart'}</a> } */}
                 {sensData?.length > 0 &&
                 <>
@@ -97,10 +97,10 @@ export default function D1DPSRange({zFirst, zSecond, zThird, zFourth, allData}) 
               </tr>
               <tr className="highlight">
                 <td className="bg-cream">Risk Skew</td>
-                <td className="bg-cream">{format2Decimal(zFirst?.risk_skew)}</td>
-                <td className="bg-cream">{format2Decimal(zSecond?.risk_skew)}</td>
-                <td className="bg-cream">{format2Decimal(zThird?.risk_skew)}</td>
-                <td className="bg-cream">{format2Decimal(zFourth?.risk_skew)}</td>
+                <td className="bg-cream">{formatRiskSkew(zFirst?.risk_skew)}</td>
+                <td className="bg-cream">{formatRiskSkew(zSecond?.risk_skew)}</td>
+                <td className="bg-cream">{formatRiskSkew(zThird?.risk_skew)}</td>
+                <td className="bg-cream">{formatRiskSkew(zFourth?.risk_skew)}</td>
               </tr>
               <tr className="highlight">
                 <td className="bg-cream">Risk Distribution (%)</td>
