@@ -6,7 +6,7 @@ export default function PeerComparisonDPSPayoutRatio({zPrev, zFirst, zSecond, zT
 
     const [peersDPS, setPeersDPS] = useState([]);
     const [chartSeries, setChartSeries] = useState([]);
-    const [showChart, setShowChart] = useState(false);
+    const [showChart, setShowChart] = useState(true);
 
     useEffect(() => {
 
@@ -71,7 +71,7 @@ export default function PeerComparisonDPSPayoutRatio({zPrev, zFirst, zSecond, zT
     return (<>
         <div className="card peer-comparison flex-fill">
             <div className='d-flex align-items-center'>
-                <h5 className='flex-grow-1 mb-0'>Peer comparison DPS payout ratio (%)</h5>
+                <h5 className='flex-grow-1 mb-0'>DPS payout ratio (%)</h5>
                 {/* { peersDPS.length > 0 && <a className='page-link me-2' onClick={() => setShowChart(!showChart)}>View {showChart ? 'table' : 'chart'}</a> } */}
                 <a className='page-link me-2' onClick={() => setShowChart(!showChart)}>View {showChart ? 'table' : 'chart'}</a> 
             </div>
@@ -101,8 +101,7 @@ export default function PeerComparisonDPSPayoutRatio({zPrev, zFirst, zSecond, zT
                             //reverse peers to show the latest year first
                             return (
                                 <tr key={index}>
-                                    <td>{peer[0]?.equity_ticker
-                                    }</td>
+                                    <td>{peer[0]?.equity_ticker}</td>
                                     <td>{peer[0]?.dps_payout_ratio}</td>
                                     <td>{peer[3]?.dps_payout_ratio}</td>
                                     <td>{peer[2]?.dps_payout_ratio}</td>

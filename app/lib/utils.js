@@ -162,16 +162,21 @@ export const formatRiskSkew = (value) => {
 
   //if value is less than 0, return red arrow pointing down
   if(Number(value) < 1.00){
-    return <span class="text-danger">{value}</span>;
+    return <span class="text-danger">{format1DecimalX(value)}</span>;
   }
 
   if(Number(value) > 1.00){
-    return <span class="text-success">{value}</span>;
+    return <span class="text-success">{format1DecimalX(value)}</span>;
   }
   
   return value;
 }
 
+
+export const format1DecimalX = (value) => {
+  let strValue = Number(value).toFixed(1);
+  return strValue + 'x';
+}
 
 export const fomatDisplay = (value) => {
 

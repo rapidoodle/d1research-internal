@@ -46,20 +46,27 @@ export default function D1DPSRange({zFirst, zSecond, zThird, zFourth, allData}) 
         <div className='d-flex align-items-center'>
                 <h5 className='flex-grow-1 mb-0'>D1 DPS range</h5>
                 {/* { peersDPS.length > 0 && <a className='page-link me-2' onClick={() => setShowChart(!showChart)}>View {showChart ? 'table' : 'chart'}</a> } */}
-                {sensData?.length > 0 &&
+                
                 <>
-                  <a className='page-link me-2' onClick={() => setShowSens(!showSens)}>View sensitivities</a>
+                {sensData?.length > 0 && <a className='page-link me-2' onClick={() => setShowSens(!showSens)}>View sensitivities</a>}
                   <TooltipComponent 
                     placement="bottom"
                     title={'D1 DPS Range explanation'}
-                    content={`<ul className='ml-0'>
-                        <li>D1 Upper: The upper range of the D1 DPS forecast</li>
-                        <li>D1 Central: The central range of the D1 DPS forecast</li>
-                        <li>D1 Lower: The lower range of the D1 DPS forecast</li>
-                      </ul>`}
+                    content={`    <p className="mb-0 ps-2"><strong>Risk Skew:</strong></p>
+    <ul>
+        <li>Risk skew provides a relationship between the upside- and downside-risk to our central case forecast.</li>
+        <li><strong>Formula:</strong> Upside risk (Upper DPS - Central DPS) divided by downside risk (Central DPS - Lower DPS).</li>
+        <li>A number &lt;1 indicates a downside risk skew; &gt;1 indicates an upside risk skew.</li>
+    </ul>
+
+    <p className="mb-0 ps-2"><strong>Risk Distribution:</strong></p>
+    <ul>
+        <li>Risk distribution provides an indication of the size of the range around our central DPS forecast.</li>
+        <li><strong>Formula:</strong> Total range of outcomes (Upper DPS - Lower DPS) divided by Central DPS.</li>
+        <li>The higher the %, the larger the range of potential outcomes around our central forecast.</li>
+    </ul>`}
                   />
                   </>
-                }
             </div>
         <hr />
         <div className="table-responsive">
@@ -81,7 +88,7 @@ export default function D1DPSRange({zFirst, zSecond, zThird, zFourth, allData}) 
                 <td>{format2Decimal(zThird?.d1_upper)}</td>
                 <td>{format2Decimal(zFourth?.d1_upper)}</td>
               </tr>
-              <tr>
+              <tr className="tr-bold">
                 <td>D1 Central</td>
                 <td>{format2Decimal(zFirst?.d1_central)}</td>
                 <td>{format2Decimal(zSecond?.d1_central)}</td>
@@ -96,14 +103,14 @@ export default function D1DPSRange({zFirst, zSecond, zThird, zFourth, allData}) 
                 <td>{format2Decimal(zFourth?.d1_lower)}</td>
               </tr>
               <tr className="highlight">
-                <td className="bg-cream">Risk Skew</td>
+                <td className="bg-cream">Risk Skew (x)</td>
                 <td className="bg-cream">{formatRiskSkew(zFirst?.risk_skew)}</td>
                 <td className="bg-cream">{formatRiskSkew(zSecond?.risk_skew)}</td>
                 <td className="bg-cream">{formatRiskSkew(zThird?.risk_skew)}</td>
                 <td className="bg-cream">{formatRiskSkew(zFourth?.risk_skew)}</td>
               </tr>
               <tr className="highlight">
-                <td className="bg-cream">Risk Distribution (%)</td>
+                <td className="bg-cream">Risk distribution (%)</td>
                 <td className="bg-cream">{zFirst?.risk_distribution}</td>
                 <td className="bg-cream">{zSecond?.risk_distribution}</td>
                 <td className="bg-cream">{zThird?.risk_distribution}</td>

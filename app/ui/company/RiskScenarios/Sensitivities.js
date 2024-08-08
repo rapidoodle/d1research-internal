@@ -3,141 +3,128 @@ import { useState } from "react";
 
 export default function Sensitivities({sensData}) {
 
+    // Get the current year
+    const currentYear = new Date().getFullYear();
 
-    const [data, setData] = useState(sensData.filter(item => ['2024', '2025', '2026'].includes(item.year)));
+    // Create an array with the current year and the next two years
+    const yearsArray = [currentYear, currentYear + 1, currentYear + 2];
+    const [data, setData] = useState(sensData.filter(item => yearsArray.includes(Number(item.year))).reverse());
 
     const dataType = [{
-        key : 'be',
+        key : 'lower',
         title : 'D1 Lower',
     },
     {
-        key : 'ce',
+        key : 'central',
         title : 'D1 Central',
     },
     {
-        key : 'bu',
+        key : 'upper',
         title : 'D1 Upper',
     }
     ]
-
-    const years = ['2020', '2021', '2022', '2023', '2024', '2025', '2026', '2027'];
 
     return (<>
     <div className="row">
 
         <div className="col-12 col-sm-6">
-            <h5 className="mb-3">D1 DPS Sensitivities</h5>
-            {[4,5,6].map((z, i) => ( 
+            <h5 className="mb-3">D1 DPS sensitivities</h5>
+            {yearsArray.map((z, i) => ( 
             <div className={`card flex-fill ${i !== 2 && 'mb-4'}`} key={i}>
                 <div className="table-responsive">
-                    <table className="table sens-table">
-                        <thead>
-                            <tr className="highlight">
-                                <th className="bg-light-cream">FY2{z} {data[i]['year']}</th>
-                                <th className="bg-light-cream">D1 Lower</th>
-                                <th className="bg-light-cream">D1 Central</th>
-                                <th className="bg-light-cream">D1 Upper</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Sales (m)</td>
-                                <td>{roundUpNumber(data[i]['be_sales_m_be'])}</td>
-                                <td>{roundUpNumber(data[i]['ce_sales_m_ce'])}</td>
-                                <td>{roundUpNumber(data[i]['bu_sales_m_bu'])}</td>
-                            </tr>
-                            <tr>
-                                <td>Sales v Central %</td>
-                                <td>{simpleFormat(data[i]['be_sales_v_central_percent_be'])}</td>
-                                <td>{simpleFormat(data[i]['ce_sales_v_central_percent_ce'])}</td>
-                                <td>{simpleFormat(data[i]['bu_sales_v_central_percent_bu'])}</td>
-                            </tr>
-                            <tr>
-                                <td>Net income (m)</td>
-                                <td>{roundUpNumber(data[i]['be_net_income_m_be'])}</td>
-                                <td>{roundUpNumber(data[i]['ce_net_income_m_ce'])}</td>
-                                <td>{roundUpNumber(data[i]['bu_net_income_m_bu'])}</td>
-                            </tr>
-                            <tr>
-                                <td>NI margin (%)</td>
-                                <td>{simpleFormat(data[i]['be_ni_margin_percent_be'])}</td>
-                                <td>{simpleFormat(data[i]['ce_ni_margin_percent_ce'])}</td>
-                                <td>{simpleFormat(data[i]['bu_ni_margin_percent_bu'])}</td>
-                            </tr>
-                            <tr>
-                                <td>NI margin change (bp)</td>
-                                <td>{roundUpNumber(data[i]['be_ni_margin_change_bp_be'])}</td>
-                                <td>{roundUpNumber(data[i]['ce_ni_margin_change_bp_ce'])}</td>
-                                <td>{roundUpNumber(data[i]['bu_ni_margin_change_bp_bu'])}</td>
-                            </tr>
-                            <tr>
-                                <td>AWSC (m)</td>
-                                <td>{roundUpNumber(data[i]['be_awsc_m_be'])}</td>
-                                <td>{roundUpNumber(data[i]['ce_awsc_m_ce'])}</td>
-                                <td>{roundUpNumber(data[i]['bu_awsc_m_bu'])}</td>
-                            </tr>
-
-                            <tr className="bold-row">
-                                <td className="bg-light-cream">EPS</td>
-                                <td className="bg-light-cream">{format2Decimal(data[i]['be_eps_be'])}</td>
-                                <td className="bg-light-cream">{format2Decimal(data[i]['ce_eps_ce'])}</td>
-                                <td className="bg-light-cream">{format2Decimal(data[i]['bu_eps_bu'])}</td>
-                            </tr>
-                            </tbody>
-                            </table>
-                            <table className="table sens-table mt-2">
-                                <tbody>
-                            <tr className="bold-row">
-                                <td className="bg-light-cream">EPS v Central %</td>
-                                <td className="bg-light-cream">{data[i]['be_eps_v_central_percent_be']}</td>
-                                <td className="bg-light-cream">{data[i]['ce_eps_v_central_percent_ce']}</td>
-                                <td className="bg-light-cream">{data[i]['bu_eps_v_buntral_percent_bu']}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <hr />
-                
-                <div className="table-responsive">
-                    <table className="table sens-table">
-                        <thead>
-                            <tr>
-                                <th className="bg-payout" colSpan={6}>Payout ratio (%; FX adj.)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>{data[i]['payout_percent_very_bear']}</td>
-                                <td className="bg-cream">{data[i]['dps_be1']}</td>
-                                <td>{data[i]['dps_ce1']}</td>
-                                <td>{data[i]['dps_be1']}</td>
-                            </tr>
-                            <tr>
-                                <td>{data[i]['payout_percent_very_bear']}</td>
-                                <td>{data[i]['dps_be2']}</td>
-                                <td className="bg-cream">{data[i]['dps_ce2']}</td>
-                                <td>{data[i]['dps_be2']}</td>
-                            </tr>
-                            <tr>
-                                <td>{data[i]['payout_percent_very_bear']}</td>
-                                <td>{data[i]['dps_be4']}</td>
-                                <td className="bg-cream">{data[i]['dps_ce4']}</td>
-                                <td>{data[i]['dps_be4']}</td>
-                            </tr>
-                            <tr>
-                                <td>{data[i]['payout_percent_very_bear']}</td>
-                                <td>{data[i]['dps_be4']}</td>
-                                <td>{data[i]['dps_ce4']}</td>
-                                <td>{data[i]['dps_be4']}</td>
-                            </tr>
-                            <tr>
-                                <td>{data[i]['payout_percent_very_bear']}</td>
-                                <td>{data[i]['dps_be5']}</td>
-                                <td>{data[i]['dps_ce5']}</td>
-                                <td className="bg-cream">{data[i]['dps_be5']}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <table className="table sens-table">
+                    <thead>
+                        <tr className="highlight">
+                            <th className="bg-light-cream">FY2{z.toString().slice(-1)}</th>
+                            <th className="bg-light-cream">D1 Lower</th>
+                            <th className="bg-light-cream">D1 Central</th>
+                            <th className="bg-light-cream">D1 Upper</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Sales (m)</td>
+                            <td>{roundUpNumber(data[i]['lower_sales_m'])}</td>
+                            <td>{roundUpNumber(data[i]['central_sales_m'])}</td>
+                            <td>{roundUpNumber(data[i]['upper_sales_m'])}</td>
+                        </tr>
+                        <tr>
+                            <td>Sales v Central %</td>
+                            <td>{simpleFormat(data[i]['lower_sales_v_central_pct'])}</td>
+                            <td>{simpleFormat(data[i]['central_sales_v_central_pct'])}</td>
+                            <td>{simpleFormat(data[i]['upper_sales_v_central_pct'])}</td>
+                        </tr>
+                        <tr>
+                            <td>Net income (m)</td>
+                            <td>{roundUpNumber(data[i]['lower_net_income_m'])}</td>
+                            <td>{roundUpNumber(data[i]['central_net_income_m'])}</td>
+                            <td>{roundUpNumber(data[i]['upper_net_income_m'])}</td>
+                        </tr>
+                        <tr>
+                            <td>NI margin (%)</td>
+                            <td>{simpleFormat(data[i]['lower_ni_margin_pct'])}</td>
+                            <td>{simpleFormat(data[i]['central_ni_margin_pct'])}</td>
+                            <td>{simpleFormat(data[i]['upper_ni_margin_pct'])}</td>
+                        </tr>
+                        <tr>
+                            <td>NI margin change (bp)</td>
+                            <td>{roundUpNumber(data[i]['lower_ni_margin_change_bp'])}</td>
+                            <td>{roundUpNumber(data[i]['central_ni_margin_change_bp'])}</td>
+                            <td>{roundUpNumber(data[i]['upper_ni_margin_change_bp'])}</td>
+                        </tr>
+                        <tr>
+                            <td>AWSC (m)</td>
+                            <td>{roundUpNumber(data[i]['lower_awsc_m'])}</td>
+                            <td>{roundUpNumber(data[i]['central_awsc_m'])}</td>
+                            <td>{roundUpNumber(data[i]['upper_awsc_m'])}</td>
+                        </tr>
+                        <tr>
+                            <td>DPS</td>
+                            <td>{format2Decimal(data[i]['lower_dps'])}</td>
+                            <td>{format2Decimal(data[i]['central_dps'])}</td>
+                            <td>{format2Decimal(data[i]['upper_dps'])}</td>
+                        </tr>
+                        <tr>
+                            <td>Payout ratio</td>
+                            <td>{simpleFormat(data[i]['lower_payout_ratio'])}</td>
+                            <td>{simpleFormat(data[i]['central_payout_ratio'])}</td>
+                            <td>{simpleFormat(data[i]['upper_payout_ratio'])}</td>
+                        </tr>
+                        <tr className="bold-row">
+                            <td className="bg-light-cream">EPS</td>
+                            <td className="bg-light-cream">{format2Decimal(data[i]['lower_eps'])}</td>
+                            <td className="bg-light-cream">{format2Decimal(data[i]['central_eps'])}</td>
+                            <td className="bg-light-cream">{format2Decimal(data[i]['upper_eps'])}</td>
+                        </tr>
+                        <tr className="spacer-row">
+                            <td colSpan={4}></td>
+                        </tr>
+                        <tr className="bold-row">
+                            <td className="bg-light-cream">EPS v Central %</td>
+                            <td className="bg-light-cream">{data[i]['lower_eps_v_central_pct']}</td>
+                            <td className="bg-light-cream">{data[i]['central_eps_v_central_pct']}</td>
+                            <td className="bg-light-cream">{data[i]['upper_eps_v_central_pct']}</td>
+                        </tr>
+                        <tr className="spacer-row">
+                            <td colSpan={4}></td>
+                        </tr>
+                        <tr className="bold-row">
+                            <td className="bg-light-cream">DPS</td>
+                            <td className="bg-light-cream">{format2Decimal(data[i]['lower_dps'])}</td>
+                            <td className="bg-light-cream">{format2Decimal(data[i]['central_dps'])}</td>
+                            <td className="bg-light-cream">{format2Decimal(data[i]['upper_dps'])}</td>
+                        </tr>
+                        <tr className="spacer-row">
+                            <td colSpan={4}></td>
+                        </tr>
+                        <tr className="bold-row">
+                            <td className="bg-light-cream">Payout ratio</td>
+                            <td className="bg-light-cream">{simpleFormat(data[i]['lower_payout_ratio'])}</td>
+                            <td className="bg-light-cream">{simpleFormat(data[i]['central_payout_ratio'])}</td>
+                            <td className="bg-light-cream">{simpleFormat(data[i]['upper_payout_ratio'])}</td>
+                        </tr>
+                    </tbody>
+                </table>
                 </div>
             </div>
         ))}
@@ -164,10 +151,10 @@ export default function Sensitivities({sensData}) {
                         {sensData.map((line, yIndex) => ( 
                             <tr key={yIndex}>
                                 <td>{line.year}</td>
-                                <td>{format2DecimalSens(line[`${type?.key}_q1`])}</td>
-                                <td>{format2DecimalSens(line[`${type?.key}_q2`])}</td>
-                                <td>{format2DecimalSens(line[`${type?.key}_q3`])}</td>
-                                <td>{format2DecimalSens(line[`${type?.key}_q4`])}</td>
+                                <td>{format2DecimalSens(line[`${type?.key}_q1_div`])}</td>
+                                <td>{format2DecimalSens(line[`${type?.key}_q2_div`])}</td>
+                                <td>{format2DecimalSens(line[`${type?.key}_q3_div`])}</td>
+                                <td>{format2DecimalSens(line[`${type?.key}_q4_div`])}</td>
                                 <td>{format2DecimalSens(line[`${type?.key}_total`])}</td>
                             </tr>
                         ))}

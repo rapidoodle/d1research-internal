@@ -19,7 +19,7 @@ export default function AnalystsComments({companyID, session}) {
     const handleClose = () => setShowModal(false);
 
     const handleShowAll = () => {
-        fetchCRPComments(companyID, true);
+        fetchAnalystsComments(companyID, true);
         setShowModalAll(true);
     }
 
@@ -46,7 +46,7 @@ export default function AnalystsComments({companyID, session}) {
             const result = await response.json();
             setShowModal(false);
             setComment('');
-            fetchCRPComments(companyID);
+            fetchAnalystsComments(companyID);
             setCommentID(null);
             setLoading(false);
             setIsEdit(false);
@@ -60,7 +60,7 @@ export default function AnalystsComments({companyID, session}) {
         saveData();
     };
 
-    const fetchCRPComments = async (companyID, showAll = false) => {
+    const fetchAnalystsComments = async (companyID, showAll = false) => {
         setLoading(true);
 
         if(showAll) {
@@ -114,7 +114,7 @@ export default function AnalystsComments({companyID, session}) {
                     .then(res => res.json())
                     .then(data => {
                         console.log(data);
-                        fetchCRPComments(companyID);
+                        fetchAnalystsComments(companyID);
                         setLoading(false);
 
                         Swal.fire(
@@ -133,7 +133,7 @@ export default function AnalystsComments({companyID, session}) {
 
 
     useEffect(() => {
-        fetchCRPComments(companyID);
+        fetchAnalystsComments(companyID);
     }, [companyID]);
   
     return (

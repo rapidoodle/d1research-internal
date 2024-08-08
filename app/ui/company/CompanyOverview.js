@@ -21,6 +21,9 @@ import PageSpinner from '@/app/components/PageSpinner';
 import { customSelectStyle } from '@/app/lib/custom-styles/custom-styles';
 import { setSymbol } from '@/app/lib/utils';
 import D1DPSRange from './D1DPSRange';
+import Image from 'next/image';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPrint } from '@fortawesome/free-solid-svg-icons';
 
 export default function CompanyOverview({session}) {
   const pathname = usePathname();
@@ -249,7 +252,10 @@ export default function CompanyOverview({session}) {
               <div className='row'>
                 <div className='col-6'>
                   <div className='row'>
-                    <div className='col-12 col-sm-6'>
+                    <div className='col-12 col-sm-4 d-flex align-items-center justify-content-center'>
+                      <Image src="https://d1researchstorage.s3.amazonaws.com/company-logo-rectangle.webp" alt="D1 Research" width={90} height={40}/>
+                    </div>
+                    <div className='col-12 col-sm-4'>
                       {!showCompanies ? <p className='company-link ms-2' onClick={ () => setShowCompanies(true) }> {zFirst?.company}</p> : 
                         ( <div className='w-100'>
                           <Select
@@ -269,7 +275,7 @@ export default function CompanyOverview({session}) {
                           </div>)
                         }
                     </div>
-                    <div className='col-12 col-sm-6 mt-3 mt-sm-0'>
+                    <div className='col-12 col-sm-4 mt-3 mt-sm-0'>
                       {/* <div className='semi-card mb-md-0'><span className='font-medium'>STO Ticker:</span> {zFirst?.equity_ticker}</div> */}
                       {!showCompanies ? <p className='company-link ms-2' onClick={ () => setShowCompanies(true) }> {zFirst?.company}</p> : 
                         ( <div className='w-100'>
@@ -296,7 +302,7 @@ export default function CompanyOverview({session}) {
                 </div>
                 <div className='col-6'>
                   <div className='row'>
-                    <div className='col-12 col-sm-6'>
+                    <div className='col-12 col-sm-4'>
                       {/* <div className='semi-card'><span className='font-medium'>DIV Ticker:</span> {zFirst?.div_ticker}</div> */}
                       {!showCompanies ? <p className='company-link ms-2' onClick={ () => setShowCompanies(true) }> {zFirst?.company}</p> : 
                         ( <div className='w-100'>
@@ -317,10 +323,13 @@ export default function CompanyOverview({session}) {
                           </div>)
                         }
                     </div>
-                    <div className='col-12 col-sm-6 mt-3 mt-sm-0'>
+                    <div className='col-12 col-sm-4 mt-3 mt-sm-0'>
                         <div className='div-index-container'>
                         {(zFirst?.index1 && zFirst?.index1 !== 0 ? zFirst?.index1 : '')}{(zFirst?.index2 && zFirst.index2 !== '-' && zFirst.index2 !== 0) ? `, ${zFirst?.index2}` : ''}{(zFirst?.index3 && zFirst.index3 !== '-' && zFirst.index3 !== 0) ? `, ${zFirst?.index3}` : ''}{(zFirst?.index4 && zFirst.index4 !== '-' && zFirst.index4 !== 0)? `, ${zFirst?.index4}` : ''}
                         </div>
+                    </div>
+                    <div className='col-12 col-sm-4'>
+                      <button className='btn btn-primary w-100'> <FontAwesomeIcon icon={faPrint} className='me-2' />Print</button>
                     </div>
                     </div>
                 </div>

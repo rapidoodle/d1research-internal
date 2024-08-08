@@ -2,6 +2,7 @@ import ModalComponent from '@/app/components/ModalComponent';
 import PageSpinner from '@/app/components/PageSpinner';
 import { Editor } from '@tinymce/tinymce-react';
 import { useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
 
 export default function CapitalReturnPolicy({companyID, session}) {
     const [showModal, setShowModal] = useState(false);
@@ -95,24 +96,42 @@ export default function CapitalReturnPolicy({companyID, session}) {
         setComment(comment.comment);
         setCommentID(comment.id);
     }
-
     const handleDelete = (comment) => {
-        setLoading(true);
-        try {
-            fetch(`/api/capital-return-policy/?comment_id=${comment.id}`, {
-                method: 'DELETE',
-            })
-            .then(res => res.json())
-            .then(data => {
-                fetchCRPComments(companyID);
-                setLoading(false);
-            })
-        } catch (error) {
-            console.error(error);
-            setLoading(false);
-        }
-    }
+        Swal.fire({
+            title: 'Delete comment?',
+            text: "Are you sure you want to delete this comment?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Delete'
+          }).then(async (result) => {
+            console.log(result);
+            if (result.isConfirmed) {
+                setLoading(true);
+                try {
+                    fetch(`/api/capital-return-policy/?comment_id=${comment.id}`, {
+                        method: 'DELETE',
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data);
+                        fetchCRPComments(companyID);
+                        setLoading(false);
 
+                        Swal.fire(
+                            'Deleted!',
+                            'Comment has been deleted.',
+                            'success'
+                          )
+                    })
+                } catch (error) {
+                    console.error(error);
+                    setLoading(false);
+                }
+            }
+        })
+    }
 
     useEffect(() => {
         fetchCRPComments(companyID);
