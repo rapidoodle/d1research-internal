@@ -25,7 +25,6 @@ import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPrint } from '@fortawesome/free-solid-svg-icons';
 import ReactToPrint from 'react-to-print';
-import { DynamicCompanyPage } from '../printables/DynamicCompanyPage';
 import CompanyPagePrintableHeader from '@/app/components/CompanyPagePrintableHeader';
 import CompanyPagePrintableFooter from '@/app/components/CompanyPagePrintableFooter';
 
