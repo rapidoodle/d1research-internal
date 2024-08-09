@@ -1,6 +1,9 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import ButtonSpinner from './ButtonSpinner';
+import ReactToPrint from 'react-to-print';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPrint } from '@fortawesome/free-solid-svg-icons';
 
 const ModalComponent = ({ 
     show, 
@@ -13,9 +16,12 @@ const ModalComponent = ({
     isPrintable, 
     isSavable,
     handlePrint,
+    handleBeforePrint,
+    handleAfterPrint,
     rightTitle,
     buttonText='Save changes', 
     bodyColor='none',
+    componentRef,
     buttonLoadingText='' }
   ) => {
   return (
@@ -45,9 +51,13 @@ const ModalComponent = ({
           { loading ? <><ButtonSpinner /> {buttonLoadingText}</> : buttonText }
         </Button>
         :
-        <Button variant="primary"  onClick={handlePrint}>
-           Print
-        </Button>
+        <ReactToPrint
+          pageStyle="@page { size: 10.5in 14in }"
+          trigger={() => <button className='btn btn-primary w-100'> <FontAwesomeIcon icon={faPrint} className='me-2' />Print</button>}
+          content={() => componentRef.current}
+          onBeforeGetContent={handleBeforePrint}
+          onAfterPrint={handleAfterPrint}
+      />
         }
         </div>
         }

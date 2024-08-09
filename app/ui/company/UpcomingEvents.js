@@ -35,8 +35,11 @@ export default function UpcomingEvents( { allData } ) {
                 <table className="table table-responsive table-fixed-header">
                     <thead>
                         <tr>
-                        <th width="120px">Date</th>
-                        <th className="text-left">Confirmed and expected events</th>
+                            <th width="120px">Date</th>
+                            <th className="text-left">
+                                <span className="d-none d-sm-block">Confirmed and expected events</span>
+                                <span className="d-block d-sm-none">Events</span>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -55,7 +58,7 @@ export default function UpcomingEvents( { allData } ) {
                     )}
                     )}
 
-                    {events.length === 0 && <tr><td colSpan="2" align="center" className="pt-3">No upcoming events</td></tr>}
+                    {events.length === 0 && <tr><td colSpan="2" align="center" className="pt-3"><div className="text-center">No upcoming events</div></td></tr>}
                     </tbody>
                 </table>
             </div>

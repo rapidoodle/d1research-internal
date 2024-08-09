@@ -20,7 +20,7 @@ export default function TotalCapitalReturn({zPrev, zFirst, zSecond, zThird, zFou
         <div className="card total-cap-return flex-fill">
             <div className='d-flex align-items-center'>
                 <h5 className='flex-grow-1 mb-0'>Total capital return</h5>
-                <a className='page-link me-2' onClick={() => setShowChart(!showChart)}>View {showChart ? 'table' : 'chart'}</a>
+                <a className='page-link me-2 not-printable' onClick={() => setShowChart(!showChart)}>View {showChart ? 'table' : 'chart'}</a>
             </div>
             <hr />
             {showChart ? 
@@ -41,35 +41,50 @@ export default function TotalCapitalReturn({zPrev, zFirst, zSecond, zThird, zFou
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Dividend</td>
+                            <td>
+                                <span className="d-none d-sm-block">Dividend</span>
+                                <span className="d-block d-sm-none">Div</span>
+                            </td>
                             <td>{roundUpNumber(zPrev?.dividend)}</td>
                             <td>{roundUpNumber(zFirst?.dividend)}</td>
                             <td>{roundUpNumber(zSecond?.dividend)}</td>
                             <td>{roundUpNumber(zThird?.dividend)}</td>
                         </tr>
                         <tr>
-                            <td>Share Buyback</td>
+                            <td>
+                                <span className="d-none d-sm-block">Share Buyback</span>
+                                <span className="d-block d-sm-none">Share BB</span>
+                            </td>
                             <td>{roundUpNumber(zPrev?.share_buyback)}</td>
                             <td>{roundUpNumber(zFirst?.share_buyback)}</td>
                             <td>{roundUpNumber(zSecond?.share_buyback)}</td>
                             <td>{roundUpNumber(zThird?.share_buyback)}</td>
                         </tr>
                         <tr>
-                            <td>Total Cap Return</td>
+                            <td>
+                                <span className="d-none d-sm-block">Total Cap Return</span>
+                                <span className="d-block d-sm-none">Cap Return</span>
+                            </td>
                             <td>{roundUpNumber(zPrev?.total_capital_return)}</td>
                             <td>{roundUpNumber(zFirst?.total_capital_return)}</td>
                             <td>{roundUpNumber(zSecond?.total_capital_return)}</td>
                             <td>{roundUpNumber(zThird?.total_capital_return)}</td>
                         </tr>
                         <tr>
-                            <td>Net inc year before</td>
+                            <td>
+                                <span className="d-none d-sm-block">Net inc year before</span>
+                                <span className="d-block d-sm-none">NI year before</span>
+                            </td>
                             <td>{roundUpNumber(zPrev?.net_income)}</td>
                             <td>{roundUpNumber(zFirst?.net_income)}</td>
                             <td>{roundUpNumber(zSecond?.net_income)}</td>
                             <td>{roundUpNumber(zThird?.net_income)}</td>
                         </tr>
                         <tr>
-                            <td>Capital payout (%)</td>
+                            <td>
+                                <span className="d-none d-sm-block">Capital payout (%)</span>
+                                <span className="d-block d-sm-none">Cap Payout (%)</span>
+                            </td>
                             <td>{zPrev?.capital_payout_percent}</td>
                             <td>{zFirst?.capital_payout_percent}</td>
                             <td>{zSecond?.capital_payout_percent}</td>

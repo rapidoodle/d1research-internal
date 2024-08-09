@@ -18,28 +18,40 @@ export default function ShareCapital({zPrev, zFirst, zSecond, zThird, zFourth}) 
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Shares in issue</td>
+                            <td>
+                                <span className="d-none d-sm-block">Shares in issue</span>
+                                <span className="d-block d-sm-none">Issued</span>
+                            </td>
                             <td>{roundUpNumber(zPrev?.share_in_issue)}</td>
                             <td>{roundUpNumber(zFirst?.share_in_issue)}</td>
                             <td>{roundUpNumber(zSecond?.share_in_issue)}</td>
                             <td>{roundUpNumber(zThird?.share_in_issue)}</td>
                         </tr>
                         <tr>
-                        <td>Treasury shares</td>
+                        <td>
+                            <span className="d-none d-sm-block">Treasury shares</span>
+                            <span className="d-block d-sm-none">Treasury</span>
+                        </td>
                         <td>{roundUpNumber(zPrev?.treasury_shares)}</td>
                         <td>{roundUpNumber(zFirst?.treasury_shares)}</td>
                         <td>{roundUpNumber(zSecond?.treasury_shares)}</td>
                         <td>{roundUpNumber(zThird?.treasury_shares)}</td>
                         </tr>
                         <tr>
-                        <td>Shares outstanding</td>
+                        <td>
+                            <span className="d-none d-sm-block">Shares outstanding</span>
+                            <span className="d-block d-sm-none">Outstanding</span>
+                        </td>
                         <td>{roundUpNumber(zPrev?.shares_outstanding)}</td>
                         <td>{roundUpNumber(zFirst?.shares_outstanding)}</td>
                         <td>{roundUpNumber(zSecond?.shares_outstanding)}</td>
                         <td>{roundUpNumber(zThird?.shares_outstanding)}</td>
                         </tr>
                         <tr>
-                        <td>Avg. weighted shares</td>
+                        <td>
+                            <span className="d-none d-sm-block">Avg. weighted shares</span>
+                            <span className="d-block d-sm-none">AWS</span>
+                        </td>
                         <td>{roundUpNumber(zPrev?.av_weighted_share_cap)}</td>
                         <td>{roundUpNumber(zFirst?.av_weighted_share_cap)}</td>
                         <td>{roundUpNumber(zSecond?.av_weighted_share_cap)}</td>

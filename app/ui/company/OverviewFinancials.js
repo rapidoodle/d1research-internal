@@ -19,11 +19,17 @@ export default function OverviewFinancials({zPrev, zFirst, zSecond, zThird, zFou
                     <tbody>
                         <tr>
                         <td colSpan={5} className='px-0 second-title'>
-                            <div className='bg-gray font-medium'>Profit & Loss ({generalSymbol}m)</div>
+                            <div className='bg-gray font-medium'>
+                                <span className="d-none d-sm-block">Profit & Loss ({generalSymbol}m)</span>
+                                <span className="d-block d-sm-none">P&L ({generalSymbol}m)</span>
+                            </div>
                         </td>
                         </tr>
                         <tr>
-                        <td>Net income</td>
+                        <td>
+                            <span className="d-none d-sm-block">Net Income</span>
+                            <span className="d-block d-sm-none">NI</span>
+                        </td>
                         <td>{roundUpNumber(zPrev?.net_income)}</td>
                         <td>{roundUpNumber(zFirst?.net_income)}</td>
                         <td>{roundUpNumber(zSecond?.net_income)}</td>
@@ -31,7 +37,10 @@ export default function OverviewFinancials({zPrev, zFirst, zSecond, zThird, zFou
                         
                         </tr>
                         <tr>
-                        <td>Avg. weighted shares</td>
+                        <td>
+                            <span className="d-none d-sm-block">Avg. weighted shares</span>
+                            <span className="d-block d-sm-none">AWS</span>
+                        </td>
                         <td>{roundUpNumber(zPrev?.av_weighted_share_cap)}</td>
                         <td>{roundUpNumber(zFirst?.av_weighted_share_cap)}</td>
                         <td>{roundUpNumber(zSecond?.av_weighted_share_cap)}</td>
@@ -60,7 +69,10 @@ export default function OverviewFinancials({zPrev, zFirst, zSecond, zThird, zFou
                         </tr>
                         <tr>
                         <td colSpan={5} className='px-0 second-title'>
-                            <div className='bg-gray font-medium'>CF Statement ({generalSymbol}m)</div>
+                            <div className='bg-gray font-medium'>
+                                <span className="d-none d-sm-block">CF Statement ({generalSymbol}m)</span>
+                                <span className="d-block d-sm-none">CF ({generalSymbol}m)</span>
+                            </div>
                         </td>
                         </tr>
                         <tr>
@@ -71,7 +83,10 @@ export default function OverviewFinancials({zPrev, zFirst, zSecond, zThird, zFou
                         <td>{formatNumber(zThird?.op_cash_flow)}</td>
                         </tr>
                         <tr>
-                        <td>Investments</td>
+                        <td>
+                            <span className="d-none d-sm-block">Investments</span>
+                            <span className="d-block d-sm-none">Inv.</span>
+                        </td>
                         <td>{roundUpNumber(zPrev?.capex)}</td>
                         <td>{roundUpNumber(zFirst?.capex)}</td>
                         <td>{roundUpNumber(zSecond?.capex)}</td>
@@ -104,7 +119,10 @@ export default function OverviewFinancials({zPrev, zFirst, zSecond, zThird, zFou
                         </td>
                         </tr>
                         <tr>
-                        <td>Net Cash / (Debt)</td>
+                        <td>
+                            <span className="d-none d-sm-block">Net Cash / (Debt)</span>
+                            <span className="d-block d-sm-none">Net (Debt)</span>
+                        </td>
                         <td>{roundUpNumber(zPrev?.net_debt)}</td>
                         <td>{roundUpNumber(zFirst?.net_debt)}</td>
                         <td>{roundUpNumber(zSecond?.net_debt)}</td>

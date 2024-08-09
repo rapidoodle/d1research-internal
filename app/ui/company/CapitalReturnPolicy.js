@@ -1,10 +1,14 @@
+import CompanyPagePrintableFooter from '@/app/components/CompanyPagePrintableFooter';
+import CompanyPagePrintableHeader from '@/app/components/CompanyPagePrintableHeader';
 import ModalComponent from '@/app/components/ModalComponent';
 import PageSpinner from '@/app/components/PageSpinner';
 import { Editor } from '@tinymce/tinymce-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Swal from 'sweetalert2';
 
-export default function CapitalReturnPolicy({companyID, session}) {
+export default function CapitalReturnPolicy({companyID, session, company, displayIndex, ticker, divTicker}) {
+    const componentRef = useRef();
+    const [showPrintable, setShowPrintable] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
     const [commentID, setCommentID] = useState(null);
@@ -133,6 +137,16 @@ export default function CapitalReturnPolicy({companyID, session}) {
         })
     }
 
+
+
+  const handleBeforePrint = () => {
+    setShowPrintable(true);
+  };
+
+  const handleAfterPrint = () => {
+      setShowPrintable(false);
+  };
+
     useEffect(() => {
         fetchCRPComments(companyID);
     }, [companyID]);
@@ -142,11 +156,12 @@ export default function CapitalReturnPolicy({companyID, session}) {
         <div className='card flex-fill'>
             <div className='d-flex align-items-center'>
                 <h5 className='flex-grow-1 mb-0'>Capital return policy</h5>
+                
                 { session && (session.user.access_level === 'Admin' || session.user.access_level === 'Analyst') && 
-                    <a className='page-link me-2' onClick={handleShow}>New</a>
+                    <a className='page-link me-2 not-printable' onClick={handleShow}>New</a>
                 }
 
-                { someComments.length > 0 && <a className='page-link' onClick={handleShowAll}>View all</a> }
+                { someComments.length > 0 && <a className='page-link not-printable' onClick={handleShowAll}>View all</a> }
             </div>
             <hr />
             <div className='crp-comment-container d-flex flex-column'>
@@ -160,14 +175,14 @@ export default function CapitalReturnPolicy({companyID, session}) {
                         ) : (
                             someComments.map((comment, index) => (
                                 <div
-                                    className={`d-flex align-items-center justify-content-between ${index !== someComments.length - 1 ? 'border-bottom mb-3' : ''}`}
+                                    className={`d-flex flex-column align-items-center justify-content-between ${index !== someComments.length - 1 ? 'border-bottom mb-3' : ''}`}
                                     key={index}
                                 >
                                     <div>
                                         <div dangerouslySetInnerHTML={{ __html: comment.comment }} />
                                     </div>
                                     {session && (session.user.access_level === 'Admin' || session.user.access_level === 'Analyst') &&
-                                        <div className='d-flex align-items-center'>
+                                        <div className='d-flex align-items-start w-100 justify-content-end not-printable'>
                                             <a className='page-link' onClick={() => handleEdit(comment)}>Edit</a>
                                             <a className='page-link ms-2 text-danger' onClick={() => handleDelete(comment)}>Delete</a>
                                         </div>
@@ -213,11 +228,20 @@ export default function CapitalReturnPolicy({companyID, session}) {
             loading={loading}
             isSavable={true}
             isPrintable={true}
+            handleAfterPrint={handleAfterPrint}
+            handleBeforePrint={handleBeforePrint}
+            componentRef={componentRef}
             size="lg"
             title="All comments"
             >
-                <div className='comment-container d-flex flex-column'>
-                    <div className='flex-grow-1'>
+                <div className='comment-container d-flex flex-column' ref={componentRef}>
+                <CompanyPagePrintableHeader 
+                    displayIndex={displayIndex}
+                    company={company}
+                    ticker={ticker}
+                    divTicker={divTicker} 
+                    />
+                    <div className='flex-grow-1 mt-print'>
                         <div className='mb-3'>
                         {loading ? (
                                 <PageSpinner />
@@ -232,6 +256,7 @@ export default function CapitalReturnPolicy({companyID, session}) {
                         )}
                         </div>
                     </div>
+                    <CompanyPagePrintableFooter />
                 </div>
             </ModalComponent>
          </>

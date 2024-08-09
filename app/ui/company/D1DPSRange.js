@@ -1,10 +1,14 @@
 import ModalComponent from "@/app/components/ModalComponent";
 import { calculatePercent, calculatePercentageColored, format2Decimal, formatNumber, formatRiskSkew, formatWholeNumber } from "@/app/lib/utils";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Sensitivities from "./RiskScenarios/Sensitivities";
 import TooltipComponent from "@/app/components/TooltipComponent";
+import CompanyPagePrintableHeader from "@/app/components/CompanyPagePrintableHeader";
+import CompanyPagePrintableFooter from "@/app/components/CompanyPagePrintableFooter";
 
-export default function D1DPSRange({zFirst, zSecond, zThird, zFourth, allData}) {
+export default function D1DPSRange({zFirst, zSecond, zThird, zFourth, allData, company, displayIndex, eTicker, divTicker}) {
+  const componentRef = useRef()
+  const [showPrintable, setShowPrintable] = useState(false);
   const ticker = allData[0].equity_ticker;
   zFirst.difference = ((zFirst.current_price_z / zFirst.d1_central - 1) * - 1) * 100;
   zSecond.difference = (zSecond.current_price_z / zSecond.d1_central - 1) * - 1;
@@ -18,6 +22,14 @@ export default function D1DPSRange({zFirst, zSecond, zThird, zFourth, allData}) 
 
   const handleCloseSensitivities = () => setShowSens(false);
 
+  const handleBeforePrint = () => {
+    setShowPrintable(true);
+    };
+
+  const handleAfterPrint = () => {
+      setShowPrintable(false);
+  };
+  
   useEffect(() => {
       const fetchEvents = async () => {
           setLoading(true);
@@ -48,7 +60,7 @@ export default function D1DPSRange({zFirst, zSecond, zThird, zFourth, allData}) 
                 {/* { peersDPS.length > 0 && <a className='page-link me-2' onClick={() => setShowChart(!showChart)}>View {showChart ? 'table' : 'chart'}</a> } */}
                 
                 <>
-                {sensData?.length > 0 && <a className='page-link me-2' onClick={() => setShowSens(!showSens)}>View sensitivities</a>}
+                {sensData?.length > 0 && <a className='page-link me-2 not-printable' onClick={() => setShowSens(!showSens)}>View sensitivities</a>}
                   <TooltipComponent 
                     placement="bottom"
                     title={'D1 DPS Range explanation'}
@@ -110,7 +122,10 @@ export default function D1DPSRange({zFirst, zSecond, zThird, zFourth, allData}) 
                 <td className="bg-cream">{formatRiskSkew(zFourth?.risk_skew)}</td>
               </tr>
               <tr className="highlight">
-                <td className="bg-cream">Risk distribution (%)</td>
+                <td className="bg-cream">
+                  <span className="d-none d-sm-block">Risk distribution (%)</span>
+                  <span className="d-block d-sm-none">Risk dist. (%)</span>
+                </td>
                 <td className="bg-cream">{zFirst?.risk_distribution}</td>
                 <td className="bg-cream">{zSecond?.risk_distribution}</td>
                 <td className="bg-cream">{zThird?.risk_distribution}</td>
@@ -121,19 +136,29 @@ export default function D1DPSRange({zFirst, zSecond, zThird, zFourth, allData}) 
         </div>
       </div>
       <ModalComponent
-            show={showSens}
-            handleClose={handleCloseSensitivities}
-            loading={loading}
-            size="xl"
-            bodyColor='#fefcf8'
-            isSavable={false}
-            rightTitle={companyName}
-            title="Sensitivities">
-                <div className="p-3">
-                    <Sensitivities 
-                        sensData={sensData} 
-                        />
-                </div>
+        show={showSens}
+        handleClose={handleCloseSensitivities}
+        loading={loading}
+        size="xl"
+        bodyColor='#fefcf8'
+        isSavable={true}
+        isPrintable={true}
+        rightTitle={companyName}
+        componentRef={componentRef}
+        handleAfterPrint={handleAfterPrint}
+        handleBeforePrint={handleBeforePrint}
+        title="Sensitivities">
+            <div className="p-3" ref={componentRef}>
+              <CompanyPagePrintableHeader
+                displayIndex={displayIndex}
+                company={company}
+                ticker={eTicker}
+                divTicker={divTicker}  />
+                  <div className="mt-print">
+                  <Sensitivities  sensData={sensData}  />
+                  </div>
+                <CompanyPagePrintableFooter />
+            </div>
         </ModalComponent>
       </>
     )

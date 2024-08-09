@@ -48,7 +48,7 @@ const ApexLineChartComponent = ({xaxisData, seriesData}) => {
   });
 
   return (
-    <div>
+    <div className='chart-container'>
       <Chart 
         options={chartOptions} 
         series={seriesData} 

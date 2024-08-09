@@ -187,7 +187,12 @@ table thead tr th{
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
-
+    .company-page table.aligned-table tbody td:first-child, .company-page table.aligned-table thead th:first-child{
+        text-align: left!important;
+        min-width: 210px!important;
+        max-width: 210px!important;
+        width: 210px!important;
+    }
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
@@ -249,9 +254,6 @@ table tr td.font-medium{
 }
 .company-page table.aligned-table tbody td:first-child, .company-page table.aligned-table thead th:first-child{
     text-align: left!important;
-    min-width: 210px!important;
-    max-width: 210px!important;
-    width: 210px!important;
 }
 .company-page table tbody td:first-child, .company-page table thead th:first-child{
     text-align: left!important;
@@ -342,4 +344,119 @@ span.sens-estimate{
 
 table tr.spacer-row td{
     padding: 0.2rem!important;
+}
+
+.printable{
+    display: none!important;
+}
+
+.printable-header-details{
+    -webkit-box-align: center;
+    align-items: center;
+    cursor: default;
+    display: flex;
+    flex-wrap: wrap;
+    min-height: 28px;
+    position: relative;
+    transition: all 100ms ease 0s;
+    background-color: #F7F1E3;
+    border-color: #2F5651;
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 1px;
+    box-sizing: border-box;
+    outline: 0px !important;
+    padding-left: 0.5rem;
+}
+
+/* Hide the print button when printing */
+@media print {
+    .not-printable {
+        display: none!important;
+    }
+
+    .d-flex .not-printable {
+        display: none!important;
+    }
+
+    .printable {
+        display: block!important;
+    }
+    .company-page {
+        max-width: none!important;
+        border: none!important;
+        background-color:none!important;
+    }
+
+    .apexcharts-canvas {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    body{
+        background-color: #FEFCF8!important;
+        font-family: '__Montserrat_08efcb, __Montserrat_Fallback_08efcb', sans-serif!important;
+    }
+    h5{
+        font-family: '__Montserrat_08efcb, __Montserrat_Fallback_08efcb', sans-serif!important;
+    }
+    .company-page table.aligned-table tbody td:first-child, .company-page table.aligned-table thead th:first-child{
+        text-align: left!important;
+        min-width: 100px!important;
+        max-width: 100px!important;
+        width: 100px!important;
+    }
+    .company-page table tbody tr td:first-child,  .company-page table thead tr th:first-child {
+        padding-left: 1rem!important;
+    }
+    .company-page table tbody tr td {
+        font-size: 13px!important;
+    }
+    table tr td div.bg-gray{
+        background-color: #CBD5D3!important;
+        color: #1D322B!important;
+    }
+    .bg-light-cream{
+        background-color: #FEFCF8!important;
+    }
+    
+    .bg-payout{
+        background-color: #cdd4d2!important;
+    }
+    .bg-cream{
+        background-color: #fefcf8!important;
+    }
+    .company-page table thead th {
+        background-color: #f7f1e3 !important;
+        border-bottom: none !important;
+        color: #2F5651!important;
+        text-align: center!important;
+    }
+    .printable-section {
+        break-inside: avoid!important; /* Prevents content from being split inside this element */
+        page-break-inside: avoid!important;
+        page-break-before: auto!important; /* Ensures the section breaks naturally between pages */
+    }
+    .mt-print{
+        margin-top: 3rem!important
+    }
+    .f-12{
+        font-size: 12px!important;
+    }
+
+    .print-footer {
+        font-size: 12px!important;
+        position: fixed!important;
+        bottom: 0!important;
+        width: 100%!important;
+        page-break-before: always!important; /* Push the footer to the last page */
+    }
+    
+    /* Hide the footer on other pages */
+    body:after {
+        content: ''!important;
+        display: block!important;
+        height: 100%!important;
+        visibility: hidden!important;
+    }
 }

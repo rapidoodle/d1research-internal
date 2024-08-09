@@ -73,7 +73,7 @@ export default function PeerComparisonDPSPayoutRatio({zPrev, zFirst, zSecond, zT
             <div className='d-flex align-items-center'>
                 <h5 className='flex-grow-1 mb-0'>DPS payout ratio (%)</h5>
                 {/* { peersDPS.length > 0 && <a className='page-link me-2' onClick={() => setShowChart(!showChart)}>View {showChart ? 'table' : 'chart'}</a> } */}
-                <a className='page-link me-2' onClick={() => setShowChart(!showChart)}>View {showChart ? 'table' : 'chart'}</a> 
+                <a className='page-link me-2 not-printable' onClick={() => setShowChart(!showChart)}>View {showChart ? 'table' : 'chart'}</a> 
             </div>
             <hr />
             {!showChart ? 

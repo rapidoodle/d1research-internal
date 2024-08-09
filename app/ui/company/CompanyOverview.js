@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import '@/app/styles/company-page.css';
 import { usePathname } from 'next/navigation';
 import { validate } from 'uuid';
@@ -24,8 +24,14 @@ import D1DPSRange from './D1DPSRange';
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPrint } from '@fortawesome/free-solid-svg-icons';
+import ReactToPrint from 'react-to-print';
+import { DynamicCompanyPage } from '../printables/DynamicCompanyPage';
+import CompanyPagePrintableHeader from '@/app/components/CompanyPagePrintableHeader';
+import CompanyPagePrintableFooter from '@/app/components/CompanyPagePrintableFooter';
 
 export default function CompanyOverview({session}) {
+  const [showPrintable, setShowPrintable] = useState(false);
+  const componentRef = useRef();
   const pathname = usePathname();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
@@ -48,7 +54,8 @@ export default function CompanyOverview({session}) {
   const [generalSymbol, setGeneralSymbol] = useState('X');
 
   const [showCompanies, setShowCompanies] = useState(true);
-  const [divIndex, setDivIndex] = useState([]);
+  const [divIndex, setDivIndex] = useState();
+  const [displayIndex, setDisplayIndex] = useState('');
 
   useEffect(() => {
     const fetchCompanies = async () => {
@@ -197,7 +204,16 @@ export default function CompanyOverview({session}) {
           }]);
 
           setLoading(false);
-          
+
+          setDisplayIndex(
+            `${zFirst?.index1 && zFirst?.index1 !== 0 ? zFirst.index1 : ''}${
+                zFirst?.index2 && zFirst.index2 !== '-' && zFirst.index2 !== 0 ? `, ${zFirst.index2}` : ''
+            }${
+                zFirst?.index3 && zFirst.index3 !== '-' && zFirst.index3 !== 0 ? `, ${zFirst.index3}` : ''
+            }${
+                zFirst?.index4 && zFirst.index4 !== '-' && zFirst.index4 !== 0 ? `, ${zFirst.index4}` : ''
+            }`
+          );
 
         } catch (error) {
           console.error('Failed to fetch company data:', error);
@@ -244,15 +260,23 @@ export default function CompanyOverview({session}) {
     setSelectedSTOTicker(stoTicker);
   }
 
+  const handleBeforePrint = () => {
+    setShowPrintable(true);
+  };
+
+  const handleAfterPrint = () => {
+      setShowPrintable(false);
+  };
+
   if(!loading && selectedCompany){
     return (<>
-      <div className="company-page p-2 p-md-4">
-        <div className="row">
+      <div className="company-page p-2 p-md-4" ref={componentRef}>
+        <div className="row not-printable">
             <div className="col-12 col-sm-12 mt-4 mt-md-0">
               <div className='row'>
                 <div className='col-6'>
                   <div className='row'>
-                    <div className='col-12 col-sm-4 d-flex align-items-center justify-content-center'>
+                    <div className='col-12 col-sm-4 d-flex align-items-center justify-content-center mb-3 mb-sm-0'>
                       <Image src="https://d1researchstorage.s3.amazonaws.com/company-logo-rectangle.webp" alt="D1 Research" width={90} height={40}/>
                     </div>
                     <div className='col-12 col-sm-4'>
@@ -297,12 +321,10 @@ export default function CompanyOverview({session}) {
                         }
                     </div>
                   </div>
-
-
                 </div>
                 <div className='col-6'>
                   <div className='row'>
-                    <div className='col-12 col-sm-4'>
+                    <div className='col-12 col-sm-4 order-2 order-sm-1'>
                       {/* <div className='semi-card'><span className='font-medium'>DIV Ticker:</span> {zFirst?.div_ticker}</div> */}
                       {!showCompanies ? <p className='company-link ms-2' onClick={ () => setShowCompanies(true) }> {zFirst?.company}</p> : 
                         ( <div className='w-100'>
@@ -323,115 +345,136 @@ export default function CompanyOverview({session}) {
                           </div>)
                         }
                     </div>
-                    <div className='col-12 col-sm-4 mt-3 mt-sm-0'>
+                    <div className='col-12 col-sm-4 mt-3 mt-sm-0 order-3 order-sm-2'>
                         <div className='div-index-container'>
-                        {(zFirst?.index1 && zFirst?.index1 !== 0 ? zFirst?.index1 : '')}{(zFirst?.index2 && zFirst.index2 !== '-' && zFirst.index2 !== 0) ? `, ${zFirst?.index2}` : ''}{(zFirst?.index3 && zFirst.index3 !== '-' && zFirst.index3 !== 0) ? `, ${zFirst?.index3}` : ''}{(zFirst?.index4 && zFirst.index4 !== '-' && zFirst.index4 !== 0)? `, ${zFirst?.index4}` : ''}
+                        {displayIndex && displayIndex}
                         </div>
                     </div>
-                    <div className='col-12 col-sm-4'>
-                      <button className='btn btn-primary w-100'> <FontAwesomeIcon icon={faPrint} className='me-2' />Print</button>
+                    <div className='col-12 col-sm-4 order-1 order-sm-3 mb-3 mb-sm-0'>
+                      <ReactToPrint
+                          pageStyle="@page { size: 10.5in 14in }"
+                          trigger={() => <button className='btn btn-primary w-100'> <FontAwesomeIcon icon={faPrint} className='me-2' />Print</button>}
+                          content={() => componentRef.current}
+                          onBeforeGetContent={handleBeforePrint}
+                          onAfterPrint={handleAfterPrint}
+                      />
                     </div>
                     </div>
                 </div>
               </div>
             </div>
         </div>
+
+        <CompanyPagePrintableHeader 
+          displayIndex={displayIndex}
+          company={selectedCompany}
+          ticker={selectedSTOTicker}
+          divTicker={selectedDivTicker} 
+        />
+
         {/* ROW 1 */}
-        <div className="row mt-2 d-flex">
-          <div className='col-md-6 mb-4 d-flex flex-column'>
-            {/* <D1DPSForecast 
-              zFirst={zFirst}
-              zSecond={zSecond}
-              zThird={zThird}
-              zFourth={zFourth}
-             /> */}
-             <D1DPSRange 
-               zFirst={zFirst}
-               zSecond={zSecond}
-               zThird={zThird}
-               zFourth={zFourth}
-               allData={allData}
+        <div className='company-page-container'>
+          <div className="row mt-2 d-flex">
+            <div className='col-md-6 mb-4 d-flex flex-column printable-section'>
+              {/* <D1DPSForecast 
+                zFirst={zFirst}
+                zSecond={zSecond}
+                zThird={zThird}
+                zFourth={zFourth}
+              /> */}
+              <D1DPSRange 
+                zFirst={zFirst}
+                zSecond={zSecond}
+                zThird={zThird}
+                zFourth={zFourth}
+                allData={allData}
+                displayIndex={displayIndex}
+                company={selectedCompany}
+                eTicker={selectedSTOTicker}
+                divTicker={selectedDivTicker} 
+                />
+            </div>
+            <div className='col-md-6 d-flex mb-4 printable-section'>
+
+              <CapitalReturnPolicy  
+                companyID={selectedCompany?.value}
+                session={session}
+                displayIndex={displayIndex}
+                company={selectedCompany}
+                ticker={selectedSTOTicker}
+                divTicker={selectedDivTicker} 
               />
-          </div>
-          <div className='col-md-6 d-flex mb-4'>
+            </div>
+            <div className='col-md-6 d-flex mb-4 printable-section'>
+              <OverviewFinancials
+                zPrev={zPrev}
+                zFirst={zFirst}
+                zSecond={zSecond}
+                zThird={zThird}
+                zFourth={zFourth}
+                generalSymbol={generalSymbol}
+              />
+            </div>
+            <div className='col-md-6 d-flex mb-4 flex-column printable-section'>
+              <AnalystsComments 
+                companyID={selectedCompany?.value}
+                displayIndex={displayIndex}
+                company={selectedCompany}
+                ticker={selectedSTOTicker}
+                divTicker={selectedDivTicker} 
+                session={session} />
 
-            <CapitalReturnPolicy  
-              companyID={selectedCompany?.value}
-              session={session}
-            />
-          </div>
-          <div className='col-md-6 d-flex mb-4'>
-            <OverviewFinancials
-              zPrev={zPrev}
-              zFirst={zFirst}
-              zSecond={zSecond}
-              zThird={zThird}
-              zFourth={zFourth}
-              generalSymbol={generalSymbol}
-              dpsSymbol={dpsSymbol}
-            />
-          </div>
-          <div className='col-md-6 d-flex mb-4 flex-column'>
-            <AnalystsComments 
-              companyID={selectedCompany?.value}
-              session={session} />
+            </div>
+            <div className='col-md-6 d-flex mb-4 printable-section'>
+              <ExDivCalendar allData={allData} />
+            </div>
+            <div className='col-md-6 d-flex mb-4 printable-section'>
+              <UpcomingEvents 
+                allData={allData} 
+              />
+            </div>
+            <div className='col-md-6 d-flex mb-4 flex-column printable-section'>
+              {/* <RiskScenarios
+                zFirst={zFirst}
+                zSecond={zSecond}
+                zThird={zThird}
+                zFourth={zFourth} 
+                allData={allData}
+              /> */}
 
-          </div>
-          <div className='col-md-6 d-flex mb-4'>
-            <ExDivCalendar allData={allData} />
-          </div>
-          <div className='col-md-6 d-flex mb-4'>
-            <UpcomingEvents 
-              allData={allData} 
-            />
-          </div>
-          <div className='col-md-6 d-flex mb-4 flex-column'>
-            {/* <RiskScenarios
-              zFirst={zFirst}
-              zSecond={zSecond}
-              zThird={zThird}
-              zFourth={zFourth} 
-              allData={allData}
-            /> */}
-
-          <ShareCapital 
-              zPrev={zPrev}
-              zFirst={zFirst}
-              zSecond={zSecond}
-              zThird={zThird}
-              zFourth={zFourth}
-            />
-          </div>
-          <div className='col-md-6 d-flex mb-4'>
-            <DPSCalendar 
-              allData={allData} />
-          </div>
-          <div className='col-md-6 d-flex mb-4 mb-md-0'>
-            <TotalCapitalReturn 
-              zPrev={zPrev}
-              zFirst={zFirst}
-              zSecond={zSecond}
-              zThird={zThird}
-              zFourth={zFourth}
-            />
-          </div>
-          <div className='col-md-6 d-flex'>
-            <PeerComparisonDPSPayoutRatio
-              zPrev={zPrev}
-              zFirst={zFirst}
-              zSecond={zSecond}
-              zThird={zThird}
-              zFourth={zFourth}
-            />
+            <ShareCapital 
+                zPrev={zPrev}
+                zFirst={zFirst}
+                zSecond={zSecond}
+                zThird={zThird}
+                zFourth={zFourth}
+              />
+            </div>
+            <div className='col-md-6 d-flex mb-4 printable-section'>
+              <DPSCalendar 
+                allData={allData} />
+            </div>
+            <div className='col-md-6 d-flex mb-4 mb-md-0 printable-section'>
+              <TotalCapitalReturn 
+                zPrev={zPrev}
+                zFirst={zFirst}
+                zSecond={zSecond}
+                zThird={zThird}
+                zFourth={zFourth}
+              />
+            </div>
+            <div className='col-md-6 d-flex printable-section'>
+              <PeerComparisonDPSPayoutRatio
+                zPrev={zPrev}
+                zFirst={zFirst}
+                zSecond={zSecond}
+                zThird={zThird}
+                zFourth={zFourth}
+              />
+            </div>
           </div>
         </div>
-        {/* <div className='footer'>
-          <div className='d-flex justify-content-between'>
-          <p className='text-bold'>Disclaimer</p>
-          <p className='text-bold'>contact@d1research.com</p>
-          </div>
-          <p className='mb-0'>The information contained in this presentation is confidential. D1 Research GmbH shall not be liable to any recipient for any inaccuracies or omissions and have no liability in respect of any loss or damage suffered by any recipient in connection with any information provided.</p>
-        </div> */}
+        <CompanyPagePrintableFooter />
       </div>
       </>
     );

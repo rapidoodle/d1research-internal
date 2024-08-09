@@ -30,7 +30,7 @@ export default function Sensitivities({sensData}) {
         <div className="col-12 col-sm-6">
             <h5 className="mb-3">D1 DPS sensitivities</h5>
             {yearsArray.map((z, i) => ( 
-            <div className={`card flex-fill ${i !== 2 && 'mb-4'}`} key={i}>
+            <div className={` printable-section card flex-fill ${i !== 2 && 'mb-4'}`} key={i}>
                 <div className="table-responsive">
                 <table className="table sens-table">
                     <thead>
@@ -134,7 +134,7 @@ export default function Sensitivities({sensData}) {
         <h5 className="mb-3">Payment timeline</h5>
         {dataType.map((type, dIndex) => {
             return ( 
-            <div className={`card flex-fill ${dIndex !== 4 && 'mb-4'}`} key={dIndex}>
+            <div className={`printable-section card flex-fill ${dIndex !== 2 && 'mb-4'}`} key={dIndex}>
                 <div className="table-responsive">
                     <table className="table timeline-table">
                         <thead>

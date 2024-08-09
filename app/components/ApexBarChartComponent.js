@@ -85,7 +85,7 @@ const ApexStackedBarChart = ({chartData, xAxisData}) => {
   });
 
   return (
-    <div>
+    <div className='chart-container'>
       <Chart 
         options={chartOptions}  
         className={montserrat.className}

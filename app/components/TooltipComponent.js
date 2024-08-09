@@ -14,11 +14,12 @@ const TooltipComponent = ({title, content, placement = 'right'}) => {
 
   return (
     <OverlayTrigger
+      className='not-printable'
       placement={placement}
       delay={{ show: 250, hide: 400 }}
       overlay={renderTooltip}
     >
-      <FontAwesomeIcon icon={faInfoCircle} />
+      <FontAwesomeIcon icon={faInfoCircle} className='not-printable' />
     </OverlayTrigger>
   );
 };
