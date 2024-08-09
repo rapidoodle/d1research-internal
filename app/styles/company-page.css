@@ -440,6 +440,9 @@ table tr.spacer-row td{
     .mt-print{
         margin-top: 3rem!important
     }
+    .mt-print-3{
+        margin-top: 1rem!important
+    }
     .f-12{
         font-size: 12px!important;
     }
@@ -459,4 +462,22 @@ table tr.spacer-row td{
         height: 100%!important;
         visibility: hidden!important;
     }
+
+    table.sens-table tr td, table.sens-table tr th, table.timeline-table tr td, table.timeline-table tr th{
+        font-size: 13px;
+        color: #2F5651;
+        border-bottom: none !important;
+        padding-top: 0.1rem!important;
+        padding-bottom: 0.1rem!important;
+    }
+
+    span.sens-estimate{
+        padding: 0.1rem;
+    }
+
+
+table.sens-table tr td:first-child, table.sens-table tr th:first-child{
+    width: 160px;
+ }
+    
 }

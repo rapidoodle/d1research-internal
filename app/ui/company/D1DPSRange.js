@@ -154,7 +154,7 @@ export default function D1DPSRange({zFirst, zSecond, zThird, zFourth, allData, c
                 company={company}
                 ticker={eTicker}
                 divTicker={divTicker}  />
-                  <div className="mt-print">
+                  <div className="mt-print-3">
                   <Sensitivities  sensData={sensData}  />
                   </div>
                 <CompanyPagePrintableFooter />

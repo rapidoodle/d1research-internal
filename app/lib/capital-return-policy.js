@@ -9,14 +9,13 @@ export async function createCRP (req) {
   try {
     const { comment, unique_url_key, company_id } = await req.json();
     
-    const newComment = await cleanComment(comment);
     const query =`
         INSERT INTO capital_return_policy (comment, company_id, updated_by)
-        VALUES ('${newComment}', '${company_id}', '${user.id}')
+        VALUES ($1, $2, $3)
         RETURNING id, comment, company_id, updated_by;
       `
 
-      const result = await sql.query(query);
+      const result = await sql.query(query, [comment, company_id, user.id]);
       
       return { data: result.rows[0]};
       
@@ -29,15 +28,16 @@ export async function createCRP (req) {
 export async function updateCRP (req) {
     var user = await getLoggedUser();
     try {
-        const newComment = await cleanComment(req.comment);
-        const query = `
+
+      const query = `
           UPDATE capital_return_policy
-          SET comment = '${newComment}', updated_by = '${user.id}'
-          WHERE id = '${req.id}'
-            RETURNING id, comment, updated_by;
+          SET comment = $1, updated_by = $2, updated_at = NOW()
+          WHERE id = $3 RETURNING id, comment, updated_by;
         `;
 
-        const result = await sql.query(query);
+        const result = await sql.query(query, [req.comment, user.id, req.id] );
+
+
         return { data: result.rows[0] };
 
     } catch (error) {
